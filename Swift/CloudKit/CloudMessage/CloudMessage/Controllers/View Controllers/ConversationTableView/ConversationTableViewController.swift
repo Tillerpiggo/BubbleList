@@ -14,7 +14,8 @@ class ConversationTableViewController: UITableViewController, ConversationModelC
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        conversationModelController.delegate? = self
+        conversationModelController.delegate = self
+        conversationModelController.saveSubscription()
         
         addEditButton()
         conversationModelController.loadFromFile()
@@ -29,7 +30,7 @@ class ConversationTableViewController: UITableViewController, ConversationModelC
         }
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        appDelegate.delegate? = conversationModelController
+        appDelegate.delegate = conversationModelController
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -40,7 +41,9 @@ class ConversationTableViewController: UITableViewController, ConversationModelC
     }
     
     func updateRecords() {
-        tableView.reloadData()
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
     }
     
     private func addEditButton() {

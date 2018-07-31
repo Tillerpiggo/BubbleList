@@ -35,11 +35,6 @@ class ConversationModelController: RecordChangeDelegate {
         let subscriptionID = "cloudkit-conversation-changes"
         let subscriptionSavedKey = "ckSubscriptionSaved"
         
-        // user a local flag to avoid saving the subscription more than once
-        let alreadySaved = UserDefaults.standard.bool(forKey: subscriptionSavedKey)
-        
-        guard !alreadySaved else { return }
-        
         // Notify for all changes
         let predicate = NSPredicate(value: true)
         let subscription = CKQuerySubscription(
@@ -55,16 +50,17 @@ class ConversationModelController: RecordChangeDelegate {
         
         let operation = CKModifySubscriptionsOperation(subscriptionsToSave: [subscription], subscriptionIDsToDelete: [])
         operation.modifySubscriptionsCompletionBlock = { (_, _, error) in
-            guard error == nil else {
+            guard error == nil else { 
                 return
             }
             
             UserDefaults.standard.set(true, forKey: subscriptionSavedKey)
+            print("subscribed")
         }
         operation.qualityOfService = .utility
         
         let container = CKContainer.default()
-        let database = container.privateCloudDatabase
+        let database = container.publicCloudDatabase
         database.add(operation)
     }
     

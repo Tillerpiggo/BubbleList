@@ -30,8 +30,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let notification = CKNotification(fromRemoteNotificationDictionary: userInfo)
         if notification.subscriptionID == "cloudkit-conversation-changes" {
             // fetch the changes
-            delegate?.recordsDidChange()
+            if let delegate = delegate {
+                delegate.recordsDidChange()
+                print("Delegate performed recordsDidChange; nothing happened")
+            } else {
+                print("No delegate")
+            }
         }
+    }
+    
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        print("application did register for remote notifications with device token")
+    }
+    
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        print("applicatino FAILED to register for remote notifications with device token")
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
