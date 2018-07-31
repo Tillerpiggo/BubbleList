@@ -39,12 +39,12 @@ extension ConversationModelController {
         var fetchedConversations = [Conversation]()
         operation.recordFetchedBlock = { record in
             fetchedConversations.append(Conversation(withRecord: record))
+            print("fetched record")
         }
         
-        operation.queryCompletionBlock = { cursor, error in
-            // handle the error
+        operation.queryCompletionBlock = { (cursor, error) in
             if let error = error {
-                print(error as Any)
+                print(error.localizedDescription)
             }
             
             self.conversations = fetchedConversations
@@ -59,6 +59,8 @@ extension ConversationModelController {
         let optionalRecordsToSave = conversations.map { $0.ckRecord }
         
         operation.recordsToSave = optionalRecordsToSave.filter { $0 != nil } as? [CKRecord]
+        print(operation.recordsToSave as Any)
+        print(operation.recordsToSave?.count as Any)
         
         operation.modifyRecordsCompletionBlock = { (record, recordID, error) in
             // handle error
@@ -102,6 +104,7 @@ extension ConversationModelController {
             }
             
             completionHandler()
+            print("deleted record")
         }
         get(.publicDatabase).add(operation)
     }

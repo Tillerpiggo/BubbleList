@@ -9,35 +9,70 @@
 import UIKit
 import CloudKit
 
-class ConversationModelController {
+protocol ConversationModelControllerDelegate {
+    func updateRecords()
+}
+
+class ConversationModelController: RecordChangeDelegate {
     
     enum SortType {
         case title
-        case creationDate
+        case dateCreated
     }
+    
     
     // PROPERTIES:
     
-    var conversations: [Conversation] {
-        didSet {
-            saveToFile(conversations)
-            
-            if conversations.count > oldValue.count { // If you added something
-                DispatchQueue.main.async { UIApplication.shared.isNetworkActivityIndicatorVisible = true }
-                saveConversations(conversations) {
-                    DispatchQueue.main.async { UIApplication.shared.isNetworkActivityIndicatorVisible = false }
-                }
-            }
-        }
-    }
+    let sortType: SortType = .dateCreated
+    
+    var conversations: [Conversation]
+    var delegate: ConversationModelControllerDelegate?
     
     // METHODS:
     
+    func saveSubscription() {
+        // Create and save a silent push subscription in order to be updated:
+        let subscriptionID = "cloudkit-conversation-changes"
+        let subscriptionSavedKey = "ckSubscriptionSaved"
+        
+        // user a local flag to avoid saving the subscription more than once
+        let alreadySaved = UserDefaults.standard.bool(forKey: subscriptionSavedKey)
+        
+        guard !alreadySaved else { return }
+        
+        // Notify for all changes
+        let predicate = NSPredicate(value: true)
+        let subscription = CKQuerySubscription(
+            recordType: "Conversation",
+            predicate: predicate,
+            subscriptionID: subscriptionID,
+            options: [.firesOnRecordUpdate, .firesOnRecordDeletion, .firesOnRecordCreation]
+        )
+        
+        let notificationInfo = CKNotificationInfo()
+        notificationInfo.shouldSendContentAvailable = true // silent pushes
+        subscription.notificationInfo = notificationInfo
+        
+        let operation = CKModifySubscriptionsOperation(subscriptionsToSave: [subscription], subscriptionIDsToDelete: [])
+        operation.modifySubscriptionsCompletionBlock = { (_, _, error) in
+            guard error == nil else {
+                return
+            }
+            
+            UserDefaults.standard.set(true, forKey: subscriptionSavedKey)
+        }
+        operation.qualityOfService = .utility
+        
+        let container = CKContainer.default()
+        let database = container.privateCloudDatabase
+        database.add(operation)
+    }
+    
     func loadData(completionHandler: @escaping ([Conversation]) -> Void) {
         loadFromFile()
-        sortConversations(by: .title)
+        sortConversations(by: sortType)
         fetchConversations() { (conversations) in
-            self.sortConversations(by: .title)
+            self.sortConversations(by: self.sortType)
             self.saveToFile(conversations)
             completionHandler(conversations)
         }
@@ -45,6 +80,9 @@ class ConversationModelController {
     
     func saveData() {
         saveToFile(conversations)
+        saveConversations(conversations) {
+            print("Successfully Saved Conversations.")
+        }
     }
     
     func delete(at index: Int, completionHandler: @escaping () -> Void) {
@@ -64,7 +102,7 @@ class ConversationModelController {
         switch sortType {
         case .title:
             reverse ? conversations.sort() { $0.title > $1.title } : conversations.sort() { $0.title < $1.title }
-        case .creationDate:
+        case .dateCreated:
             reverse ? sortByCreationDate(reverse: reverse) : sortByCreationDate(reverse: reverse)
         }
     }
@@ -74,14 +112,23 @@ class ConversationModelController {
             var isBefore = false
             
             if let date0 = $0.creationDate, let date1 = $1.creationDate {
-                isBefore = date0 < date1
+                isBefore = date0 > date1
             } else {
-                isBefore = false // Put it at the top if it can't decide
+                isBefore = true // Put it at the top if it can't decide
             }
             
             if reverse { isBefore = !isBefore }
             
             return isBefore
+        }
+    }
+    
+    func recordsDidChange() {
+        fetchConversations() { (conversations) in
+            self.sortConversations(by: self.sortType)
+            self.saveToFile(conversations)
+            self.delegate?.updateRecords()
+            print("Fetched and saved conversations due to silent push notification.")
         }
     }
     

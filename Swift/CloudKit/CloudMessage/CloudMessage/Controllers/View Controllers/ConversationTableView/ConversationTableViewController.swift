@@ -8,12 +8,14 @@
 
 import UIKit
 
-class ConversationTableViewController: UITableViewController {
+class ConversationTableViewController: UITableViewController, ConversationModelControllerDelegate {
     
     var conversationModelController = ConversationModelController()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        conversationModelController.delegate? = self
+        
         addEditButton()
         conversationModelController.loadFromFile()
         conversationModelController.sortConversations(by: .title)
@@ -25,6 +27,9 @@ class ConversationTableViewController: UITableViewController {
                 UIApplication.shared.isNetworkActivityIndicatorVisible = false
             }
         }
+        
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        appDelegate.delegate? = conversationModelController
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -32,6 +37,10 @@ class ConversationTableViewController: UITableViewController {
             segue.identifier == "AddConversation" else { return }
         
         destinationViewController.delegate = self
+    }
+    
+    func updateRecords() {
+        tableView.reloadData()
     }
     
     private func addEditButton() {

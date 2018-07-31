@@ -7,16 +7,31 @@
 //
 
 import UIKit
+import CloudKit
+
+protocol RecordChangeDelegate {
+    func recordsDidChange()
+}
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    var delegate: RecordChangeDelegate?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        // Register for silent pushes
+        application.registerForRemoteNotifications()
         return true
+    }
+    
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        // Whenever there's a remote notification, this gets called
+        let notification = CKNotification(fromRemoteNotificationDictionary: userInfo)
+        if notification.subscriptionID == "cloudkit-conversation-changes" {
+            // fetch the changes
+            delegate?.recordsDidChange()
+        }
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -40,7 +55,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-
+    
+    
 
 }
 

@@ -11,6 +11,10 @@ import CloudKit
 
 // Cloud stuff
 
+protocol MessageModelControllerDelegate {
+    func didChangeConversation(_ conversation: Conversation)
+}
+
 extension MessageModelController {
     private enum DatabaseType {
         case databasePrivate

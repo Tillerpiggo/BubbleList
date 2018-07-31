@@ -30,6 +30,7 @@ class Conversation: Codable {
         case messages
         case creationDate
         case title
+        case archivedData
     }
     
     init(withTitle title: String, messages: [Message] = [Message](), users: [User] = [User]()) {
@@ -37,6 +38,10 @@ class Conversation: Codable {
         self.messages = messages
         self.users = users
         self.creationDate = Date()
+        
+        let newCKRecord = CKRecord(recordType: "Conversation")
+        newCKRecord["title"] = title as CKRecordValue
+        self.ckRecord = newCKRecord
     }
     
     init(withRecord record: CKRecord) {
@@ -57,7 +62,10 @@ class Conversation: Codable {
         messages = try values.decode([Message].self, forKey: .messages)
         creationDate = try? values.decode(Date.self, forKey: .creationDate)
         title = try values.decode(String.self, forKey: .title)
-        ckRecord = nil
+        
+        let newCKRecord = CKRecord(recordType: "Conversation")
+        newCKRecord["title"] = title as CKRecordValue
+        ckRecord = newCKRecord
     }
     
     
