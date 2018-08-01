@@ -47,43 +47,11 @@ extension ConversationModelController {
                 print(error.localizedDescription)
             }
             
-            self.mergeConversations(with: fetchedConversations)
+            self.conversations = self.mergeConversations(self.conversations, with: fetchedConversations)
             completionHandler(self.conversations)
         }
         
         get(.publicDatabase).add(operation)
-    }
-    
-    private func mergeConversations(with newConversations: [Conversation]) {
-        // Merge a new set of conversations with new conversations
-        
-        // Merged conversations starts out as the new conversations, and a bit of info is
-        // Filled in by the old conversations, such as messages
-        let mergedConversations = sortedConversations(newConversations, by: .dateCreated, reverse: true)
-        let oldConversations = sortedConversations(conversations, by: .dateCreated, reverse: true) // Reverse so that the newest ones are at the end
-        
-        if oldConversations.count == newConversations.count { // Something was edited
-            for (index, mergedConversation) in mergedConversations.enumerated() {
-                // Add messages (because you don't fetch messages from the Cloud, just conversations)
-                
-                // IMPORTANT NOTE: This won't overwrite the messages
-                // (which could've been updated) entirely,It simply gives the
-                //  conversation something to display until it fetches the messages
-                mergedConversation.messages = oldConversations[index].messages
-            }
-        } else if oldConversations.count < newConversations.count { // Some thing(s) were added
-            // Won't iterate through the newly added conversations
-            for (index, oldConversation) in oldConversations.enumerated() {
-                mergedConversations[index].messages = oldConversation.messages
-            }
-        } else if oldConversations.count > newConversations.count { // Some thing(s) were deleted
-            // Determine what was deleted somehow - maybe request that from the server?
-            // Then delete that index from oldConversations and fill in message data
-            
-            // Do nothing... yet
-        }
-        
-        conversations = mergedConversations
     }
     
     func saveConversations(_ conversations: [Conversation], completionHandler: @escaping () -> Void) {

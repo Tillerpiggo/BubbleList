@@ -141,6 +141,50 @@ class ConversationModelController: RecordChangeDelegate, MessageModelControllerD
         }
     }
     
+    func mergeConversations(_ oldConversations: [Conversation], with newConversations: [Conversation]) -> [Conversation] {
+        // Merge a new set of conversations with new conversations
+        
+        // Merged conversations starts out as the new conversations, and a bit of info is
+        // Filled in by the old conversations, such as messages
+        let mergedConversations = sortedConversations(newConversations, by: .dateCreated, reverse: true)
+        let oldConversations = sortedConversations(oldConversations, by: .dateCreated, reverse: true) // Reverse so that the newest ones are at the end
+        
+        if oldConversations.count == 0 {
+            print("Merged Conversations: \(mergedConversations.last?.messages.first?.text ?? "No message found")")
+            return mergedConversations
+        } else if newConversations.count == 0 {
+            return oldConversations
+        }
+        
+        print("OldConversations: \(oldConversations.count)")
+        print("NewConversations: \(newConversations.count)")
+        
+        if oldConversations.count == newConversations.count { // Something was edited
+            for (index, mergedConversation) in mergedConversations.enumerated() {
+                // Add messages (because you don't fetch messages from the Cloud, just conversations)
+                
+                // IMPORTANT NOTE: This won't overwrite the messages
+                // (which could've been updated) entirely,It simply gives the
+                //  conversation something to display until it fetches the messages
+                mergedConversation.messages = oldConversations[index].messages
+            }
+        } else if oldConversations.count < newConversations.count { // Some thing(s) were added
+            // Won't iterate through the newly added conversations
+            for (index, oldConversation) in oldConversations.enumerated() {
+                mergedConversations[index].messages = oldConversation.messages
+            }
+        } else if oldConversations.count > newConversations.count { // Some thing(s) were deleted
+            // Determine what was deleted somehow - maybe request that from the server?
+            // Then delete that index from oldConversations and fill in message data
+            
+            // Do nothing... yet
+        }
+        
+        return mergedConversations
+    }
+    
+    // DELEGATES:
+    
     func recordsDidChange() {
         fetchConversations() { (conversations) in
             self.sortConversations(by: self.sortType)
@@ -158,6 +202,7 @@ class ConversationModelController: RecordChangeDelegate, MessageModelControllerD
     }
     
     // INITIALIZER:
+    
     init() {
         conversations = [Conversation]()
     }

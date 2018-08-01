@@ -28,11 +28,11 @@ extension ConversationModelController {
         let decoder = PropertyListDecoder()
         guard let retrievedConversationData = try? Data(contentsOf: archiveURL),
             let decodedConversations = try? decoder.decode([Conversation].self, from: retrievedConversationData) else {
-                conversations = [Conversation]()
+                print("On-device storage failed and could not be accessed")
                 return
         }
         
-        conversations = decodedConversations
+        conversations = self.mergeConversations(decodedConversations, with: conversations)
     }
     
     // HELPER METHODS:

@@ -48,6 +48,9 @@ class Message: Codable {
         let newCKRecord = CKRecord(recordType: "Message")
         newCKRecord["text"] = text as CKRecordValue
         ckRecord = newCKRecord
+        
+        let newCKReference = CKReference(record: newCKRecord, action: .deleteSelf)
+        owningConversation = newCKReference
     }
     
     // INTIIALIZERS:

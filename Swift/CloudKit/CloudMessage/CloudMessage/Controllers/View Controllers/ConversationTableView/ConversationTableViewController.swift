@@ -31,13 +31,15 @@ class ConversationTableViewController: UITableViewController, ConversationModelC
         }
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        appDelegate.delegate = conversationModelController
+        appDelegate.delegates?.append(conversationModelController)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         conversationModelController.selectedIndex = nil
+        conversationModelController.loadFromFile()
+        conversationModelController.sortConversations(by: conversationModelController.sortType)
         tableView.reloadData()
     }
     
@@ -64,6 +66,9 @@ class ConversationTableViewController: UITableViewController, ConversationModelC
             destinationViewController.navigationItem.title = selectedConversation.title
             destinationViewController.messageModelController = MessageModelController(withConversation: selectedConversation)
             destinationViewController.messageModelController.delegate = conversationModelController
+            
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            appDelegate.delegates?.append(destinationViewController.messageModelController)
         }
     }
 }
