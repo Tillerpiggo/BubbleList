@@ -74,6 +74,8 @@ extension MessageTableViewController: AddMessageTableViewControllerDelegate, Mes
             delegate.didChangeConversation(conversation)
         }
         
-        tableView.reloadData()
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
     }
 }
