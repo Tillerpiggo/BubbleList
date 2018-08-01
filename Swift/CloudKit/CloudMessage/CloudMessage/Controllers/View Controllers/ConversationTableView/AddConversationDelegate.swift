@@ -19,6 +19,6 @@ extension ConversationTableViewController: AddConversationTableViewControllerDel
         }
         
         conversationModelController.saveData()
-        tableView.insertRows(at: [newIndexPath], with: .automatic)
+        tableView.reloadData()
     }
 }
