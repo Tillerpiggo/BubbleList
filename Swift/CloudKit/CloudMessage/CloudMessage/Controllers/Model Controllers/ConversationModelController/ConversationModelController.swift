@@ -156,8 +156,8 @@ class ConversationModelController: RecordChangeDelegate, MessageModelControllerD
             return oldConversations
         }
         
-        print("OldConversations: \(oldConversations.count)")
-        print("NewConversations: \(newConversations.count)")
+        // print("OldConversations: \(oldConversations.count)")
+        // print("NewConversations: \(newConversations.count)")
         
         if oldConversations.count == newConversations.count { // Something was edited
             for (index, mergedConversation) in mergedConversations.enumerated() {

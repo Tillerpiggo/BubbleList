@@ -21,6 +21,7 @@ class MessageTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        messageModelController.sortMessages()
         messageModelController.delegate = self
         
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
@@ -58,6 +59,9 @@ class MessageTableViewController: UITableViewController {
 extension MessageTableViewController: AddMessageTableViewControllerDelegate, MessageModelControllerDelegate {
     
     func addedMessage(_ message: Message) {
+        print("before: \(messageModelController.conversation.messages.count)")
+        messageModelController.conversation.messages.append(message)
+        print("after: \(messageModelController.conversation.messages.count)")
         
         messageModelController.sortMessages()
         
@@ -69,9 +73,6 @@ extension MessageTableViewController: AddMessageTableViewControllerDelegate, Mes
         
         messageModelController.saveData()
         tableView.insertRows(at: [newIndexPath], with: .automatic)
-        print("before: \(messageModelController.conversation.messages.count)")
-        messageModelController.conversation.messages.append(message)
-        print("after: \(messageModelController.conversation.messages.count)")
     }
     
     func didChangeConversation(_ conversation: Conversation) {
