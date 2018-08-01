@@ -18,6 +18,16 @@ class ConversationTableViewController: UITableViewController, ConversationModelC
         conversationModelController.saveSubscription()
         
         addEditButton()
+        
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        appDelegate.delegates.append(conversationModelController)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        conversationModelController.selectedIndex = nil
+        
         conversationModelController.loadFromFile()
         conversationModelController.sortConversations(by: conversationModelController.sortType)
         
@@ -29,18 +39,6 @@ class ConversationTableViewController: UITableViewController, ConversationModelC
                 self.tableView.reloadData()
             }
         }
-        
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        appDelegate.delegates?.append(conversationModelController)
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        conversationModelController.selectedIndex = nil
-        conversationModelController.loadFromFile()
-        conversationModelController.sortConversations(by: conversationModelController.sortType)
-        tableView.reloadData()
     }
     
     func updateRecords() {
@@ -65,10 +63,9 @@ class ConversationTableViewController: UITableViewController, ConversationModelC
             let selectedConversation = conversationModelController.selectedConversation!
             destinationViewController.navigationItem.title = selectedConversation.title
             destinationViewController.messageModelController = MessageModelController(withConversation: selectedConversation)
-            destinationViewController.messageModelController.delegate = conversationModelController
             
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
-            appDelegate.delegates?.append(destinationViewController.messageModelController)
+            appDelegate.delegates.append(destinationViewController.messageModelController)
         }
     }
 }

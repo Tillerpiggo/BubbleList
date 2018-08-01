@@ -10,7 +10,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CloudMessage/Controllers/View Controllers/ConversationTableView/AddConversationDelegate.swift"
-            timestampString = "554835199.8256021"
+            timestampString = "554838782.581259"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "22"
@@ -26,7 +26,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CloudMessage/Controllers/View Controllers/AddConversation/AddConversationTableViewController.swift"
-            timestampString = "554835199.8256609"
+            timestampString = "554838782.581315"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "66"
@@ -42,7 +42,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CloudMessage/Controllers/View Controllers/AddConversation/AddConversationTableViewController.swift"
-            timestampString = "554835199.825703"
+            timestampString = "554838782.581356"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "67"
@@ -58,7 +58,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CloudMessage/Controllers/View Controllers/AddConversation/AddConversationTableViewController.swift"
-            timestampString = "554835199.825739"
+            timestampString = "554838782.581394"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "50"
@@ -74,7 +74,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CloudMessage/Controllers/Model Controllers/ConversationModelController/CloudConversationModelController.swift"
-            timestampString = "554835199.825778"
+            timestampString = "554838782.581431"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "50"
@@ -90,7 +90,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CloudMessage/Controllers/Model Controllers/ConversationModelController/CloudConversationModelController.swift"
-            timestampString = "554835199.826128"
+            timestampString = "554838782.581781"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "35"
@@ -106,7 +106,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CloudMessage/Controllers/Model Controllers/ConversationModelController/CloudConversationModelController.swift"
-            timestampString = "554835199.826465"
+            timestampString = "554838782.582118"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "40"
@@ -154,7 +154,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CloudMessage/Controllers/Model Controllers/ConversationModelController/CloudConversationModelController.swift"
-            timestampString = "554835199.8268"
+            timestampString = "554838782.5824521"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "41"
@@ -170,7 +170,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CloudMessage/Controllers/Model Controllers/ConversationModelController/ConversationModelController.swift"
-            timestampString = "554835199.827135"
+            timestampString = "554838782.582781"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "108"
@@ -186,7 +186,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CloudMessage/Controllers/View Controllers/ConversationTableView/ConversationDataSource.swift"
-            timestampString = "554835199.827469"
+            timestampString = "554838782.582875"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "38"
@@ -202,7 +202,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CloudMessage/Controllers/Model Controllers/ConversationModelController/ConversationModelController.swift"
-            timestampString = "554835199.827516"
+            timestampString = "554838782.582916"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "107"
@@ -250,7 +250,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CloudMessage/Controllers/Model Controllers/ConversationModelController/CloudConversationModelController.swift"
-            timestampString = "554835199.827767"
+            timestampString = "554838782.583003"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "75"
@@ -266,7 +266,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CloudMessage/Controllers/Model Controllers/MessageModelController/CloudMessageModelController.swift"
-            timestampString = "554835199.828105"
+            timestampString = "554838782.58333"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "57"
@@ -282,7 +282,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CloudMessage/Controllers/Model Controllers/MessageModelController/CloudMessageModelController.swift"
-            timestampString = "554835199.828156"
+            timestampString = "554838782.58338"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "55"
@@ -298,7 +298,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CloudMessage/Controllers/Model Controllers/MessageModelController/CloudMessageModelController.swift"
-            timestampString = "554835199.828202"
+            timestampString = "554838782.583427"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "88"
@@ -314,7 +314,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CloudMessage/Controllers/Model Controllers/MessageModelController/CloudMessageModelController.swift"
-            timestampString = "554835199.828244"
+            timestampString = "554838782.5834709"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "88"
@@ -330,7 +330,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CloudMessage/Controllers/Model Controllers/ConversationModelController/CloudConversationModelController.swift"
-            timestampString = "554835199.828287"
+            timestampString = "554838782.583517"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "68"
@@ -346,7 +346,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CloudMessage/Controllers/Model Controllers/ConversationModelController/CloudConversationModelController.swift"
-            timestampString = "554835199.828627"
+            timestampString = "554838782.583853"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "75"
@@ -362,7 +362,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CloudMessage/Controllers/Model Controllers/ConversationModelController/CloudConversationModelController.swift"
-            timestampString = "554835199.828948"
+            timestampString = "554838782.5841711"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "75"
@@ -378,7 +378,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CloudMessage/Controllers/Model Controllers/ConversationModelController/CloudConversationModelController.swift"
-            timestampString = "554835199.8292691"
+            timestampString = "554838782.584487"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "47"
@@ -393,28 +393,12 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "CloudMessage/AppDelegate.swift"
-            timestampString = "554835199.8295881"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "30"
-            endingLineNumber = "30"
-            landmarkName = "application(_:didReceiveRemoteNotification:fetchCompletionHandler:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "CloudMessage/Controllers/View Controllers/ConversationTableView/ConversationTableViewController.swift"
-            timestampString = "554835199.82963"
+            timestampString = "554838782.584806"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "48"
-            endingLineNumber = "48"
+            startingLineNumber = "46"
+            endingLineNumber = "46"
             landmarkName = "updateRecords()"
             landmarkType = "7">
          </BreakpointContent>
@@ -426,7 +410,23 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CloudMessage/Controllers/View Controllers/MessageTableView/MessageTableViewController.swift"
-            timestampString = "554835199.829706"
+            timestampString = "554838782.58489"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "46"
+            endingLineNumber = "46"
+            landmarkName = "prepare(for:sender:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CloudMessage/Controllers/View Controllers/MessageTableView/MessageTableViewController.swift"
+            timestampString = "554838782.585211"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "45"
@@ -442,11 +442,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CloudMessage/Controllers/View Controllers/MessageTableView/MessageTableViewController.swift"
-            timestampString = "554835199.8297549"
+            timestampString = "554838782.585445"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "44"
-            endingLineNumber = "44"
+            startingLineNumber = "43"
+            endingLineNumber = "43"
             landmarkName = "prepare(for:sender:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -458,27 +458,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CloudMessage/Controllers/View Controllers/MessageTableView/MessageTableViewController.swift"
-            timestampString = "554835199.8298039"
+            timestampString = "554838782.585672"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "42"
-            endingLineNumber = "42"
-            landmarkName = "prepare(for:sender:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "CloudMessage/Controllers/View Controllers/MessageTableView/MessageTableViewController.swift"
-            timestampString = "554835199.8298531"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "46"
-            endingLineNumber = "46"
+            startingLineNumber = "47"
+            endingLineNumber = "47"
             landmarkName = "prepare(for:sender:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -490,11 +474,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CloudMessage/Controllers/View Controllers/ConversationTableView/ConversationTableViewController.swift"
-            timestampString = "554835199.829901"
+            timestampString = "554838782.585899"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "66"
-            endingLineNumber = "66"
+            startingLineNumber = "64"
+            endingLineNumber = "64"
             landmarkName = "prepare(for:sender:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -506,11 +490,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CloudMessage/Controllers/View Controllers/ConversationTableView/ConversationTableViewController.swift"
-            timestampString = "554835199.82999"
+            timestampString = "554838782.58597"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "59"
-            endingLineNumber = "59"
+            startingLineNumber = "57"
+            endingLineNumber = "57"
             landmarkName = "prepare(for:sender:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -522,7 +506,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CloudMessage/Controllers/View Controllers/AddMessage/AddMessageTableViewController.swift"
-            timestampString = "554835199.830101"
+            timestampString = "554838782.5860389"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "65"
@@ -538,7 +522,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CloudMessage/Controllers/View Controllers/AddMessage/AddMessageTableViewController.swift"
-            timestampString = "554835199.8301359"
+            timestampString = "554838782.586079"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "66"
@@ -554,7 +538,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CloudMessage/Controllers/View Controllers/AddMessage/AddMessageTableViewController.swift"
-            timestampString = "554835199.830229"
+            timestampString = "554838782.586117"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "67"
@@ -570,7 +554,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CloudMessage/Controllers/Model Controllers/MessageModelController/MessageModelController.swift"
-            timestampString = "554835199.830265"
+            timestampString = "554838782.5861551"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "43"
@@ -618,7 +602,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CloudMessage/Controllers/Model Controllers/MessageModelController/MessageModelController.swift"
-            timestampString = "554835199.83033"
+            timestampString = "554838782.586194"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "42"
@@ -634,11 +618,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CloudMessage/Controllers/View Controllers/MessageTableView/MessageTableViewController.swift"
-            timestampString = "554835199.830367"
+            timestampString = "554838782.586234"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "63"
-            endingLineNumber = "63"
+            startingLineNumber = "68"
+            endingLineNumber = "68"
             landmarkName = "addedMessage(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -650,7 +634,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CloudMessage/Controllers/Model Controllers/MessageModelController/MessageModelController.swift"
-            timestampString = "554835199.8304189"
+            timestampString = "554838782.586423"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "44"
@@ -665,24 +649,8 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "CloudMessage/Controllers/View Controllers/ConversationTableView/ConversationTableViewController.swift"
-            timestampString = "554835199.830467"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "21"
-            endingLineNumber = "21"
-            landmarkName = "viewDidLoad()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "CloudMessage/Controllers/Model Controllers/ConversationModelController/ConversationModelController.swift"
-            timestampString = "554835199.830532"
+            timestampString = "554838782.586467"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "162"
@@ -698,12 +666,92 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CloudMessage/Controllers/Model Controllers/ConversationModelController/ConversationModelController.swift"
-            timestampString = "554835199.830789"
+            timestampString = "554838782.586561"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "163"
             endingLineNumber = "163"
             landmarkName = "mergeConversations(_:with:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CloudMessage/AppDelegate.swift"
+            timestampString = "554838782.5866441"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "34"
+            endingLineNumber = "34"
+            landmarkName = "application(_:didReceiveRemoteNotification:fetchCompletionHandler:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CloudMessage/AppDelegate.swift"
+            timestampString = "554838782.586681"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "28"
+            endingLineNumber = "28"
+            landmarkName = "application(_:didReceiveRemoteNotification:fetchCompletionHandler:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CloudMessage/Controllers/Model Controllers/MessageModelController/MessageModelController.swift"
+            timestampString = "554838782.5867161"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "54"
+            endingLineNumber = "54"
+            landmarkName = "recordsDidChange()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CloudMessage/Controllers/View Controllers/MessageTableView/MessageTableViewController.swift"
+            timestampString = "554838782.5867521"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "58"
+            endingLineNumber = "58"
+            landmarkName = "addedMessage(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CloudMessage/Controllers/View Controllers/MessageTableView/MessageTableViewController.swift"
+            timestampString = "554838782.586921"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "73"
+            endingLineNumber = "73"
+            landmarkName = "conversationDidChange(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

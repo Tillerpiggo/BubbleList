@@ -39,7 +39,7 @@ extension ConversationModelController {
         var fetchedConversations = [Conversation]()
         operation.recordFetchedBlock = { record in
             fetchedConversations.append(Conversation(withRecord: record))
-            print("fetched record")
+            //print("fetched record")
         }
         
         operation.queryCompletionBlock = { (cursor, error) in

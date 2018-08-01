@@ -13,7 +13,7 @@ protocol ConversationModelControllerDelegate {
     func updateRecords()
 }
 
-class ConversationModelController: RecordChangeDelegate, MessageModelControllerDelegate {
+class ConversationModelController: RecordChangeDelegate {
     
     enum SortType {
         case title
@@ -194,12 +194,15 @@ class ConversationModelController: RecordChangeDelegate, MessageModelControllerD
         }
     }
     
+    /*
     func conversationDidChange(_ conversation: Conversation) {
         if let selectedIndex = selectedIndex {
             conversations[selectedIndex] = conversation
             saveToFile(conversations)
+            self.delegate?.updateRecords()
         }
     }
+ */
     
     // INITIALIZER:
     

@@ -17,7 +17,7 @@ protocol RecordChangeDelegate {
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    var delegates: [RecordChangeDelegate]?
+    var delegates: [RecordChangeDelegate] = [RecordChangeDelegate]()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Register for silent pushes
@@ -27,15 +27,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         // Whenever there's a remote notification, this gets called
-        let notification = CKNotification(fromRemoteNotificationDictionary: userInfo)
-        if notification.subscriptionID == "cloudkit-conversation-changes" {
-            // fetch the changes
-            if let delegates = delegates {
-                for delegate in delegates {
-                    delegate.recordsDidChange()
-                    print("Delegate performed recordsDidChange")
-                }
+        
+        // fetch the changes
+        if delegates.count > 0 {
+            for delegate in delegates {
+                delegate.recordsDidChange()
+                print("Delegate performed recordsDidChange")
+                
+                completionHandler(.newData)
             }
+        } else {
+            completionHandler(.failed)
         }
     }
     
@@ -63,6 +65,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        for delegate in delegates {
+            delegate.recordsDidChange()
+            print("updated when the applictation became active in order to check for new changes")
+        }
     }
 
     func applicationWillTerminate(_ application: UIApplication) {

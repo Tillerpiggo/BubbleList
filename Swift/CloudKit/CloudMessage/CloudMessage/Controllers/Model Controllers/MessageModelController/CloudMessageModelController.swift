@@ -46,7 +46,7 @@ extension MessageModelController {
         let fetchedConversation = Conversation(withTitle: conversation.title)
         operation.recordFetchedBlock = { record in
             fetchedConversation.messages.append(Message(withRecord: record))
-            print("fetched message")
+            //print("fetched message")
         }
         
         operation.queryCompletionBlock = { (cursor, error) in
@@ -58,7 +58,7 @@ extension MessageModelController {
             
             self.conversation.messages = fetchedConversation.messages
             
-            print("Fetched Conversation:")
+            print("Fetched Conversation: (\(fetchedConversation.messages.count))")
             for message in fetchedConversation.messages {
                 print(message.text)
             }

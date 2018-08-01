@@ -22,6 +22,7 @@ class MessageTableViewController: UITableViewController {
         super.viewDidLoad()
         
         messageModelController.sortMessages()
+        messageModelController.delegate = self
         
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         messageModelController.fetchMessages { (conversation) in
@@ -50,17 +51,25 @@ class MessageTableViewController: UITableViewController {
     }
 }
 
-extension MessageTableViewController: AddMessageTableViewControllerDelegate {
+extension MessageTableViewController: AddMessageTableViewControllerDelegate, MessageModelControllerDelegate {
+    
     func addedMessage(_ message: Message) {
         messageModelController.conversation.messages.append(message)
+        print(messageModelController.conversation.messages.count)
         messageModelController.sortMessages()
         
         var newIndexPath = IndexPath(row: 0, section: 0)
         if let newRow = messageModelController.messages.index(where: { $0 === message }) {
             newIndexPath.row = newRow
+            print(newRow)
         }
         
         messageModelController.saveData()
         tableView.insertRows(at: [newIndexPath], with: .automatic)
+    }
+    
+    func conversationDidChange(_ conversation: Conversation) {
+        delegate?.didChangeConversation(conversation)
+        tableView.reloadData()
     }
 }
