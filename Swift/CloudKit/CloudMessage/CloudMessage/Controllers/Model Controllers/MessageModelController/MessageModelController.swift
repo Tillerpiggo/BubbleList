@@ -10,7 +10,7 @@ import Foundation
 import CloudKit
 
 protocol MessageModelControllerDelegate {
-    func conversationDidChange(_ conversation: Conversation)
+    func didChangeConversation(_ conversation: Conversation)
 }
 
 class MessageModelController: RecordChangeDelegate {
@@ -51,7 +51,7 @@ class MessageModelController: RecordChangeDelegate {
         fetchMessages() { (conversation) in
             self.sortMessages()
             self.saveToFile(conversation)
-            self.delegate?.conversationDidChange(conversation)
+            self.delegate?.didChangeConversation(conversation)
             print("Updated messages due to push notification.")
         }
     }

@@ -8,10 +8,14 @@
 
 import UIKit
 
-class ConversationTableViewController: UITableViewController, ConversationModelControllerDelegate {
+class ConversationTableViewController: UITableViewController, ConversationModelControllerDelegate, MessageTableViewControllerDelegate {
+    
+    // PROPERTIES:
     
     var conversationModelController = ConversationModelController()
 
+    // VIEW LIFE CYCLE:
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         conversationModelController.delegate = self
@@ -36,10 +40,13 @@ class ConversationTableViewController: UITableViewController, ConversationModelC
             DispatchQueue.main.async {
                 UIApplication.shared.isNetworkActivityIndicatorVisible = false
                 self.conversationModelController.saveToFile(conversations)
+                self.conversationModelController.sortConversations(by: self.conversationModelController.sortType)
                 self.tableView.reloadData()
             }
         }
     }
+    
+    // DELEGATES:
     
     func updateRecords() {
         DispatchQueue.main.async {
@@ -47,11 +54,19 @@ class ConversationTableViewController: UITableViewController, ConversationModelC
         }
     }
     
+    func didChangeConversation(_ conversation: Conversation) {
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+    }
     
+    // METHODS:
     
     private func addEditButton() {
         self.navigationItem.leftBarButtonItem = editButtonItem
     }
+    
+    // NAVIGATION:
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destinationViewController = segue.destination.childViewControllers.first as? AddConversationTableViewController, segue.identifier == "AddConversation" {
@@ -63,6 +78,7 @@ class ConversationTableViewController: UITableViewController, ConversationModelC
             let selectedConversation = conversationModelController.selectedConversation!
             destinationViewController.navigationItem.title = selectedConversation.title
             destinationViewController.messageModelController = MessageModelController(withConversation: selectedConversation)
+            destinationViewController.messageModelController.sortMessages()
             
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
             appDelegate.delegates.append(destinationViewController.messageModelController)

@@ -16,12 +16,11 @@ protocol MessageTableViewControllerDelegate {
 class MessageTableViewController: UITableViewController {
     
     var messageModelController: MessageModelController!
-    var delegate: MessageTableViewControllerDelegate?
+    var delegates: [MessageTableViewControllerDelegate] = [MessageTableViewControllerDelegate]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        messageModelController.sortMessages()
         messageModelController.delegate = self
         
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
@@ -39,6 +38,11 @@ class MessageTableViewController: UITableViewController {
         super.viewWillAppear(animated)
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        messageModelController.saveToFile(messageModelController.conversation)
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let destinationViewController = segue.destination.childViewControllers.first as? AddMessageTableViewController, segue.identifier == "AddMessage" else { return }
         
@@ -54,8 +58,7 @@ class MessageTableViewController: UITableViewController {
 extension MessageTableViewController: AddMessageTableViewControllerDelegate, MessageModelControllerDelegate {
     
     func addedMessage(_ message: Message) {
-        messageModelController.conversation.messages.append(message)
-        print(messageModelController.conversation.messages.count)
+        
         messageModelController.sortMessages()
         
         var newIndexPath = IndexPath(row: 0, section: 0)
@@ -66,10 +69,15 @@ extension MessageTableViewController: AddMessageTableViewControllerDelegate, Mes
         
         messageModelController.saveData()
         tableView.insertRows(at: [newIndexPath], with: .automatic)
+        print("before: \(messageModelController.conversation.messages.count)")
+        messageModelController.conversation.messages.append(message)
+        print("after: \(messageModelController.conversation.messages.count)")
     }
     
-    func conversationDidChange(_ conversation: Conversation) {
-        delegate?.didChangeConversation(conversation)
+    func didChangeConversation(_ conversation: Conversation) {
+        for delegate in delegates {
+            delegate.didChangeConversation(conversation)
+        }
         tableView.reloadData()
     }
 }

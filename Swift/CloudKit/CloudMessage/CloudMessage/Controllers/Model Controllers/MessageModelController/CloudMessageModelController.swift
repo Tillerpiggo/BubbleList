@@ -59,9 +59,7 @@ extension MessageModelController {
             self.conversation.messages = fetchedConversation.messages
             
             print("Fetched Conversation: (\(fetchedConversation.messages.count))")
-            for message in fetchedConversation.messages {
-                print(message.text)
-            }
+            
             completionHandler(self.conversation)
         }
         
@@ -113,6 +111,6 @@ extension MessageModelController {
     
     func saveToFile(_ conversation: Conversation) {
         // tell ConversationModelController to do it for you
-        delegate?.conversationDidChange(conversation)
+        delegate?.didChangeConversation(conversation)
     }
 }
