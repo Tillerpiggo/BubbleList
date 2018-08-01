@@ -17,7 +17,7 @@ protocol RecordChangeDelegate {
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    var delegate: RecordChangeDelegate?
+    var delegates: [RecordChangeDelegate]?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Register for silent pushes
@@ -30,11 +30,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let notification = CKNotification(fromRemoteNotificationDictionary: userInfo)
         if notification.subscriptionID == "cloudkit-conversation-changes" {
             // fetch the changes
-            if let delegate = delegate {
-                delegate.recordsDidChange()
-                print("Delegate performed recordsDidChange; nothing happened")
-            } else {
-                print("No delegate")
+            if let delegates = delegates {
+                for delegate in delegates {
+                    delegate.recordsDidChange()
+                    print("Delegate performed recordsDidChange")
+                }
             }
         }
     }

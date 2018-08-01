@@ -19,13 +19,14 @@ class ConversationTableViewController: UITableViewController, ConversationModelC
         
         addEditButton()
         conversationModelController.loadFromFile()
-        conversationModelController.sortConversations(by: .title)
+        conversationModelController.sortConversations(by: conversationModelController.sortType)
         
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         conversationModelController.loadData() { (conversations) in
             DispatchQueue.main.async {
-                self.tableView.reloadData()
                 UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                self.conversationModelController.saveToFile(conversations)
+                self.tableView.reloadData()
             }
         }
         
@@ -33,11 +34,11 @@ class ConversationTableViewController: UITableViewController, ConversationModelC
         appDelegate.delegate = conversationModelController
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let destinationViewController = segue.destination.childViewControllers.first as? AddConversationTableViewController,
-            segue.identifier == "AddConversation" else { return }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
-        destinationViewController.delegate = self
+        conversationModelController.selectedIndex = nil
+        tableView.reloadData()
     }
     
     func updateRecords() {
@@ -46,7 +47,23 @@ class ConversationTableViewController: UITableViewController, ConversationModelC
         }
     }
     
+    
+    
     private func addEditButton() {
         self.navigationItem.leftBarButtonItem = editButtonItem
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let destinationViewController = segue.destination.childViewControllers.first as? AddConversationTableViewController, segue.identifier == "AddConversation" {
+            destinationViewController.delegate = self
+        } else if let destinationViewController = segue.destination as? MessageTableViewController, segue.identifier == "MessageTableView" {
+            let selectedIndex = tableView.indexPathForSelectedRow?.row
+            conversationModelController.selectedIndex = selectedIndex
+            
+            let selectedConversation = conversationModelController.selectedConversation!
+            destinationViewController.navigationItem.title = selectedConversation.title
+            destinationViewController.messageModelController = MessageModelController(withConversation: selectedConversation)
+            destinationViewController.messageModelController.delegate = conversationModelController
+        }
     }
 }

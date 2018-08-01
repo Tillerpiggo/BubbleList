@@ -9,15 +9,56 @@
 import Foundation
 import CloudKit
 
-class MessageModelController {
+protocol MessageModelControllerDelegate {
+    func conversationDidChange(_ conversation: Conversation)
+}
+
+class MessageModelController: RecordChangeDelegate {
+    
     // PROPERTIES:
     
-    var conversation: Conversation! {
-        didSet {
-            // Save to file
-            // Do stuff with CloudKit as well
+    var conversation: Conversation
+    var messages: [Message] {
+        return conversation.messages
+    }
+    
+    var delegate: MessageModelControllerDelegate?
+    
+    // SORTING:
+    
+    func sortMessages(_ reverse: Bool = false) {
+        conversation.messages = sortedMessages(conversation.messages, reverse: reverse)
+    }
+    
+    func sortedMessages(_ messages: [Message], reverse: Bool = false) -> [Message] {
+        return messages.sorted() {
+            return reverse ? $0.timestamp < $1.timestamp : $0.timestamp > $1.timestamp
         }
     }
     
-    var conversationRecord: CKRecord?
+    // METHODS:
+    
+    func saveData() {
+        saveToFile(conversation)
+        saveMessages(in: conversation) {
+            print("Saved Conversation")
+        }
+    }
+    
+    // RECORD CHANGE DELEGATE:
+    
+    func recordsDidChange() {
+        fetchMessages() { (conversation) in
+            self.sortMessages()
+            self.saveToFile(conversation)
+            self.delegate?.conversationDidChange(conversation)
+            print("Updated messages due to push notification.")
+        }
+    }
+    
+    // INITIALIZER:
+    
+    init(withConversation conversation: Conversation) {
+        self.conversation = conversation
+    }
 }

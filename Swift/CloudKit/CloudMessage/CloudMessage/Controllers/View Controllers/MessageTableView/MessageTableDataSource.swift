@@ -15,17 +15,20 @@ extension MessageTableViewController {
     // DATA SOURCE:
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 2
+        return messageModelController.conversation.messages.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MessageCell", for: indexPath)
+        
+        let message = messageModelController.conversation.messages[indexPath.row]
+        
+        cell.textLabel?.text = message.text
+        cell.detailTextLabel?.text = message.formattedTimestamp
         
         return cell
     }

@@ -23,7 +23,7 @@ class AddConversationTableViewController: UITableViewController {
     // IBOUTLETS:
     
     @IBOutlet weak private var titleTextField: UITextField!
-    @IBOutlet weak var saveButton: UIBarButtonItem!
+    @IBOutlet weak private var saveButton: UIBarButtonItem!
     
     
     // VIEW DID LOAD:
@@ -50,6 +50,12 @@ class AddConversationTableViewController: UITableViewController {
         updateSaveButton()
     }
     
+    // DELEGATE:
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
     
     // HELPER METHODS:
     
@@ -57,7 +63,7 @@ class AddConversationTableViewController: UITableViewController {
         // This is the edit case. Not gonna worry about that rn
         guard conversation == nil else { return }
         
-        let newConversation = Conversation(withTitle: titleTextField.text!, messages: [Message](), users: [User]())
+        let newConversation = Conversation(withTitle: titleTextField.text!)
         delegate?.addedConversation(newConversation)
     }
     
@@ -69,6 +75,6 @@ class AddConversationTableViewController: UITableViewController {
     
     private func updateSaveButton() {
         let titleText = titleTextField.text ?? ""
-        saveButton.isEnabled = titleText.isEmpty ? false : true
+        saveButton.isEnabled = !titleText.isEmpty
     }
 }

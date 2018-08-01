@@ -11,24 +11,20 @@ import CloudKit
 
 // Cloud stuff
 
-protocol MessageModelControllerDelegate {
-    func didChangeConversation(_ conversation: Conversation)
-}
-
 extension MessageModelController {
     private enum DatabaseType {
-        case databasePrivate
-        case databaseShared
-        case databasePublic
+        case privateDatabase
+        case sharedDatabase
+        case publicDatabase
     }
     
-    private func getDatabase(type: DatabaseType) -> CKDatabase {
+    private func get(_ type: DatabaseType) -> CKDatabase {
         switch type {
-        case .databasePrivate:
+        case .privateDatabase:
             return CKContainer.default().privateCloudDatabase
-        case .databaseShared:
+        case .sharedDatabase:
             return CKContainer.default().sharedCloudDatabase
-        case .databasePublic:
+        case .publicDatabase:
             return CKContainer.default().publicCloudDatabase
         }
     }
@@ -36,7 +32,10 @@ extension MessageModelController {
     func fetchMessages(completionHandler: @escaping (Conversation) -> Void) {
         // search for all messages tied to a certain conversation:
         
-        guard let listID = conversation.ckRecord?.recordID else { return }
+        guard let listID = conversation.ckRecord?.recordID else {
+            print("Could not find record ID")
+            return
+        }
         
         let recordToMatch = CKReference(recordID: listID, action: .deleteSelf)
         let predicate = NSPredicate(format: "owningConversation == %@", recordToMatch)
@@ -47,33 +46,73 @@ extension MessageModelController {
         let fetchedConversation = Conversation(withTitle: conversation.title)
         operation.recordFetchedBlock = { record in
             fetchedConversation.messages.append(Message(withRecord: record))
+            print("fetched message")
         }
         
         operation.queryCompletionBlock = { (cursor, error) in
             // handle error
             if let error = error {
                 print(error.localizedDescription)
+                print("did not succesfully fetch message")
             }
             
-            self.conversation = fetchedConversation
+            self.conversation.messages = fetchedConversation.messages
+            
+            print("Fetched Conversation:")
+            for message in fetchedConversation.messages {
+                print(message.text)
+            }
             completionHandler(self.conversation)
         }
+        
+        get(.publicDatabase).add(operation)
     }
     
-    func saveConversation(_ conversation: Conversation, completionHandler: @escaping () -> Void) {
-        /* figure out later
+    func saveMessages(in conversation: Conversation, completionHandler: @escaping () -> Void) {
         let operation = CKModifyRecordsOperation()
-        let optionalRecordsToSave = conversation
         
+        let optionalRecordsToSave = conversation.messages.map { $0.ckRecord }
         operation.recordsToSave = optionalRecordsToSave.filter { $0 != nil } as? [CKRecord]
-        operation.isAtomic = true
+        
+        print("Attempting to save messages")
         
         operation.modifyRecordsCompletionBlock = { (record, recordID, error) in
             // handle error
             if let error = error {
                 print(error.localizedDescription)
             }
+            
+            completionHandler()
         }
-         */
+        
+        get(.publicDatabase).add(operation)
+    }
+    
+    func deleteMessages(_ messages: [Message], completionHandler: @escaping () -> Void) {
+        let operation = CKModifyRecordsOperation()
+        
+        let optionalRecordIDsToDelete = conversation.messages.map { $0.ckRecord?.recordID }
+        operation.recordIDsToDelete = optionalRecordIDsToDelete.filter { $0 != nil } as? [CKRecordID]
+        
+        operation.modifyRecordsCompletionBlock = { (record, recordID, error) in
+            // handle error
+            if let error = error {
+                print(error.localizedDescription)
+            }
+            
+            completionHandler()
+            print("deleted message")
+        }
+        
+        get(.publicDatabase).add(operation)
+    }
+}
+
+extension MessageModelController {
+    // ON-DEVICE STORAGE:
+    
+    func saveToFile(_ conversation: Conversation) {
+        // tell ConversationModelController to do it for you
+        delegate?.conversationDidChange(conversation)
     }
 }

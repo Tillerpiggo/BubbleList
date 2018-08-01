@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2340E1F42111486800F83681 /* AddMessageTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2340E1F32111486800F83681 /* AddMessageTableViewController.swift */; };
 		2386018E210F69F50095EB2D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2386018D210F69F50095EB2D /* AppDelegate.swift */; };
 		23860193210F69F50095EB2D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23860191210F69F50095EB2D /* Main.storyboard */; };
 		23860195210F69F60095EB2D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 23860194210F69F60095EB2D /* Assets.xcassets */; };
@@ -21,7 +22,6 @@
 		238601B3210F71FB0095EB2D /* StringHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238601B2210F71FB0095EB2D /* StringHelpers.swift */; };
 		238601B7210F77850095EB2D /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 238601B6210F77850095EB2D /* CloudKit.framework */; };
 		238601BA210F77C10095EB2D /* ConversationModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238601B9210F77C10095EB2D /* ConversationModelController.swift */; };
-		238601BE210F83670095EB2D /* AddConversationTableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238601BD210F83670095EB2D /* AddConversationTableViewDelegate.swift */; };
 		238601C1210F92460095EB2D /* CloudConversationModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238601C0210F92460095EB2D /* CloudConversationModelController.swift */; };
 		238601C3210F92520095EB2D /* FileConversationModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238601C2210F92520095EB2D /* FileConversationModelController.swift */; };
 		238601C5210F94330095EB2D /* MessageTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238601C4210F94330095EB2D /* MessageTableViewController.swift */; };
@@ -31,6 +31,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2340E1F32111486800F83681 /* AddMessageTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMessageTableViewController.swift; sourceTree = "<group>"; };
 		2386018A210F69F50095EB2D /* CloudMessage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CloudMessage.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2386018D210F69F50095EB2D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		23860192210F69F50095EB2D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -48,7 +49,6 @@
 		238601B4210F77830095EB2D /* CloudMessage.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CloudMessage.entitlements; sourceTree = "<group>"; };
 		238601B6210F77850095EB2D /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		238601B9210F77C10095EB2D /* ConversationModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationModelController.swift; sourceTree = "<group>"; };
-		238601BD210F83670095EB2D /* AddConversationTableViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddConversationTableViewDelegate.swift; sourceTree = "<group>"; };
 		238601C0210F92460095EB2D /* CloudConversationModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudConversationModelController.swift; sourceTree = "<group>"; };
 		238601C2210F92520095EB2D /* FileConversationModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileConversationModelController.swift; sourceTree = "<group>"; };
 		238601C4210F94330095EB2D /* MessageTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageTableViewController.swift; sourceTree = "<group>"; };
@@ -69,6 +69,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2340E1F52111487C00F83681 /* AddMessage */ = {
+			isa = PBXGroup;
+			children = (
+				2340E1F32111486800F83681 /* AddMessageTableViewController.swift */,
+			);
+			path = AddMessage;
+			sourceTree = "<group>";
+		};
 		23860181210F69F50095EB2D = {
 			isa = PBXGroup;
 			children = (
@@ -125,8 +133,9 @@
 			isa = PBXGroup;
 			children = (
 				238601AA210F6B8C0095EB2D /* ConversationTableView */,
-				238601AF210F6C6D0095EB2D /* AddConversation */,
 				238601C6210F944B0095EB2D /* MessageTableView */,
+				2340E1F52111487C00F83681 /* AddMessage */,
+				238601AF210F6C6D0095EB2D /* AddConversation */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -145,7 +154,6 @@
 			isa = PBXGroup;
 			children = (
 				238601AD210F6C670095EB2D /* AddConversationTableViewController.swift */,
-				238601BD210F83670095EB2D /* AddConversationTableViewDelegate.swift */,
 			);
 			path = AddConversation;
 			sourceTree = "<group>";
@@ -284,12 +292,12 @@
 				238601A2210F6A5E0095EB2D /* User.swift in Sources */,
 				238601AE210F6C670095EB2D /* AddConversationTableViewController.swift in Sources */,
 				238601BA210F77C10095EB2D /* ConversationModelController.swift in Sources */,
-				238601BE210F83670095EB2D /* AddConversationTableViewDelegate.swift in Sources */,
 				238601C5210F94330095EB2D /* MessageTableViewController.swift in Sources */,
 				238601A0210F6A050095EB2D /* Conversation.swift in Sources */,
 				238601A7210F6B360095EB2D /* ConversationTableViewController.swift in Sources */,
 				238601CD210F96620095EB2D /* CloudMessageModelController.swift in Sources */,
 				238601A5210F6A930095EB2D /* Message.swift in Sources */,
+				2340E1F42111486800F83681 /* AddMessageTableViewController.swift in Sources */,
 				238601B3210F71FB0095EB2D /* StringHelpers.swift in Sources */,
 				2386018E210F69F50095EB2D /* AppDelegate.swift in Sources */,
 				238601AC210F6BA20095EB2D /* ConversationDataSource.swift in Sources */,

@@ -7,11 +7,60 @@
 //
 
 import UIKit
+import CloudKit
+
+protocol MessageTableViewControllerDelegate {
+    func didChangeConversation(_ conversation: Conversation)
+}
 
 class MessageTableViewController: UITableViewController {
+    
+    var messageModelController: MessageModelController!
+    var delegate: MessageTableViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        messageModelController.sortMessages()
+        
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        messageModelController.fetchMessages { (conversation) in
+            DispatchQueue.main.async {
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                self.messageModelController.sortMessages()
+                self.messageModelController.saveToFile(conversation)
+                self.tableView.reloadData()
+            }
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let destinationViewController = segue.destination.childViewControllers.first as? AddMessageTableViewController, segue.identifier == "AddMessage" else { return }
+        
+        if let conversationRecord = messageModelController.conversation.ckRecord  {
+            let conversationReference = CKReference(record: conversationRecord, action: .deleteSelf)
+            destinationViewController.conversationReference = conversationReference
+        }
+        
+        destinationViewController.delegate = self
+    }
+}
 
+extension MessageTableViewController: AddMessageTableViewControllerDelegate {
+    func addedMessage(_ message: Message) {
+        messageModelController.conversation.messages.append(message)
+        messageModelController.sortMessages()
+        
+        var newIndexPath = IndexPath(row: 0, section: 0)
+        if let newRow = messageModelController.messages.index(where: { $0 === message }) {
+            newIndexPath.row = newRow
+        }
+        
+        messageModelController.saveData()
+        tableView.insertRows(at: [newIndexPath], with: .automatic)
+    }
 }

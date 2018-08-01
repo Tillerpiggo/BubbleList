@@ -13,13 +13,12 @@ protocol ConversationModelControllerDelegate {
     func updateRecords()
 }
 
-class ConversationModelController: RecordChangeDelegate {
+class ConversationModelController: RecordChangeDelegate, MessageModelControllerDelegate {
     
     enum SortType {
         case title
         case dateCreated
     }
-    
     
     // PROPERTIES:
     
@@ -28,27 +27,46 @@ class ConversationModelController: RecordChangeDelegate {
     var conversations: [Conversation]
     var delegate: ConversationModelControllerDelegate?
     
+    var selectedIndex: Int? // To keep track of where the selected conversation is in the array
+    var selectedConversation: Conversation? {
+        if let selectedIndex = selectedIndex {
+            return conversations[selectedIndex]
+        } else {
+            return nil
+        }
+    }
+    
     // METHODS:
     
     func saveSubscription() {
         // Create and save a silent push subscription in order to be updated:
-        let subscriptionID = "cloudkit-conversation-changes"
+        let conversationSubscriptionID = "cloudkit-conversation-changes"
+        let messageSubscriptionID = "cloudkit-message-changes"
         let subscriptionSavedKey = "ckSubscriptionSaved"
         
         // Notify for all changes
         let predicate = NSPredicate(value: true)
-        let subscription = CKQuerySubscription(
+        
+        let conversationSubscription = CKQuerySubscription(
             recordType: "Conversation",
             predicate: predicate,
-            subscriptionID: subscriptionID,
+            subscriptionID: conversationSubscriptionID,
+            options: [.firesOnRecordUpdate, .firesOnRecordDeletion, .firesOnRecordCreation]
+        )
+        let messageSubscription = CKQuerySubscription(
+            recordType: "Message",
+            predicate: predicate,
+            subscriptionID: messageSubscriptionID,
             options: [.firesOnRecordUpdate, .firesOnRecordDeletion, .firesOnRecordCreation]
         )
         
         let notificationInfo = CKNotificationInfo()
         notificationInfo.shouldSendContentAvailable = true // silent pushes
-        subscription.notificationInfo = notificationInfo
         
-        let operation = CKModifySubscriptionsOperation(subscriptionsToSave: [subscription], subscriptionIDsToDelete: [])
+        conversationSubscription.notificationInfo = notificationInfo
+        messageSubscription.notificationInfo = notificationInfo
+        
+        let operation = CKModifySubscriptionsOperation(subscriptionsToSave: [conversationSubscription, messageSubscription], subscriptionIDsToDelete: [])
         operation.modifySubscriptionsCompletionBlock = { (_, _, error) in
             guard error == nil else { 
                 return
@@ -66,10 +84,10 @@ class ConversationModelController: RecordChangeDelegate {
     
     func loadData(completionHandler: @escaping ([Conversation]) -> Void) {
         loadFromFile()
-        sortConversations(by: sortType)
+        conversations = self.sortedConversations(conversations, by: sortType)
         fetchConversations() { (conversations) in
-            self.sortConversations(by: self.sortType)
-            self.saveToFile(conversations)
+            self.conversations = self.sortedConversations(conversations, by: self.sortType)
+            self.saveToFile(self.conversations)
             completionHandler(conversations)
         }
     }
@@ -95,16 +113,20 @@ class ConversationModelController: RecordChangeDelegate {
     }
     
     func sortConversations(by sortType: SortType, reverse: Bool = false) {
+        conversations = sortedConversations(conversations, by: sortType, reverse: reverse)
+    }
+    
+    func sortedConversations(_ conversations: [Conversation], by sortType: SortType, reverse: Bool = false) -> [Conversation] {
         switch sortType {
         case .title:
-            reverse ? conversations.sort() { $0.title > $1.title } : conversations.sort() { $0.title < $1.title }
+            return reverse ? conversations.sorted() { $0.title > $1.title } : conversations.sorted() { $0.title < $1.title }
         case .dateCreated:
-            reverse ? sortByCreationDate(reverse: reverse) : sortByCreationDate(reverse: reverse)
+            return sortedConversationsByCreationDate(conversations, reverse: reverse)
         }
     }
     
-    func sortByCreationDate(reverse: Bool = false) {
-        conversations.sort() {
+    func sortedConversationsByCreationDate(_ conversations: [Conversation], reverse: Bool = false) -> [Conversation] {
+        return conversations.sorted() {
             var isBefore = false
             
             if let date0 = $0.creationDate, let date1 = $1.creationDate {
@@ -122,9 +144,16 @@ class ConversationModelController: RecordChangeDelegate {
     func recordsDidChange() {
         fetchConversations() { (conversations) in
             self.sortConversations(by: self.sortType)
-            self.saveToFile(conversations)
+            self.saveToFile(self.conversations)
             self.delegate?.updateRecords()
             print("Fetched and saved conversations due to silent push notification.")
+        }
+    }
+    
+    func conversationDidChange(_ conversation: Conversation) {
+        if let selectedIndex = selectedIndex {
+            conversations[selectedIndex] = conversation
+            saveToFile(conversations)
         }
     }
     

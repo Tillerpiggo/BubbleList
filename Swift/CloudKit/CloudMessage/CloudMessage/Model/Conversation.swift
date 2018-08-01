@@ -10,12 +10,24 @@ import Foundation
 import CloudKit
 
 class Conversation: Codable {
+    
+    // PROPERTIES:
+    
     var users: [User]
     var messages: [Message]
     var creationDate: Date?
     var title: String
     
     var ckRecord: CKRecord?
+    
+    // CODABLE:
+    
+    enum CodingKeys: CodingKey {
+        case users
+        case messages
+        case creationDate
+        case title
+    }
     
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
@@ -25,15 +37,21 @@ class Conversation: Codable {
         try container.encode(title, forKey: .title)
     }
     
-    enum CodingKeys: String, CodingKey {
-        case users
-        case messages
-        case creationDate
-        case title
-        case archivedData
+    required init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        users = try values.decode([User].self, forKey: .users)
+        messages = try values.decode([Message].self, forKey: .messages)
+        creationDate = try? values.decode(Date.self, forKey: .creationDate)
+        title = try values.decode(String.self, forKey: .title)
+        
+        let newCKRecord = CKRecord(recordType: "Conversation")
+        newCKRecord["title"] = title as CKRecordValue
+        ckRecord = newCKRecord
     }
     
-    init(withTitle title: String, messages: [Message] = [Message](), users: [User] = [User]()) {
+    // INITIALIZERS:
+    
+    init(withTitle title: String = "", messages: [Message] = [Message](), users: [User] = [User]()) {
         self.title = title
         self.messages = messages
         self.users = users
@@ -55,18 +73,4 @@ class Conversation: Codable {
         }
         self.ckRecord = record
     }
-    
-    required init(from decoder: Decoder) throws {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        users = try values.decode([User].self, forKey: .users)
-        messages = try values.decode([Message].self, forKey: .messages)
-        creationDate = try? values.decode(Date.self, forKey: .creationDate)
-        title = try values.decode(String.self, forKey: .title)
-        
-        let newCKRecord = CKRecord(recordType: "Conversation")
-        newCKRecord["title"] = title as CKRecordValue
-        ckRecord = newCKRecord
-    }
-    
-    
 }
