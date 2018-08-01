@@ -39,11 +39,6 @@ class MessageTableViewController: UITableViewController {
         super.viewWillAppear(animated)
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        messageModelController.saveToFile(messageModelController.conversation)
-    }
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let destinationViewController = segue.destination.childViewControllers.first as? AddMessageTableViewController, segue.identifier == "AddMessage" else { return }
         
@@ -72,12 +67,13 @@ extension MessageTableViewController: AddMessageTableViewControllerDelegate, Mes
         }
         
         messageModelController.saveData()
-        tableView.insertRows(at: [newIndexPath], with: .automatic)
     }
     
     func didChangeConversation(_ conversation: Conversation) {
         for delegate in delegates {
             delegate.didChangeConversation(conversation)
         }
+        
+        tableView.reloadData()
     }
 }
