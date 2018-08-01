@@ -62,7 +62,7 @@ class Conversation: Codable {
         self.ckRecord = newCKRecord
     }
     
-    init(withRecord record: CKRecord) {
+    init(fromRecord record: CKRecord) {
         self.title = record["title"] as! String
         self.messages = [Message]()
         self.users = [User]()

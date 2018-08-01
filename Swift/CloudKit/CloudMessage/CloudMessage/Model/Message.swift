@@ -55,7 +55,7 @@ class Message: Codable {
     
     // INTIIALIZERS:
     
-    init(withRecord record: CKRecord) {
+    init(fromRecord record: CKRecord) {
         self.text = record["text"] as! String
         self.timestamp = record.creationDate!
         self.owningConversation = record["owningConversation"] as? CKReference

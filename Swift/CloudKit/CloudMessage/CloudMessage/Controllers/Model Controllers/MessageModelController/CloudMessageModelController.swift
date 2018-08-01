@@ -45,7 +45,7 @@ extension MessageModelController {
         
         let fetchedConversation = Conversation(withTitle: conversation.title)
         operation.recordFetchedBlock = { record in
-            fetchedConversation.messages.append(Message(withRecord: record))
+            fetchedConversation.messages.append(Message(fromRecord: record))
             //print("fetched message")
         }
         

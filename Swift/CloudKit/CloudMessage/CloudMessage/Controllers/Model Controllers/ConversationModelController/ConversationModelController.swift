@@ -162,16 +162,26 @@ class ConversationModelController: RecordChangeDelegate, MessageTableViewControl
         if oldConversations.count == newConversations.count { // Something was edited
             for (index, mergedConversation) in mergedConversations.enumerated() {
                 // Add messages (because you don't fetch messages from the Cloud, just conversations)
-                
-                // IMPORTANT NOTE: This won't overwrite the messages
-                // (which could've been updated) entirely,It simply gives the
-                //  conversation something to display until it fetches the messages
-                mergedConversation.messages = oldConversations[index].messages
+                if mergedConversation.messages.count == 0 && oldConversations[index].messages.count == 0 {
+                    fetchFirstMessage(of: oldConversations[index]) { (message) in
+                        mergedConversation.messages = [message]
+                        self.delegate?.updateRecords()
+                    }
+                } else {
+                    mergedConversation.messages = oldConversations[index].messages
+                }
             }
         } else if oldConversations.count < newConversations.count { // Some thing(s) were added
             // Won't iterate through the newly added conversations
             for (index, oldConversation) in oldConversations.enumerated() {
-                mergedConversations[index].messages = oldConversation.messages
+                if mergedConversations[index].messages.count == 0 && oldConversation.messages.count == 0 {
+                    fetchFirstMessage(of: oldConversation) { (message) in
+                        mergedConversations[index].messages = [message]
+                        self.delegate?.updateRecords()
+                    }
+                } else {
+                    mergedConversations[index].messages = oldConversation.messages
+                }
             }
         } else if oldConversations.count > newConversations.count { // Some thing(s) were deleted
             // Determine what was deleted somehow - maybe request that from the server?

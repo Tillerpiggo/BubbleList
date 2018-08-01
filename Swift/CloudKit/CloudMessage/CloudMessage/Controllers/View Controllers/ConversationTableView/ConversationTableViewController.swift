@@ -23,6 +23,16 @@ class ConversationTableViewController: UITableViewController, ConversationModelC
         
         addEditButton()
         
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        conversationModelController.loadData() { (conversations) in
+            DispatchQueue.main.async {
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                self.conversationModelController.saveToFile(conversations)
+                self.conversationModelController.sortConversations(by: self.conversationModelController.sortType)
+                self.tableView.reloadData()
+            }
+        }
+        
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         appDelegate.delegates.append(conversationModelController)
     }
@@ -34,16 +44,6 @@ class ConversationTableViewController: UITableViewController, ConversationModelC
         
         conversationModelController.loadFromFile()
         conversationModelController.sortConversations(by: conversationModelController.sortType)
-        
-        UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        conversationModelController.loadData() { (conversations) in
-            DispatchQueue.main.async {
-                UIApplication.shared.isNetworkActivityIndicatorVisible = false
-                self.conversationModelController.saveToFile(conversations)
-                self.conversationModelController.sortConversations(by: self.conversationModelController.sortType)
-                self.tableView.reloadData()
-            }
-        }
     }
     
     // DELEGATES:

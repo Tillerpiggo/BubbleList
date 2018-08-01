@@ -38,8 +38,8 @@ extension ConversationModelController {
         
         var fetchedConversations = [Conversation]()
         operation.recordFetchedBlock = { record in
-            fetchedConversations.append(Conversation(withRecord: record))
-            //print("fetched record")
+            let fetchedConversation = Conversation(fromRecord: record)
+            fetchedConversations.append(fetchedConversation)
         }
         
         operation.queryCompletionBlock = { (cursor, error) in
@@ -53,6 +53,71 @@ extension ConversationModelController {
         
         get(.publicDatabase).add(operation)
     }
+    
+    func fetchFirstMessage(of conversation: Conversation, completionHandler: @escaping(Message) -> Void) {
+        // Search for messages of a conversation
+        guard let listID = conversation.ckRecord?.recordID else { return }
+        
+        let recordToMatch = CKReference(recordID: listID, action: .deleteSelf)
+        let predicate = NSPredicate(format: "owningConversation == %@", recordToMatch)
+        
+        let query = CKQuery(recordType: "Message", predicate: predicate)
+        let operation = CKQueryOperation(query: query)
+        operation.resultsLimit = 1
+        
+        operation.recordFetchedBlock = { record in
+            let fetchedMessage = Message(fromRecord: record)
+            completionHandler(fetchedMessage)
+        }
+        
+        operation.queryCompletionBlock = { (cursor, error) in
+            // handle error
+            if let error = error {
+                print(error.localizedDescription)
+            }
+        }
+        
+        get(.publicDatabase).add(operation)
+    }
+    
+    /*
+    func fetchMessages(completionHandler: @escaping (Conversation) -> Void) {
+        // search for all messages tied to a certain conversation:
+        
+        guard let listID = conversation.ckRecord?.recordID else {
+            print("Could not find record ID")
+            return
+        }
+        
+        let recordToMatch = CKReference(recordID: listID, action: .deleteSelf)
+        let predicate = NSPredicate(format: "owningConversation == %@", recordToMatch)
+        
+        let query = CKQuery(recordType: "Message", predicate: predicate)
+        let operation = CKQueryOperation(query: query)
+        
+        let fetchedConversation = Conversation(withTitle: conversation.title)
+        operation.recordFetchedBlock = { record in
+            fetchedConversation.messages.append(Message(withRecord: record))
+            //print("fetched message")
+        }
+        
+        operation.queryCompletionBlock = { (cursor, error) in
+            // handle error
+            if let error = error {
+                print(error.localizedDescription)
+                print("did not succesfully fetch message")
+            }
+            
+            self.conversation.messages = fetchedConversation.messages
+            
+            print("Fetched Conversation: (\(fetchedConversation.messages.count))")
+            
+            completionHandler(self.conversation)
+        }
+        
+        get(.publicDatabase).add(operation)
+    }
+    */
     
     func saveConversations(_ conversations: [Conversation], completionHandler: @escaping () -> Void) {
         let operation = CKModifyRecordsOperation()
