@@ -77,8 +77,11 @@ class ConversationTableViewController: UITableViewController, ConversationModelC
             
             let selectedConversation = conversationModelController.selectedConversation!
             destinationViewController.navigationItem.title = selectedConversation.title
+            
             destinationViewController.messageModelController = MessageModelController(withConversation: selectedConversation)
             destinationViewController.messageModelController.sortMessages()
+            destinationViewController.delegates.append(self.conversationModelController)
+            
             
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
             appDelegate.delegates.append(destinationViewController.messageModelController)

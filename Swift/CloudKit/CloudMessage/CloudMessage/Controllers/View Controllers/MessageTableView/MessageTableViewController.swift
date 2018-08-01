@@ -79,6 +79,7 @@ extension MessageTableViewController: AddMessageTableViewControllerDelegate, Mes
         for delegate in delegates {
             delegate.didChangeConversation(conversation)
         }
+        
         tableView.reloadData()
     }
 }

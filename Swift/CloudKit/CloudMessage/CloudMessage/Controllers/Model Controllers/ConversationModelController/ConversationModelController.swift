@@ -13,7 +13,7 @@ protocol ConversationModelControllerDelegate {
     func updateRecords()
 }
 
-class ConversationModelController: RecordChangeDelegate, MessageModelControllerDelegate {
+class ConversationModelController: RecordChangeDelegate, MessageTableViewControllerDelegate {
     
     enum SortType {
         case title
