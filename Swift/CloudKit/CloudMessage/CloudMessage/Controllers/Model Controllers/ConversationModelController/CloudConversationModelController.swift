@@ -42,7 +42,6 @@ extension ConversationModelController {
             self.fetchFirstMessage(of: fetchedConversation) { (message) in
                 fetchedConversation.messages.insert(message, at: 0)
                 self.delegate?.updateRecords()
-                self.saveToFile(self.conversations)
             }
             fetchedConversations.append(fetchedConversation)
         }

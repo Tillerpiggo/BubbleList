@@ -146,8 +146,8 @@ class ConversationModelController: RecordChangeDelegate, MessageTableViewControl
         
         // Merged conversations starts out as the new conversations, and a bit of info is
         // Filled in by the old conversations, such as messages
-        var mergedConversations = sortedConversations(newConversations, by: .dateCreated, reverse: true)
-        let oldConversations = sortedConversations(oldConversations, by: .dateCreated, reverse: true) // Reverse so that the newest ones are at the end
+        var mergedConversations = sortedConversations(newConversations, by: .dateCreated, reverse: false)
+        let oldConversations = sortedConversations(oldConversations, by: .dateCreated, reverse: false)
         
         if oldConversations.count == 0 {
             print("Merged Conversations: \(mergedConversations.last?.messages.first?.text ?? "No message found")")
