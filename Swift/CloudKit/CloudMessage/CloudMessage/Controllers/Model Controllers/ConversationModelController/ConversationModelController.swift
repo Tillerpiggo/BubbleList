@@ -146,7 +146,7 @@ class ConversationModelController: RecordChangeDelegate, MessageTableViewControl
         
         // Merged conversations starts out as the new conversations, and a bit of info is
         // Filled in by the old conversations, such as messages
-        let mergedConversations = sortedConversations(newConversations, by: .dateCreated, reverse: true)
+        var mergedConversations = sortedConversations(newConversations, by: .dateCreated, reverse: true)
         let oldConversations = sortedConversations(oldConversations, by: .dateCreated, reverse: true) // Reverse so that the newest ones are at the end
         
         if oldConversations.count == 0 {
@@ -162,26 +162,12 @@ class ConversationModelController: RecordChangeDelegate, MessageTableViewControl
         if oldConversations.count == newConversations.count { // Something was edited
             for (index, mergedConversation) in mergedConversations.enumerated() {
                 // Add messages (because you don't fetch messages from the Cloud, just conversations)
-                if mergedConversation.messages.count == 0 && oldConversations[index].messages.count == 0 {
-                    fetchFirstMessage(of: oldConversations[index]) { (message) in
-                        mergedConversation.messages = [message]
-                        self.delegate?.updateRecords()
-                    }
-                } else {
-                    mergedConversation.messages = oldConversations[index].messages
-                }
+                mergedConversation.messages = oldConversations[index].messages
             }
         } else if oldConversations.count < newConversations.count { // Some thing(s) were added
             // Won't iterate through the newly added conversations
             for (index, oldConversation) in oldConversations.enumerated() {
-                if mergedConversations[index].messages.count == 0 && oldConversation.messages.count == 0 {
-                    fetchFirstMessage(of: oldConversation) { (message) in
-                        mergedConversations[index].messages = [message]
-                        self.delegate?.updateRecords()
-                    }
-                } else {
-                    mergedConversations[index].messages = oldConversation.messages
-                }
+                mergedConversations[index].messages = oldConversation.messages
             }
         } else if oldConversations.count > newConversations.count { // Some thing(s) were deleted
             // Determine what was deleted somehow - maybe request that from the server?

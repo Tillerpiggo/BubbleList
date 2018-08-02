@@ -39,6 +39,11 @@ extension ConversationModelController {
         var fetchedConversations = [Conversation]()
         operation.recordFetchedBlock = { record in
             let fetchedConversation = Conversation(fromRecord: record)
+            self.fetchFirstMessage(of: fetchedConversation) { (message) in
+                fetchedConversation.messages.insert(message, at: 0)
+                self.delegate?.updateRecords()
+                self.saveToFile(self.conversations)
+            }
             fetchedConversations.append(fetchedConversation)
         }
         
@@ -62,6 +67,7 @@ extension ConversationModelController {
         let predicate = NSPredicate(format: "owningConversation == %@", recordToMatch)
         
         let query = CKQuery(recordType: "Message", predicate: predicate)
+        query.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
         let operation = CKQueryOperation(query: query)
         operation.resultsLimit = 1
         
