@@ -254,9 +254,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "145"
-            endingLineNumber = "145"
-            landmarkName = "saveConversations(_:completionHandler:)"
-            landmarkType = "7">
+            endingLineNumber = "145">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -334,9 +332,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "138"
-            endingLineNumber = "138"
-            landmarkName = "saveConversations(_:completionHandler:)"
-            landmarkType = "7">
+            endingLineNumber = "138">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -350,9 +346,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "145"
-            endingLineNumber = "145"
-            landmarkName = "saveConversations(_:completionHandler:)"
-            landmarkType = "7">
+            endingLineNumber = "145">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -366,9 +360,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "145"
-            endingLineNumber = "145"
-            landmarkName = "saveConversations(_:completionHandler:)"
-            landmarkType = "7">
+            endingLineNumber = "145">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -815,8 +807,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "195"
             endingLineNumber = "195"
-            landmarkName = "didChangeConversation(_:)"
-            landmarkType = "7">
+            landmarkName = "ConversationModelController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy

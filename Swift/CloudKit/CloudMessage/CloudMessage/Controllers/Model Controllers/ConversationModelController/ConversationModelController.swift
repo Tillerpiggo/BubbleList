@@ -44,6 +44,9 @@ class ConversationModelController: RecordChangeDelegate, MessageTableViewControl
         let messageSubscriptionID = "cloudkit-message-changes"
         let subscriptionSavedKey = "ckSubscriptionSaved"
         
+        let alreadySubscribed = UserDefaults.standard.bool(forKey: subscriptionSavedKey)
+        guard !alreadySubscribed else { return }
+        
         // Notify for all changes
         let predicate = NSPredicate(value: true)
         

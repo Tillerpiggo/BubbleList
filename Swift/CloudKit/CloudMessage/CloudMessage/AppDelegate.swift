@@ -28,18 +28,46 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         // Whenever there's a remote notification, this gets called
         
-        // fetch the changes
-        if delegates.count > 0 {
-            for delegate in delegates {
-                delegate.recordsDidChange()
-                print("Delegate performed recordsDidChange")
-                
-                completionHandler(.newData)
+        let dictionary = userInfo as! [String: NSObject]
+        let notification = CKNotification(fromRemoteNotificationDictionary: dictionary)
+        
+        
+        if notification.subscriptionID == "cloudkit-conversation-changes" {
+            // Fetch shared changes { completionHandler(UIBackgroundFetchResult.newData }
+            
+            
+            
+            if delegates.count > 0 {
+                for delegate in delegates {
+                    delegate.recordsDidChange()
+                    print("Delegate performed recordsDidChange")
+                    
+                    completionHandler(.newData)
+                }
+            } else {
+                completionHandler(.failed)
             }
-        } else {
-            completionHandler(.failed)
         }
     }
+    
+    func fetchSharedChanges(_ callback: () -> Void) {
+        let changeTokenKey = "changeToken"
+        let changesOperation = CKFetchDatabaseChangesOperation(previousServerChangeToken: UserDefaults.standard.object(forKey: changeTokenKey) as? CKServerChangeToken) // Enter change token
+        
+        changesOperation.recordZoneWithIDChangedBlock = { (zoneID) in
+            // Collect zone IDs
+        }
+        
+        changesOperation.recordZoneWithIDWasDeletedBlock = { (zoneID) in
+            // Delete cache of record zone (I should be caching on a per zone basis)
+        }
+        
+        changesOperation.changeTokenUpdatedBlock = { (changeToken) in
+            UserDefaults.standard.set(changeToken, forKey: changeTokenKey)
+        }
+    }
+    
+    
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         print("application did register for remote notifications with device token")

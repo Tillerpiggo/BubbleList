@@ -39,7 +39,7 @@ extension ConversationModelController {
     
     private func getArchiveURL() -> URL {
         let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        let archiveURL = documentsDirectory.appendingPathComponent("conversations")
+        let archiveURL = documentsDirectory.appendingPathComponent("conversations").appendingPathExtension("plist")
         
         return archiveURL
     }
