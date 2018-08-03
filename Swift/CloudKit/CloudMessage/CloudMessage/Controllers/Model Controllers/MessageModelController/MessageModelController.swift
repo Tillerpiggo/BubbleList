@@ -47,6 +47,7 @@ class MessageModelController: RecordChangeDelegate {
     
     // RECORD CHANGE DELEGATE:
     
+    /*
     func recordsDidChange() {
         fetchMessages() { (conversation) in
             self.sortMessages()
@@ -54,6 +55,19 @@ class MessageModelController: RecordChangeDelegate {
             self.delegate?.didChangeConversation(conversation)
             print("Updated messages due to push notification.")
         }
+    }
+ */
+    
+    func recordDeleted(_ recordID: CKRecordID) {
+        
+    }
+    
+    func recordDidChangeAtZone(_ zoneID: CKRecordZoneID, record: CKRecord) {
+        
+    }
+    
+    func zoneDeleted(_ zoneID: CKRecordZoneID) {
+        
     }
     
     // INITIALIZER:

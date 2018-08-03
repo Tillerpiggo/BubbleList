@@ -36,6 +36,8 @@ class ConversationModelController: RecordChangeDelegate, MessageTableViewControl
         }
     }
     
+    var localCacheID = "" // Use the zoneName property of a CKRecordZoneID
+    
     // METHODS:
     
     func saveSubscription() {
@@ -184,6 +186,7 @@ class ConversationModelController: RecordChangeDelegate, MessageTableViewControl
     
     // DELEGATES:
     
+    /*
     func recordsDidChange() {
         fetchConversations() { (conversations) in
             self.sortConversations(by: self.sortType)
@@ -191,6 +194,18 @@ class ConversationModelController: RecordChangeDelegate, MessageTableViewControl
             self.delegate?.updateRecords()
             print("Fetched and saved conversations due to silent push notification.")
         }
+    }
+ */
+    func recordDidChangeAtZone(_ zoneID: CKRecordZoneID, record: CKRecord) {
+        
+    }
+    
+    func recordDeleted(_ recordID: CKRecordID) {
+        
+    }
+    
+    func zoneDeleted(_ zoneID: CKRecordZoneID) {
+        
     }
     
     func didChangeConversation(_ conversation: Conversation) {
