@@ -47,7 +47,6 @@ class MessageModelController: RecordChangeDelegate {
     
     // RECORD CHANGE DELEGATE:
     
-    /*
     func recordsDidChange() {
         fetchMessages() { (conversation) in
             self.sortMessages()
@@ -56,18 +55,20 @@ class MessageModelController: RecordChangeDelegate {
             print("Updated messages due to push notification.")
         }
     }
- */
     
     func recordDeleted(_ recordID: CKRecordID) {
-        
+        // Still dunno if I should do anything.
+        recordsDidChange()
     }
     
     func recordDidChangeAtZone(_ zoneID: CKRecordZoneID, record: CKRecord) {
-        
+        // This is so dumb... I should just rewrite it now.
+        recordsDidChange()
     }
     
     func zoneDeleted(_ zoneID: CKRecordZoneID) {
-        
+        // Nothing. No use.
+        recordsDidChange()
     }
     
     // INITIALIZER:

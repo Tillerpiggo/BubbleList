@@ -37,7 +37,6 @@ class ConversationModelController: RecordChangeDelegate, MessageTableViewControl
     }
     
     var localCacheID = "" // Use the zoneName property of a CKRecordZoneID
-    
     // METHODS:
     
     func saveSubscription() {
@@ -197,15 +196,35 @@ class ConversationModelController: RecordChangeDelegate, MessageTableViewControl
     }
  */
     func recordDidChangeAtZone(_ zoneID: CKRecordZoneID, record: CKRecord) {
+        localCacheID = "\(zoneID.zoneName)"
+        loadFromFile()
         
+        if let changedIndex = conversations.index(where: { $0.ckRecord?.recordID == record.recordID }) {
+            conversations[changedIndex] = Conversation(fromRecord: record)
+            sortConversations(by: sortType)
+            saveToFile(conversations)
+        } else {
+            print("was unable to edit conversation at zone: \(zoneID.zoneName)")
+        }
     }
     
     func recordDeleted(_ recordID: CKRecordID) {
+        localCacheID = "\(recordID.zoneID.zoneName)"
+        loadFromFile()
         
+        if let changedIndex = conversations.index(where: { $0.ckRecord?.recordID == recordID}) {
+            conversations.remove(at: changedIndex)
+            sortConversations(by: sortType)
+            saveToFile(conversations)
+            self.delegate?.updateRecords()
+        } else {
+            print("was unable to edit conversation at zone: \(recordID.zoneID.zoneName)")
+        }
     }
     
     func zoneDeleted(_ zoneID: CKRecordZoneID) {
-        
+        localCacheID = "\(zoneID.zoneName)"
+        clearDirectory(named: localCacheID)
     }
     
     func didChangeConversation(_ conversation: Conversation) {

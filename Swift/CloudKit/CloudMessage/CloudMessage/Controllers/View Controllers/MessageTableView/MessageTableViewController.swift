@@ -33,6 +33,8 @@ class MessageTableViewController: UITableViewController {
                 self.tableView.reloadData()
             }
         }
+        
+        tableView.rowHeight = UITableViewAutomaticDimension
     }
     
     override func viewWillAppear(_ animated: Bool) {

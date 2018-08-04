@@ -20,6 +20,7 @@ extension ConversationModelController {
         let encodedConversations = try? encoder.encode(conversations)
         
         try? encodedConversations?.write(to: archiveURL, options: .noFileProtection)
+        
     }
     
     func loadFromFile() {
@@ -33,6 +34,16 @@ extension ConversationModelController {
         }
         
         conversations = self.mergeConversations(decodedConversations, with: conversations)
+    }
+    
+    func clearDirectory(named: String) {
+        let archiveURL = getArchiveURL()
+        
+        do {
+            try FileManager.default.removeItem(at: archiveURL)
+        } catch {
+            print("Could not succesfully delete directory at: \(archiveURL.pathComponents)")
+        }
     }
     
     // HELPER METHODS:

@@ -40,7 +40,7 @@ extension ConversationModelController {
         operation.recordFetchedBlock = { record in
             let fetchedConversation = Conversation(fromRecord: record)
             self.fetchFirstMessage(of: fetchedConversation) { (message) in
-                fetchedConversation.messages.insert(message, at: 0)
+                fetchedConversation.messages.append(message)
                 self.delegate?.updateRecords()
             }
             fetchedConversations.append(fetchedConversation)
