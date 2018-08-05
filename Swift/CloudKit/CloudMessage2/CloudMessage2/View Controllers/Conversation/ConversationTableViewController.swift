@@ -8,79 +8,118 @@
 
 import UIKit
 
+// MAIN CLASS:
+
 class ConversationTableViewController: UITableViewController {
     
     // PROPERTIES:
+    
+    var conversations: [Conversation] = [Conversation]()
+    var selectedRow: Int? // Necessary because we deselect the row right after it is selected (otherwise it looks ugly)
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Initialize Conversations:
+        
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Add Conversation
+        if let destinationViewController = segue.destination.childViewControllers.first as? AddConversationTableViewController, segue.identifier == "AddConversation" {
+            destinationViewController.delegate = self
+        } else if let destinationViewController = segue.destination as? MessageTableViewController, segue.identifier == "MessageTableView" {
+            
+            // (didSelectRowAtIndexPath is actually called after prepare(for:)
+            guard let selectedIndexPath = tableView.indexPathForSelectedRow else { return }
+            selectedRow = selectedIndexPath.row
+            
+            // Dependency Injection for selected converation
+            let selectedConversation = conversations[selectedRow!]
+            
+            // Dependency injection of conversation
+            destinationViewController.conversation = selectedConversation
+            
+            // Set the title
+            destinationViewController.navigationItem.title = selectedConversation.title
+        }
+    }
+}
 
-    // MARK: - Table view data source
 
+
+
+
+// DATA SOURCE AND DELEGATE:
+
+extension ConversationTableViewController {
+    
+    // DATA SOURCE:
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+        return conversations.count
     }
-
-    /*
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ConversationCell", for: indexPath)
+        
+        // Get model object
+        let conversation = conversations[indexPath.row]
+        
+        // Configure cell with model
+        cell.textLabel?.text = conversation.title
+        cell.detailTextLabel?.text = conversation.messages.first?.text
+        
         return cell
     }
-    */
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
+    
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+            conversations.remove(at: indexPath.row)
+            
+            // Delete from cloud
+            
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+        }
     }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
+    
+    // DELEGATE:
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        selectedRow = indexPath.row
     }
-    */
+}
 
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
+
+
+
+
+
+
+// ADD CONVERSATION DELEGATE:
+
+extension ConversationTableViewController: AddConversationTableViewControllerDelegate {
+    func addedConversation(_ conversation: Conversation) {
+        conversations.append(conversation)
+        conversations.sort { $0.dateLastModified > $1.dateLastModified }
+        tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
     }
-    */
+}
 
-    /*
-    // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+
+
+// MESSAGE DELEGATE:
+
+extension ConversationTableViewController: MessageTableViewControllerDelegate {
+    func conversationDidChange(to conversation: Conversation) {
+        if let selectedRow = selectedRow {
+            conversations[selectedRow] = conversation
+        }
     }
-    */
-
 }

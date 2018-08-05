@@ -7,3 +7,10 @@
 //
 
 import Foundation
+import CloudKit
+
+// A singleton representing the Cloud, you can save data to it and stuff
+
+class Cloud {
+    
+}
