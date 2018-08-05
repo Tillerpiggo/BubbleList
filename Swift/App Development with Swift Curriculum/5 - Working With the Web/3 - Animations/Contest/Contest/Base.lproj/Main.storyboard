@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Contest" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" spacing="35" translatesAutoresizingMaskIntoConstraints="NO" id="LZx-F8-w75">
+                                <rect key="frame" x="0.0" y="237" width="375" height="193"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter your email address to enter the contest:" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iLr-0s-anf">
+                                        <rect key="frame" x="16" y="0.0" width="343" height="41"/>
+                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Your email here" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="sLa-NJ-KFQ">
+                                        <rect key="frame" x="16" y="76" width="343" height="41"/>
+                                        <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" keyboardType="emailAddress" textContentType="email"/>
+                                    </textField>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jy3-Wc-rNO">
+                                        <rect key="frame" x="126" y="152" width="123" height="41"/>
+                                        <state key="normal" title="Enter the contest!"/>
+                                        <connections>
+                                            <action selector="enterButtonPressed" destination="BYZ-38-t0r" eventType="touchUpInside" id="ddN-KF-zOi"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="iLr-0s-anf" secondAttribute="trailing" constant="16" id="92h-hs-YUR"/>
+                                    <constraint firstItem="iLr-0s-anf" firstAttribute="leading" secondItem="LZx-F8-w75" secondAttribute="leading" constant="16" id="efC-e3-jeK"/>
+                                    <constraint firstItem="sLa-NJ-KFQ" firstAttribute="leading" secondItem="LZx-F8-w75" secondAttribute="leading" constant="16" id="mPe-kz-5Y7"/>
+                                    <constraint firstAttribute="trailing" secondItem="sLa-NJ-KFQ" secondAttribute="trailing" constant="16" id="pQR-XX-aVh"/>
+                                </constraints>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="LZx-F8-w75" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="9yy-Ea-hjl"/>
+                            <constraint firstAttribute="trailing" secondItem="LZx-F8-w75" secondAttribute="trailing" id="Ltj-s4-raD"/>
+                            <constraint firstItem="LZx-F8-w75" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Woc-85-Tmc"/>
+                            <constraint firstItem="LZx-F8-w75" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="ltJ-BA-vV8"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                    </view>
+                    <connections>
+                        <outlet property="emailTextField" destination="sLa-NJ-KFQ" id="NqA-LK-Tx4"/>
+                        <segue destination="NsC-2d-JdP" kind="show" identifier="enterSegue" id="WVf-rk-GeH"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="136.80000000000001" y="133.5832083958021"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="FSp-9S-o3R">
+            <objects>
+                <viewController id="NsC-2d-JdP" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8QJ-KM-6xb">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You've succesfully joined the contest!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pd1-Ct-W2q">
+                                <rect key="frame" x="40" y="323.5" width="295" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="Pd1-Ct-W2q" firstAttribute="centerX" secondItem="8QJ-KM-6xb" secondAttribute="centerX" id="Aoh-oZ-XAu"/>
+                            <constraint firstItem="Pd1-Ct-W2q" firstAttribute="centerY" secondItem="8QJ-KM-6xb" secondAttribute="centerY" id="pU3-kb-r9O"/>
+                            <constraint firstItem="Pd1-Ct-W2q" firstAttribute="leading" secondItem="l9O-vz-8uM" secondAttribute="leading" constant="40" id="qCP-8y-ldj"/>
+                            <constraint firstItem="l9O-vz-8uM" firstAttribute="trailing" secondItem="Pd1-Ct-W2q" secondAttribute="trailing" constant="40" id="zp4-E2-z64"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="l9O-vz-8uM"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="A7b-1v-2z0" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1018" y="134"/>
+        </scene>
+    </scenes>
+</document>

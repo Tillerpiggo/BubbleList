@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="3zM-MK-47u">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--NASA Photo of the Day-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="SpacePhoto" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="dUN-oV-8oh">
+                                <rect key="frame" x="16" y="91" width="343" height="555.5"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="k04-pi-Dfn">
+                                        <rect key="frame" x="0.0" y="0.0" width="343" height="555.5"/>
+                                        <subviews>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7EW-oJ-2as">
+                                                <rect key="frame" x="0.0" y="0.0" width="343" height="200"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="200" id="ndG-Tq-7ye"/>
+                                                </constraints>
+                                            </imageView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qis-4F-e61">
+                                                <rect key="frame" x="0.0" y="218" width="343" height="119.5"/>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
+                                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="iZd-sd-Q4z">
+                                                <rect key="frame" x="0.0" y="355.5" width="343" height="200"/>
+                                                <color key="backgroundColor" red="0.090196078431372548" green="0.090196078431372548" blue="0.090196078431372548" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="200" id="mwx-ex-gmo"/>
+                                                </constraints>
+                                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                            </textView>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="Qis-4F-e61" firstAttribute="leading" secondItem="k04-pi-Dfn" secondAttribute="leading" id="J9c-61-yfK"/>
+                                            <constraint firstAttribute="trailing" secondItem="iZd-sd-Q4z" secondAttribute="trailing" id="RkX-3t-6in"/>
+                                            <constraint firstAttribute="trailing" secondItem="7EW-oJ-2as" secondAttribute="trailing" id="rUx-Hp-AHU"/>
+                                            <constraint firstAttribute="trailing" secondItem="Qis-4F-e61" secondAttribute="trailing" id="zhA-l6-ZlF"/>
+                                        </constraints>
+                                    </stackView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="k04-pi-Dfn" firstAttribute="centerY" secondItem="dUN-oV-8oh" secondAttribute="centerY" id="DmF-WT-Ioq"/>
+                                    <constraint firstItem="k04-pi-Dfn" firstAttribute="centerX" secondItem="dUN-oV-8oh" secondAttribute="centerX" id="P9T-wa-IXC"/>
+                                </constraints>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.089756944444444445" green="0.089756944444444445" blue="0.089756944444444445" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="dUN-oV-8oh" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="HIH-CS-PCc"/>
+                            <constraint firstItem="dUN-oV-8oh" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="27" id="QlP-Zb-SPQ"/>
+                            <constraint firstItem="dUN-oV-8oh" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="V3U-NF-Eqj"/>
+                            <constraint firstItem="dUN-oV-8oh" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" constant="35.25" id="ZuW-ko-8DX"/>
+                            <constraint firstItem="dUN-oV-8oh" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" constant="35.25" id="m2q-Mq-lwF"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="NASA Photo of the Day" id="Y9W-nq-Jt3"/>
+                    <connections>
+                        <outlet property="descriptionTextView" destination="iZd-sd-Q4z" id="zAf-YF-pcC"/>
+                        <outlet property="imageView" destination="7EW-oJ-2as" id="bA3-dE-ts1"/>
+                        <outlet property="titleLabel" destination="Qis-4F-e61" id="nG2-Wy-5Rl"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1086" y="134"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="tng-wm-eY8">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="3zM-MK-47u" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" id="HLP-nw-iDZ">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" red="0.037644675925925929" green="0.037644675925925929" blue="0.037644675925925929" alpha="1" colorSpace="calibratedRGB"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        </textAttributes>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="c68-p3-N0K"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="q4I-HV-43z" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="136.80000000000001" y="133.5832083958021"/>
+        </scene>
+    </scenes>
+</document>
