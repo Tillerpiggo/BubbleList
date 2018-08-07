@@ -35,7 +35,10 @@ class MessageTableViewController: UITableViewController {
             self.conversation.messages = fetchedMessages
             
             // Reload table view
-            DispatchQueue.main.async { self.tableView.reloadData() }
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+                self.delegate?.conversationDidChange(to: self.conversation)
+            }
         }
     }
     
@@ -84,7 +87,7 @@ extension MessageTableViewController {
 extension MessageTableViewController: AddMessageTableViewControllerDelegate {
     func addedMessage(_ message: Message) {
         // Modify message's parent and owningConversation (same thing
-        let parentReference = CKReference(record: conversation.ckRecord!, action: .none)
+        let parentReference = CKReference(recordID: conversation.ckRecord!.recordID, action: .none)
         message.ckRecord?.parent = parentReference
         message.ckRecord?["owningConversation"] = parentReference
         
@@ -94,7 +97,7 @@ extension MessageTableViewController: AddMessageTableViewControllerDelegate {
         conversation.ckRecord?["latestMessage"] = message.text as CKRecordValue
         
         // Save to the Cloud
-        cloudController?.save([message]) { print("Saved message") }
+        cloudController?.save([message]) { }
         
         // Notify delegate
         delegate?.conversationDidChange(to: conversation)

@@ -28,7 +28,7 @@ class CloudController {
         var fetchedRecords = [CKRecord]()
         
         operation.fetchRecordZonesCompletionBlock = { (recordZones, error) in
-            // Handle error here
+            self.handleError(error)
             
             guard let recordZones = recordZones else { return }
             
@@ -63,7 +63,7 @@ class CloudController {
         }
         
         operation.queryCompletionBlock = { (cursor, error) in
-            // Handle error here
+            self.handleError(error)
             
             completion(fetchedRecords)
         }
@@ -94,7 +94,7 @@ class CloudController {
         }
         
         operation.queryCompletionBlock = { (cursor, error) in
-            handleError(error)
+            self.handleError(error)
             
             completion(fetchedRecords)
         }
@@ -114,9 +114,8 @@ class CloudController {
         // Map conversations to records
         let recordsToSave = cloudUploadables.map() { $0.ckRecord! }
         operation.recordsToSave = recordsToSave
-        
         operation.modifyRecordsCompletionBlock = { (record, recordID, error) in
-            handleError(error)
+            self.handleError(error)
             
             completion()
         }
@@ -134,7 +133,7 @@ class CloudController {
         operation.recordIDsToDelete = recordIDsToDelete
         
         operation.modifyRecordsCompletionBlock = { (record, recordID, error) in
-            handleError(error)
+            self.handleError(error)
             
             completion()
         }
@@ -166,7 +165,7 @@ class CloudController {
         let operation = CKModifySubscriptionsOperation(subscriptionsToSave: [subscription], subscriptionIDsToDelete: [])
         
         operation.modifySubscriptionsCompletionBlock = { (_, _, error) in
-            handleError(error)
+            self.handleError(error)
             
             completion()
         }
@@ -174,9 +173,10 @@ class CloudController {
         database.add(operation)
     }
     
-    func handleError(_ error: CKError?) {
+    func handleError(_ error: Error?) {
         if let error = error {
-            print("CKError: error.localizedDescription")
+            print("Error: \(error.localizedDescription)")
+            print(error)
         }
     }
 }
