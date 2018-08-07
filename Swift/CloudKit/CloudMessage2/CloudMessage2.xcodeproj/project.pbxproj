@@ -17,7 +17,9 @@
 		2340E24B2116459400F83681 /* AddConversationTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2340E24A2116459400F83681 /* AddConversationTableViewController.swift */; };
 		2340E24D2116618C00F83681 /* MessageTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2340E24C2116618C00F83681 /* MessageTableViewController.swift */; };
 		2340E2512116639600F83681 /* AddMessageTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2340E2502116639600F83681 /* AddMessageTableViewController.swift */; };
-		2340E2552116B94E00F83681 /* Cloud.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2340E2542116B94E00F83681 /* Cloud.swift */; };
+		2340E2552116B94E00F83681 /* CloudController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2340E2542116B94E00F83681 /* CloudController.swift */; };
+		2340E2592118BB6700F83681 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2340E2582118BB6700F83681 /* CloudKit.framework */; };
+		2340E25B2118C5A600F83681 /* CloudUploadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2340E25A2118C5A600F83681 /* CloudUploadable.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,7 +35,10 @@
 		2340E24A2116459400F83681 /* AddConversationTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddConversationTableViewController.swift; sourceTree = "<group>"; };
 		2340E24C2116618C00F83681 /* MessageTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageTableViewController.swift; sourceTree = "<group>"; };
 		2340E2502116639600F83681 /* AddMessageTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMessageTableViewController.swift; sourceTree = "<group>"; };
-		2340E2542116B94E00F83681 /* Cloud.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cloud.swift; sourceTree = "<group>"; };
+		2340E2542116B94E00F83681 /* CloudController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudController.swift; sourceTree = "<group>"; };
+		2340E2562118BB6000F83681 /* CloudMessage2.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CloudMessage2.entitlements; sourceTree = "<group>"; };
+		2340E2582118BB6700F83681 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		2340E25A2118C5A600F83681 /* CloudUploadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudUploadable.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,6 +46,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2340E2592118BB6700F83681 /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -52,6 +58,7 @@
 			children = (
 				2340E22D21162F8D00F83681 /* CloudMessage2 */,
 				2340E22C21162F8D00F83681 /* Products */,
+				2340E2572118BB6700F83681 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -66,12 +73,12 @@
 		2340E22D21162F8D00F83681 /* CloudMessage2 */ = {
 			isa = PBXGroup;
 			children = (
+				2340E2562118BB6000F83681 /* CloudMessage2.entitlements */,
 				2340E22E21162F8D00F83681 /* AppDelegate.swift */,
 				2340E23221162F8D00F83681 /* Main.storyboard */,
 				2340E24021162FA300F83681 /* View Controllers */,
 				2340E24121162FAA00F83681 /* Model */,
-				2340E2522116B8F600F83681 /* CloudKit */,
-				2340E2532116B92800F83681 /* On-Device Storage */,
+				2340E25C2119EFA600F83681 /* Back-End */,
 				2340E23521162F8E00F83681 /* Assets.xcassets */,
 				2340E23721162F8E00F83681 /* LaunchScreen.storyboard */,
 				2340E23A21162F8E00F83681 /* Info.plist */,
@@ -95,6 +102,7 @@
 			children = (
 				2340E2452116336E00F83681 /* Conversation.swift */,
 				2340E247211635AD00F83681 /* Message.swift */,
+				2340E25A2118C5A600F83681 /* CloudUploadable.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -134,7 +142,7 @@
 		2340E2522116B8F600F83681 /* CloudKit */ = {
 			isa = PBXGroup;
 			children = (
-				2340E2542116B94E00F83681 /* Cloud.swift */,
+				2340E2542116B94E00F83681 /* CloudController.swift */,
 			);
 			path = CloudKit;
 			sourceTree = "<group>";
@@ -144,6 +152,23 @@
 			children = (
 			);
 			path = "On-Device Storage";
+			sourceTree = "<group>";
+		};
+		2340E2572118BB6700F83681 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2340E2582118BB6700F83681 /* CloudKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		2340E25C2119EFA600F83681 /* Back-End */ = {
+			isa = PBXGroup;
+			children = (
+				2340E2522116B8F600F83681 /* CloudKit */,
+				2340E2532116B92800F83681 /* On-Device Storage */,
+			);
+			path = "Back-End";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -178,6 +203,17 @@
 				TargetAttributes = {
 					2340E22A21162F8D00F83681 = {
 						CreatedOnToolsVersion = 9.4.1;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.Push = {
+								enabled = 1;
+							};
+							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -220,9 +256,10 @@
 				2340E2512116639600F83681 /* AddMessageTableViewController.swift in Sources */,
 				2340E2462116336E00F83681 /* Conversation.swift in Sources */,
 				2340E248211635AD00F83681 /* Message.swift in Sources */,
+				2340E25B2118C5A600F83681 /* CloudUploadable.swift in Sources */,
 				2340E24B2116459400F83681 /* AddConversationTableViewController.swift in Sources */,
 				2340E2432116316600F83681 /* ConversationTableViewController.swift in Sources */,
-				2340E2552116B94E00F83681 /* Cloud.swift in Sources */,
+				2340E2552116B94E00F83681 /* CloudController.swift in Sources */,
 				2340E24D2116618C00F83681 /* MessageTableViewController.swift in Sources */,
 				2340E22F21162F8D00F83681 /* AppDelegate.swift in Sources */,
 			);
@@ -368,6 +405,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = CloudMessage2/CloudMessage2.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UBS5J9L934;
 				INFOPLIST_FILE = CloudMessage2/Info.plist;
@@ -386,6 +424,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = CloudMessage2/CloudMessage2.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UBS5J9L934;
 				INFOPLIST_FILE = CloudMessage2/Info.plist;

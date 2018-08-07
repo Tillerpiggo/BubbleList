@@ -15,13 +15,27 @@ class ConversationTableViewController: UITableViewController {
     // PROPERTIES:
     
     var conversations: [Conversation] = [Conversation]()
-    var selectedRow: Int? // Necessary because we deselect the row right after it is selected (otherwise it looks ugly)
+    var selectedIndexPath: IndexPath? // Necessary because we deselect the row right after it is selected (otherwise it looks ugly)
+    
+    var cloudController: CloudController?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Initialize Conversations:
+        // Get from file
         
+        // Get from cloud (probably should show some loading indicator)
+        cloudController?.fetchRecords(ofType: .conversation) { (records) in
+            // Convert to conversations
+            let fetchedConversations = records.map { Conversation(fromRecord: $0) }
+            
+            // Update model
+            self.conversations = fetchedConversations
+            
+            // Update view
+            DispatchQueue.main.async { self.tableView.reloadData() }
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -31,14 +45,18 @@ class ConversationTableViewController: UITableViewController {
         } else if let destinationViewController = segue.destination as? MessageTableViewController, segue.identifier == "MessageTableView" {
             
             // (didSelectRowAtIndexPath is actually called after prepare(for:)
-            guard let selectedIndexPath = tableView.indexPathForSelectedRow else { return }
-            selectedRow = selectedIndexPath.row
-            
-            // Dependency Injection for selected converation
-            let selectedConversation = conversations[selectedRow!]
+            guard let indexPathForSelectedRow = tableView.indexPathForSelectedRow else { return }
+            selectedIndexPath = indexPathForSelectedRow
             
             // Dependency injection of conversation
+            let selectedConversation = conversations[indexPathForSelectedRow.row]
             destinationViewController.conversation = selectedConversation
+            
+            // Dependency injection of cloud controller
+            destinationViewController.cloudController = cloudController
+            
+            // Set up delegate
+            destinationViewController.delegate = self
             
             // Set the title
             destinationViewController.navigationItem.title = selectedConversation.title
@@ -72,7 +90,7 @@ extension ConversationTableViewController {
         
         // Configure cell with model
         cell.textLabel?.text = conversation.title
-        cell.detailTextLabel?.text = conversation.messages.first?.text
+        cell.detailTextLabel?.text = conversation.latestMessage
         
         return cell
     }
@@ -91,7 +109,7 @@ extension ConversationTableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        selectedRow = indexPath.row
+        selectedIndexPath = indexPath
     }
 }
 
@@ -105,6 +123,9 @@ extension ConversationTableViewController {
 
 extension ConversationTableViewController: AddConversationTableViewControllerDelegate {
     func addedConversation(_ conversation: Conversation) {
+        // Save change to the Cloud
+        cloudController?.save([conversation]) { }
+        
         conversations.append(conversation)
         conversations.sort { $0.dateLastModified > $1.dateLastModified }
         tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
@@ -118,8 +139,12 @@ extension ConversationTableViewController: AddConversationTableViewControllerDel
 
 extension ConversationTableViewController: MessageTableViewControllerDelegate {
     func conversationDidChange(to conversation: Conversation) {
-        if let selectedRow = selectedRow {
-            conversations[selectedRow] = conversation
+        // Save change to the Cloud
+        cloudController?.save([conversation]) { }
+        
+        if let selectedIndexPath = selectedIndexPath {
+            conversations[selectedIndexPath.row] = conversation
+            tableView.reloadRows(at: [selectedIndexPath], with: .automatic)
         }
     }
 }

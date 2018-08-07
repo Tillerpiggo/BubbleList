@@ -9,7 +9,7 @@
 import Foundation
 import CloudKit
 
-class Message: Codable {
+class Message: Codable, CloudUploadable {
     
     // PROPERTIES:
     
@@ -60,13 +60,21 @@ class Message: Codable {
         self.ckRecord = record
     }
     
-    init(withText text: String, timestamp: Date, owningConversation: CKReference?) {
+    init(withText text: String, timestamp: Date, owningConversation: Conversation?) {
+        // Properties
         self.text = text
         self.timestamp = timestamp
         
+        // CKRecord
         let newCKRecord = CKRecord(recordType: "Message")
         newCKRecord["text"] = text as CKRecordValue
-        newCKRecord.parent = owningConversation
+        
+        if let parentRecord = owningConversation?.ckRecord {
+            let parentReference = CKReference(record: parentRecord, action: .none)
+            newCKRecord.setParent(parentRecord)
+            newCKRecord["owningConversation"] = parentReference
+        }
+        
         self.ckRecord = newCKRecord
     }
 }

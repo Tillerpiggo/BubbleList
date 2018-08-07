@@ -9,11 +9,22 @@
 import Foundation
 import CloudKit
 
-class Conversation: Codable {
+class Conversation: Codable, CloudUploadable {
     
     // PROPERTIES:
     
     var messages: [Message]
+    var latestMessage: String {
+        if let latestMessage = ckRecord?["latestMessage"] as? String {
+            return latestMessage
+        } else {
+            let latestMessage = messages.first?.text ?? ""
+            ckRecord?["latestMessage"] = latestMessage as CKRecordValue
+            
+            return latestMessage
+        }
+    }
+    
     var creationDate: Date
     var dateLastModified: Date
     var title: String
@@ -41,44 +52,43 @@ class Conversation: Codable {
     required init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         
+        // Properties
         messages = try values.decode([Message].self, forKey: .messages)
         creationDate = try values.decode(Date.self, forKey: .creationDate)
         dateLastModified = try values.decode(Date.self, forKey: .dateLastModified)
         title = try values.decode(String.self, forKey: .title)
         
+        // CKRecord
         let newCKRecord = CKRecord(recordType: "Conversation")
         newCKRecord["title"] = title as CKRecordValue
+        newCKRecord["latestMessage"] = (messages.first?.text as CKRecordValue?) ?? ("" as CKRecordValue)
         ckRecord = newCKRecord
     }
     
     // INITIALIZERS:
     
     init(withTitle title: String, messages: [Message] = [Message]()) {
+        // Properties
         self.title = title
         self.messages = messages
         self.creationDate = Date()
         self.dateLastModified = Date()
         
+        // CKRecord
         let newCKRecord = CKRecord(recordType: "Conversation")
         newCKRecord["title"] = title as CKRecordValue
+        newCKRecord["latestMessage"] = (messages.first?.text as CKRecordValue?) ?? ("" as CKRecordValue)
         self.ckRecord = newCKRecord
     }
     
     init(fromRecord record: CKRecord) {
+        // Properties
         self.title = record["title"] as! String
-        self.messages = [Message]() // Maybe fetch messages or at least first message here
-        if let creationDate = record.creationDate {
-            self.creationDate = creationDate
-        } else {
-            self.creationDate = Date()
-        }
+        self.messages = [Message]()
+        self.creationDate = record.creationDate ?? Date()
+        self.dateLastModified = record.modificationDate ?? Date()
         
-        if let dateLastModified = record.modificationDate {
-            self.dateLastModified = dateLastModified
-        } else {
-            self.dateLastModified = Date()
-        }
-        
+        // CKRecord
         self.ckRecord = record
     }
 }

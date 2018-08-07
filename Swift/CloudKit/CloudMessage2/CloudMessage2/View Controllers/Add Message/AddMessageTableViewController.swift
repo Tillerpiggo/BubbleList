@@ -34,8 +34,8 @@ class AddMessageTableViewController: UITableViewController {
     // IBACTIONS:
     
     @IBAction private func saveButtonTapped(_ sender: Any) {
-        dismiss(animated: true, completion: nil)
         save()
+        dismiss(animated: true, completion: nil)
     }
     
     @IBAction private func cancelButtonTapped(_ sender: Any) {
