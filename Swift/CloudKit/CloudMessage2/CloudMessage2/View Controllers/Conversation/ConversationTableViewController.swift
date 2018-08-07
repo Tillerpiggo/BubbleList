@@ -36,6 +36,8 @@ class ConversationTableViewController: UITableViewController {
             // Update view
             DispatchQueue.main.async { self.tableView.reloadData() }
         }
+        
+        tableView.rowHeight = 90
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
