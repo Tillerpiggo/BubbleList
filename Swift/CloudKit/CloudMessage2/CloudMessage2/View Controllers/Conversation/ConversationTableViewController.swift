@@ -91,16 +91,19 @@ extension ConversationTableViewController {
         // Configure cell with model
         cell.textLabel?.text = conversation.title
         cell.detailTextLabel?.text = conversation.latestMessage
+        print(conversation.latestMessage)
         
         return cell
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            conversations.remove(at: indexPath.row)
+            let deletedConversation = conversations.remove(at: indexPath.row)
             
             // Delete from cloud
+            cloudController?.delete([deletedConversation]) { }
             
+            // Update View
             tableView.deleteRows(at: [indexPath], with: .automatic)
         }
     }
@@ -145,6 +148,7 @@ extension ConversationTableViewController: MessageTableViewControllerDelegate {
         if let selectedIndexPath = selectedIndexPath {
             conversations[selectedIndexPath.row] = conversation
             tableView.reloadRows(at: [selectedIndexPath], with: .automatic)
+            print(conversations[selectedIndexPath.row])
         }
     }
 }

@@ -33,6 +33,8 @@ class MessageTableViewController: UITableViewController {
             
             // Modify model
             self.conversation.messages = fetchedMessages
+            self.conversation.messages.sort() { $0.timestamp > $1.timestamp }
+            self.conversation.ckRecord?["latestMessage"] = (self.conversation.messages.first?.text ?? "") as CKRecordValue
             
             // Reload table view
             DispatchQueue.main.async {
@@ -86,10 +88,8 @@ extension MessageTableViewController {
 
 extension MessageTableViewController: AddMessageTableViewControllerDelegate {
     func addedMessage(_ message: Message) {
-        // Modify message's parent and owningConversation (same thing
-        let parentReference = CKReference(recordID: conversation.ckRecord!.recordID, action: .none)
-        message.ckRecord?.parent = parentReference
-        message.ckRecord?["owningConversation"] = parentReference
+        // Make the message belong to this conversation
+        message.ckRecord?["owningConversation"] = CKReference(record: conversation.ckRecord!, action: .none)
         
         // Modify model
         conversation.messages.append(message)
@@ -97,7 +97,7 @@ extension MessageTableViewController: AddMessageTableViewControllerDelegate {
         conversation.ckRecord?["latestMessage"] = message.text as CKRecordValue
         
         // Save to the Cloud
-        cloudController?.save([message]) { }
+        cloudController?.save(conversation.messages) { }
         
         // Notify delegate
         delegate?.conversationDidChange(to: conversation)

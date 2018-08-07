@@ -55,7 +55,7 @@ class AddMessageTableViewController: UITableViewController {
     // HELPER METHODS:
     
     private func save() {
-        let newMessage = Message(withText: textField.text!, timestamp: Date(), owningConversation: nil)
+        let newMessage = Message(withText: textField.text!, timestamp: Date())
         delegate?.addedMessage(newMessage)
     }
     

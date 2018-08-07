@@ -27,6 +27,7 @@ class Message: Codable, CloudUploadable {
     
     var ckRecord: CKRecord? // remember to set parent property
     
+    
     // CODABLE:
     
     enum CodingKeys: CodingKey {
@@ -60,7 +61,7 @@ class Message: Codable, CloudUploadable {
         self.ckRecord = record
     }
     
-    init(withText text: String, timestamp: Date, owningConversation: Conversation?) {
+    init(withText text: String, timestamp: Date, owningConversation: CKReference? = nil) {
         // Properties
         self.text = text
         self.timestamp = timestamp
@@ -69,10 +70,8 @@ class Message: Codable, CloudUploadable {
         let newCKRecord = CKRecord(recordType: "Message")
         newCKRecord["text"] = text as CKRecordValue
         
-        if let parentRecord = owningConversation?.ckRecord {
-            let parentReference = CKReference(record: parentRecord, action: .none)
-            newCKRecord.setParent(parentRecord)
-            newCKRecord["owningConversation"] = parentReference
+        if let parentRecord = owningConversation {
+            newCKRecord["owningConversation"] = parentRecord
         }
         
         self.ckRecord = newCKRecord

@@ -16,10 +16,15 @@ class Conversation: Codable, CloudUploadable {
     var messages: [Message]
     var latestMessage: String {
         // Use the text of the first messasge, if that isn't there, use latestMessage, otherwise, it's blank.
-        let latestMessage = messages.first?.text ?? (ckRecord?["latestMessage"] as? String ?? "")
-        if let latestMessage = messages.first?.text
-        
-        return latestMessage
+        if let latestMessage = messages.first?.text {
+            ckRecord?["latestMessage"] = latestMessage as CKRecordValue
+            return latestMessage
+        } else if let latestMessage = ckRecord?["latestMessage"] as? String {
+            return latestMessage
+        } else {
+            ckRecord?["latestMessage"] = "" as CKRecordValue
+            return ""
+        }
     }
     
     var creationDate: Date

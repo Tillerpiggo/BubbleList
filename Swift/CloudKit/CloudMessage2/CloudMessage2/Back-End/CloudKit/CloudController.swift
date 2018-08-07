@@ -82,7 +82,7 @@ class CloudController {
         let parentReference = CKReference(recordID: parentRecordID, action: .none)
         let predicate = NSPredicate(format: "owningConversation == %@", parentReference) // The name of this field needs to be changing (owningList, owningClass, etc.)
         
-        let query = CKQuery(recordType: recordType.rawValue, predicate: NSPredicate(value: true))
+        let query = CKQuery(recordType: recordType.rawValue, predicate: predicate)
         
         // Create operation
         let operation = CKQueryOperation(query: query)
@@ -110,10 +110,12 @@ class CloudController {
     func save(_ cloudUploadables: [CloudUploadable], completion: @escaping () -> Void) {
         // Create and configure operation
         let operation = CKModifyRecordsOperation()
+        operation.savePolicy = .changedKeys
         
         // Map conversations to records
         let recordsToSave = cloudUploadables.map() { $0.ckRecord! }
         operation.recordsToSave = recordsToSave
+        
         operation.modifyRecordsCompletionBlock = { (record, recordID, error) in
             self.handleError(error)
             
