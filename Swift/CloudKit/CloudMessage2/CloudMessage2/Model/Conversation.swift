@@ -9,7 +9,7 @@
 import Foundation
 import CloudKit
 
-class Conversation: Codable, CloudUploadable {
+class Conversation: CloudUploadable { // NSObject, NSCoding {
     
     // PROPERTIES:
     
@@ -32,40 +32,19 @@ class Conversation: Codable, CloudUploadable {
     var title: String
     
     var ckRecord: CKRecord?
+    var ckRecordSystemFields: NSMutableData
     
-    // CODABLE:
+    // NSCODING:
     
-    enum CodingKeys: CodingKey {
-        case messages
-        case creationDate
-        case dateLastModified
-        case title
+    /*
+    func encode(with aCoder: NSCoder) {
+        
     }
     
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
+    required init?(coder aDecoder: NSCoder) {
         
-        try container.encode(messages, forKey: .messages)
-        try container.encode(creationDate, forKey: .creationDate)
-        try container.encode(dateLastModified, forKey: .dateLastModified)
-        try container.encode(title, forKey: .title)
     }
-    
-    required init(from decoder: Decoder) throws {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        
-        // Properties
-        messages = try values.decode([Message].self, forKey: .messages)
-        creationDate = try values.decode(Date.self, forKey: .creationDate)
-        dateLastModified = try values.decode(Date.self, forKey: .dateLastModified)
-        title = try values.decode(String.self, forKey: .title)
-        
-        // CKRecord
-        let newCKRecord = CKRecord(recordType: "Conversation")
-        newCKRecord["title"] = title as CKRecordValue
-        newCKRecord["latestMessage"] = (messages.first?.text as CKRecordValue?) ?? ("" as CKRecordValue)
-        ckRecord = newCKRecord
-    }
+ */
     
     // INITIALIZERS:
     
@@ -75,6 +54,7 @@ class Conversation: Codable, CloudUploadable {
         self.messages = messages
         self.creationDate = Date()
         self.dateLastModified = Date()
+        self.ckRecordSystemFields = NSMutableData()
         
         // CKRecord
         let newCKRecord = CKRecord(recordType: "Conversation")
@@ -89,6 +69,7 @@ class Conversation: Codable, CloudUploadable {
         self.messages = [Message]()
         self.creationDate = record.creationDate ?? Date()
         self.dateLastModified = record.modificationDate ?? Date()
+        self.ckRecordSystemFields = NSMutableData()
         
         // CKRecord
         self.ckRecord = record

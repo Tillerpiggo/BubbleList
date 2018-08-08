@@ -20,6 +20,7 @@
 		2340E2552116B94E00F83681 /* CloudController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2340E2542116B94E00F83681 /* CloudController.swift */; };
 		2340E2592118BB6700F83681 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2340E2582118BB6700F83681 /* CloudKit.framework */; };
 		2340E25B2118C5A600F83681 /* CloudUploadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2340E25A2118C5A600F83681 /* CloudUploadable.swift */; };
+		2340E25E211A5E0900F83681 /* FileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2340E25D211A5E0900F83681 /* FileController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +40,7 @@
 		2340E2562118BB6000F83681 /* CloudMessage2.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CloudMessage2.entitlements; sourceTree = "<group>"; };
 		2340E2582118BB6700F83681 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		2340E25A2118C5A600F83681 /* CloudUploadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudUploadable.swift; sourceTree = "<group>"; };
+		2340E25D211A5E0900F83681 /* FileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,6 +152,7 @@
 		2340E2532116B92800F83681 /* On-Device Storage */ = {
 			isa = PBXGroup;
 			children = (
+				2340E25D211A5E0900F83681 /* FileController.swift */,
 			);
 			path = "On-Device Storage";
 			sourceTree = "<group>";
@@ -256,6 +259,7 @@
 				2340E2512116639600F83681 /* AddMessageTableViewController.swift in Sources */,
 				2340E2462116336E00F83681 /* Conversation.swift in Sources */,
 				2340E248211635AD00F83681 /* Message.swift in Sources */,
+				2340E25E211A5E0900F83681 /* FileController.swift in Sources */,
 				2340E25B2118C5A600F83681 /* CloudUploadable.swift in Sources */,
 				2340E24B2116459400F83681 /* AddConversationTableViewController.swift in Sources */,
 				2340E2432116316600F83681 /* ConversationTableViewController.swift in Sources */,

@@ -28,7 +28,7 @@ class ConversationTableViewController: UITableViewController {
         // Get from cloud (probably should show some loading indicator)
         cloudController?.fetchRecords(ofType: .conversation) { (records) in
             // Convert to conversations
-            let fetchedConversations = records.map { Conversation(fromRecord: $0) }
+            let fetchedConversations = records.map() { Conversation(fromRecord: $0) }
             
             // Update model
             self.conversations = fetchedConversations
@@ -37,7 +37,7 @@ class ConversationTableViewController: UITableViewController {
             DispatchQueue.main.async { self.tableView.reloadData() }
         }
         
-        tableView.rowHeight = 90
+        tableView.rowHeight = 60
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -93,7 +93,6 @@ extension ConversationTableViewController {
         // Configure cell with model
         cell.textLabel?.text = conversation.title
         cell.detailTextLabel?.text = conversation.latestMessage
-        print(conversation.latestMessage)
         
         return cell
     }
@@ -150,7 +149,6 @@ extension ConversationTableViewController: MessageTableViewControllerDelegate {
         if let selectedIndexPath = selectedIndexPath {
             conversations[selectedIndexPath.row] = conversation
             tableView.reloadRows(at: [selectedIndexPath], with: .automatic)
-            print(conversations[selectedIndexPath.row])
         }
     }
 }
