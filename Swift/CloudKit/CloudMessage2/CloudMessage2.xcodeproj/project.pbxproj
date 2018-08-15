@@ -20,7 +20,12 @@
 		2340E2552116B94E00F83681 /* CloudController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2340E2542116B94E00F83681 /* CloudController.swift */; };
 		2340E2592118BB6700F83681 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2340E2582118BB6700F83681 /* CloudKit.framework */; };
 		2340E25B2118C5A600F83681 /* CloudUploadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2340E25A2118C5A600F83681 /* CloudUploadable.swift */; };
-		2340E25E211A5E0900F83681 /* FileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2340E25D211A5E0900F83681 /* FileController.swift */; };
+		2340E25E211A5E0900F83681 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2340E25D211A5E0900F83681 /* CoreDataStack.swift */; };
+		23CB4FF62123E35B0097566E /* CloudMessage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 23CB4FF42123E35B0097566E /* CloudMessage.xcdatamodeld */; };
+		23CB4FFB2123E4030097566E /* Message+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CB4FF72123E4030097566E /* Message+CoreDataClass.swift */; };
+		23CB4FFC2123E4030097566E /* Message+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CB4FF82123E4030097566E /* Message+CoreDataProperties.swift */; };
+		23CB4FFD2123E4030097566E /* Conversation+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CB4FF92123E4030097566E /* Conversation+CoreDataClass.swift */; };
+		23CB4FFE2123E4030097566E /* Conversation+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CB4FFA2123E4030097566E /* Conversation+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,7 +45,12 @@
 		2340E2562118BB6000F83681 /* CloudMessage2.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CloudMessage2.entitlements; sourceTree = "<group>"; };
 		2340E2582118BB6700F83681 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		2340E25A2118C5A600F83681 /* CloudUploadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudUploadable.swift; sourceTree = "<group>"; };
-		2340E25D211A5E0900F83681 /* FileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileController.swift; sourceTree = "<group>"; };
+		2340E25D211A5E0900F83681 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
+		23CB4FF52123E35B0097566E /* CloudMessage.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CloudMessage.xcdatamodel; sourceTree = "<group>"; };
+		23CB4FF72123E4030097566E /* Message+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Message+CoreDataClass.swift"; sourceTree = "<group>"; };
+		23CB4FF82123E4030097566E /* Message+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Message+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		23CB4FF92123E4030097566E /* Conversation+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Conversation+CoreDataClass.swift"; sourceTree = "<group>"; };
+		23CB4FFA2123E4030097566E /* Conversation+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Conversation+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,12 +159,14 @@
 			path = CloudKit;
 			sourceTree = "<group>";
 		};
-		2340E2532116B92800F83681 /* On-Device Storage */ = {
+		2340E2532116B92800F83681 /* Core Data */ = {
 			isa = PBXGroup;
 			children = (
-				2340E25D211A5E0900F83681 /* FileController.swift */,
+				2340E25D211A5E0900F83681 /* CoreDataStack.swift */,
+				23CB4FFF2123E4100097566E /* ManagedObjectSubclasses */,
+				23CB4FF42123E35B0097566E /* CloudMessage.xcdatamodeld */,
 			);
-			path = "On-Device Storage";
+			path = "Core Data";
 			sourceTree = "<group>";
 		};
 		2340E2572118BB6700F83681 /* Frameworks */ = {
@@ -169,9 +181,20 @@
 			isa = PBXGroup;
 			children = (
 				2340E2522116B8F600F83681 /* CloudKit */,
-				2340E2532116B92800F83681 /* On-Device Storage */,
+				2340E2532116B92800F83681 /* Core Data */,
 			);
 			path = "Back-End";
+			sourceTree = "<group>";
+		};
+		23CB4FFF2123E4100097566E /* ManagedObjectSubclasses */ = {
+			isa = PBXGroup;
+			children = (
+				23CB4FF72123E4030097566E /* Message+CoreDataClass.swift */,
+				23CB4FF82123E4030097566E /* Message+CoreDataProperties.swift */,
+				23CB4FF92123E4030097566E /* Conversation+CoreDataClass.swift */,
+				23CB4FFA2123E4030097566E /* Conversation+CoreDataProperties.swift */,
+			);
+			path = ManagedObjectSubclasses;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -258,11 +281,16 @@
 			files = (
 				2340E2512116639600F83681 /* AddMessageTableViewController.swift in Sources */,
 				2340E2462116336E00F83681 /* Conversation.swift in Sources */,
+				23CB4FFD2123E4030097566E /* Conversation+CoreDataClass.swift in Sources */,
 				2340E248211635AD00F83681 /* Message.swift in Sources */,
-				2340E25E211A5E0900F83681 /* FileController.swift in Sources */,
+				23CB4FFE2123E4030097566E /* Conversation+CoreDataProperties.swift in Sources */,
+				23CB4FFB2123E4030097566E /* Message+CoreDataClass.swift in Sources */,
+				2340E25E211A5E0900F83681 /* CoreDataStack.swift in Sources */,
 				2340E25B2118C5A600F83681 /* CloudUploadable.swift in Sources */,
+				23CB4FFC2123E4030097566E /* Message+CoreDataProperties.swift in Sources */,
 				2340E24B2116459400F83681 /* AddConversationTableViewController.swift in Sources */,
 				2340E2432116316600F83681 /* ConversationTableViewController.swift in Sources */,
+				23CB4FF62123E35B0097566E /* CloudMessage.xcdatamodeld in Sources */,
 				2340E2552116B94E00F83681 /* CloudController.swift in Sources */,
 				2340E24D2116618C00F83681 /* MessageTableViewController.swift in Sources */,
 				2340E22F21162F8D00F83681 /* AppDelegate.swift in Sources */,
@@ -465,6 +493,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		23CB4FF42123E35B0097566E /* CloudMessage.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				23CB4FF52123E35B0097566E /* CloudMessage.xcdatamodel */,
+			);
+			currentVersion = 23CB4FF52123E35B0097566E /* CloudMessage.xcdatamodel */;
+			path = CloudMessage.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 2340E22321162F8D00F83681 /* Project object */;
 }

@@ -12,12 +12,16 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    lazy var coreDataStack = CoreDataStack(modelName: "CloudMessage")
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Dependency inject the CloudController and FileController to ConversationTableViewController
-        if let conversationTableViewController = window?.rootViewController?.childViewControllers.first as? ConversationTableViewController {
-            conversationTableViewController.cloudController = CloudController()
+        if let navigationController = window?.rootViewController as? UINavigationController,
+            let conversationTableViewController = navigationController.topViewController as? ConversationTableViewController {
+            
+                // Dependency inject the CoreData/CloudKit Objects
+                conversationTableViewController.cloudController = CloudController()
+                conversationTableViewController.managedContext = coreDataStack.managedContext
+            
         }
         
         return true
@@ -29,8 +33,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
-        // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-        // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        coreDataStack.saveContext()
+        
+        // TODO: Save Cloud Stuff
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -42,7 +47,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
-        // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+        coreDataStack.saveContext()
+        
+        // TODO: Save Cloud Stuff
     }
 
 

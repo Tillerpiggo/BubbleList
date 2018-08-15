@@ -7,18 +7,19 @@
 //
 
 import UIKit
-
-// MAIN CLASS:
+import CoreData
 
 class ConversationTableViewController: UITableViewController {
     
-    // PROPERTIES:
+    // MARK: - Properties
     
     var conversations: [Conversation] = [Conversation]()
     var selectedIndexPath: IndexPath? // Necessary because we deselect the row right after it is selected (otherwise it looks ugly)
     
     var cloudController: CloudController?
-
+    var managedContext: NSManagedObjectContext!
+    
+    // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -40,6 +41,7 @@ class ConversationTableViewController: UITableViewController {
         tableView.rowHeight = 60
     }
     
+    // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Add Conversation
         if let destinationViewController = segue.destination.childViewControllers.first as? AddConversationTableViewController, segue.identifier == "AddConversation" {
@@ -70,11 +72,11 @@ class ConversationTableViewController: UITableViewController {
 
 
 
-// DATA SOURCE AND DELEGATE:
+// MARK: - Table View Data Source / Delegate
 
 extension ConversationTableViewController {
     
-    // DATA SOURCE:
+    // MARK: - Data Source
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -109,7 +111,7 @@ extension ConversationTableViewController {
         }
     }
     
-    // DELEGATE:
+    // MARK: - Delegate
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
@@ -123,7 +125,7 @@ extension ConversationTableViewController {
 
 
 
-// ADD CONVERSATION DELEGATE:
+// MARK: - Add Conversation Delegate
 
 extension ConversationTableViewController: AddConversationTableViewControllerDelegate {
     func addedConversation(_ conversation: Conversation) {
@@ -139,7 +141,7 @@ extension ConversationTableViewController: AddConversationTableViewControllerDel
 
 
 
-// MESSAGE DELEGATE:
+// MARK: - Message Table View Delegate
 
 extension ConversationTableViewController: MessageTableViewControllerDelegate {
     func conversationDidChange(to conversation: Conversation) {

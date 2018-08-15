@@ -9,6 +9,7 @@
 import Foundation
 import CloudKit
 
+/*
 class Conversation: CloudUploadable { // NSObject, NSCoding {
     
     // PROPERTIES:
@@ -75,3 +76,4 @@ class Conversation: CloudUploadable { // NSObject, NSCoding {
         self.ckRecord = record
     }
 }
+ */

@@ -9,6 +9,7 @@
 import Foundation
 import CloudKit
 
+/*
 class Message: Codable, CloudUploadable {
     
     // PROPERTIES:
@@ -77,3 +78,4 @@ class Message: Codable, CloudUploadable {
         self.ckRecord = newCKRecord
     }
 }
+ */
