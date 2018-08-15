@@ -16,10 +16,13 @@ class Conversation: CloudUploadable { // NSObject, NSCoding {
     
     // MARK: - Properties
     
-    var messages: [Message]
-    var creationDate: Date
-    var dateLastModified: Date
-    var title: String
+    var messages: [Message] {
+        guard let coreDataMessages = coreDataConversation.messages else { return [Message]() }
+        return coreDataMessages.map() { Message(fromCoreDataMessage: $0 as! CoreDataMessage) }
+    }
+    var creationDate: Date { return (coreDataConversation.creationDate ?? NSDate()) as Date }
+    var dateLastModified: Date { return (coreDataConversation.dateLastModified ?? NSDate()) as Date }
+    var title: String { return coreDataConversation.title ?? "" }
     
     var latestMessage: String {
         // Use the text of the first messasge, if that isn't there, use latestMessage, otherwise, it's blank.
@@ -39,7 +42,6 @@ class Conversation: CloudUploadable { // NSObject, NSCoding {
     
     // MARK: - Cloud
     var ckRecord: CKRecord?
-    var ckRecordSystemFields: NSMutableData
     
     // MARK: - Initializers
     
@@ -47,14 +49,10 @@ class Conversation: CloudUploadable { // NSObject, NSCoding {
         // Create CoreDataConversation
         let newCoreDataConversation = CoreDataConversation(context: managedContext)
         newCoreDataConversation.title = title
-        newCoreDataConversation.messages = messages.map { $0.coreDataMessage }
-        
-        // Properties
-        self.title = title
-        self.messages = messages
-        self.creationDate = Date()
-        self.dateLastModified = Date()
-        self.ckRecordSystemFields = NSMutableData()
+        messages.forEach() { newCoreDataConversation.addToMessages($0.coreDataMessage) }
+        newCoreDataConversation.creationDate = NSDate()
+        newCoreDataConversation.dateLastModified = NSDate()
+        self.coreDataConversation = newCoreDataConversation
         
         // Create CKRecord
         let newCKRecord = CKRecord(recordType: "Conversation")
@@ -63,15 +61,15 @@ class Conversation: CloudUploadable { // NSObject, NSCoding {
         self.ckRecord = newCKRecord
     }
     
-    init(fromRecord record: CKRecord) {
-        // Properties
-        self.title = record["title"] as! String
-        self.messages = [Message]()
-        self.creationDate = record.creationDate ?? Date()
-        self.dateLastModified = record.modificationDate ?? Date()
-        self.ckRecordSystemFields = NSMutableData()
+    init(fromRecord record: CKRecord, managedContext: NSManagedObjectContext) {
+        // Create CoreDataConversation
+        let newCoreDataConversation = CoreDataConversation(context: managedContext)
+        newCoreDataConversation.title = record["title"] as? String
+        newCoreDataConversation.creationDate = (record.creationDate ?? Date()) as NSDate
+        newCoreDataConversation.dateLastModified = (record.modificationDate ?? Date()) as NSDate
+        self.coreDataConversation = newCoreDataConversation
         
-        // CKRecord
+        // Create CKRecord
         self.ckRecord = record
     }
 }
