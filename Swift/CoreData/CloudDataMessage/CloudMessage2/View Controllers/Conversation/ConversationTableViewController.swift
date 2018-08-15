@@ -16,7 +16,7 @@ class ConversationTableViewController: UITableViewController {
     var conversations: [Conversation] = [Conversation]()
     var selectedIndexPath: IndexPath? // Necessary because we deselect the row right after it is selected (otherwise it looks ugly)
     
-    var cloudController: CloudController?
+    var cloudController: CloudController!
     var coreDataController: CoreDataController!
     
     // MARK: - View Life Cycle
@@ -24,15 +24,23 @@ class ConversationTableViewController: UITableViewController {
         super.viewDidLoad()
         
         // Initialize Conversations:
-        // Get from file
+        // Get from Core Data
+        coreDataController.fetchConversations() { (coreDataConversations) in
+            for coreDataConversation in coreDataConversations {
+                self.conversations.append(Conversation(fromCoreDataConversation: coreDataConversation))
+            }
+            self.coreDataController.save()
+        }
         
         // Get from cloud (probably should show some loading indicator)
-        cloudController?.fetchRecords(ofType: .conversation) { (records) in
+        cloudController.fetchRecords(ofType: .conversation) { (records) in
             // Convert to conversations
             let fetchedConversations = records.map() { Conversation(fromRecord: $0, managedContext: self.coreDataController.managedContext) }
             
             // Update model
             self.conversations = fetchedConversations
+            
+            self.coreDataController.save()
             
             // Update view
             DispatchQueue.main.async { self.tableView.reloadData() }
@@ -106,7 +114,7 @@ extension ConversationTableViewController {
             let deletedConversation = conversations.remove(at: indexPath.row)
             
             // Delete from cloud
-            cloudController?.delete([deletedConversation]) { }
+            cloudController.delete([deletedConversation]) { }
             
             // Update View
             tableView.deleteRows(at: [indexPath], with: .automatic)
@@ -132,7 +140,10 @@ extension ConversationTableViewController {
 extension ConversationTableViewController: AddConversationTableViewControllerDelegate {
     func addedConversation(_ conversation: Conversation) {
         // Save change to the Cloud
-        cloudController?.save([conversation]) { }
+        cloudController.save([conversation]) { }
+        
+        // Save change to Core Data
+        coreDataController.save()
         
         conversations.append(conversation)
         conversations.sort { $0.dateLastModified > $1.dateLastModified }
@@ -148,7 +159,10 @@ extension ConversationTableViewController: AddConversationTableViewControllerDel
 extension ConversationTableViewController: MessageTableViewControllerDelegate {
     func conversationDidChange(to conversation: Conversation) {
         // Save change to the Cloud
-        cloudController?.save([conversation]) { }
+        cloudController.save([conversation]) { }
+        
+        // Save change to Core Data
+        coreDataController.save()
         
         if let selectedIndexPath = selectedIndexPath {
             conversations[selectedIndexPath.row] = conversation

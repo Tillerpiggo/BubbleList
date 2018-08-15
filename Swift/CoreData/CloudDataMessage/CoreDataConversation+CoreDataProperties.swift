@@ -14,7 +14,7 @@ import CoreData
 extension CoreDataConversation {
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<CoreDataConversation> {
-        return NSFetchRequest<CoreDataConversation>(entityName: "Conversation")
+        return NSFetchRequest<CoreDataConversation>(entityName: "CoreDataConversation")
     }
 
     @NSManaged public var creationDate: NSDate?

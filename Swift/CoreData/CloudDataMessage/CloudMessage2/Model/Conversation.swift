@@ -18,7 +18,7 @@ class Conversation: CloudUploadable, CoreDataUploadable {
     
     var messages: [Message] {
         guard let coreDataMessages = coreDataConversation.messages else { return [Message]() }
-        return coreDataMessages.map() { Message(fromCoreDataMessage: $0 as! CoreDataMessage) }
+        return (coreDataMessages.map() { Message(fromCoreDataMessage: $0 as! CoreDataMessage) }).sorted() { $0.timestamp > $1.timestamp }
     }
     var creationDate: Date { return (coreDataConversation.creationDate ?? NSDate()) as Date }
     var dateLastModified: Date { return (coreDataConversation.dateLastModified ?? NSDate()) as Date }
@@ -76,5 +76,14 @@ class Conversation: CloudUploadable, CoreDataUploadable {
         
         // Create CKRecord
         self.ckRecord = record
+    }
+    
+    init(fromCoreDataConversation coreDataConversation: CoreDataConversation) {
+        self.coreDataConversation = coreDataConversation
+        
+        // Create CKRecord
+        let newCKRecord = CKRecord(recordType: "Conversation")
+        newCKRecord["title"] = title as CKRecordValue
+        newCKRecord["latestMessage"] = (messages.first?.text as CKRecordValue?) ?? ("" as CKRecordValue)
     }
 }

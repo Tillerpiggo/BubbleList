@@ -15,26 +15,41 @@ protocol MessageTableViewControllerDelegate {
 
 class MessageTableViewController: UITableViewController {
     
+    // MARK: - Properties
     var conversation: Conversation!
     var delegate: MessageTableViewControllerDelegate?
     
-    var cloudController: CloudController?
+    var cloudController: CloudController!
     var coreDataController: CoreDataController!
-
+    
+    // MARK: - Initializer
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Multiple lines per message
         tableView.rowHeight = UITableViewAutomaticDimension
         
+        // Fetch messages from Core Data
+        coreDataController.fetchMessages() { (coreDataMessages) in
+            guard self.conversation.messages.count == 0 else { return }
+            
+            for coreDataMessage in coreDataMessages {
+                self.conversation.coreDataConversation.addToMessages(coreDataMessage)
+            }
+        }
+        
         // Fetch messages for conversation
-        cloudController?.fetchRecords(ofType: .message, withParent: conversation) { (records) in
+        cloudController.fetchRecords(ofType: .message, withParent: conversation) { (records) in
             // Convert records to messages
             var fetchedMessages = records.map() { Message(fromRecord: $0, managedContext: self.coreDataController.managedContext) }
             fetchedMessages.sort() { $0.timestamp > $1.timestamp }
             
-            // Modify model
-            
+            // TODO: Modify model
+            if self.conversation.coreDataConversation.messages?.count == 0 {
+                for fetchedMessage in fetchedMessages {
+                    self.conversation.coreDataConversation.addToMessages(fetchedMessage.coreDataMessage)
+                }
+            }
             
             self.conversation.ckRecord?["latestMessage"] = (self.conversation.messages.first?.text ?? "") as CKRecordValue
             
@@ -46,19 +61,21 @@ class MessageTableViewController: UITableViewController {
         }
     }
     
+    // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let destinationViewController = segue.destination.childViewControllers.first as? AddMessageTableViewController,
             segue.identifier == "AddMessage" else { return }
         
         destinationViewController.delegate = self
+        destinationViewController.coreDataController = coreDataController
     }
 }
 
-// DATA SOURCE AND DELEGATE:
+// MARK: - Table View Data Source / Delegate
 
 extension MessageTableViewController {
     
-    // DATA SOURCE:
+    // MARK: - Date Source
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -81,12 +98,14 @@ extension MessageTableViewController {
         return cell
     }
     
-    // DELEGATE:
+    // MARK: - Delegate
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }
+
+// MARK: - Add Message Delegate
 
 extension MessageTableViewController: AddMessageTableViewControllerDelegate {
     func addedMessage(_ message: Message) {
@@ -97,8 +116,11 @@ extension MessageTableViewController: AddMessageTableViewControllerDelegate {
         conversation.coreDataConversation.addToMessages(message.coreDataMessage)
         conversation.ckRecord?["latestMessage"] = message.text as CKRecordValue
         
+        // Save to Core Data
+        coreDataController.save()
+        
         // Save to the Cloud
-        cloudController?.save(conversation.messages) { }
+        cloudController.save(conversation.messages) { }
         
         // Notify delegate
         delegate?.conversationDidChange(to: conversation)

@@ -26,6 +26,36 @@ class CoreDataController {
         }
     }
     
+    func fetchConversations(completion: @escaping ([CoreDataConversation]) -> Void) {
+        let fetchRequest: NSFetchRequest<CoreDataConversation> = CoreDataConversation.fetchRequest()
+        
+        let asyncFetchRequest = NSAsynchronousFetchRequest<CoreDataConversation>(fetchRequest: fetchRequest) { (result) in
+            guard let conversations = result.finalResult else { return }
+            completion(conversations)
+        }
+        
+        do {
+            try coreDataStack.managedContext.execute(asyncFetchRequest)
+        } catch let error as NSError {
+            print("Could not fetch: \(error), \(error.userInfo)")
+        }
+    }
+    
+    func fetchMessages(completion: @escaping ([CoreDataMessage]) -> Void) {
+        let fetchRequest: NSFetchRequest<CoreDataMessage> = CoreDataMessage.fetchRequest()
+        
+        let asyncFetchRequest = NSAsynchronousFetchRequest<CoreDataMessage>(fetchRequest: fetchRequest) { (result) in
+            guard let messages = result.finalResult else { return }
+            completion(messages)
+        }
+        
+        do {
+            try coreDataStack.managedContext.execute(asyncFetchRequest)
+        } catch let error as NSError {
+            print("Could not fetch: \(error), \(error.userInfo)")
+        }
+    }
+    
     // MARK: - Initializer
     init(coreDataStack: CoreDataStack) {
         self.coreDataStack = coreDataStack
