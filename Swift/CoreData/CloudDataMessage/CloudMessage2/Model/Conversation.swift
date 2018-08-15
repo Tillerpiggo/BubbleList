@@ -10,12 +10,17 @@
 
 import Foundation
 import CloudKit
+import CoreData
 
-class Conversation: CloudUploadable, CoreDataUploadable { // NSObject, NSCoding {
+class Conversation: CloudUploadable { // NSObject, NSCoding {
     
-    // PROPERTIES:
+    // MARK: - Properties
     
     var messages: [Message]
+    var creationDate: Date
+    var dateLastModified: Date
+    var title: String
+    
     var latestMessage: String {
         // Use the text of the first messasge, if that isn't there, use latestMessage, otherwise, it's blank.
         if let latestMessage = messages.first?.text {
@@ -29,28 +34,21 @@ class Conversation: CloudUploadable, CoreDataUploadable { // NSObject, NSCoding 
         }
     }
     
-    var creationDate: Date
-    var dateLastModified: Date
-    var title: String
+    // MARK: - Core Data
+    var coreDataConversation: CoreDataConversation
     
+    // MARK: - Cloud
     var ckRecord: CKRecord?
     var ckRecordSystemFields: NSMutableData
     
-    // NSCODING:
+    // MARK: - Initializers
     
-    /*
-    func encode(with aCoder: NSCoder) {
+    init(withTitle title: String, messages: [Message] = [Message](), managedContext: NSManagedObjectContext) {
+        // Create CoreDataConversation
+        let newCoreDataConversation = CoreDataConversation(context: managedContext)
+        newCoreDataConversation.title = title
+        newCoreDataConversation.messages = messages.map { $0.coreDataMessage }
         
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        
-    }
- */
-    
-    // INITIALIZERS:
-    
-    init(withTitle title: String, messages: [Message] = [Message]()) {
         // Properties
         self.title = title
         self.messages = messages
@@ -58,7 +56,7 @@ class Conversation: CloudUploadable, CoreDataUploadable { // NSObject, NSCoding 
         self.dateLastModified = Date()
         self.ckRecordSystemFields = NSMutableData()
         
-        // CKRecord
+        // Create CKRecord
         let newCKRecord = CKRecord(recordType: "Conversation")
         newCKRecord["title"] = title as CKRecordValue
         newCKRecord["latestMessage"] = (messages.first?.text as CKRecordValue?) ?? ("" as CKRecordValue)

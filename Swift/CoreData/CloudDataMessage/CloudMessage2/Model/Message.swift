@@ -11,12 +11,12 @@ import Foundation
 import CloudKit
 import CoreData
 
-class Message: Codable, CloudUploadable, CoreDataUploadable {
+class Message: CloudUploadable {
     
     // PROPERTIES:
     
-    var text: String
-    var timestamp: Date
+    var text: String { return coreDataMessage.text ?? "" }
+    var timestamp: Date { return (coreDataMessage.timestamp ?? NSDate()) as Date }
     
     var formattedTimestamp: String {
         let dateFormatter = DateFormatter()
@@ -27,66 +27,42 @@ class Message: Codable, CloudUploadable, CoreDataUploadable {
         return formattedTimestamp
     }
     
+    // Core Data
+    var coreDataMessage: CoreDataMessage
+    
+    // Cloud
     var ckRecord: CKRecord? // remember to set parent property
-    
-    
-    // CODABLE:
-    
-    enum CodingKeys: CodingKey {
-        case text
-        case timestamp
-    }
-    
-    func enocde(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(text, forKey: .text)
-        try container.encode(timestamp, forKey: .timestamp)
-    }
-    
-    required init(from decoder: Decoder) throws {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        text = try values.decode(String.self, forKey: .text)
-        timestamp = try values.decode(Date.self, forKey: .timestamp)
-        
-        // TODO: Figure out how to set the parent of the newCKRecord as the owning conversation, maybe fill it in after decoding
-        
-        let newCKRecord = CKRecord(recordType: "Message")
-        newCKRecord["text"] = text as CKRecordValue
-        ckRecord = newCKRecord
-    }
     
     // INITIALIZERS:
     
-    init(fromRecord record: CKRecord) {
-        self.text = record["text"] as! String
-        self.timestamp = record.creationDate!
+    init(fromRecord record: CKRecord, managedContext: NSManagedObjectContext) {
+        // Create CoreDataMessage
+        let newCoreDataMessage = CoreDataMessage(context: managedContext)
+        newCoreDataMessage.text = record["text"] as? String
+        newCoreDataMessage.timestamp = record.creationDate! as NSDate
+        
+        self.coreDataMessage = newCoreDataMessage
+        
+        // Create CKRecord
         self.ckRecord = record
     }
     
-    init(withText text: String, timestamp: Date, owningConversation: CKReference? = nil) {
-        // Properties
-        self.text = text
-        self.timestamp = timestamp
+    init(withText text: String, timestamp: Date, managedContext: NSManagedObjectContext, owningConversation: CKReference? = nil) {
+        // Create CoreDataMessage
+        let newCoreDataMessage = CoreDataMessage(context: managedContext)
+        newCoreDataMessage.text = text
+        newCoreDataMessage.timestamp = timestamp as NSDate
+        
+        self.coreDataMessage = newCoreDataMessage
         
         // CKRecord
         let newCKRecord = CKRecord(recordType: "Message")
         newCKRecord["text"] = text as CKRecordValue
         
-        if let parentRecord = owningConversation {
-            newCKRecord["owningConversation"] = parentRecord
+        if let owningConversation = owningConversation {
+            newCKRecord["owningConversation"] = owningConversation
         }
         
         self.ckRecord = newCKRecord
-    }
-    
-    // MARK: - Core Data Uploadable
-    func saveToCoreData(in managedContext: NSManagedObjectContext, owningConversation: CoreDataConversation) {
-        // Get NSManagedObject
-        let message = CoreDataMessage(context: managedContext)
-        
-        // Configure
-        message.text = text
-        message.timestamp = timestamp as NSDate
-        message.owningConversation = owningConversation
     }
 }
