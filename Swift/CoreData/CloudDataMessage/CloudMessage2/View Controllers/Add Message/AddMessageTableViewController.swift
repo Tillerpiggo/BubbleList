@@ -18,6 +18,7 @@ class AddMessageTableViewController: UITableViewController {
     // PROPERTIES:
     
     var delegate: AddMessageTableViewControllerDelegate?
+    var coreDataController: CoreDataController!
     
     // IBOUTLETS:
     

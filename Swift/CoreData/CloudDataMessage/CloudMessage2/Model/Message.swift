@@ -11,7 +11,7 @@ import Foundation
 import CloudKit
 import CoreData
 
-class Message: CloudUploadable {
+class Message: CloudUploadable, CoreDataUploadable {
     
     // PROPERTIES:
     
@@ -29,6 +29,9 @@ class Message: CloudUploadable {
     
     // Core Data
     var coreDataMessage: CoreDataMessage
+    var coreData: NSManagedObject {
+        return coreDataMessage
+    }
     
     // Cloud
     var ckRecord: CKRecord? // remember to set parent property

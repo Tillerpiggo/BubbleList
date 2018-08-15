@@ -17,7 +17,7 @@ class ConversationTableViewController: UITableViewController {
     var selectedIndexPath: IndexPath? // Necessary because we deselect the row right after it is selected (otherwise it looks ugly)
     
     var cloudController: CloudController?
-    var managedContext: NSManagedObjectContext!
+    var coreDataController: CoreDataController!
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
@@ -29,7 +29,7 @@ class ConversationTableViewController: UITableViewController {
         // Get from cloud (probably should show some loading indicator)
         cloudController?.fetchRecords(ofType: .conversation) { (records) in
             // Convert to conversations
-            let fetchedConversations = records.map() { Conversation(fromRecord: $0) }
+            let fetchedConversations = records.map() { Conversation(fromRecord: $0, managedContext: self.coreDataController.managedContext) }
             
             // Update model
             self.conversations = fetchedConversations
@@ -46,6 +46,7 @@ class ConversationTableViewController: UITableViewController {
         // Add Conversation
         if let destinationViewController = segue.destination.childViewControllers.first as? AddConversationTableViewController, segue.identifier == "AddConversation" {
             destinationViewController.delegate = self
+            destinationViewController.coreDataController = coreDataController
         } else if let destinationViewController = segue.destination as? MessageTableViewController, segue.identifier == "MessageTableView" {
             
             // (didSelectRowAtIndexPath is actually called after prepare(for:)
@@ -58,6 +59,7 @@ class ConversationTableViewController: UITableViewController {
             
             // Dependency injection of cloud controller
             destinationViewController.cloudController = cloudController
+            destinationViewController.coreDataController = coreDataController
             
             // Set up delegate
             destinationViewController.delegate = self

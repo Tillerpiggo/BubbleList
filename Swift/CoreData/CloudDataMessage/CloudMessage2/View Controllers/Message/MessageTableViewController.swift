@@ -19,6 +19,7 @@ class MessageTableViewController: UITableViewController {
     var delegate: MessageTableViewControllerDelegate?
     
     var cloudController: CloudController?
+    var coreDataController: CoreDataController!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,11 +30,12 @@ class MessageTableViewController: UITableViewController {
         // Fetch messages for conversation
         cloudController?.fetchRecords(ofType: .message, withParent: conversation) { (records) in
             // Convert records to messages
-            let fetchedMessages = records.map() { Message(fromRecord: $0) }
+            var fetchedMessages = records.map() { Message(fromRecord: $0, managedContext: self.coreDataController.managedContext) }
+            fetchedMessages.sort() { $0.timestamp > $1.timestamp }
             
             // Modify model
-            self.conversation.messages = fetchedMessages
-            self.conversation.messages.sort() { $0.timestamp > $1.timestamp }
+            
+            
             self.conversation.ckRecord?["latestMessage"] = (self.conversation.messages.first?.text ?? "") as CKRecordValue
             
             // Reload table view
@@ -92,8 +94,7 @@ extension MessageTableViewController: AddMessageTableViewControllerDelegate {
         message.ckRecord?["owningConversation"] = CKReference(record: conversation.ckRecord!, action: .none)
         
         // Modify model
-        conversation.messages.append(message)
-        conversation.messages.sort() { $0.timestamp > $1.timestamp }
+        conversation.coreDataConversation.addToMessages(message.coreDataMessage)
         conversation.ckRecord?["latestMessage"] = message.text as CKRecordValue
         
         // Save to the Cloud

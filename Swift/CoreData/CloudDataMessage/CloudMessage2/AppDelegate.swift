@@ -18,9 +18,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let navigationController = window?.rootViewController as? UINavigationController,
             let conversationTableViewController = navigationController.topViewController as? ConversationTableViewController {
             
-                // Dependency inject the CoreData/CloudKit Objects
-                conversationTableViewController.cloudController = CloudController()
-                conversationTableViewController.managedContext = coreDataStack.managedContext
+            // Dependency inject the CoreData/CloudKit Objects
+            conversationTableViewController.cloudController = CloudController()
+            conversationTableViewController.coreDataController = CoreDataController(coreDataStack: coreDataStack)
             
         }
         

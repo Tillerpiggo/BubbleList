@@ -13,10 +13,16 @@ class CoreDataController {
     // MARK: - Properties
     private var coreDataStack: CoreDataStack
     
+    var managedContext: NSManagedObjectContext {
+        return coreDataStack.managedContext
+    }
+    
     // MARK: - API
-    func save(_ coreDataUploadables: [CoreDataUploadable]) {
-        for coreDataUploadable in coreDataUploadables {
-            coreDataUploadable.saveToCoreData(in: coreDataStack.managedContext)
+    func save() {
+        do {
+            try coreDataStack.managedContext.save()
+        } catch let error as NSError {
+            print("Failed to save with error: \(error), \(error.userInfo)")
         }
     }
     

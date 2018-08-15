@@ -1,5 +1,5 @@
 //
-//  CoreDataUploadable.swift
+//  ManagedObjectSubclass.swift
 //  CloudMessage2
 //
 //  Created by Tyler Gee on 8/15/18.
@@ -7,8 +7,5 @@
 //
 
 import Foundation
-import CoreData
 
-protocol CoreDataUploadable {
-    var coreData: NSManagedObject { get }
-}
+protocol ManagedObjectSubclass { }

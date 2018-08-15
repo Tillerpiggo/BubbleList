@@ -17,6 +17,7 @@ class AddConversationTableViewController: UITableViewController {
     // PROPERTIES:
     
     public var delegate: AddConversationTableViewControllerDelegate?
+    var coreDataController: CoreDataController!
 
     // IBOUTLETS:
     
@@ -47,7 +48,7 @@ class AddConversationTableViewController: UITableViewController {
     // HELPER METHODS:
     
     private func save() {
-        let newConversation = Conversation(withTitle: titleTextField.text!)
+        let newConversation = Conversation(withTitle: titleTextField.text!, managedContext: coreDataController.managedContext)
         delegate?.addedConversation(newConversation)
     }
     

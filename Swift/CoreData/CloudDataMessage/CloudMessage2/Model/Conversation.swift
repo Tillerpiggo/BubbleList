@@ -12,7 +12,7 @@ import Foundation
 import CloudKit
 import CoreData
 
-class Conversation: CloudUploadable { // NSObject, NSCoding {
+class Conversation: CloudUploadable, CoreDataUploadable {
     
     // MARK: - Properties
     
@@ -39,6 +39,9 @@ class Conversation: CloudUploadable { // NSObject, NSCoding {
     
     // MARK: - Core Data
     var coreDataConversation: CoreDataConversation
+    var coreData: NSManagedObject {
+        return coreDataConversation
+    }
     
     // MARK: - Cloud
     var ckRecord: CKRecord?
@@ -49,7 +52,9 @@ class Conversation: CloudUploadable { // NSObject, NSCoding {
         // Create CoreDataConversation
         let newCoreDataConversation = CoreDataConversation(context: managedContext)
         newCoreDataConversation.title = title
-        messages.forEach() { newCoreDataConversation.addToMessages($0.coreDataMessage) }
+        for message in messages {
+            newCoreDataConversation.addToMessages(message.coreDataMessage)
+        }
         newCoreDataConversation.creationDate = NSDate()
         newCoreDataConversation.dateLastModified = NSDate()
         self.coreDataConversation = newCoreDataConversation
