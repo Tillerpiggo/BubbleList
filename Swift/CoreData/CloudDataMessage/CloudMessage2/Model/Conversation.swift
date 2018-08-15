@@ -11,7 +11,7 @@
 import Foundation
 import CloudKit
 
-class Conversation: CloudUploadable { // NSObject, NSCoding {
+class Conversation: CloudUploadable, CoreDataUploadable { // NSObject, NSCoding {
     
     // PROPERTIES:
     

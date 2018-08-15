@@ -13,11 +13,6 @@ import CloudKit
 
 class CloudController {
     
-    enum RecordType: String {
-        case conversation = "Conversation"
-        case message = "Message"
-    }
-    
     var database = CKContainer.default().publicCloudDatabase // Change depending on needs, may include zone as well
     
     func fetchRecords(ofType recordType: RecordType, perZoneCompletion: @escaping ([CKRecord]) -> Void) {
@@ -50,7 +45,7 @@ class CloudController {
         
         // Create query
         let predicate = NSPredicate(value: true)
-        let query = CKQuery(recordType: recordType.rawValue, predicate: predicate)
+        let query = CKQuery(recordType: recordType.cloudValue, predicate: predicate)
         
         // Create and configure operation
         let operation = CKQueryOperation(query: query)
@@ -82,7 +77,7 @@ class CloudController {
         let parentReference = CKReference(recordID: parentRecordID, action: .none)
         let predicate = NSPredicate(format: "owningConversation == %@", parentReference) // The name of this field needs to be changing (owningList, owningClass, etc.)
         
-        let query = CKQuery(recordType: recordType.rawValue, predicate: predicate)
+        let query = CKQuery(recordType: recordType.cloudValue, predicate: predicate)
         
         // Create operation
         let operation = CKQueryOperation(query: query)

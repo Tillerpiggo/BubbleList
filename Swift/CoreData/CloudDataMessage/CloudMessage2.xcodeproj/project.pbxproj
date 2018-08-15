@@ -25,6 +25,9 @@
 		2382AD402123E9DF00E20250 /* CoreDataMessage+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2382AD3C2123E9DF00E20250 /* CoreDataMessage+CoreDataProperties.swift */; };
 		2382AD412123E9DF00E20250 /* CoreDataConversation+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2382AD3D2123E9DF00E20250 /* CoreDataConversation+CoreDataClass.swift */; };
 		2382AD422123E9DF00E20250 /* CoreDataConversation+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2382AD3E2123E9DF00E20250 /* CoreDataConversation+CoreDataProperties.swift */; };
+		2382AD442124802100E20250 /* CoreDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2382AD432124802100E20250 /* CoreDataController.swift */; };
+		2382AD46212480CC00E20250 /* RecordType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2382AD45212480CC00E20250 /* RecordType.swift */; };
+		2382AD48212484C500E20250 /* CoreDataUploadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2382AD47212484C500E20250 /* CoreDataUploadable.swift */; };
 		23CB4FF62123E35B0097566E /* CloudMessage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 23CB4FF42123E35B0097566E /* CloudMessage.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
@@ -50,6 +53,9 @@
 		2382AD3C2123E9DF00E20250 /* CoreDataMessage+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "CoreDataMessage+CoreDataProperties.swift"; path = "../../../../CoreDataMessage+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		2382AD3D2123E9DF00E20250 /* CoreDataConversation+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "CoreDataConversation+CoreDataClass.swift"; path = "../../../../CoreDataConversation+CoreDataClass.swift"; sourceTree = "<group>"; };
 		2382AD3E2123E9DF00E20250 /* CoreDataConversation+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "CoreDataConversation+CoreDataProperties.swift"; path = "../../../../CoreDataConversation+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		2382AD432124802100E20250 /* CoreDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataController.swift; sourceTree = "<group>"; };
+		2382AD45212480CC00E20250 /* RecordType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordType.swift; sourceTree = "<group>"; };
+		2382AD47212484C500E20250 /* CoreDataUploadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataUploadable.swift; sourceTree = "<group>"; };
 		23CB4FF52123E35B0097566E /* CloudMessage.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CloudMessage.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -114,7 +120,6 @@
 			children = (
 				2340E2452116336E00F83681 /* Conversation.swift */,
 				2340E247211635AD00F83681 /* Message.swift */,
-				2340E25A2118C5A600F83681 /* CloudUploadable.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -155,6 +160,7 @@
 			isa = PBXGroup;
 			children = (
 				2340E2542116B94E00F83681 /* CloudController.swift */,
+				2340E25A2118C5A600F83681 /* CloudUploadable.swift */,
 			);
 			path = CloudKit;
 			sourceTree = "<group>";
@@ -162,7 +168,9 @@
 		2340E2532116B92800F83681 /* Core Data */ = {
 			isa = PBXGroup;
 			children = (
+				2382AD432124802100E20250 /* CoreDataController.swift */,
 				2340E25D211A5E0900F83681 /* CoreDataStack.swift */,
+				2382AD47212484C500E20250 /* CoreDataUploadable.swift */,
 				2382AD3A2123E8F600E20250 /* NSManagedObject Subclasses */,
 				23CB4FF42123E35B0097566E /* CloudMessage.xcdatamodeld */,
 			);
@@ -180,6 +188,7 @@
 		2340E25C2119EFA600F83681 /* Back-End */ = {
 			isa = PBXGroup;
 			children = (
+				2382AD45212480CC00E20250 /* RecordType.swift */,
 				2340E2522116B8F600F83681 /* CloudKit */,
 				2340E2532116B92800F83681 /* Core Data */,
 			);
@@ -289,11 +298,14 @@
 				2340E25B2118C5A600F83681 /* CloudUploadable.swift in Sources */,
 				2382AD402123E9DF00E20250 /* CoreDataMessage+CoreDataProperties.swift in Sources */,
 				2340E24B2116459400F83681 /* AddConversationTableViewController.swift in Sources */,
+				2382AD442124802100E20250 /* CoreDataController.swift in Sources */,
 				2340E2432116316600F83681 /* ConversationTableViewController.swift in Sources */,
+				2382AD46212480CC00E20250 /* RecordType.swift in Sources */,
 				23CB4FF62123E35B0097566E /* CloudMessage.xcdatamodeld in Sources */,
 				2340E2552116B94E00F83681 /* CloudController.swift in Sources */,
 				2340E24D2116618C00F83681 /* MessageTableViewController.swift in Sources */,
 				2340E22F21162F8D00F83681 /* AppDelegate.swift in Sources */,
+				2382AD48212484C500E20250 /* CoreDataUploadable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

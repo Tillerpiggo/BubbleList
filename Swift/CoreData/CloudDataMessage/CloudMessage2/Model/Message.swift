@@ -9,8 +9,9 @@
 
 import Foundation
 import CloudKit
+import CoreData
 
-class Message: Codable, CloudUploadable {
+class Message: Codable, CloudUploadable, CoreDataUploadable {
     
     // PROPERTIES:
     
@@ -76,5 +77,16 @@ class Message: Codable, CloudUploadable {
         }
         
         self.ckRecord = newCKRecord
+    }
+    
+    // MARK: - Core Data Uploadable
+    func saveToCoreData(in managedContext: NSManagedObjectContext, owningConversation: CoreDataConversation) {
+        // Get NSManagedObject
+        let message = CoreDataMessage(context: managedContext)
+        
+        // Configure
+        message.text = text
+        message.timestamp = timestamp as NSDate
+        message.owningConversation = owningConversation
     }
 }
