@@ -29,13 +29,16 @@ class MessageTableViewController: UITableViewController {
         // Multiple lines per message
         tableView.rowHeight = UITableViewAutomaticDimension
         
+        
         // Fetch messages from Core Data
         coreDataController.fetchMessages() { (coreDataMessages) in
-            guard self.conversation.messages.count == 0 else { return }
+            guard self.conversation.coreDataConversation.messages?.count == 0 else { return }
             
             for coreDataMessage in coreDataMessages {
                 self.conversation.coreDataConversation.addToMessages(coreDataMessage)
             }
+            
+            DispatchQueue.main.async { self.tableView.reloadData() }
         }
         
         // Fetch messages for conversation
@@ -45,10 +48,19 @@ class MessageTableViewController: UITableViewController {
             fetchedMessages.sort() { $0.timestamp > $1.timestamp }
             
             // TODO: Modify model
-            if self.conversation.coreDataConversation.messages?.count == 0 {
-                for fetchedMessage in fetchedMessages {
-                    self.conversation.coreDataConversation.addToMessages(fetchedMessage.coreDataMessage)
+            let fetchedCoreDataMessages = fetchedMessages.map() { $0.coreDataMessage }
+            if NSOrderedSet(array: fetchedCoreDataMessages) != self.conversation.coreDataConversation.messages {
+                // Delete all messages in the conversation
+                var messagesToDelete: [CoreDataMessage] = []
+                for message in self.conversation.coreDataConversation.messages! {
+                    messagesToDelete.append(message as! CoreDataMessage)
                 }
+                
+                self.conversation.coreDataConversation.removeFromMessages(NSSet(array: messagesToDelete))
+                
+                // Add in the new messages
+                let messagesToAdd = fetchedMessages.map() { $0.coreDataMessage }
+                self.conversation.coreDataConversation.addToMessages(NSSet(array: messagesToAdd))
             }
             
             self.conversation.ckRecord?["latestMessage"] = (self.conversation.messages.first?.text ?? "") as CKRecordValue

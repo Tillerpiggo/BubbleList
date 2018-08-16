@@ -43,6 +43,12 @@ class Conversation: CloudUploadable, CoreDataUploadable {
         return coreDataConversation
     }
     
+    func update(withRecord record: CKRecord) {
+        coreDataConversation.title = record["title"] as? String
+        if let creationDate = record.creationDate as NSDate? { coreDataConversation.creationDate = creationDate }
+        if let dateLastModified = record.modificationDate as NSDate? { coreDataConversation.dateLastModified = dateLastModified }
+    }
+    
     // MARK: - Cloud
     var ckRecord: CKRecord?
     

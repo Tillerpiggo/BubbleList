@@ -28,17 +28,25 @@ class ConversationTableViewController: UITableViewController {
         coreDataController.fetchConversations() { (coreDataConversations) in
             for coreDataConversation in coreDataConversations {
                 self.conversations.append(Conversation(fromCoreDataConversation: coreDataConversation))
+                print(self.conversations.count)
             }
             self.coreDataController.save()
+            
+            DispatchQueue.main.async { self.tableView.reloadData() }
         }
         
         // Get from cloud (probably should show some loading indicator)
         cloudController.fetchRecords(ofType: .conversation) { (records) in
-            // Convert to conversations
-            let fetchedConversations = records.map() { Conversation(fromRecord: $0, managedContext: self.coreDataController.managedContext) }
             
-            // Update model
-            self.conversations = fetchedConversations
+            // Convert to conversations
+            for record in records {
+                if let conversationIndex = self.conversations.index(where: { $0.coreDataConversation.title == record["title"] as? String}) {
+                    self.conversations[conversationIndex].update(withRecord: record)
+                } else {
+                    let newConversation = Conversation(fromRecord: record, managedContext: self.coreDataController.managedContext)
+                    self.conversations.append(newConversation)
+                }
+            }
             
             self.coreDataController.save()
             
