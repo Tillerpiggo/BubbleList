@@ -73,6 +73,7 @@ class MessageTableViewController: UITableViewController {
         
         destinationViewController.delegate = self
         destinationViewController.coreDataController = coreDataController
+        destinationViewController.owningConversation = CKReference(record: conversation.ckRecord!, action: .none)
     }
 }
 
@@ -114,12 +115,6 @@ extension MessageTableViewController {
 
 extension MessageTableViewController: AddMessageTableViewControllerDelegate {
     func addedMessage(_ message: Message) {
-        // Make the message belong to this conversation
-        if message.ckRecord != nil {
-            message.ckRecord?["owningConversation"] = CKReference(record: conversation.ckRecord!, action: .none)
-        }
-        
-        
         
         // Modify model
         conversation.coreDataConversation.addToMessages(message.coreDataMessage)
@@ -131,7 +126,7 @@ extension MessageTableViewController: AddMessageTableViewControllerDelegate {
         print("After adding a message, the conversation had \(conversation.messages.count) messages before saving.")
         
         // Save to the Cloud
-        cloudController.save(conversation.messages) { }
+        cloudController.save(conversation.messages) { print("Succesfully saved messages") }
         
         // Notify delegate
         delegate?.conversationDidChange(to: conversation, wasModified: true)

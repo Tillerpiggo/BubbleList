@@ -19,6 +19,7 @@ class AddMessageTableViewController: UITableViewController {
     
     var delegate: AddMessageTableViewControllerDelegate?
     var coreDataController: CoreDataController!
+    var owningConversation: CKReference!
     
     // IBOUTLETS:
     
@@ -56,7 +57,7 @@ class AddMessageTableViewController: UITableViewController {
     // HELPER METHODS:
     
     private func save() {
-        let newMessage = Message(withText: textField.text!, timestamp: Date(), managedContext: coreDataController.managedContext)
+        let newMessage = Message(withText: textField.text!, timestamp: Date(), managedContext: coreDataController.managedContext, owningConversation: owningConversation)
         delegate?.addedMessage(newMessage)
     }
     

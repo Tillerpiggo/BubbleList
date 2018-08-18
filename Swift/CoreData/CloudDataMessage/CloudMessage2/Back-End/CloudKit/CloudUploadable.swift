@@ -10,5 +10,5 @@ import Foundation
 import CloudKit
 
 protocol CloudUploadable {
-    var ckRecord: CKRecord? { get set }
+    var ckRecord: CKRecord { get set }
 }

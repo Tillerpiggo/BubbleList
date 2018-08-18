@@ -34,7 +34,7 @@ class Message: CloudUploadable, CoreDataUploadable {
     }
     
     // Cloud
-    var ckRecord: CKRecord? // remember to set parent property
+    var ckRecord: CKRecord // remember to set parent property
     
     // INITIALIZERS:
     
@@ -57,12 +57,14 @@ class Message: CloudUploadable, CoreDataUploadable {
         let newCKRecord = CKRecord(recordType: RecordType.message.cloudValue)
         newCKRecord["text"] = text as CKRecordValue
         
+        // TODO: Set owning conversation
+        
         self.ckRecord = newCKRecord
         
         // TODO: Add owning conversation of message from core data
     }
     
-    init(withText text: String, timestamp: Date, managedContext: NSManagedObjectContext, owningConversation: CKReference? = nil) {
+    init(withText text: String, timestamp: Date, managedContext: NSManagedObjectContext, owningConversation: CKReference) {
         // Create CoreDataMessage
         let newCoreDataMessage = CoreDataMessage(context: managedContext)
         newCoreDataMessage.text = text
@@ -73,10 +75,7 @@ class Message: CloudUploadable, CoreDataUploadable {
         // Create CKRecord
         let newCKRecord = CKRecord(recordType: RecordType.message.cloudValue)
         newCKRecord["text"] = text as CKRecordValue
-        
-        if let owningConversation = owningConversation {
-            newCKRecord["owningConversation"] = owningConversation
-        }
+        newCKRecord["owningConversation"] = owningConversation
         
         self.ckRecord = newCKRecord
     }

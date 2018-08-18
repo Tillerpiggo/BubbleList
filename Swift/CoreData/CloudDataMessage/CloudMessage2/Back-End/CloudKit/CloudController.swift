@@ -78,7 +78,7 @@ class CloudController {
         }
         
         // Create query
-        let parentReference = CKReference(recordID: parentRecordID, action: .deleteSelf)
+        let parentReference = CKReference(recordID: parentRecordID, action: .none)
         let predicate = NSPredicate(format: "owningConversation == %@", parentReference) // The name of this field needs to be changing (owningList, owningClass, etc.)
         
         let query = CKQuery(recordType: recordType.cloudValue, predicate: predicate)

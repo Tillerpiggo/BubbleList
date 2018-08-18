@@ -27,12 +27,12 @@ class Conversation: CloudUploadable, CoreDataUploadable {
     var latestMessage: String {
         // Use the text of the first messasge, if that isn't there, use latestMessage, otherwise, it's blank.
         if let latestMessage = messages.first?.text {
-            ckRecord?["latestMessage"] = latestMessage as CKRecordValue
+            ckRecord["latestMessage"] = latestMessage as CKRecordValue
             return latestMessage
-        } else if let latestMessage = ckRecord?["latestMessage"] as? String {
+        } else if let latestMessage = ckRecord["latestMessage"] as? String {
             return latestMessage
         } else {
-            ckRecord?["latestMessage"] = "" as CKRecordValue
+            ckRecord["latestMessage"] = "" as CKRecordValue
             return ""
         }
     }
@@ -50,7 +50,7 @@ class Conversation: CloudUploadable, CoreDataUploadable {
     }
     
     // MARK: - Cloud
-    var ckRecord: CKRecord?
+    var ckRecord: CKRecord
     
     // MARK: - Initializers
     
@@ -91,5 +91,6 @@ class Conversation: CloudUploadable, CoreDataUploadable {
         let newCKRecord = CKRecord(recordType: "Conversation")
         newCKRecord["title"] = title as CKRecordValue
         newCKRecord["latestMessage"] = (messages.first?.text as CKRecordValue?) ?? ("" as CKRecordValue)
+        self.ckRecord = newCKRecord
     }
 }
