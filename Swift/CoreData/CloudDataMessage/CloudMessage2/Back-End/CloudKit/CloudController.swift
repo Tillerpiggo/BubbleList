@@ -71,11 +71,7 @@ class CloudController {
     func fetchRecords(ofType recordType: RecordType, withParent parent: CloudUploadable, completion: @escaping ([CKRecord]) -> Void) {
         // Search for all messages that belong to a certain conversation in the Cloud:
         
-        // Find ID of parent:
-        guard let parentRecordID = parent.ckRecord?.recordID else {
-            print("Couldn't get parent recordID")
-            return
-        }
+        let parentRecordID = parent.ckRecord.recordID
         
         // Create query
         let parentReference = CKReference(recordID: parentRecordID, action: .none)
@@ -87,7 +83,6 @@ class CloudController {
         let operation = CKQueryOperation(query: query)
         
         var fetchedRecords = [CKRecord]()
-        
         operation.recordFetchedBlock = { record in
             fetchedRecords.append(record)
         }
@@ -111,7 +106,7 @@ class CloudController {
         let operation = CKModifyRecordsOperation()
         
         // Map conversations to records
-        let recordsToSave = cloudUploadables.map() { $0.ckRecord! }
+        let recordsToSave = cloudUploadables.map() { $0.ckRecord }
         operation.recordsToSave = recordsToSave
         
         operation.modifyRecordsCompletionBlock = { (record, recordID, error) in
@@ -129,7 +124,7 @@ class CloudController {
         let operation = CKModifyRecordsOperation()
         
         // Map conversations to recordIDs
-        let recordIDsToDelete = cloudUploadables.map { $0.ckRecord!.recordID }
+        let recordIDsToDelete = cloudUploadables.map { $0.ckRecord.recordID }
         operation.recordIDsToDelete = recordIDsToDelete
         
         operation.modifyRecordsCompletionBlock = { (record, recordID, error) in

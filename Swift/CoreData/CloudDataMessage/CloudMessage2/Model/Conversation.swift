@@ -84,13 +84,15 @@ class Conversation: CloudUploadable, CoreDataUploadable {
         self.ckRecord = record
     }
     
-    init(fromCoreDataConversation coreDataConversation: CoreDataConversation) {
-        self.coreDataConversation = coreDataConversation
+    init(fromCoreDataConversation newCoreDataConversation: CoreDataConversation) {
+        self.coreDataConversation = newCoreDataConversation
         
         // Create CKRecord
         let newCKRecord = CKRecord(recordType: "Conversation")
-        newCKRecord["title"] = title as CKRecordValue
-        newCKRecord["latestMessage"] = (messages.first?.text as CKRecordValue?) ?? ("" as CKRecordValue)
+        newCKRecord["title"] = newCoreDataConversation.title as CKRecordValue?
+        if let latestMessage = newCoreDataConversation.messages?.firstObject as? CoreDataMessage {
+            newCKRecord["latestMessage"] = (latestMessage.text ?? "") as CKRecordValue
+        }
         self.ckRecord = newCKRecord
     }
 }

@@ -54,7 +54,7 @@ class MessageTableViewController: UITableViewController {
             let messagesToAdd = fetchedMessages.map() { $0.coreDataMessage }
             self.conversation.coreDataConversation.addToMessages(NSSet(array: messagesToAdd))
         
-            self.conversation.ckRecord?["latestMessage"] = (self.conversation.messages.first?.text ?? "") as CKRecordValue
+            self.conversation.ckRecord["latestMessage"] = (self.conversation.messages.first?.text ?? "") as CKRecordValue
             
             self.coreDataController.save()
             
@@ -73,7 +73,7 @@ class MessageTableViewController: UITableViewController {
         
         destinationViewController.delegate = self
         destinationViewController.coreDataController = coreDataController
-        destinationViewController.owningConversation = CKReference(record: conversation.ckRecord!, action: .none)
+        destinationViewController.owningConversation = CKReference(record: conversation.ckRecord, action: .none)
     }
 }
 
@@ -118,7 +118,7 @@ extension MessageTableViewController: AddMessageTableViewControllerDelegate {
         
         // Modify model
         conversation.coreDataConversation.addToMessages(message.coreDataMessage)
-        conversation.ckRecord?["latestMessage"] = message.text as CKRecordValue
+        conversation.ckRecord["latestMessage"] = message.text as CKRecordValue
         
         // Save to Core Data
         coreDataController.save()

@@ -55,7 +55,7 @@ class Message: CloudUploadable, CoreDataUploadable {
         
         // Create CKRecord
         let newCKRecord = CKRecord(recordType: RecordType.message.cloudValue)
-        newCKRecord["text"] = text as CKRecordValue
+        newCKRecord["text"] = coreDataMessage.text as CKRecordValue?
         
         // TODO: Set owning conversation
         
@@ -75,7 +75,7 @@ class Message: CloudUploadable, CoreDataUploadable {
         // Create CKRecord
         let newCKRecord = CKRecord(recordType: RecordType.message.cloudValue)
         newCKRecord["text"] = text as CKRecordValue
-        newCKRecord["owningConversation"] = owningConversation
+        newCKRecord["owningConversation"] = owningConversation as CKRecordValue
         
         self.ckRecord = newCKRecord
     }
