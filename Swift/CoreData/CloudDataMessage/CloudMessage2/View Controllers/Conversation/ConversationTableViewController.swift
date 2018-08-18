@@ -28,8 +28,9 @@ class ConversationTableViewController: UITableViewController {
         coreDataController.fetchConversations() { (coreDataConversations) in
             for coreDataConversation in coreDataConversations {
                 self.conversations.append(Conversation(fromCoreDataConversation: coreDataConversation))
-                print(self.conversations.count)
             }
+            self.conversations.sort() { $0.dateLastModified > $1.dateLastModified }
+            
             self.coreDataController.save()
             
             DispatchQueue.main.async { self.tableView.reloadData() }
@@ -38,17 +39,27 @@ class ConversationTableViewController: UITableViewController {
         // Get from cloud (probably should show some loading indicator)
         cloudController.fetchRecords(ofType: .conversation) { (records) in
             
-            // Convert to conversations
+            print("\(records.count) conversation records fetched in ConversationTableViewController.")
+            
+            // Delete all conversations in core data
+            for conversation in self.conversations {
+                self.coreDataController.delete(conversation)
+            }
+            self.coreDataController.save()
+            
+            self.conversations = []
+            
+            
+            // Add in new conversations
             for record in records {
-                if let conversationIndex = self.conversations.index(where: { $0.coreDataConversation.title == record["title"] as? String}) {
-                    self.conversations[conversationIndex].update(withRecord: record)
-                } else {
-                    let newConversation = Conversation(fromRecord: record, managedContext: self.coreDataController.managedContext)
-                    self.conversations.append(newConversation)
-                }
+                let newConversation = Conversation(fromRecord: record, managedContext: self.coreDataController.managedContext)
+                self.conversations.append(newConversation)
             }
             
+            self.conversations.sort() { $0.dateLastModified > $1.dateLastModified }
+            
             self.coreDataController.save()
+            
             
             // Update view
             DispatchQueue.main.async { self.tableView.reloadData() }
@@ -124,6 +135,9 @@ extension ConversationTableViewController {
             // Delete from cloud
             cloudController.delete([deletedConversation]) { }
             
+            // Delete from core data
+            coreDataController.delete(deletedConversation)
+            
             // Update View
             tableView.deleteRows(at: [indexPath], with: .automatic)
         }
@@ -165,12 +179,14 @@ extension ConversationTableViewController: AddConversationTableViewControllerDel
 // MARK: - Message Table View Delegate
 
 extension ConversationTableViewController: MessageTableViewControllerDelegate {
-    func conversationDidChange(to conversation: Conversation) {
+    func conversationDidChange(to conversation: Conversation, wasModified: Bool) {
         // Save change to the Cloud
         cloudController.save([conversation]) { }
         
         // Save change to Core Data
         coreDataController.save()
+        
+        if wasModified { conversation.coreDataConversation.dateLastModified = NSDate() }
         
         if let selectedIndexPath = selectedIndexPath {
             conversations[selectedIndexPath.row] = conversation

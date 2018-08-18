@@ -56,6 +56,10 @@ class CoreDataController {
         }
     }
     
+    func delete(_ coreDataUploadable: CoreDataUploadable) {
+        managedContext.delete(coreDataUploadable.coreData)
+    }
+    
     // MARK: - Initializer
     init(coreDataStack: CoreDataStack) {
         self.coreDataStack = coreDataStack

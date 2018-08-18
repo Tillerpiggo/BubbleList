@@ -10,7 +10,7 @@ import UIKit
 import CloudKit
 
 protocol MessageTableViewControllerDelegate {
-    func conversationDidChange(to conversation: Conversation)
+    func conversationDidChange(to conversation: Conversation, wasModified: Bool)
 }
 
 class MessageTableViewController: UITableViewController {
@@ -30,45 +30,38 @@ class MessageTableViewController: UITableViewController {
         tableView.rowHeight = UITableViewAutomaticDimension
         
         
-        // Fetch messages from Core Data
-        coreDataController.fetchMessages() { (coreDataMessages) in
-            guard self.conversation.coreDataConversation.messages?.count == 0 else { return }
-            
-            for coreDataMessage in coreDataMessages {
-                self.conversation.coreDataConversation.addToMessages(coreDataMessage)
-            }
-            
-            DispatchQueue.main.async { self.tableView.reloadData() }
-        }
+        // Messages already obtained from core data
+        tableView.reloadData()
+        
+        
         
         // Fetch messages for conversation
         cloudController.fetchRecords(ofType: .message, withParent: conversation) { (records) in
+            print("\(records.count) message records fetched from MessageTableViewController.")
+            
             // Convert records to messages
             var fetchedMessages = records.map() { Message(fromRecord: $0, managedContext: self.coreDataController.managedContext) }
             fetchedMessages.sort() { $0.timestamp > $1.timestamp }
             
-            // TODO: Modify model
-            let fetchedCoreDataMessages = fetchedMessages.map() { $0.coreDataMessage }
-            if NSOrderedSet(array: fetchedCoreDataMessages) != self.conversation.coreDataConversation.messages {
-                // Delete all messages in the conversation
-                var messagesToDelete: [CoreDataMessage] = []
-                for message in self.conversation.coreDataConversation.messages! {
-                    messagesToDelete.append(message as! CoreDataMessage)
-                }
-                
-                self.conversation.coreDataConversation.removeFromMessages(NSSet(array: messagesToDelete))
-                
-                // Add in the new messages
-                let messagesToAdd = fetchedMessages.map() { $0.coreDataMessage }
-                self.conversation.coreDataConversation.addToMessages(NSSet(array: messagesToAdd))
-            }
             
+            // Delete all messages in the conversation
+            for message in self.conversation.messages {
+                self.coreDataController.delete(message)
+            }
+            self.coreDataController.save()
+            
+            // Add in the new messages
+            let messagesToAdd = fetchedMessages.map() { $0.coreDataMessage }
+            self.conversation.coreDataConversation.addToMessages(NSSet(array: messagesToAdd))
+        
             self.conversation.ckRecord?["latestMessage"] = (self.conversation.messages.first?.text ?? "") as CKRecordValue
+            
+            self.coreDataController.save()
             
             // Reload table view
             DispatchQueue.main.async {
                 self.tableView.reloadData()
-                self.delegate?.conversationDidChange(to: self.conversation)
+                self.delegate?.conversationDidChange(to: self.conversation, wasModified: false)
             }
         }
     }
@@ -122,7 +115,11 @@ extension MessageTableViewController {
 extension MessageTableViewController: AddMessageTableViewControllerDelegate {
     func addedMessage(_ message: Message) {
         // Make the message belong to this conversation
-        message.ckRecord?["owningConversation"] = CKReference(record: conversation.ckRecord!, action: .none)
+        if message.ckRecord != nil {
+            message.ckRecord?["owningConversation"] = CKReference(record: conversation.ckRecord!, action: .none)
+        }
+        
+        
         
         // Modify model
         conversation.coreDataConversation.addToMessages(message.coreDataMessage)
@@ -131,11 +128,13 @@ extension MessageTableViewController: AddMessageTableViewControllerDelegate {
         // Save to Core Data
         coreDataController.save()
         
+        print("After adding a message, the conversation had \(conversation.messages.count) messages before saving.")
+        
         // Save to the Cloud
         cloudController.save(conversation.messages) { }
         
         // Notify delegate
-        delegate?.conversationDidChange(to: conversation)
+        delegate?.conversationDidChange(to: conversation, wasModified: true)
         
         // Modify table view
         tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)

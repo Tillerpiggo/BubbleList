@@ -67,14 +67,18 @@ class CloudController {
         database.add(operation)
     }
     
+    // TODO: Not working properly I think, or the upload isn't working properly
     func fetchRecords(ofType recordType: RecordType, withParent parent: CloudUploadable, completion: @escaping ([CKRecord]) -> Void) {
         // Search for all messages that belong to a certain conversation in the Cloud:
         
         // Find ID of parent:
-        guard let parentRecordID = parent.ckRecord?.recordID else { return }
+        guard let parentRecordID = parent.ckRecord?.recordID else {
+            print("Couldn't get parent recordID")
+            return
+        }
         
         // Create query
-        let parentReference = CKReference(recordID: parentRecordID, action: .none)
+        let parentReference = CKReference(recordID: parentRecordID, action: .deleteSelf)
         let predicate = NSPredicate(format: "owningConversation == %@", parentReference) // The name of this field needs to be changing (owningList, owningClass, etc.)
         
         let query = CKQuery(recordType: recordType.cloudValue, predicate: predicate)
@@ -105,7 +109,6 @@ class CloudController {
     func save(_ cloudUploadables: [CloudUploadable], completion: @escaping () -> Void) {
         // Create and configure operation
         let operation = CKModifyRecordsOperation()
-        operation.savePolicy = .changedKeys
         
         // Map conversations to records
         let recordsToSave = cloudUploadables.map() { $0.ckRecord! }
