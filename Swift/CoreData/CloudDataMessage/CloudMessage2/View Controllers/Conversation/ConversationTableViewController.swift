@@ -180,7 +180,7 @@ extension ConversationTableViewController: AddConversationTableViewControllerDel
 
 extension ConversationTableViewController: MessageTableViewControllerDelegate {
     func conversationDidChange(to conversation: Conversation, wasModified: Bool) {
-        // Save change to the Cloud
+        // Save change to the cloud
         cloudController.save([conversation]) { }
         
         // Save change to Core Data

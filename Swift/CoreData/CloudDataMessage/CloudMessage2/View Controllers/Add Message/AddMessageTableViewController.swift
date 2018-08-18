@@ -59,6 +59,9 @@ class AddMessageTableViewController: UITableViewController {
     private func save() {
         let newMessage = Message(withText: textField.text!, timestamp: Date(), managedContext: coreDataController.managedContext, owningConversation: owningConversation)
         delegate?.addedMessage(newMessage)
+        if let owningConversation = newMessage.ckRecord["owningConversation"] as? CKReference {
+            print("RECORD TO SAVE HAD OWNING CONVERSATION: \(owningConversation)")
+        }
     }
     
     private func updateSaveButton() {

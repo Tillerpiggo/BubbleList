@@ -77,6 +77,10 @@ class Message: CloudUploadable, CoreDataUploadable {
         newCKRecord["text"] = text as CKRecordValue
         newCKRecord["owningConversation"] = owningConversation as CKRecordValue
         
+        if let owningConversationReference = newCKRecord["owningConversation"] as? CKReference {
+            print(owningConversationReference)
+        }
+        
         self.ckRecord = newCKRecord
     }
 }

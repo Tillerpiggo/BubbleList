@@ -109,6 +109,12 @@ class CloudController {
         let recordsToSave = cloudUploadables.map() { $0.ckRecord }
         operation.recordsToSave = recordsToSave
         
+        for record in recordsToSave {
+            if let owningConversation = record["owningConversation"] as? CKReference {
+                print("Record to save had owningConversation: \(owningConversation)")
+            }
+        }
+        
         operation.modifyRecordsCompletionBlock = { (record, recordID, error) in
             self.handleError(error)
             
