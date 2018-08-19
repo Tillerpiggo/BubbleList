@@ -14,6 +14,14 @@ import CloudKit
 class CloudController {
     
     var database = CKContainer.default().publicCloudDatabase // Change depending on needs, may include zone as well
+    var subscribedToPublicChanges: Bool {
+        get {
+            return UserDefaults.standard.bool(forKey: "subscribedToPublicChanges")
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: "subscribedToPublicChanges")
+        }
+    }
     
     func fetchRecords(ofType recordType: RecordType, perZoneCompletion: @escaping ([CKRecord]) -> Void) {
         // Create and configure fetchAllRecordZonesOperation
@@ -144,34 +152,38 @@ class CloudController {
     }
     
     func saveSubscription(for recordType: String, completion: @escaping () -> Void) {
-        // Create and save a silent push subscription in order to be updated:
-        let subscriptionID = "cloudit-\(recordType)-changes"
+        if !subscribedToPublicChanges {
+            // Create and save a silent push subscription in order to be updated:
+            let subscriptionID = "cloudkit-\(recordType)-changes"
         
-        // Notify for all chnages
-        let predicate = NSPredicate(value: true)
+            // Notify for all chnages
+            let predicate = NSPredicate(value: true)
         
-        // Initialize subscription
-        let subscription = CKQuerySubscription(
-            recordType: recordType,
-            predicate: predicate,
-            subscriptionID: subscriptionID,
-            options: [.firesOnRecordUpdate, .firesOnRecordCreation, .firesOnRecordDeletion])
+            // Initialize subscription
+            let subscription = CKQuerySubscription(
+                recordType: recordType,
+                predicate: predicate,
+                subscriptionID: subscriptionID,
+                options: [.firesOnRecordUpdate, .firesOnRecordCreation, .firesOnRecordDeletion])
         
-        // Configure silent push notifications
-        let notificationInfo = CKNotificationInfo()
-        notificationInfo.shouldSendContentAvailable = true
-        subscription.notificationInfo = notificationInfo
+            // Configure silent push notifications
+            let notificationInfo = CKNotificationInfo()
+            notificationInfo.shouldSendContentAvailable = true
+            subscription.notificationInfo = notificationInfo
         
-        // Configure subscription operation
-        let operation = CKModifySubscriptionsOperation(subscriptionsToSave: [subscription], subscriptionIDsToDelete: [])
+            // Configure subscription operation
+            let operation = CKModifySubscriptionsOperation(subscriptionsToSave: [subscription], subscriptionIDsToDelete: [])
         
-        operation.modifySubscriptionsCompletionBlock = { (_, _, error) in
-            self.handleError(error)
+            operation.modifySubscriptionsCompletionBlock = { (_, _, error) in
+                self.handleError(error)
+                
+                completion()
+            }
+        
+            database.add(operation)
             
-            completion()
+            subscribedToPublicChanges = true
         }
-        
-        database.add(operation)
     }
     
     func handleError(_ error: Error?) {

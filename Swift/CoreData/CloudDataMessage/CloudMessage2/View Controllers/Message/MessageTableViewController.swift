@@ -37,6 +37,7 @@ class MessageTableViewController: UITableViewController {
             var fetchedMessages = records.map() { Message(fromRecord: $0, managedContext: self.coreDataController.managedContext) }
             fetchedMessages.sort() { $0.timestamp > $1.timestamp }
             
+            print("Number of message records succesfully converted: \(fetchedMessages.count)")
             
             // Delete all messages in the conversation
             for message in self.conversation.messages {
@@ -45,10 +46,9 @@ class MessageTableViewController: UITableViewController {
             self.coreDataController.save()
             
             // Add in the new messages
-            let messagesToAdd = fetchedMessages.map() { $0.coreDataMessage }
-            print("Messages to add: \(messagesToAdd.count)")
-            self.conversation.coreDataConversation.addToMessages(NSSet(array: messagesToAdd))
-            print("Messages in conversation after adding messages: \(self.conversation.messages.count)")
+            for fetchedMessage in fetchedMessages {
+                self.conversation.coreDataConversation.addToMessages(fetchedMessage.coreDataMessage)
+            }
         
             self.conversation.ckRecord["latestMessage"] = (self.conversation.messages.first?.text ?? "") as CKRecordValue
             

@@ -12,7 +12,11 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    lazy var coreDataStack = CoreDataStack(modelName: "CloudMessage")
+    lazy var coreDataController = { () -> CoreDataController in
+        let coreDataStack = CoreDataStack(modelName: "CloudMessage")
+        let coreDataController = CoreDataController(coreDataStack: coreDataStack)
+        return coreDataController
+    }()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         if let navigationController = window?.rootViewController as? UINavigationController,
@@ -20,7 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
             // Dependency inject the CoreData/CloudKit Objects
             conversationTableViewController.cloudController = CloudController()
-            conversationTableViewController.coreDataController = CoreDataController(coreDataStack: coreDataStack)
+            conversationTableViewController.coreDataController = coreDataController
             
         }
         
@@ -33,7 +37,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
-        coreDataStack.saveContext()
+        coreDataController.save()
         
         // TODO: Save Cloud Stuff
     }
@@ -47,7 +51,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
-        coreDataStack.saveContext()
+        coreDataController.save()
         
         // TODO: Save Cloud Stuff
     }
