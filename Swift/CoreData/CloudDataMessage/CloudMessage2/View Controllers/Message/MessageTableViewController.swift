@@ -29,12 +29,6 @@ class MessageTableViewController: UITableViewController {
         // Multiple lines per message
         tableView.rowHeight = UITableViewAutomaticDimension
         
-        
-        // Messages already obtained from core data
-        tableView.reloadData()
-        
-        
-        
         // Fetch messages for conversation
         cloudController.fetchRecords(ofType: .message, withParent: conversation) { (records) in
             print("\(records.count) message records fetched from MessageTableViewController.")
@@ -52,14 +46,19 @@ class MessageTableViewController: UITableViewController {
             
             // Add in the new messages
             let messagesToAdd = fetchedMessages.map() { $0.coreDataMessage }
+            print("Messages to add: \(messagesToAdd.count)")
             self.conversation.coreDataConversation.addToMessages(NSSet(array: messagesToAdd))
+            print("Messages in conversation after adding messages: \(self.conversation.messages.count)")
         
             self.conversation.ckRecord["latestMessage"] = (self.conversation.messages.first?.text ?? "") as CKRecordValue
             
             self.coreDataController.save()
             
+            print("Messages in conversation after saving messages: \(self.conversation.messages.count)")
+            
             // Reload table view
             DispatchQueue.main.async {
+                print("Before reloading from fetching, there are \(self.conversation.messages.count) messages in the conversation.")
                 self.tableView.reloadData()
                 self.delegate?.conversationDidChange(to: self.conversation, wasModified: false)
             }
@@ -100,6 +99,8 @@ extension MessageTableViewController {
         // Configure cell
         cell.textLabel?.text = message.text
         cell.detailTextLabel?.text = message.formattedTimestamp
+        
+        print("Message: \(message.text)")
         
         return cell
     }

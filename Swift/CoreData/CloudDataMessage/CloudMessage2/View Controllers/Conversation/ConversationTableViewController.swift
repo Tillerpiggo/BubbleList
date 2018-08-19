@@ -180,13 +180,16 @@ extension ConversationTableViewController: AddConversationTableViewControllerDel
 
 extension ConversationTableViewController: MessageTableViewControllerDelegate {
     func conversationDidChange(to conversation: Conversation, wasModified: Bool) {
-        // Save change to the cloud
-        cloudController.save([conversation]) { }
         
         // Save change to Core Data
         coreDataController.save()
         
-        if wasModified { conversation.coreDataConversation.dateLastModified = NSDate() }
+        if wasModified {
+            // Save change to the cloud
+            cloudController.save([conversation]) { }
+            
+            conversation.coreDataConversation.dateLastModified = NSDate()
+        }
         
         if let selectedIndexPath = selectedIndexPath {
             conversations[selectedIndexPath.row] = conversation
