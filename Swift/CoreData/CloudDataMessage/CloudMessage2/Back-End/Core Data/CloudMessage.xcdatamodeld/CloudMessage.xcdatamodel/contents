@@ -13,7 +13,7 @@
         <relationship name="owningConversation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CoreDataConversation" inverseName="messages" inverseEntity="CoreDataConversation" syncable="YES"/>
     </entity>
     <elements>
-        <element name="CoreDataConversation" positionX="-299" positionY="-54" width="128" height="120"/>
-        <element name="CoreDataMessage" positionX="-54" positionY="9" width="128" height="90"/>
+        <element name="CoreDataConversation" positionX="-299" positionY="-54" width="128" height="118"/>
+        <element name="CoreDataMessage" positionX="-54" positionY="9" width="128" height="88"/>
     </elements>
 </model>

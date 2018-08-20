@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CloudKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -25,10 +26,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // Dependency inject the CoreData/CloudKit Objects
             conversationTableViewController.cloudController = CloudController()
             conversationTableViewController.coreDataController = coreDataController
-            
         }
         
+        // Register for silent push notifications from CloudKit
+        application.registerForRemoteNotifications()
+        
         return true
+    }
+    
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping(UIBackgroundFetchResult) -> Void) {
+        print("Received notification!")
+        
+        guard let navigationController = window?.rootViewController as? UINavigationController,
+            let conversationTableViewController = navigationController.topViewController as? ConversationTableViewController else { return }
+        
+        // let dictionary = userInfo as! [String: NSObject]
+        // guard let notification: CKDatabaseNotification = CKNotification(fromRemoteNotificationDictionary: dictionary) as? CKDatabaseNotification else { return }
+        
+        conversationTableViewController.updateWithCloud()
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

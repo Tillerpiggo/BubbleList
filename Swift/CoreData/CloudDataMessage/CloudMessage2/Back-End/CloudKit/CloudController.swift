@@ -23,6 +23,17 @@ class CloudController {
         }
     }
     
+    var changeToken: CKServerChangeToken? {
+        get {
+            return UserDefaults.standard.object(forKey: "changeToken") as? CKServerChangeToken
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: "changeToken")
+        }
+    }
+    
+    var temporaryChangeToken: CKServerChangeToken?
+    
     func fetchRecords(ofType recordType: RecordType, perZoneCompletion: @escaping ([CKRecord]) -> Void) {
         // Create and configure fetchAllRecordZonesOperation
         let operation = CKFetchRecordZonesOperation.fetchAllRecordZonesOperation()
@@ -186,10 +197,101 @@ class CloudController {
         }
     }
     
+    // Note: there could be a problem with change tokens where I commit them to memory too early - https://developer.apple.com/library/archive/documentation/DataManagement/Conceptual/CloudKitQuickStart/MaintainingaLocalCacheofCloudKitRecords/MaintainingaLocalCacheofCloudKitRecords.html
+    
+    func fetchDatabaseChanges(zonesDeleted: @escaping ([CKRecordZoneID]) -> Void, saveChanges: @escaping ([CKRecord], [CKRecordID]) -> Void,
+                              completion: @escaping () -> Void) {
+        
+        var changedZoneIDs: [CKRecordZoneID] = []
+        var deletedZoneIDs: [CKRecordZoneID] = []
+        
+        let operation = CKFetchDatabaseChangesOperation(previousServerChangeToken: changeToken)
+        
+        operation.recordZoneWithIDChangedBlock = { (zoneID) in
+            changedZoneIDs.append(zoneID)
+        }
+        
+        operation.recordZoneWithIDWasDeletedBlock = { (zoneID) in
+            deletedZoneIDs.append(zoneID)
+        }
+        
+        operation.changeTokenUpdatedBlock = { (token) in
+            zonesDeleted(deletedZoneIDs)
+            self.temporaryChangeToken = token
+        }
+        
+        operation.fetchDatabaseChangesCompletionBlock = { (token, moreComing, error) in
+            self.handleError(error)
+            
+            zonesDeleted(deletedZoneIDs)
+            self.temporaryChangeToken = token
+            
+            self.fetchZoneChanges(zoneIDs: changedZoneIDs, saveChanges: saveChanges) {
+                self.changeToken = self.temporaryChangeToken
+                completion()
+            }
+        }
+        operation.qualityOfService = .userInitiated
+        
+        database.add(operation)
+    }
+    
+    func fetchZoneChanges(zoneIDs: [CKRecordZoneID], saveChanges: @escaping ([CKRecord], [CKRecordID]) -> Void, completion: @escaping () -> Void) {
+        // Memory for changed and deleted records
+        var changedRecords: [CKRecord] = []
+        var deletedRecordIDs: [CKRecordID] = []
+        
+        // Look up the previous change token for each zone
+        var optionsByRecordZoneID = [CKRecordZoneID: CKFetchRecordZoneChangesOptions]()
+        for zoneID in zoneIDs {
+            let options = CKFetchRecordZoneChangesOptions()
+            options.previousServerChangeToken = changeToken
+            optionsByRecordZoneID[zoneID] = options
+        }
+        
+        let operation = CKFetchRecordZoneChangesOperation(recordZoneIDs: zoneIDs, optionsByRecordZoneID: optionsByRecordZoneID)
+        
+        operation.recordChangedBlock = { (record) in
+            print("Record changed: ", record)
+            changedRecords.append(record)
+        }
+        
+        operation.recordWithIDWasDeletedBlock = { (recordID, _) in
+            print("Record deleted: ", recordID)
+            deletedRecordIDs.append(recordID)
+        }
+        
+        operation.recordZoneChangeTokensUpdatedBlock = { (zoneID, token, data) in
+            // Flush record changes and deletions for this zone to disk
+            self.temporaryChangeToken = token
+            self.changeToken = token
+            saveChanges(changedRecords, deletedRecordIDs)
+        }
+        
+        operation.recordZoneFetchCompletionBlock = { (zoneID, token, _, _, error) in
+            self.handleError(error)
+            
+            saveChanges(changedRecords, deletedRecordIDs)
+            self.temporaryChangeToken = token
+            self.changeToken = token
+        }
+        
+        operation.fetchRecordZoneChangesCompletionBlock = { (error) in
+            self.handleError(error)
+            completion()
+        }
+        
+        database.add(operation)
+    }
+    
     func handleError(_ error: Error?) {
         if let error = error {
             print("Error: \(error.localizedDescription)")
             print(error)
         }
+    }
+    
+    init() {
+        self.temporaryChangeToken = changeToken
     }
 }

@@ -23,47 +23,8 @@ class ConversationTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Initialize Conversations:
-        // Get from Core Data
-        coreDataController.fetchConversations() { (coreDataConversations) in
-            for coreDataConversation in coreDataConversations {
-                self.conversations.append(Conversation(fromCoreDataConversation: coreDataConversation))
-            }
-            self.conversations.sort() { $0.dateLastModified > $1.dateLastModified }
-            
-            self.coreDataController.save()
-            
-            DispatchQueue.main.async { self.tableView.reloadData() }
-        }
-        
-        // Get from cloud (probably should show some loading indicator)
-        cloudController.fetchRecords(ofType: .conversation) { (records) in
-            
-            print("\(records.count) conversation records fetched in ConversationTableViewController.")
-            
-            // Delete all conversations in core data
-            for conversation in self.conversations {
-                self.coreDataController.delete(conversation)
-            }
-            self.coreDataController.save()
-            
-            self.conversations = []
-            
-            
-            // Add in new conversations
-            for record in records {
-                let newConversation = Conversation(fromRecord: record, managedContext: self.coreDataController.managedContext)
-                self.conversations.append(newConversation)
-            }
-            
-            self.conversations.sort() { $0.dateLastModified > $1.dateLastModified }
-            
-            self.coreDataController.save()
-            
-            
-            // Update view
-            DispatchQueue.main.async { self.tableView.reloadData() }
-        }
+        updateWithCoreData()
+        updateWithCloud()
         
         tableView.rowHeight = 60
     }
@@ -93,6 +54,56 @@ class ConversationTableViewController: UITableViewController {
             
             // Set the title
             destinationViewController.navigationItem.title = selectedConversation.title
+        }
+    }
+}
+
+// MARK: - Helper Methods
+
+extension ConversationTableViewController {
+    func updateWithCloud() {
+        // Get from cloud (probably should show some loading indicator)
+        cloudController.fetchRecords(ofType: .conversation) { (records) in
+            
+            print("\(records.count) conversation records fetched in ConversationTableViewController.")
+            
+            // Delete all conversations in core data
+            for conversation in self.conversations {
+                self.coreDataController.delete(conversation)
+            }
+            self.coreDataController.save()
+            
+            self.conversations = []
+            
+            
+            // Add in new conversations
+            for record in records {
+                let newConversation = Conversation(fromRecord: record, managedContext: self.coreDataController.managedContext)
+                self.conversations.append(newConversation)
+            }
+            
+            self.conversations.sort() { $0.dateLastModified > $1.dateLastModified }
+            
+            self.coreDataController.save()
+            
+            
+            // Update view
+            DispatchQueue.main.async { self.tableView.reloadData() }
+        }
+    }
+    
+    func updateWithCoreData() {
+        // Initialize Conversations:
+        // Get from Core Data
+        coreDataController.fetchConversations() { (coreDataConversations) in
+            for coreDataConversation in coreDataConversations {
+                self.conversations.append(Conversation(fromCoreDataConversation: coreDataConversation))
+            }
+            self.conversations.sort() { $0.dateLastModified > $1.dateLastModified }
+            
+            self.coreDataController.save()
+            
+            DispatchQueue.main.async { self.tableView.reloadData() }
         }
     }
 }
