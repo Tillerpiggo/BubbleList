@@ -55,11 +55,17 @@ class Message: CloudUploadable, CoreDataUploadable {
     init(fromCoreDataMessage coreDataMessage: CoreDataMessage) {
         self.coreDataMessage = coreDataMessage
         
-        // Create CKRecord from coder
-        let unarchiver = NSKeyedUnarchiver(forReadingWith: coreDataMessage.encodedSystemFields!)
-        unarchiver.requiresSecureCoding = true
-        let newCKRecord = CKRecord(coder: unarchiver)!
-        unarchiver.finishDecoding()
+        // Create CKRecord
+        let newCKRecord: CKRecord
+        
+        if let encodedSystemFields = coreDataMessage.encodedSystemFields {
+            let unarchiver = NSKeyedUnarchiver(forReadingWith: encodedSystemFields)
+            unarchiver.requiresSecureCoding = true
+            newCKRecord = CKRecord(coder: unarchiver)!
+            unarchiver.finishDecoding()
+        } else {
+            newCKRecord = CKRecord(recordType: "Message")
+        }
         
         newCKRecord["text"] = coreDataMessage.text as CKRecordValue?
         

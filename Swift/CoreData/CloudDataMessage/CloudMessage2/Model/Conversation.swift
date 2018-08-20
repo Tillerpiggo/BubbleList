@@ -96,11 +96,16 @@ class Conversation: CloudUploadable, CoreDataUploadable {
         self.coreDataConversation = newCoreDataConversation
         
         // Create CKRecord from an unarchiver
-        let unarchiver = NSKeyedUnarchiver(forReadingWith: coreDataConversation.encodedSystemFields!)
-        unarchiver.requiresSecureCoding = true
+        let newCKRecord: CKRecord
         
-        let newCKRecord = CKRecord(coder: unarchiver)!
-        unarchiver.finishDecoding()
+        if let encodedSystemFields = coreDataConversation.encodedSystemFields {
+            let unarchiver = NSKeyedUnarchiver(forReadingWith: encodedSystemFields)
+            unarchiver.requiresSecureCoding = true
+            newCKRecord = CKRecord(coder: unarchiver)!
+            unarchiver.finishDecoding()
+        } else {
+            newCKRecord = CKRecord(recordType: "Conversation")
+        }
         
         newCKRecord["title"] = newCoreDataConversation.title as CKRecordValue?
         if let latestMessage = newCoreDataConversation.messages?.firstObject as? CoreDataMessage {
