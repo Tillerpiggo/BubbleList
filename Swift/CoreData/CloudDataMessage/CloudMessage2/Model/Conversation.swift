@@ -47,6 +47,7 @@ class Conversation: CloudUploadable, CoreDataUploadable {
         coreDataConversation.title = record["title"] as? String
         if let creationDate = record.creationDate as NSDate? { coreDataConversation.creationDate = creationDate }
         if let dateLastModified = record.modificationDate as NSDate? { coreDataConversation.dateLastModified = dateLastModified }
+        coreDataConversation.encodedSystemFields = record.encoded()
     }
     
     // MARK: - Cloud

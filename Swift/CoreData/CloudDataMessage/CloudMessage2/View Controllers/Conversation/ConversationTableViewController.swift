@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import CloudKit
 
 class ConversationTableViewController: UITableViewController {
     
@@ -61,7 +62,7 @@ class ConversationTableViewController: UITableViewController {
 // MARK: - Helper Methods
 
 extension ConversationTableViewController {
-    func updateWithCloud() {
+    func updateWithCloudOld() {
         // Get from cloud (probably should show some loading indicator)
         cloudController.fetchRecords(ofType: .conversation) { (records) in
             
@@ -90,6 +91,47 @@ extension ConversationTableViewController {
             // Update view
             DispatchQueue.main.async { self.tableView.reloadData() }
         }
+    }
+    
+    func updateWithCloud() {
+        let zonesDeleted: ([CKRecordZoneID]) -> Void = { (zoneIDs) in
+            // TODO: Implement this later (when you add zones), for now it will just delete everything
+            for conversation in self.conversations {
+                self.coreDataController.delete(conversation)
+            }
+            self.coreDataController.save()
+        }
+        
+        let saveChanges: ([CKRecord], [CKRecordID]) -> Void = { (recordsChanged, recordIDsDeleted) in
+            for record in recordsChanged {
+                if let index = self.conversations.index(where: { $0.ckRecord.recordID == record.recordID }) {
+                    self.conversations[index].update(withRecord: record)
+                    DispatchQueue.main.async {
+                        let changedIndexPath = IndexPath(row: index, section: 0)
+                        self.tableView.reloadRows(at: [changedIndexPath], with: .automatic)
+                    }
+                } else {
+                    self.conversations.append(Conversation(fromRecord: record, managedContext: self.coreDataController.managedContext))
+                    DispatchQueue.main.async {
+                        let newIndexPath = IndexPath(row: self.conversations.count - 1, section: 0)
+                        self.tableView.insertRows(at: [newIndexPath], with: .automatic)
+                    }
+                }
+            }
+            
+            for recordID in recordIDsDeleted {
+                if let index = self.conversations.index(where: { $0.ckRecord.recordID == recordID }) {
+                    self.conversations.remove(at: index)
+                    DispatchQueue.main.async {
+                        self.tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
+                    }
+                }
+            }
+            
+            self.coreDataController.save()
+        }
+        
+        cloudController.fetchDatabaseChanges(zonesDeleted: zonesDeleted, saveChanges: saveChanges) { }
     }
     
     func updateWithCoreData() {
