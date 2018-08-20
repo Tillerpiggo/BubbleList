@@ -57,27 +57,35 @@ class Conversation: CloudUploadable, CoreDataUploadable {
     init(withTitle title: String, messages: [Message] = [Message](), managedContext: NSManagedObjectContext) {
         // Create CoreDataConversation
         let newCoreDataConversation = CoreDataConversation(context: managedContext)
+        
         newCoreDataConversation.title = title
         for message in messages {
             newCoreDataConversation.addToMessages(message.coreDataMessage)
         }
         newCoreDataConversation.creationDate = NSDate()
         newCoreDataConversation.dateLastModified = NSDate()
+        
         self.coreDataConversation = newCoreDataConversation
+        
         
         // Create CKRecord
         let newCKRecord = CKRecord(recordType: "Conversation")
+        
         newCKRecord["title"] = title as CKRecordValue
         newCKRecord["latestMessage"] = (messages.first?.text as CKRecordValue?) ?? ("" as CKRecordValue)
+        
         self.ckRecord = newCKRecord
     }
     
     init(fromRecord record: CKRecord, managedContext: NSManagedObjectContext) {
         // Create CoreDataConversation
         let newCoreDataConversation = CoreDataConversation(context: managedContext)
+        
         newCoreDataConversation.title = record["title"] as? String
         newCoreDataConversation.creationDate = (record.creationDate ?? Date()) as NSDate
         newCoreDataConversation.dateLastModified = (record.modificationDate ?? Date()) as NSDate
+        newCoreDataConversation.encodedSystemFields = record.encoded()
+        
         self.coreDataConversation = newCoreDataConversation
         
         // Create CKRecord
@@ -87,8 +95,13 @@ class Conversation: CloudUploadable, CoreDataUploadable {
     init(fromCoreDataConversation newCoreDataConversation: CoreDataConversation) {
         self.coreDataConversation = newCoreDataConversation
         
-        // Create CKRecord
-        let newCKRecord = CKRecord(recordType: "Conversation")
+        // Create CKRecord from an unarchiver
+        let unarchiver = NSKeyedUnarchiver(forReadingWith: coreDataConversation.encodedSystemFields!)
+        unarchiver.requiresSecureCoding = true
+        
+        let newCKRecord = CKRecord(coder: unarchiver)!
+        unarchiver.finishDecoding()
+        
         newCKRecord["title"] = newCoreDataConversation.title as CKRecordValue?
         if let latestMessage = newCoreDataConversation.messages?.firstObject as? CoreDataMessage {
             newCKRecord["latestMessage"] = (latestMessage.text ?? "") as CKRecordValue

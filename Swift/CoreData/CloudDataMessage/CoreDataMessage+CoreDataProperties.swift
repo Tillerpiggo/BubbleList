@@ -20,5 +20,5 @@ extension CoreDataMessage {
     @NSManaged public var text: String?
     @NSManaged public var timestamp: NSDate?
     @NSManaged public var owningConversation: CoreDataConversation?
-
+    @NSManaged public var encodedSystemFields: Data?
 }

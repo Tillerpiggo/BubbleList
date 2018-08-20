@@ -41,8 +41,10 @@ class Message: CloudUploadable, CoreDataUploadable {
     init(fromRecord record: CKRecord, managedContext: NSManagedObjectContext) {
         // Create CoreDataMessage
         let newCoreDataMessage = CoreDataMessage(context: managedContext)
+        
         newCoreDataMessage.text = record["text"] as? String
         newCoreDataMessage.timestamp = record.creationDate! as NSDate
+        newCoreDataMessage.encodedSystemFields = record.encoded()
         
         self.coreDataMessage = newCoreDataMessage
         
@@ -53,8 +55,12 @@ class Message: CloudUploadable, CoreDataUploadable {
     init(fromCoreDataMessage coreDataMessage: CoreDataMessage) {
         self.coreDataMessage = coreDataMessage
         
-        // Create CKRecord
-        let newCKRecord = CKRecord(recordType: RecordType.message.cloudValue)
+        // Create CKRecord from coder
+        let unarchiver = NSKeyedUnarchiver(forReadingWith: coreDataMessage.encodedSystemFields!)
+        unarchiver.requiresSecureCoding = true
+        let newCKRecord = CKRecord(coder: unarchiver)!
+        unarchiver.finishDecoding()
+        
         newCKRecord["text"] = coreDataMessage.text as CKRecordValue?
         
         // TODO: Set owning conversation

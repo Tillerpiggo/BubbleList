@@ -19,10 +19,9 @@ extension CoreDataConversation {
 
     @NSManaged public var creationDate: NSDate?
     @NSManaged public var dateLastModified: NSDate?
-    @NSManaged public var recordMetadata: NSObject?
     @NSManaged public var title: String?
     @NSManaged public var messages: NSOrderedSet?
-
+    @NSManaged public var encodedSystemFields: Data?
 }
 
 // MARK: Generated accessors for messages
