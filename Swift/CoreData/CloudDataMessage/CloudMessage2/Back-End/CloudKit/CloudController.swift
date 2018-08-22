@@ -13,26 +13,40 @@ import CloudKit
 
 class CloudController {
     
-    var database = CKContainer.default().publicCloudDatabase // Change depending on needs, may include zone as well
-    var subscribedToPublicChanges: Bool {
+    var database = CKContainer.default().privateCloudDatabase // Change depending on needs, may include zone as well
+    let zoneID = CKRecordZoneID(zoneName: "CloudMessage", ownerName: CKCurrentUserDefaultName)
+    
+    var createdCustomZone: Bool {
         get {
-            return UserDefaults.standard.bool(forKey: "subscribedToPublicChanges")
+            return UserDefaults.standard.bool(forKey: "createdCustomZone")
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: "subscribedToPublicChanges")
+            UserDefaults.standard.set(newValue, forKey: "createdCustomZone")
+        }
+    }
+    
+    var subscribedToPrivateChanges: Bool {
+        get {
+            return UserDefaults.standard.bool(forKey: "subscribedToPrivateChanges")
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: "subscribedToPrivateChanges")
         }
     }
     
     var changeToken: CKServerChangeToken? {
         get {
-            return UserDefaults.standard.object(forKey: "changeToken") as? CKServerChangeToken
+            if let data = UserDefaults.standard.data(forKey: "changeToken") {
+                return NSKeyedUnarchiver.unarchiveObject(with: data) as? CKServerChangeToken
+            } else {
+                return nil
+            }
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: "changeToken")
+            let data = NSKeyedArchiver.archivedData(withRootObject: newValue!)
+            UserDefaults.standard.set(data, forKey: "changeToken")
         }
     }
-    
-    var temporaryChangeToken: CKServerChangeToken?
     
     func fetchRecords(ofType recordType: RecordType, perZoneCompletion: @escaping ([CKRecord]) -> Void) {
         // Create and configure fetchAllRecordZonesOperation
@@ -54,6 +68,7 @@ class CloudController {
                 }
             }
         }
+        operation.qualityOfService = .userInitiated
         
         database.add(operation)
     }
@@ -81,6 +96,7 @@ class CloudController {
             
             completion(fetchedRecords)
         }
+        operation.qualityOfService = .userInitiated
         
         // Add/start the operation
         database.add(operation)
@@ -111,6 +127,7 @@ class CloudController {
             
             completion(fetchedRecords)
         }
+        operation.qualityOfService = .userInitiated
         
         
         // Add/start the operation
@@ -139,6 +156,7 @@ class CloudController {
             
             completion()
         }
+        operation.qualityOfService = .userInitiated
         
         // Add/start the operation
         database.add(operation)
@@ -157,13 +175,14 @@ class CloudController {
             
             completion()
         }
+        operation.qualityOfService = .userInitiated
         
         // Add/start the operation
         database.add(operation)
     }
     
     func saveSubscription(for recordType: String, completion: @escaping () -> Void) {
-        if !subscribedToPublicChanges {
+        if !subscribedToPrivateChanges {
             // Create and save a silent push subscription in order to be updated:
             let subscriptionID = "cloudkit-\(recordType)-changes"
         
@@ -190,10 +209,11 @@ class CloudController {
                 
                 completion()
             }
+            operation.qualityOfService = .userInitiated
         
             database.add(operation)
             
-            subscribedToPublicChanges = true
+            subscribedToPrivateChanges = true
         }
     }
     
@@ -202,10 +222,11 @@ class CloudController {
     func fetchDatabaseChanges(zonesDeleted: @escaping ([CKRecordZoneID]) -> Void, saveChanges: @escaping ([CKRecord], [CKRecordID]) -> Void,
                               completion: @escaping () -> Void) {
         
-        var changedZoneIDs: [CKRecordZoneID] = []
-        var deletedZoneIDs: [CKRecordZoneID] = []
+        var changedZoneIDs = [CKRecordZoneID]()
+        var deletedZoneIDs = [CKRecordZoneID]()
         
         let operation = CKFetchDatabaseChangesOperation(previousServerChangeToken: changeToken)
+        operation.fetchAllChanges = true
         
         operation.recordZoneWithIDChangedBlock = { (zoneID) in
             changedZoneIDs.append(zoneID)
@@ -217,17 +238,18 @@ class CloudController {
         
         operation.changeTokenUpdatedBlock = { (token) in
             zonesDeleted(deletedZoneIDs)
-            self.temporaryChangeToken = token
+            self.changeToken = token
         }
         
         operation.fetchDatabaseChangesCompletionBlock = { (token, moreComing, error) in
             self.handleError(error)
             
-            zonesDeleted(deletedZoneIDs)
-            self.temporaryChangeToken = token
+            // TODO: Properly delete zones; zonesDeleted(deletedZoneIDs)
+            self.changeToken = token
+            
+            print(changedZoneIDs)
             
             self.fetchZoneChanges(zoneIDs: changedZoneIDs, saveChanges: saveChanges) {
-                self.changeToken = self.temporaryChangeToken
                 completion()
             }
         }
@@ -245,7 +267,7 @@ class CloudController {
         var optionsByRecordZoneID = [CKRecordZoneID: CKFetchRecordZoneChangesOptions]()
         for zoneID in zoneIDs {
             let options = CKFetchRecordZoneChangesOptions()
-            options.previousServerChangeToken = changeToken
+            options.previousServerChangeToken = self.changeToken
             optionsByRecordZoneID[zoneID] = options
         }
         
@@ -263,7 +285,6 @@ class CloudController {
         
         operation.recordZoneChangeTokensUpdatedBlock = { (zoneID, token, data) in
             // Flush record changes and deletions for this zone to disk
-            self.temporaryChangeToken = token
             self.changeToken = token
             saveChanges(changedRecords, deletedRecordIDs)
         }
@@ -272,7 +293,6 @@ class CloudController {
             self.handleError(error)
             
             saveChanges(changedRecords, deletedRecordIDs)
-            self.temporaryChangeToken = token
             self.changeToken = token
         }
         
@@ -280,8 +300,29 @@ class CloudController {
             self.handleError(error)
             completion()
         }
+        operation.qualityOfService = .userInitiated
         
         database.add(operation)
+    }
+    
+    func createCustomZone() {
+        let createZoneGroup = DispatchGroup()
+        
+        if !self.createdCustomZone {
+            createZoneGroup.enter()
+            
+            let customZone = CKRecordZone(zoneID: zoneID)
+            
+            let createZoneOperation = CKModifyRecordZonesOperation(recordZonesToSave: [customZone], recordZoneIDsToDelete: [])
+            
+            createZoneOperation.modifyRecordZonesCompletionBlock = { (saved, deleted, error) in
+                if error == nil { self.createdCustomZone = true }
+                else { self.handleError(error) }
+                
+                createZoneGroup.leave()
+            }
+            createZoneOperation.qualityOfService = .userInitiated
+        }
     }
     
     func handleError(_ error: Error?) {
@@ -292,6 +333,9 @@ class CloudController {
     }
     
     init() {
-        self.temporaryChangeToken = changeToken
+        saveSubscription(for: "Conversation") { }
+        saveSubscription(for: "Message") { }
+        
+        createCustomZone()
     }
 }

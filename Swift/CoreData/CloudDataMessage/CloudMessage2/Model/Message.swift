@@ -52,7 +52,7 @@ class Message: CloudUploadable, CoreDataUploadable {
         self.ckRecord = record
     }
     
-    init(fromCoreDataMessage coreDataMessage: CoreDataMessage) {
+    init(fromCoreDataMessage coreDataMessage: CoreDataMessage, zoneID: CKRecordZoneID) {
         self.coreDataMessage = coreDataMessage
         
         // Create CKRecord
@@ -64,7 +64,7 @@ class Message: CloudUploadable, CoreDataUploadable {
             newCKRecord = CKRecord(coder: unarchiver)!
             unarchiver.finishDecoding()
         } else {
-            newCKRecord = CKRecord(recordType: "Message")
+            newCKRecord = CKRecord(recordType: "Message", zoneID: zoneID)
         }
         
         newCKRecord["text"] = coreDataMessage.text as CKRecordValue?
@@ -76,7 +76,7 @@ class Message: CloudUploadable, CoreDataUploadable {
         // TODO: Add owning conversation of message from core data
     }
     
-    init(withText text: String, timestamp: Date, managedContext: NSManagedObjectContext, owningConversation: CKReference) {
+    init(withText text: String, timestamp: Date, managedContext: NSManagedObjectContext, owningConversation: CKReference, zoneID: CKRecordZoneID) {
         // Create CoreDataMessage
         let newCoreDataMessage = CoreDataMessage(context: managedContext)
         newCoreDataMessage.text = text
@@ -85,7 +85,7 @@ class Message: CloudUploadable, CoreDataUploadable {
         self.coreDataMessage = newCoreDataMessage
         
         // Create CKRecord
-        let newCKRecord = CKRecord(recordType: RecordType.message.cloudValue)
+        let newCKRecord = CKRecord(recordType: RecordType.message.cloudValue, zoneID: zoneID)
         newCKRecord["text"] = text as CKRecordValue
         newCKRecord["owningConversation"] = owningConversation as CKRecordValue
         
@@ -94,5 +94,15 @@ class Message: CloudUploadable, CoreDataUploadable {
         }
         
         self.ckRecord = newCKRecord
+    }
+    
+    // MARK: - Helper Methods
+    
+    func update(withRecord record: CKRecord) {
+        coreDataMessage.text = record["text"] as? String
+        coreDataMessage.timestamp = record["timestamp"] as? NSDate
+        coreDataMessage.encodedSystemFields = record.encoded()
+        
+        self.ckRecord = record
     }
 }

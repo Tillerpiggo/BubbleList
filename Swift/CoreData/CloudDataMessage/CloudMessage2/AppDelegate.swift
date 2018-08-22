@@ -9,6 +9,10 @@
 import UIKit
 import CloudKit
 
+protocol NotificationDelegate {
+    func fetchChanges(completion: @escaping (Bool) -> Void)
+}
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -18,6 +22,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let coreDataController = CoreDataController(coreDataStack: coreDataStack)
         return coreDataController
     }()
+    
+    var notificationDelegates: [NotificationDelegate] = []
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         if let navigationController = window?.rootViewController as? UINavigationController,
@@ -37,13 +43,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping(UIBackgroundFetchResult) -> Void) {
         print("Received notification!")
         
-        guard let navigationController = window?.rootViewController as? UINavigationController,
-            let conversationTableViewController = navigationController.topViewController as? ConversationTableViewController else { return }
-        
-        // let dictionary = userInfo as! [String: NSObject]
-        // guard let notification: CKDatabaseNotification = CKNotification(fromRemoteNotificationDictionary: dictionary) as? CKDatabaseNotification else { return }
-        
-        conversationTableViewController.updateWithCloud()
+        let notification = CKNotification(fromRemoteNotificationDictionary: userInfo)
+        var didRecieveData: Bool = false
+        if notification.subscriptionID == "cloudkit-Conversation-changes" || notification.subscriptionID == "cloudkit-Message-changes" {
+            for notificationDelegate in notificationDelegates {
+                notificationDelegate.fetchChanges() { (didFetchRecords) in
+                    if !didRecieveData && didFetchRecords {
+                        completionHandler(.newData)
+                        didRecieveData = true
+                    }
+                }
+            }
+        }
+        if !didRecieveData {
+            completionHandler(.noData)
+        }
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

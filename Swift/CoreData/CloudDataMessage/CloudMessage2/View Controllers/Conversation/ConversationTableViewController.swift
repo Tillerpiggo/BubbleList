@@ -26,6 +26,7 @@ class ConversationTableViewController: UITableViewController {
         
         updateWithCoreData()
         updateWithCloud()
+        registerAsNotificationDelegate()
         
         tableView.rowHeight = 60
     }
@@ -36,6 +37,7 @@ class ConversationTableViewController: UITableViewController {
         if let destinationViewController = segue.destination.childViewControllers.first as? AddConversationTableViewController, segue.identifier == "AddConversation" {
             destinationViewController.delegate = self
             destinationViewController.coreDataController = coreDataController
+            destinationViewController.cloudController = cloudController
         } else if let destinationViewController = segue.destination as? MessageTableViewController, segue.identifier == "MessageTableView" {
             
             // (didSelectRowAtIndexPath is actually called after prepare(for:)
@@ -62,48 +64,26 @@ class ConversationTableViewController: UITableViewController {
 // MARK: - Helper Methods
 
 extension ConversationTableViewController {
-    func updateWithCloudOld() {
-        // Get from cloud (probably should show some loading indicator)
-        cloudController.fetchRecords(ofType: .conversation) { (records) in
-            
-            print("\(records.count) conversation records fetched in ConversationTableViewController.")
-            
-            // Delete all conversations in core data
-            for conversation in self.conversations {
-                self.coreDataController.delete(conversation)
-            }
-            self.coreDataController.save()
-            
-            self.conversations = []
-            
-            
-            // Add in new conversations
-            for record in records {
-                let newConversation = Conversation(fromRecord: record, managedContext: self.coreDataController.managedContext)
-                self.conversations.append(newConversation)
-            }
-            
-            self.conversations.sort() { $0.dateLastModified > $1.dateLastModified }
-            
-            self.coreDataController.save()
-            
-            
-            // Update view
-            DispatchQueue.main.async { self.tableView.reloadData() }
-        }
-    }
     
-    func updateWithCloud() {
+    func updateWithCloud(completion: @escaping (Bool) -> Void = { (didFetchRecords) in }) {
+        var didFetchRecords: Bool = false
+        
         let zonesDeleted: ([CKRecordZoneID]) -> Void = { (zoneIDs) in
-            // TODO: Implement this later (when you add zones), for now it will just delete everything
-            for conversation in self.conversations {
-                self.coreDataController.delete(conversation)
+            if zoneIDs.count > 0 {
+                didFetchRecords = true
+                
+                // TODO: Implement this later (when you add zones), for now it will just delete everything
+                for conversation in self.conversations {
+                    self.coreDataController.delete(conversation)
+                }
+                self.coreDataController.save()
             }
-            self.coreDataController.save()
         }
         
         let saveChanges: ([CKRecord], [CKRecordID]) -> Void = { (recordsChanged, recordIDsDeleted) in
             for record in recordsChanged {
+                didFetchRecords = true
+                
                 if let index = self.conversations.index(where: { $0.ckRecord.recordID == record.recordID }) {
                     self.conversations[index].update(withRecord: record)
                     DispatchQueue.main.async {
@@ -120,6 +100,8 @@ extension ConversationTableViewController {
             }
             
             for recordID in recordIDsDeleted {
+                didFetchRecords = true
+                
                 if let index = self.conversations.index(where: { $0.ckRecord.recordID == recordID }) {
                     self.conversations.remove(at: index)
                     DispatchQueue.main.async {
@@ -131,7 +113,9 @@ extension ConversationTableViewController {
             self.coreDataController.save()
         }
         
-        cloudController.fetchDatabaseChanges(zonesDeleted: zonesDeleted, saveChanges: saveChanges) { }
+        cloudController.fetchDatabaseChanges(zonesDeleted: zonesDeleted, saveChanges: saveChanges) {
+            completion(didFetchRecords)
+        }
     }
     
     func updateWithCoreData() {
@@ -139,7 +123,7 @@ extension ConversationTableViewController {
         // Get from Core Data
         coreDataController.fetchConversations() { (coreDataConversations) in
             for coreDataConversation in coreDataConversations {
-                self.conversations.append(Conversation(fromCoreDataConversation: coreDataConversation))
+                self.conversations.append(Conversation(fromCoreDataConversation: coreDataConversation, zoneID: self.cloudController.zoneID))
             }
             self.conversations.sort() { $0.dateLastModified > $1.dateLastModified }
             
@@ -147,6 +131,13 @@ extension ConversationTableViewController {
             
             DispatchQueue.main.async { self.tableView.reloadData() }
         }
+    }
+    
+    func registerAsNotificationDelegate() {
+        let appDelegate = UIApplication.shared.delegate as? AppDelegate
+        appDelegate?.notificationDelegates.append(self)
+        
+        print(appDelegate?.notificationDelegates.count ?? 0)
     }
 }
 
@@ -204,7 +195,15 @@ extension ConversationTableViewController {
     }
 }
 
+// MARK: - Notification Delegate
 
+extension ConversationTableViewController: NotificationDelegate {
+    func fetchChanges(completion: @escaping (Bool) -> Void) {
+        self.updateWithCloud { (didFetchRecords) in
+            completion(didFetchRecords)
+        }
+    }
+}
 
 
 
@@ -246,7 +245,7 @@ extension ConversationTableViewController: MessageTableViewControllerDelegate {
         
         if let selectedIndexPath = selectedIndexPath {
             conversations[selectedIndexPath.row] = conversation
-            tableView.reloadRows(at: [selectedIndexPath], with: .automatic)
+            DispatchQueue.main.async { self.tableView.reloadRows(at: [selectedIndexPath], with: .automatic) }
         }
     }
 }

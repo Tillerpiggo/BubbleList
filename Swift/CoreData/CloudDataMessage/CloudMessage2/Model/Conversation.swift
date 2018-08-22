@@ -18,7 +18,7 @@ class Conversation: CloudUploadable, CoreDataUploadable {
     
     var messages: [Message] {
         guard let coreDataMessages = coreDataConversation.messages else { return [Message]() }
-        return (coreDataMessages.map() { Message(fromCoreDataMessage: $0 as! CoreDataMessage) }).sorted() { $0.timestamp > $1.timestamp }
+        return (coreDataMessages.map() { Message(fromCoreDataMessage: $0 as! CoreDataMessage, zoneID: self.ckRecord.recordID.zoneID) }).sorted() { $0.timestamp > $1.timestamp }
     }
     var creationDate: Date { return (coreDataConversation.creationDate ?? NSDate()) as Date }
     var dateLastModified: Date { return (coreDataConversation.dateLastModified ?? NSDate()) as Date }
@@ -55,7 +55,7 @@ class Conversation: CloudUploadable, CoreDataUploadable {
     
     // MARK: - Initializers
     
-    init(withTitle title: String, messages: [Message] = [Message](), managedContext: NSManagedObjectContext) {
+    init(withTitle title: String, messages: [Message] = [Message](), managedContext: NSManagedObjectContext, zoneID: CKRecordZoneID) {
         // Create CoreDataConversation
         let newCoreDataConversation = CoreDataConversation(context: managedContext)
         
@@ -70,7 +70,7 @@ class Conversation: CloudUploadable, CoreDataUploadable {
         
         
         // Create CKRecord
-        let newCKRecord = CKRecord(recordType: "Conversation")
+        let newCKRecord = CKRecord(recordType: "Conversation", zoneID: zoneID)
         
         newCKRecord["title"] = title as CKRecordValue
         newCKRecord["latestMessage"] = (messages.first?.text as CKRecordValue?) ?? ("" as CKRecordValue)
@@ -93,7 +93,7 @@ class Conversation: CloudUploadable, CoreDataUploadable {
         self.ckRecord = record
     }
     
-    init(fromCoreDataConversation newCoreDataConversation: CoreDataConversation) {
+    init(fromCoreDataConversation newCoreDataConversation: CoreDataConversation, zoneID: CKRecordZoneID) {
         self.coreDataConversation = newCoreDataConversation
         
         // Create CKRecord from an unarchiver
@@ -105,7 +105,7 @@ class Conversation: CloudUploadable, CoreDataUploadable {
             newCKRecord = CKRecord(coder: unarchiver)!
             unarchiver.finishDecoding()
         } else {
-            newCKRecord = CKRecord(recordType: "Conversation")
+            newCKRecord = CKRecord(recordType: "Conversation", zoneID: zoneID)
         }
         
         newCKRecord["title"] = newCoreDataConversation.title as CKRecordValue?

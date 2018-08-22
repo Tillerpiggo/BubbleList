@@ -29,40 +29,11 @@ class MessageTableViewController: UITableViewController {
         // Multiple lines per message
         tableView.rowHeight = UITableViewAutomaticDimension
         
-        // Fetch messages for conversation
-        cloudController.fetchRecords(ofType: .message, withParent: conversation) { (records) in
-            print("\(records.count) message records fetched from MessageTableViewController.")
-            
-            // Convert records to messages
-            var fetchedMessages = records.map() { Message(fromRecord: $0, managedContext: self.coreDataController.managedContext) }
-            fetchedMessages.sort() { $0.timestamp > $1.timestamp }
-            
-            print("Number of message records succesfully converted: \(fetchedMessages.count)")
-            
-            // Delete all messages in the conversation
-            for message in self.conversation.messages {
-                self.coreDataController.delete(message)
-            }
-            self.coreDataController.save()
-            
-            // Add in the new messages
-            for fetchedMessage in fetchedMessages {
-                self.conversation.coreDataConversation.addToMessages(fetchedMessage.coreDataMessage)
-            }
+        // Core Data will already fetch messages until we optimize it not to
+        // TODO: Optimize core data by only fetching and editing the title/dateModified of the conversation, loading/fetching messages later
         
-            self.conversation.ckRecord["latestMessage"] = (self.conversation.messages.first?.text ?? "") as CKRecordValue
-            
-            self.coreDataController.save()
-            
-            print("Messages in conversation after saving messages: \(self.conversation.messages.count)")
-            
-            // Reload table view
-            DispatchQueue.main.async {
-                print("Before reloading from fetching, there are \(self.conversation.messages.count) messages in the conversation.")
-                self.tableView.reloadData()
-                self.delegate?.conversationDidChange(to: self.conversation, wasModified: false)
-            }
-        }
+        updateWithCloud()
+        registerAsNotificationDelegate()
     }
     
     // MARK: - Navigation
@@ -109,6 +80,81 @@ extension MessageTableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+}
+
+// MARK: - Helper Methods
+
+extension MessageTableViewController {
+    func updateWithCloud(completion: @escaping (Bool) -> Void = { (didFetchRecords) in }) {
+        var didFetchRecords: Bool = false
+        
+        let zonesDeleted: ([CKRecordZoneID]) -> Void = { (zoneIDs) in
+            didFetchRecords = true
+            
+            if zoneIDs.count > 0 {
+                // TODO: Implement this later (when you add zones), for now it will just delete everything
+                for message in self.conversation.messages {
+                    self.coreDataController.delete(message)
+                }
+                self.coreDataController.save()
+            }
+        }
+        
+        let saveChanges: ([CKRecord], [CKRecordID]) -> Void = { (recordsChanged, recordIDsDeleted) in
+            for record in recordsChanged {
+                didFetchRecords = true
+                if let index = self.conversation.messages.index(where: { $0.ckRecord.recordID == record.recordID }) {
+                    self.conversation.messages[index].update(withRecord: record)
+                    DispatchQueue.main.async {
+                        let changedIndexPath = IndexPath(row: index, section: 0)
+                        self.tableView.reloadRows(at: [changedIndexPath], with: .automatic)
+                    }
+                } else {
+                    self.conversation.coreDataConversation.addToMessages(Message(fromRecord: record, managedContext: self.coreDataController.managedContext).coreDataMessage)
+                    DispatchQueue.main.async {
+                        let newIndexPath = IndexPath(row: self.conversation.messages.count - 1, section: 0)
+                        self.tableView.insertRows(at: [newIndexPath], with: .automatic)
+                    }
+                }
+            }
+            
+            for recordID in recordIDsDeleted {
+                didFetchRecords = true
+                
+                if let index = self.conversation.messages.index(where: { $0.ckRecord.recordID == recordID }) {
+                    let message = self.conversation.messages[index]
+                    self.conversation.coreDataConversation.removeFromMessages(message.coreDataMessage)
+                    DispatchQueue.main.async {
+                        self.tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
+                    }
+                }
+            }
+            
+            self.coreDataController.save()
+        }
+        
+        cloudController.fetchDatabaseChanges(zonesDeleted: zonesDeleted, saveChanges: saveChanges) {
+            self.delegate?.conversationDidChange(to: self.conversation, wasModified: false)
+            completion(didFetchRecords)
+        }
+    }
+    
+    func registerAsNotificationDelegate() {
+        let appDelegate = UIApplication.shared.delegate as? AppDelegate
+        appDelegate?.notificationDelegates.append(self)
+        
+        print(appDelegate?.notificationDelegates.count ?? 0)
+    }
+}
+
+// MARK: - Notification Delegate
+
+extension MessageTableViewController: NotificationDelegate {
+    func fetchChanges(completion: @escaping (Bool) -> Void) {
+        self.updateWithCloud { (didFetchRecords) in
+            completion(didFetchRecords)
+        }
     }
 }
 

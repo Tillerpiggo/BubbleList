@@ -3,17 +3,18 @@
     <entity name="CoreDataConversation" representedClassName="CoreDataConversation" syncable="YES">
         <attribute name="creationDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="dateLastModified" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="recordMetadata" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="encodedSystemFields" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="messages" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="CoreDataMessage" inverseName="owningConversation" inverseEntity="CoreDataMessage" syncable="YES"/>
     </entity>
     <entity name="CoreDataMessage" representedClassName="CoreDataMessage" syncable="YES">
+        <attribute name="encodedSystemFields" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="owningConversation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CoreDataConversation" inverseName="messages" inverseEntity="CoreDataConversation" syncable="YES"/>
     </entity>
     <elements>
         <element name="CoreDataConversation" positionX="-299" positionY="-54" width="128" height="118"/>
-        <element name="CoreDataMessage" positionX="-54" positionY="9" width="128" height="88"/>
+        <element name="CoreDataMessage" positionX="-54" positionY="9" width="128" height="103"/>
     </elements>
 </model>
