@@ -34,17 +34,35 @@ class CloudController {
         }
     }
     
-    var changeToken: CKServerChangeToken? {
+    var databaseChangeToken: CKServerChangeToken? {
         get {
-            if let data = UserDefaults.standard.data(forKey: "changeToken") {
+            if let data = UserDefaults.standard.data(forKey: "databaseChangeToken") {
                 return NSKeyedUnarchiver.unarchiveObject(with: data) as? CKServerChangeToken
             } else {
                 return nil
             }
         }
         set {
-            let data = NSKeyedArchiver.archivedData(withRootObject: newValue!)
-            UserDefaults.standard.set(data, forKey: "changeToken")
+            guard let newValue = newValue else { return }
+            
+            let data = NSKeyedArchiver.archivedData(withRootObject: newValue)
+            UserDefaults.standard.set(data, forKey: "databaseChangeToken")
+        }
+    }
+    
+    var zoneChangeToken: CKServerChangeToken? {
+        get {
+            if let data = UserDefaults.standard.data(forKey: "zoneChangeToken") {
+                return NSKeyedUnarchiver.unarchiveObject(with: data) as? CKServerChangeToken
+            } else {
+                return nil
+            }
+        }
+        set {
+            guard let newValue = newValue else { return }
+            
+            let data = NSKeyedArchiver.archivedData(withRootObject: newValue)
+            UserDefaults.standard.set(data, forKey: "zoneChangeToken")
         }
     }
     
@@ -225,7 +243,7 @@ class CloudController {
         var changedZoneIDs = [CKRecordZoneID]()
         var deletedZoneIDs = [CKRecordZoneID]()
         
-        let operation = CKFetchDatabaseChangesOperation(previousServerChangeToken: changeToken)
+        let operation = CKFetchDatabaseChangesOperation(previousServerChangeToken: databaseChangeToken)
         operation.fetchAllChanges = true
         
         operation.recordZoneWithIDChangedBlock = { (zoneID) in
@@ -238,18 +256,20 @@ class CloudController {
         
         operation.changeTokenUpdatedBlock = { (token) in
             zonesDeleted(deletedZoneIDs)
-            self.changeToken = token
+            self.databaseChangeToken = token
         }
         
         operation.fetchDatabaseChangesCompletionBlock = { (token, moreComing, error) in
             self.handleError(error)
             
-            // TODO: Properly delete zones; zonesDeleted(deletedZoneIDs)
-            self.changeToken = token
+            zonesDeleted(deletedZoneIDs)
+            self.databaseChangeToken = token
             
-            print(changedZoneIDs)
-            
-            self.fetchZoneChanges(zoneIDs: changedZoneIDs, saveChanges: saveChanges) {
+            if changedZoneIDs.count > 0 {
+                self.fetchZoneChanges(zoneIDs: changedZoneIDs, saveChanges: saveChanges) {
+                    completion()
+                }
+            } else {
                 completion()
             }
         }
@@ -267,7 +287,7 @@ class CloudController {
         var optionsByRecordZoneID = [CKRecordZoneID: CKFetchRecordZoneChangesOptions]()
         for zoneID in zoneIDs {
             let options = CKFetchRecordZoneChangesOptions()
-            options.previousServerChangeToken = self.changeToken
+            options.previousServerChangeToken = self.zoneChangeToken
             optionsByRecordZoneID[zoneID] = options
         }
         
@@ -285,7 +305,7 @@ class CloudController {
         
         operation.recordZoneChangeTokensUpdatedBlock = { (zoneID, token, data) in
             // Flush record changes and deletions for this zone to disk
-            self.changeToken = token
+            self.zoneChangeToken = token
             saveChanges(changedRecords, deletedRecordIDs)
         }
         
@@ -293,7 +313,7 @@ class CloudController {
             self.handleError(error)
             
             saveChanges(changedRecords, deletedRecordIDs)
-            self.changeToken = token
+            self.zoneChangeToken = token
         }
         
         operation.fetchRecordZoneChangesCompletionBlock = { (error) in
@@ -322,6 +342,8 @@ class CloudController {
                 createZoneGroup.leave()
             }
             createZoneOperation.qualityOfService = .userInitiated
+            
+            self.database.add(createZoneOperation)
         }
     }
     

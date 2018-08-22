@@ -43,6 +43,7 @@ class MessageTableViewController: UITableViewController {
         
         destinationViewController.delegate = self
         destinationViewController.coreDataController = coreDataController
+        destinationViewController.cloudController = cloudController
         destinationViewController.owningConversation = CKReference(record: conversation.ckRecord, action: .none)
     }
 }
@@ -110,11 +111,16 @@ extension MessageTableViewController {
                         let changedIndexPath = IndexPath(row: index, section: 0)
                         self.tableView.reloadRows(at: [changedIndexPath], with: .automatic)
                     }
-                } else {
-                    self.conversation.coreDataConversation.addToMessages(Message(fromRecord: record, managedContext: self.coreDataController.managedContext).coreDataMessage)
+                } else if record.recordType == "Message" {
                     DispatchQueue.main.async {
+                        self.tableView.beginUpdates()
+                        
+                        self.conversation.coreDataConversation.addToMessages(Message(fromRecord: record, managedContext: self.coreDataController.managedContext).coreDataMessage)
                         let newIndexPath = IndexPath(row: self.conversation.messages.count - 1, section: 0)
                         self.tableView.insertRows(at: [newIndexPath], with: .automatic)
+                        self.coreDataController.save()
+                        
+                        self.tableView.endUpdates()
                     }
                 }
             }
@@ -123,15 +129,18 @@ extension MessageTableViewController {
                 didFetchRecords = true
                 
                 if let index = self.conversation.messages.index(where: { $0.ckRecord.recordID == recordID }) {
-                    let message = self.conversation.messages[index]
-                    self.conversation.coreDataConversation.removeFromMessages(message.coreDataMessage)
                     DispatchQueue.main.async {
+                        self.tableView.beginUpdates()
+                        
+                        let message = self.conversation.messages[index]
+                        self.conversation.coreDataConversation.removeFromMessages(message.coreDataMessage)
                         self.tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
+                        self.coreDataController.save()
+                        
+                        self.tableView.endUpdates()
                     }
                 }
             }
-            
-            self.coreDataController.save()
         }
         
         cloudController.fetchDatabaseChanges(zonesDeleted: zonesDeleted, saveChanges: saveChanges) {

@@ -58,7 +58,7 @@ class AddMessageTableViewController: UITableViewController {
     // HELPER METHODS:
     
     private func save() {
-        let newMessage = Message(withText: textField.text!, timestamp: Date(), managedContext: coreDataController.managedContext, owningConversation: owningConversation, zoneID: cloudController.zoneID)
+        let newMessage = Message(withText: textField.text ?? "", timestamp: Date(), managedContext: coreDataController.managedContext, owningConversation: owningConversation, zoneID: cloudController.zoneID)
         delegate?.addedMessage(newMessage)
         if let owningConversation = newMessage.ckRecord["owningConversation"] as? CKReference {
             print("RECORD TO SAVE HAD OWNING CONVERSATION: \(owningConversation)")

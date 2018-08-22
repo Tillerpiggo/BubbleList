@@ -85,16 +85,22 @@ extension ConversationTableViewController {
                 didFetchRecords = true
                 
                 if let index = self.conversations.index(where: { $0.ckRecord.recordID == record.recordID }) {
-                    self.conversations[index].update(withRecord: record)
                     DispatchQueue.main.async {
+                        self.conversations[index].update(withRecord: record)
                         let changedIndexPath = IndexPath(row: index, section: 0)
                         self.tableView.reloadRows(at: [changedIndexPath], with: .automatic)
+                        self.coreDataController.save()
                     }
-                } else {
-                    self.conversations.append(Conversation(fromRecord: record, managedContext: self.coreDataController.managedContext))
+                } else if record.recordType == "Conversation" {
                     DispatchQueue.main.async {
+                        self.tableView.beginUpdates()
+                        
+                        self.conversations.append(Conversation(fromRecord: record, managedContext: self.coreDataController.managedContext))
                         let newIndexPath = IndexPath(row: self.conversations.count - 1, section: 0)
-                        self.tableView.insertRows(at: [newIndexPath], with: .automatic)
+                        self.tableView.insertRows(at: [newIndexPath], with: .automatic) // To fix this, properly begin and end updates at the right times
+                        self.coreDataController.save()
+                        
+                        self.tableView.endUpdates()
                     }
                 }
             }
@@ -103,14 +109,17 @@ extension ConversationTableViewController {
                 didFetchRecords = true
                 
                 if let index = self.conversations.index(where: { $0.ckRecord.recordID == recordID }) {
-                    self.conversations.remove(at: index)
                     DispatchQueue.main.async {
+                        self.tableView.beginUpdates()
+                        
+                        self.coreDataController.delete(self.conversations.remove(at: index))
                         self.tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
+                        self.coreDataController.save()
+                        
+                        self.tableView.endUpdates()
                     }
                 }
             }
-            
-            self.coreDataController.save()
         }
         
         cloudController.fetchDatabaseChanges(zonesDeleted: zonesDeleted, saveChanges: saveChanges) {
@@ -243,7 +252,7 @@ extension ConversationTableViewController: MessageTableViewControllerDelegate {
             conversation.coreDataConversation.dateLastModified = NSDate()
         }
         
-        if let selectedIndexPath = selectedIndexPath {
+        if let selectedIndexPath = selectedIndexPath, selectedIndexPath.row < conversations.count {
             conversations[selectedIndexPath.row] = conversation
             DispatchQueue.main.async { self.tableView.reloadRows(at: [selectedIndexPath], with: .automatic) }
         }
