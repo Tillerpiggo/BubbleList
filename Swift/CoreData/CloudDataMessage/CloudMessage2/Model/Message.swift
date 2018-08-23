@@ -16,7 +16,13 @@ class Message: CloudUploadable, CoreDataUploadable {
     // PROPERTIES:
     
     var text: String { return coreDataMessage.text ?? "" }
-    var timestamp: Date { return (coreDataMessage.timestamp ?? NSDate()) as Date }
+    var timestamp: Date {
+        if coreDataMessage.timestamp == nil {
+            print("No timestamp found in core data message")
+        }
+        
+        return (coreDataMessage.timestamp ?? NSDate()) as Date
+    }
     
     var formattedTimestamp: String {
         let dateFormatter = DateFormatter()
@@ -46,6 +52,8 @@ class Message: CloudUploadable, CoreDataUploadable {
         newCoreDataMessage.timestamp = record.creationDate! as NSDate
         newCoreDataMessage.encodedSystemFields = record.encoded()
         
+        print("Timestamp from record: \(String(describing: newCoreDataMessage.timestamp))")
+        
         self.coreDataMessage = newCoreDataMessage
         
         // Create CKRecord
@@ -65,6 +73,7 @@ class Message: CloudUploadable, CoreDataUploadable {
             unarchiver.finishDecoding()
         } else {
             newCKRecord = CKRecord(recordType: "Message", zoneID: zoneID)
+            print("Fabricated message due to lack of encoded system fields")
         }
         
         newCKRecord["text"] = coreDataMessage.text as CKRecordValue?
@@ -77,13 +86,6 @@ class Message: CloudUploadable, CoreDataUploadable {
     }
     
     init(withText text: String, timestamp: Date, managedContext: NSManagedObjectContext, owningConversation: CKReference, zoneID: CKRecordZoneID) {
-        // Create CoreDataMessage
-        let newCoreDataMessage = CoreDataMessage(context: managedContext)
-        newCoreDataMessage.text = text
-        newCoreDataMessage.timestamp = timestamp as NSDate
-        
-        self.coreDataMessage = newCoreDataMessage
-        
         // Create CKRecord
         let newCKRecord = CKRecord(recordType: RecordType.message.cloudValue, zoneID: zoneID)
         newCKRecord["text"] = text as CKRecordValue
@@ -94,13 +96,22 @@ class Message: CloudUploadable, CoreDataUploadable {
         }
         
         self.ckRecord = newCKRecord
+        
+        // Create CoreDataMessage
+        let newCoreDataMessage = CoreDataMessage(context: managedContext)
+        newCoreDataMessage.text = text
+        newCoreDataMessage.timestamp = timestamp as NSDate
+        print("Timestamp encoded to core data message: \(String(describing: newCoreDataMessage.timestamp))")
+        newCoreDataMessage.encodedSystemFields = ckRecord.encoded()
+        
+        self.coreDataMessage = newCoreDataMessage
     }
     
     // MARK: - Helper Methods
     
     func update(withRecord record: CKRecord) {
         coreDataMessage.text = record["text"] as? String
-        coreDataMessage.timestamp = record["timestamp"] as? NSDate
+        coreDataMessage.timestamp = record.creationDate! as NSDate
         coreDataMessage.encodedSystemFields = record.encoded()
         
         self.ckRecord = record

@@ -77,6 +77,8 @@ extension ConversationTableViewController {
                     self.coreDataController.delete(conversation)
                 }
                 self.coreDataController.save()
+                
+                self.conversations = []
             }
         }
         
@@ -88,19 +90,40 @@ extension ConversationTableViewController {
                     DispatchQueue.main.async {
                         self.conversations[index].update(withRecord: record)
                         let changedIndexPath = IndexPath(row: index, section: 0)
+                        
+                        self.tableView.beginUpdates()
                         self.tableView.reloadRows(at: [changedIndexPath], with: .automatic)
+                        self.tableView.endUpdates()
+                        
                         self.coreDataController.save()
                     }
                 } else if record.recordType == "Conversation" {
                     DispatchQueue.main.async {
-                        self.tableView.beginUpdates()
-                        
                         self.conversations.append(Conversation(fromRecord: record, managedContext: self.coreDataController.managedContext))
                         let newIndexPath = IndexPath(row: self.conversations.count - 1, section: 0)
-                        self.tableView.insertRows(at: [newIndexPath], with: .automatic) // To fix this, properly begin and end updates at the right times
-                        self.coreDataController.save()
                         
+                        self.tableView.beginUpdates()
+                        self.tableView.insertRows(at: [newIndexPath], with: .automatic)
                         self.tableView.endUpdates()
+                        
+                        self.coreDataController.save()
+                    }
+                } else if record.recordType == "Message" {
+                    guard let index = self.conversations.index(where: { record["owningConversation"] as? CKReference == CKReference(record: $0.ckRecord, action: .none) })
+                        else { return }
+                    
+                    if let messageIndex = self.conversations[index].messages.index(where: { $0.ckRecord.recordID == record.recordID }) {
+                        self.conversations[index].messages[messageIndex].update(withRecord: record)
+                    } else {
+                        self.conversations[index].coreDataConversation.addToMessages(Message(fromRecord: record, managedContext: self.coreDataController.managedContext).coreDataMessage)
+                    }
+                    
+                    DispatchQueue.main.async {
+                        self.tableView.beginUpdates()
+                        self.tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
+                        self.tableView.endUpdates()
+                        
+                        self.coreDataController.save()
                     }
                 }
             }
@@ -110,13 +133,13 @@ extension ConversationTableViewController {
                 
                 if let index = self.conversations.index(where: { $0.ckRecord.recordID == recordID }) {
                     DispatchQueue.main.async {
-                        self.tableView.beginUpdates()
-                        
                         self.coreDataController.delete(self.conversations.remove(at: index))
-                        self.tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
-                        self.coreDataController.save()
                         
+                        self.tableView.beginUpdates()
+                        self.tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
                         self.tableView.endUpdates()
+                        
+                        self.coreDataController.save()
                     }
                 }
             }
@@ -146,7 +169,7 @@ extension ConversationTableViewController {
         let appDelegate = UIApplication.shared.delegate as? AppDelegate
         appDelegate?.notificationDelegates.append(self)
         
-        print(appDelegate?.notificationDelegates.count ?? 0)
+        print("Number of notification delegates: \(appDelegate?.notificationDelegates.count ?? 0)")
     }
 }
 
@@ -185,6 +208,11 @@ extension ConversationTableViewController {
         if editingStyle == .delete {
             let deletedConversation = conversations.remove(at: indexPath.row)
             
+            // Delete all cloud messages
+            for message in deletedConversation.messages {
+                coreDataController.delete(message)
+            }
+            
             // Delete from cloud
             cloudController.delete([deletedConversation]) { }
             
@@ -192,7 +220,10 @@ extension ConversationTableViewController {
             coreDataController.delete(deletedConversation)
             
             // Update View
+            
+            self.tableView.beginUpdates()
             tableView.deleteRows(at: [indexPath], with: .automatic)
+            self.tableView.endUpdates()
         }
     }
     
@@ -230,7 +261,10 @@ extension ConversationTableViewController: AddConversationTableViewControllerDel
         
         conversations.append(conversation)
         conversations.sort { $0.dateLastModified > $1.dateLastModified }
+        
+        self.tableView.beginUpdates()
         tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+        self.tableView.endUpdates()
     }
 }
 
@@ -254,7 +288,11 @@ extension ConversationTableViewController: MessageTableViewControllerDelegate {
         
         if let selectedIndexPath = selectedIndexPath, selectedIndexPath.row < conversations.count {
             conversations[selectedIndexPath.row] = conversation
-            DispatchQueue.main.async { self.tableView.reloadRows(at: [selectedIndexPath], with: .automatic) }
+            DispatchQueue.main.async {
+                self.tableView.beginUpdates()
+                self.tableView.reloadRows(at: [selectedIndexPath], with: .automatic)
+                self.tableView.endUpdates()
+            }
         }
     }
 }

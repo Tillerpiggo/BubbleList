@@ -152,22 +152,17 @@ class CloudController {
         database.add(operation)
     }
     
-    // REMINDER: Might be able to fuse save/delete conversations and save/delete messages
     
-    // Saves the given conversations
+    // Saves the given cloud up
     func save(_ cloudUploadables: [CloudUploadable], completion: @escaping () -> Void) {
         // Create and configure operation
         let operation = CKModifyRecordsOperation()
+        operation.savePolicy = .changedKeys
+        operation.isAtomic = true
         
         // Map conversations to records
         let recordsToSave = cloudUploadables.map() { $0.ckRecord }
         operation.recordsToSave = recordsToSave
-        
-        for record in recordsToSave {
-            if let owningConversation = record["owningConversation"] as? CKReference {
-                print("Record to save had owningConversation: \(owningConversation)")
-            }
-        }
         
         operation.modifyRecordsCompletionBlock = { (record, recordID, error) in
             self.handleError(error)
@@ -270,6 +265,7 @@ class CloudController {
                     completion()
                 }
             } else {
+                print("No zones found changed")
                 completion()
             }
         }

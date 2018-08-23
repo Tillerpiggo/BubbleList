@@ -25,7 +25,6 @@ class Conversation: CloudUploadable, CoreDataUploadable {
     var title: String { return coreDataConversation.title ?? "" }
     
     var latestMessage: String {
-        // Use the text of the first messasge, if that isn't there, use latestMessage, otherwise, it's blank.
         if let latestMessage = messages.first?.text {
             ckRecord["latestMessage"] = latestMessage as CKRecordValue
             return latestMessage
@@ -48,6 +47,8 @@ class Conversation: CloudUploadable, CoreDataUploadable {
         if let creationDate = record.creationDate as NSDate? { coreDataConversation.creationDate = creationDate }
         if let dateLastModified = record.modificationDate as NSDate? { coreDataConversation.dateLastModified = dateLastModified }
         coreDataConversation.encodedSystemFields = record.encoded()
+        
+        self.ckRecord = record
     }
     
     // MARK: - Cloud
@@ -56,6 +57,15 @@ class Conversation: CloudUploadable, CoreDataUploadable {
     // MARK: - Initializers
     
     init(withTitle title: String, messages: [Message] = [Message](), managedContext: NSManagedObjectContext, zoneID: CKRecordZoneID) {
+        
+        // Create CKRecord
+        let newCKRecord = CKRecord(recordType: "Conversation", zoneID: zoneID)
+        
+        newCKRecord["title"] = title as CKRecordValue
+        newCKRecord["latestMessage"] = (messages.first?.text as CKRecordValue?) ?? ("" as CKRecordValue)
+        
+        self.ckRecord = newCKRecord
+        
         // Create CoreDataConversation
         let newCoreDataConversation = CoreDataConversation(context: managedContext)
         
@@ -65,17 +75,9 @@ class Conversation: CloudUploadable, CoreDataUploadable {
         }
         newCoreDataConversation.creationDate = NSDate()
         newCoreDataConversation.dateLastModified = NSDate()
+        newCoreDataConversation.encodedSystemFields = ckRecord.encoded()
         
         self.coreDataConversation = newCoreDataConversation
-        
-        
-        // Create CKRecord
-        let newCKRecord = CKRecord(recordType: "Conversation", zoneID: zoneID)
-        
-        newCKRecord["title"] = title as CKRecordValue
-        newCKRecord["latestMessage"] = (messages.first?.text as CKRecordValue?) ?? ("" as CKRecordValue)
-        
-        self.ckRecord = newCKRecord
     }
     
     init(fromRecord record: CKRecord, managedContext: NSManagedObjectContext) {

@@ -36,6 +36,12 @@ class MessageTableViewController: UITableViewController {
         registerAsNotificationDelegate()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        unregisterAsNotificationDelegate()
+    }
+    
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let destinationViewController = segue.destination.childViewControllers.first as? AddMessageTableViewController,
@@ -106,21 +112,26 @@ extension MessageTableViewController {
             for record in recordsChanged {
                 didFetchRecords = true
                 if let index = self.conversation.messages.index(where: { $0.ckRecord.recordID == record.recordID }) {
-                    self.conversation.messages[index].update(withRecord: record)
                     DispatchQueue.main.async {
+                        self.conversation.messages[index].update(withRecord: record)
                         let changedIndexPath = IndexPath(row: index, section: 0)
-                        self.tableView.reloadRows(at: [changedIndexPath], with: .automatic)
-                    }
-                } else if record.recordType == "Message" {
-                    DispatchQueue.main.async {
+                        
                         self.tableView.beginUpdates()
-                        
-                        self.conversation.coreDataConversation.addToMessages(Message(fromRecord: record, managedContext: self.coreDataController.managedContext).coreDataMessage)
-                        let newIndexPath = IndexPath(row: self.conversation.messages.count - 1, section: 0)
-                        self.tableView.insertRows(at: [newIndexPath], with: .automatic)
-                        self.coreDataController.save()
-                        
+                        self.tableView.reloadRows(at: [changedIndexPath], with: .automatic)
                         self.tableView.endUpdates()
+                        
+                        self.coreDataController.save()
+                    }
+                } else if record.recordType == "Message" && record["owningConversation"] as? CKReference == CKReference(record: self.conversation.ckRecord, action: .none) {
+                    DispatchQueue.main.async {
+                        self.conversation.coreDataConversation.addToMessages(Message(fromRecord: record, managedContext: self.coreDataController.managedContext).coreDataMessage)
+                        let newIndexPath = IndexPath(row: 0, section: 0)
+                        
+                        self.tableView.beginUpdates()
+                        self.tableView.insertRows(at: [newIndexPath], with: .automatic)
+                        self.tableView.endUpdates()
+                        
+                        self.coreDataController.save()
                     }
                 }
             }
@@ -130,14 +141,14 @@ extension MessageTableViewController {
                 
                 if let index = self.conversation.messages.index(where: { $0.ckRecord.recordID == recordID }) {
                     DispatchQueue.main.async {
-                        self.tableView.beginUpdates()
-                        
                         let message = self.conversation.messages[index]
                         self.conversation.coreDataConversation.removeFromMessages(message.coreDataMessage)
-                        self.tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
-                        self.coreDataController.save()
                         
+                        self.tableView.beginUpdates()
+                        self.tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
                         self.tableView.endUpdates()
+                        
+                        self.coreDataController.save()
                     }
                 }
             }
@@ -153,7 +164,14 @@ extension MessageTableViewController {
         let appDelegate = UIApplication.shared.delegate as? AppDelegate
         appDelegate?.notificationDelegates.append(self)
         
-        print(appDelegate?.notificationDelegates.count ?? 0)
+        print("Number of notification delegates: \(appDelegate?.notificationDelegates.count ?? 0)")
+    }
+    
+    func unregisterAsNotificationDelegate() {
+        let appDelegate = UIApplication.shared.delegate as? AppDelegate
+        appDelegate?.notificationDelegates.removeLast()
+        
+        print("Number of notification delegates: \(appDelegate?.notificationDelegates.count ?? 0)")
     }
 }
 
@@ -188,6 +206,8 @@ extension MessageTableViewController: AddMessageTableViewControllerDelegate {
         delegate?.conversationDidChange(to: conversation, wasModified: true)
         
         // Modify table view
+        tableView.beginUpdates()
         tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+        tableView.endUpdates()
     }
 }
