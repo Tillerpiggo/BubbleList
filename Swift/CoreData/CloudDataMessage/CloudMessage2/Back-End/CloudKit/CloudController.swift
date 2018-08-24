@@ -80,7 +80,7 @@ class CloudController {
             
             // Get all the zoneIDs from recordZones (the tuple (recordZoneID, recordZone)
             for zoneID in recordZones.map({ $0.0 }) {
-                self.fetchRecordsOfType(recordType, inZone: zoneID) { (records) in
+                self.fetchRecords(ofType: recordType, inZone: zoneID) { (records) in
                     records.forEach() { fetchedRecords.append($0) }
                     perZoneCompletion(fetchedRecords)
                 }
@@ -92,7 +92,7 @@ class CloudController {
     }
     
     // Fetches conversations of a particular zone, does not include any messages. REMINDER: Add a firstMessage property to a conversation record type
-    private func fetchRecordsOfType(_ recordType: RecordType, inZone zoneID: CKRecordZoneID, completion: @escaping ([CKRecord]) -> Void) {
+    private func fetchRecords(ofType recordType: RecordType, inZone zoneID: CKRecordZoneID, completion: @escaping ([CKRecord]) -> Void) {
         // Search for ALL conversations in a particular zone in the Cloud:
         
         // Create query
@@ -251,7 +251,7 @@ class CloudController {
         
         operation.changeTokenUpdatedBlock = { (token) in
             zonesDeleted(deletedZoneIDs)
-            self.databaseChangeToken = token
+            // self.databaseChangeToken = token
         }
         
         operation.fetchDatabaseChangesCompletionBlock = { (token, moreComing, error) in
@@ -300,7 +300,6 @@ class CloudController {
         }
         
         operation.recordZoneChangeTokensUpdatedBlock = { (zoneID, token, data) in
-            // Flush record changes and deletions for this zone to disk
             self.zoneChangeToken = token
             saveChanges(changedRecords, deletedRecordIDs)
         }

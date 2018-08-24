@@ -29,6 +29,7 @@
 		2382AD46212480CC00E20250 /* RecordType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2382AD45212480CC00E20250 /* RecordType.swift */; };
 		2382AD48212484C500E20250 /* CoreDataUploadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2382AD47212484C500E20250 /* CoreDataUploadable.swift */; };
 		2382AD4C212B253500E20250 /* CKRecord+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2382AD4B212B253500E20250 /* CKRecord+Helpers.swift */; };
+		2382AD4E212FA39600E20250 /* CloudKitErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2382AD4D212FA39600E20250 /* CloudKitErrorHandler.swift */; };
 		23CB4FF62123E35B0097566E /* CloudMessage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 23CB4FF42123E35B0097566E /* CloudMessage.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
@@ -58,6 +59,7 @@
 		2382AD45212480CC00E20250 /* RecordType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordType.swift; sourceTree = "<group>"; };
 		2382AD47212484C500E20250 /* CoreDataUploadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataUploadable.swift; sourceTree = "<group>"; };
 		2382AD4B212B253500E20250 /* CKRecord+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKRecord+Helpers.swift"; sourceTree = "<group>"; };
+		2382AD4D212FA39600E20250 /* CloudKitErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitErrorHandler.swift; sourceTree = "<group>"; };
 		23CB4FF52123E35B0097566E /* CloudMessage.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CloudMessage.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -164,6 +166,7 @@
 			children = (
 				2340E2542116B94E00F83681 /* CloudController.swift */,
 				2340E25A2118C5A600F83681 /* CloudUploadable.swift */,
+				2382AD4D212FA39600E20250 /* CloudKitErrorHandler.swift */,
 			);
 			path = CloudKit;
 			sourceTree = "<group>";
@@ -291,6 +294,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2382AD4E212FA39600E20250 /* CloudKitErrorHandler.swift in Sources */,
 				2340E2512116639600F83681 /* AddMessageTableViewController.swift in Sources */,
 				2340E2462116336E00F83681 /* Conversation.swift in Sources */,
 				2382AD412123E9DF00E20250 /* CoreDataConversation+CoreDataClass.swift in Sources */,
