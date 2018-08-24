@@ -111,4 +111,29 @@ class CloudKitErrorHandler {
     func handleInvalidArguments() {
         print("This means that you are creating a CloudKit operation (to save, fetch changes, etc.) without proper arguments. Make sure that you safeguard against invalid arguments or change the code to not use invalid arguments.")
     }
+    
+    func handleLimitExceeded() {
+        print("This may have changed, but a max of 400 items (records or shares) per operation, and 2 MB per request (not counting asset sizes.")
+        
+        // TODO: split the operation in half and try both requests again. I doubt this will happen, but I need to do some sort of test with a large number of texts in ortder to test it.
+    }
+    
+    func handleManagedAccountRestricted() {
+        print("This means the current account can't access CloudKit. TODO: While this is listed as nonrecoverable, this should push the user to offline mode and notify them that they can't interact with the Cloud.")
+    }
+    
+    func handleMissingEntitlement() {
+        print("This error should only occur during the initial development of the app. It should never occur.")
+    }
+    
+    func handleNetworkFailure(error: CKError, retry: @escaping () -> Void) {
+        // Can be retried immediately, but should wait a bit (maybe 5 seconds)
+        // TODO: Retry - if network unavailable, just make the app monitor for network reachability and wait until the network is available
+        
+        print("TODO: Handle this error when you start doing offline mode.")
+    }
+    
+    func handleNetworkUnavailable(error: CKError, retry: @escaping () -> Void) {
+        
+    }
 }
