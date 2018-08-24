@@ -33,6 +33,11 @@ class MessageTableViewController: UITableViewController {
         // TODO: Optimize core data by only fetching and editing the title/dateModified of the conversation, loading/fetching messages later
         
         updateWithCloud()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
         registerAsNotificationDelegate()
     }
     
@@ -44,7 +49,8 @@ class MessageTableViewController: UITableViewController {
     
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let destinationViewController = segue.destination.childViewControllers.first as? AddMessageTableViewController,
+        guard let navigationController = segue.destination as? UINavigationController,
+            let destinationViewController = navigationController.topViewController as? AddMessageTableViewController,
             segue.identifier == "AddMessage" else { return }
         
         destinationViewController.delegate = self
@@ -149,6 +155,14 @@ extension MessageTableViewController {
                         self.tableView.endUpdates()
                         
                         self.coreDataController.save()
+                    }
+                 } else if recordID == self.conversation.ckRecord.recordID {
+                    DispatchQueue.main.async {
+                        for message in self.conversation.messages {
+                            self.coreDataController.delete(message)
+                        }
+                        
+                        self.dismiss(animated: true, completion: nil)
                     }
                 }
             }
