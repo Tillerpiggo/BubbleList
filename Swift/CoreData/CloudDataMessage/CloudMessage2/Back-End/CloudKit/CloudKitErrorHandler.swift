@@ -9,8 +9,24 @@
 import Foundation
 import CloudKit
 
+/*
+
 class CloudKitErrorHandler {
-    func handleError(_ error: CKError?, retry: @escaping () -> Void) {
+    enum CloudKitOperationType: String {
+        case accountStatus = "AccountStatus"// Doing account check with CKContainer.accountStatus.
+        case fetchRecords = "FetchRecords"  // Fetching data from the CloudKit server.
+        case modifyRecords = "ModifyRecords"// Modifying records (.serverRecordChanged should be handled).
+        case deleteRecords = "DeleteRecords"// Deleting records.
+        case modifyZones = "ModifyZones"    // Modifying zones (.serverRecordChanged should be handled).
+        case deleteZones = "DeleteZones"    // Deleting zones.
+        case fetchZones = "FetchZones"      // Fetching zones.
+        case modifySubscriptions = "ModifySubscriptions"    // Modifying subscriptions.
+        case deleteSubscriptions = "DeleteSubscriptions"    // Deleting subscriptions.
+        case fetchChanges = "FetchChanges"  // Fetching changes (.changeTokenExpired should be handled).
+        case acceptShare = "AcceptShare"    // Doing CKAcceptSharesOperation.
+    }
+    
+    func handleError(_ error: CKError?, operationType: CloudKitOperationType, retry: @escaping () -> Void) -> CKError? {
         guard let error = error, let errorCode = CKError.Code(rawValue: error.errorCode) else {
             print("Could not find corresponding error code for error")
             return
@@ -19,16 +35,12 @@ class CloudKitErrorHandler {
         print("ERROR: \(error), \(error.userInfo), \(error.localizedDescription)")
         
         switch errorCode {
-        case .alreadyShared:
-            handleAlreadyShared(error: error)
-        case .assetFileModified:
-            handleAssetFileModified()
-        case .assetFileNotFound:
-            handleAssetFileNotFound(error: error, retry: retry)
-        case .assetNotAvailable:
-            handleAssetNotAvailable()
-        case .badContainer:
-            handleBadContainer()
+        case .alreadyShared, .participantMayNeedVerification, .unknownItem:
+            handleSharedError()
+        case .assetFileModified, .assetFileNotFound, .assetNotAvailable:
+            handleAssetError()
+        case .badContainer, .missingEntitlement:
+            handleInitialDevelopmentError()
         case .badDatabase:
             handleBadDatabase()
         case .batchRequestFailed:
@@ -47,8 +59,6 @@ class CloudKitErrorHandler {
             handleLimitExceeded()
         case .managedAccountRestricted:
             handleManagedAccountRestricted()
-        case .missingEntitlement:
-            handleMissingEntitlement()
         case .networkFailure:
             handleNetworkFailure(error: error, retry: retry)
         case .networkUnavailable:
@@ -59,8 +69,6 @@ class CloudKitErrorHandler {
             handleOperationCancelled()
         case .partialFailure:
             handlePartialFailure(error: error, retry: retry)
-        case .participantMayNeedVerification:
-            handleParticipantMayNeedVerification()
         case .permissionFailure:
             handlePermissionFailure()
         case .quotaExceeded:
@@ -80,8 +88,6 @@ class CloudKitErrorHandler {
             handleServiceUnavailable(error: error, retry: retry)
         case .tooManyParticipants:
             handleTooManyParticipants(error: error, retry: retry)
-        case .unknownItem:
-            handleUnknownItem()
         case .userDeletedZone:
             handleUserDeletedZone()
         case .zoneBusy:
@@ -91,23 +97,15 @@ class CloudKitErrorHandler {
         }
     }
     
-    func handleAlreadyShared(error: CKError) {
-        print("TODO: Come back to this once you add shares and shared databases")
+    func handleSharedError() {
+        print("Do once you add shared databases.")
     }
     
-    func handleAssetFileModified() {
-        print("This error shouldn't happen. \"Consider copying assets before handing them to CloudKit to upload, or perform synchronization inside of your app to prevent it from modifying assets until they have been successfully uploaded.\"")
+    func handleAssetError() {
+        print("Deal with this when you add assets")
     }
     
-    func handleAssetFileNotFound(error: CKError, retry: @escaping () -> Void) {
-        print("Add this in later because assets will not be used in the Magnet MVP. However, if it is decided to add photo/video/large text documents:\n#1: If fetching records, retry\n#2: If saving records, this means that the asset on the record was removed before CloudKit was able to upload this asset to the server. Make sure that your assets exist until CKModifyRecordsOperation.completionBlock() is called.")
-    }
-    
-    func handleAssetNotAvailable() {
-        print("There isn't any documentation on this error. Don't worry about it until you see it if you add assets.")
-    }
-    
-    func handleBadContainer() {
+    func handleInitialDevelopmentError() {
         print("This error should only happen during the initial development of an app.")
     }
     
@@ -115,11 +113,12 @@ class CloudKitErrorHandler {
         print("This error means that the operation was submitted to the wrong database. Make sure you are not submitting a sharing operation to the public database or a zone create operation in the shared database.")
     }
     
-    func handleBatchRequestFailed(error: CKError, retry: @escaping () -> Void) {
+    func handleBatchRequestFailed(error: CKError, operationType: CloudKitOperationType, retry: @escaping () -> Void) {
         // TODO:
         // Loop through all per-item errors under the CKPartialErrorsByItemIDKey
         // If it isn't another CKErrorBatchRequestFailed error, handle the error
         // After everything is handled, retry the entire operation
+        
     }
     
     func handleChangeTokenExpired() {
@@ -155,10 +154,6 @@ class CloudKitErrorHandler {
         print("This means the current account can't access CloudKit. TODO: While this is listed as nonrecoverable, this should push the user to offline mode and notify them that they can't interact with the Cloud.")
     }
     
-    func handleMissingEntitlement() {
-        print("This error should only occur during the initial development of the app. It should never occur.")
-    }
-    
     func handleNetworkFailure(error: CKError, retry: @escaping () -> Void) {
         // Can be retried immediately, but should wait a bit (maybe 5 seconds)
         // TODO: Retry - if network unavailable, just make the app monitor for network reachability and wait until the network is available
@@ -182,10 +177,6 @@ class CloudKitErrorHandler {
     func handlePartialFailure(error: CKError, retry: @escaping () -> Void) {
         // TODO: User the userInfo dictionary with the CKPartialErrorsByItemIDKey to see per-item errors
         // Handle the per-item errors
-    }
-    
-    func handleParticipantMayNeedVerification() {
-        print("TODO: Add once shared databases are added. Call openURL() on the share URL to give users the built in UI to verify their information (connect with an email address/phone number)")
     }
     
     func handlePermissionFailure() {
@@ -230,10 +221,6 @@ class CloudKitErrorHandler {
         print("Remove participants and retry or tell user that they can't add any more people. Probably just stop people from joining a class once there are 100 people. No class should have this many people.")
     }
     
-    func handleUnknownItem() {
-        print("May happen when trying to fetch a nonexistent record or when trying to fetch an item in the shared zone that isn't shared. Add it if you encounter it while working on shared stuff.")
-    }
-    
     func handleUserDeletedZone() {
         print("Wipe the local cache of the particular zone's data and as the user for permission to reupload the data.")
     }
@@ -246,3 +233,5 @@ class CloudKitErrorHandler {
         // TODO: Recreate the zone and retry
     }
 }
+ 
+ */
