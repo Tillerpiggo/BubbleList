@@ -118,26 +118,26 @@ extension MessageTableViewController {
             for record in recordsChanged {
                 didFetchRecords = true
                 if let index = self.conversation.messages.index(where: { $0.ckRecord.recordID == record.recordID }) {
-                    DispatchQueue.main.async {
-                        self.conversation.messages[index].update(withRecord: record)
-                        let changedIndexPath = IndexPath(row: index, section: 0)
-                        
+                    self.conversation.messages[index].update(withRecord: record)
+                    let changedIndexPath = IndexPath(row: index, section: 0)
+                    self.coreDataController.save()
+                    
+                    DispatchQueue.main.sync {
                         self.tableView.beginUpdates()
                         self.tableView.reloadRows(at: [changedIndexPath], with: .automatic)
+                        print("Reloaded (edited) row in messageTableViewController!")
                         self.tableView.endUpdates()
-                        
-                        self.coreDataController.save()
                     }
                 } else if record.recordType == "Message" && record["owningConversation"] as? CKReference == CKReference(record: self.conversation.ckRecord, action: .none) {
-                    DispatchQueue.main.async {
-                        self.conversation.coreDataConversation.addToMessages(Message(fromRecord: record, managedContext: self.coreDataController.managedContext).coreDataMessage)
-                        let newIndexPath = IndexPath(row: 0, section: 0)
-                        
+                    self.conversation.coreDataConversation.addToMessages(Message(fromRecord: record, managedContext: self.coreDataController.managedContext).coreDataMessage)
+                    let newIndexPath = IndexPath(row: 0, section: 0)
+                    self.coreDataController.save()
+                    
+                    DispatchQueue.main.sync {
                         self.tableView.beginUpdates()
                         self.tableView.insertRows(at: [newIndexPath], with: .automatic)
+                        print("Inserted row in messageTableViewController!")
                         self.tableView.endUpdates()
-                        
-                        self.coreDataController.save()
                     }
                 }
             }
@@ -146,22 +146,24 @@ extension MessageTableViewController {
                 didFetchRecords = true
                 
                 if let index = self.conversation.messages.index(where: { $0.ckRecord.recordID == recordID }) {
-                    DispatchQueue.main.async {
-                        let message = self.conversation.messages[index]
-                        self.conversation.coreDataConversation.removeFromMessages(message.coreDataMessage)
-                        
+                    let message = self.conversation.messages[index]
+                    self.conversation.coreDataConversation.removeFromMessages(message.coreDataMessage)
+                    self.coreDataController.save()
+                    
+                    DispatchQueue.main.sync {
                         self.tableView.beginUpdates()
                         self.tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
+                        print("Deleted row in messageTableViewController!")
                         self.tableView.endUpdates()
-                        
-                        self.coreDataController.save()
                     }
                  } else if recordID == self.conversation.ckRecord.recordID {
+                    for message in self.conversation.messages {
+                        self.coreDataController.delete(message)
+                    }
+                    
+                    self.coreDataController.save()
+                    
                     DispatchQueue.main.async {
-                        for message in self.conversation.messages {
-                            self.coreDataController.delete(message)
-                        }
-                        
                         self.dismiss(animated: true, completion: nil)
                     }
                 }

@@ -203,6 +203,7 @@ class CloudController {
                             print("Unable to handle per-item errors in .batchRequestFailed error.")
                         } else {
                             // TODO: Retry with "saved" records. I can't really do anything because the records won't really encounter any per-item errors.... I'll do it once I figure which errors I need to actually worry about.
+                            print("Tried to retry save operation for .batchRequestFailed error handling, but failed because of lack of implementation.")
                         }
                     }
                 default:
@@ -229,7 +230,12 @@ class CloudController {
         operation.recordIDsToDelete = recordIDsToDelete
         
         operation.modifyRecordsCompletionBlock = { (record, recordID, error) in
-            self.handleError(error)
+            if let ckError = ErrorHandler.handleCloudKitError(error, operation: .deleteRecords, affectedObjects: recordIDsToDelete) {
+                // Handle error
+                print("Error handling for delete operation is currently unimplemented.")
+                
+                return
+            }
             
             completion()
         }
