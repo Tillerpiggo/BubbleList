@@ -64,14 +64,17 @@ class MessageTableViewController: UITableViewController {
 
 extension MessageTableViewController {
     
-    // MARK: - Date Source
+    // MARK: - Data Source
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return conversation.messages.count
+        let numberOfRowsInSection = conversation.messages.count
+        print("Number of rows in messageTableViewController: \(numberOfRowsInSection)")
+        
+        return numberOfRowsInSection
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -119,10 +122,14 @@ extension MessageTableViewController {
                 didFetchRecords = true
                 if let index = self.conversation.messages.index(where: { $0.ckRecord.recordID == record.recordID }) {
                     self.conversation.messages[index].update(withRecord: record)
+                    
+                    print("Editing Message: \(self.conversation.messages[index])")
+                    
                     let changedIndexPath = IndexPath(row: index, section: 0)
-                    self.coreDataController.save()
                     
                     DispatchQueue.main.sync {
+                        self.coreDataController.save()
+                        
                         self.tableView.beginUpdates()
                         self.tableView.reloadRows(at: [changedIndexPath], with: .automatic)
                         print("Reloaded (edited) row in messageTableViewController!")
@@ -131,9 +138,10 @@ extension MessageTableViewController {
                 } else if record.recordType == "Message" && record["owningConversation"] as? CKReference == CKReference(record: self.conversation.ckRecord, action: .none) {
                     self.conversation.coreDataConversation.addToMessages(Message(fromRecord: record, managedContext: self.coreDataController.managedContext).coreDataMessage)
                     let newIndexPath = IndexPath(row: 0, section: 0)
-                    self.coreDataController.save()
                     
                     DispatchQueue.main.sync {
+                        self.coreDataController.save()
+                        
                         self.tableView.beginUpdates()
                         self.tableView.insertRows(at: [newIndexPath], with: .automatic)
                         print("Inserted row in messageTableViewController!")
@@ -148,9 +156,10 @@ extension MessageTableViewController {
                 if let index = self.conversation.messages.index(where: { $0.ckRecord.recordID == recordID }) {
                     let message = self.conversation.messages[index]
                     self.conversation.coreDataConversation.removeFromMessages(message.coreDataMessage)
-                    self.coreDataController.save()
                     
                     DispatchQueue.main.sync {
+                        self.coreDataController.save()
+                        
                         self.tableView.beginUpdates()
                         self.tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
                         print("Deleted row in messageTableViewController!")
@@ -161,9 +170,8 @@ extension MessageTableViewController {
                         self.coreDataController.delete(message)
                     }
                     
-                    self.coreDataController.save()
-                    
                     DispatchQueue.main.async {
+                        self.coreDataController.save()
                         self.dismiss(animated: true, completion: nil)
                     }
                 }

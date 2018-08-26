@@ -87,26 +87,24 @@ extension ConversationTableViewController {
                 didFetchRecords = true
                 
                 if let index = self.conversations.index(where: { $0.ckRecord.recordID == record.recordID }) {
-                    DispatchQueue.main.async {
-                        self.conversations[index].update(withRecord: record)
-                        let changedIndexPath = IndexPath(row: index, section: 0)
-                        
+                    self.conversations[index].update(withRecord: record)
+                    let changedIndexPath = IndexPath(row: index, section: 0)
+                    self.coreDataController.save()
+                    
+                    DispatchQueue.main.sync {
                         self.tableView.beginUpdates()
                         self.tableView.reloadRows(at: [changedIndexPath], with: .automatic)
                         self.tableView.endUpdates()
-                        
-                        self.coreDataController.save()
                     }
                 } else if record.recordType == "Conversation" {
-                    DispatchQueue.main.async {
-                        self.conversations.append(Conversation(fromRecord: record, managedContext: self.coreDataController.managedContext))
-                        let newIndexPath = IndexPath(row: self.conversations.count - 1, section: 0)
-                        
+                    self.conversations.append(Conversation(fromRecord: record, managedContext: self.coreDataController.managedContext))
+                    let newIndexPath = IndexPath(row: self.conversations.count - 1, section: 0)
+                    self.coreDataController.save()
+                    
+                    DispatchQueue.main.sync {
                         self.tableView.beginUpdates()
                         self.tableView.insertRows(at: [newIndexPath], with: .automatic)
                         self.tableView.endUpdates()
-                        
-                        self.coreDataController.save()
                     }
                 } else if record.recordType == "Message" {
                     guard let index = self.conversations.index(where: { record["owningConversation"] as? CKReference == CKReference(record: $0.ckRecord, action: .none) })
@@ -118,12 +116,12 @@ extension ConversationTableViewController {
                         self.conversations[index].coreDataConversation.addToMessages(Message(fromRecord: record, managedContext: self.coreDataController.managedContext).coreDataMessage)
                     }
                     
-                    DispatchQueue.main.async {
+                    self.coreDataController.save()
+                    
+                    DispatchQueue.main.sync {
                         self.tableView.beginUpdates()
                         self.tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
                         self.tableView.endUpdates()
-                        
-                        self.coreDataController.save()
                     }
                 }
             }
@@ -132,14 +130,13 @@ extension ConversationTableViewController {
                 didFetchRecords = true
                 
                 if let index = self.conversations.index(where: { $0.ckRecord.recordID == recordID }) {
-                    DispatchQueue.main.async {
-                        self.coreDataController.delete(self.conversations.remove(at: index))
-                        
+                    self.coreDataController.delete(self.conversations.remove(at: index))
+                    self.coreDataController.save()
+                    
+                    DispatchQueue.main.sync {
                         self.tableView.beginUpdates()
                         self.tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
                         self.tableView.endUpdates()
-                        
-                        self.coreDataController.save()
                     }
                 }
             }
