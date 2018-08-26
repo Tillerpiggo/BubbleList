@@ -87,8 +87,6 @@ extension MessageTableViewController {
         cell.textLabel?.text = message.text
         cell.detailTextLabel?.text = message.formattedTimestamp
         
-        print("Message: \(message.text)")
-        
         return cell
     }
     
@@ -120,32 +118,32 @@ extension MessageTableViewController {
         let saveChanges: ([CKRecord], [CKRecordID]) -> Void = { (recordsChanged, recordIDsDeleted) in
             for record in recordsChanged {
                 didFetchRecords = true
+                print("New Message RecordID: \(record.recordID)")
+                
                 if let index = self.conversation.messages.index(where: { $0.ckRecord.recordID == record.recordID }) {
                     self.conversation.messages[index].update(withRecord: record)
                     
-                    print("Editing Message: \(self.conversation.messages[index])")
+                    print("Editing Message: \(self.conversation.messages[index].coreDataMessage), Index: \(index)")
                     
                     let changedIndexPath = IndexPath(row: index, section: 0)
                     
                     DispatchQueue.main.sync {
-                        self.coreDataController.save()
-                        
-                        self.tableView.beginUpdates()
                         self.tableView.reloadRows(at: [changedIndexPath], with: .automatic)
                         print("Reloaded (edited) row in messageTableViewController!")
-                        self.tableView.endUpdates()
+                        
+                        self.coreDataController.save()
                     }
                 } else if record.recordType == "Message" && record["owningConversation"] as? CKReference == CKReference(record: self.conversation.ckRecord, action: .none) {
                     self.conversation.coreDataConversation.addToMessages(Message(fromRecord: record, managedContext: self.coreDataController.managedContext).coreDataMessage)
                     let newIndexPath = IndexPath(row: 0, section: 0)
                     
                     DispatchQueue.main.sync {
-                        self.coreDataController.save()
-                        
                         self.tableView.beginUpdates()
                         self.tableView.insertRows(at: [newIndexPath], with: .automatic)
                         print("Inserted row in messageTableViewController!")
                         self.tableView.endUpdates()
+                        
+                        self.coreDataController.save()
                     }
                 }
             }
@@ -158,12 +156,12 @@ extension MessageTableViewController {
                     self.conversation.coreDataConversation.removeFromMessages(message.coreDataMessage)
                     
                     DispatchQueue.main.sync {
-                        self.coreDataController.save()
-                        
                         self.tableView.beginUpdates()
                         self.tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
                         print("Deleted row in messageTableViewController!")
                         self.tableView.endUpdates()
+                        
+                        self.coreDataController.save()
                     }
                  } else if recordID == self.conversation.ckRecord.recordID {
                     for message in self.conversation.messages {

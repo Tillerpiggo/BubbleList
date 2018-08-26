@@ -89,22 +89,23 @@ extension ConversationTableViewController {
                 if let index = self.conversations.index(where: { $0.ckRecord.recordID == record.recordID }) {
                     self.conversations[index].update(withRecord: record)
                     let changedIndexPath = IndexPath(row: index, section: 0)
-                    self.coreDataController.save()
                     
                     DispatchQueue.main.sync {
                         self.tableView.beginUpdates()
                         self.tableView.reloadRows(at: [changedIndexPath], with: .automatic)
                         self.tableView.endUpdates()
+                        self.coreDataController.save()
                     }
                 } else if record.recordType == "Conversation" {
                     self.conversations.append(Conversation(fromRecord: record, managedContext: self.coreDataController.managedContext))
                     let newIndexPath = IndexPath(row: self.conversations.count - 1, section: 0)
-                    self.coreDataController.save()
                     
                     DispatchQueue.main.sync {
                         self.tableView.beginUpdates()
                         self.tableView.insertRows(at: [newIndexPath], with: .automatic)
                         self.tableView.endUpdates()
+                        
+                        self.coreDataController.save()
                     }
                 } else if record.recordType == "Message" {
                     guard let index = self.conversations.index(where: { record["owningConversation"] as? CKReference == CKReference(record: $0.ckRecord, action: .none) })
@@ -116,12 +117,12 @@ extension ConversationTableViewController {
                         self.conversations[index].coreDataConversation.addToMessages(Message(fromRecord: record, managedContext: self.coreDataController.managedContext).coreDataMessage)
                     }
                     
-                    self.coreDataController.save()
-                    
                     DispatchQueue.main.sync {
                         self.tableView.beginUpdates()
                         self.tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
                         self.tableView.endUpdates()
+                        
+                        self.coreDataController.save()
                     }
                 }
             }
@@ -131,12 +132,13 @@ extension ConversationTableViewController {
                 
                 if let index = self.conversations.index(where: { $0.ckRecord.recordID == recordID }) {
                     self.coreDataController.delete(self.conversations.remove(at: index))
-                    self.coreDataController.save()
                     
                     DispatchQueue.main.sync {
                         self.tableView.beginUpdates()
                         self.tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
                         self.tableView.endUpdates()
+                        
+                        self.coreDataController.save()
                     }
                 }
             }
@@ -156,9 +158,9 @@ extension ConversationTableViewController {
             }
             self.conversations.sort() { $0.dateLastModified > $1.dateLastModified }
             
-            self.coreDataController.save()
-            
-            DispatchQueue.main.async { self.tableView.reloadData() }
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
         }
     }
     
