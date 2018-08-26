@@ -288,9 +288,7 @@ extension ConversationTableViewController: MessageTableViewControllerDelegate {
         if let selectedIndexPath = selectedIndexPath, selectedIndexPath.row < conversations.count {
             conversations[selectedIndexPath.row] = conversation
             DispatchQueue.main.async {
-                self.tableView.beginUpdates()
                 self.tableView.reloadRows(at: [selectedIndexPath], with: .automatic)
-                self.tableView.endUpdates()
             }
         }
     }
