@@ -165,7 +165,52 @@ class CloudController {
         operation.recordsToSave = recordsToSave
         
         operation.modifyRecordsCompletionBlock = { (record, recordID, error) in
-            self.handleError(error)
+            if let ckError = ErrorHandler.handleCloudKitError(error, operation: .modifyRecords, affectedObjects: recordsToSave.map({ $0.recordID })) {
+                // Handle error
+                switch ckError.code {
+                case .serverRecordChanged:
+                    // Overwrite the server record
+                    guard let serverRecord = ckError.userInfo[CKRecordChangedErrorServerRecordKey] as? CKRecord,
+                    let clientRecord = ckError.userInfo[CKRecordChangedErrorClientRecordKey] as? CKRecord else {
+                        print("Could not get the necessary records to merge in CloudController.save error handling (.serverRecordChanged)")
+                        return
+                    }
+                    
+                    if clientRecord.recordType == "Conversation" {
+                        serverRecord["title"] = clientRecord["title"]
+                        serverRecord["latestMessage"] = clientRecord["latestMessage"]
+                        
+                        self.save([serverRecord], completion: completion)
+                    }
+                case .zoneNotFound:
+                    // TODO: Notify users that the conversation/class no longer exists.
+                    print("Zone not found in CloudController.save(_:completion:) operation.")
+                case .unknownItem:
+                    // TODO: Notify users that the conversation/class no longer exists
+                    print("Record not found in CloudController.save(_:completion:) operation. - this shouldn't happen, it should just append the record to the database.")
+                case .batchRequestFailed:
+                    // Note: probably doesn't work
+                    guard let failedItems = ckError.userInfo[CKPartialErrorsByItemIDKey] as? NSDictionary else {
+                        print("Could not retrieve failed items from a .batchRequestFailed error.")
+                        return
+                    }
+                    
+                    // Loop through all recordID/error pairs - find what caused the atomic error, and then deal with it
+                    for (failedRecordID, failedError) in failedItems {
+                        guard let failedRecordID = failedRecordID as? CKRecordID, let failedError = failedError as? Error else { return }
+                        
+                        if ErrorHandler.handleCloudKitError(failedError, operation: .modifyRecords, affectedObjects: [failedRecordID]) != nil {
+                            print("Unable to handle per-item errors in .batchRequestFailed error.")
+                        } else {
+                            // TODO: Retry with "saved" records. I can't really do anything because the records won't really encounter any per-item errors.... I'll do it once I figure which errors I need to actually worry about.
+                        }
+                    }
+                default:
+                    break
+                }
+                
+                return
+            }
             
             completion()
         }
@@ -251,11 +296,29 @@ class CloudController {
         
         operation.changeTokenUpdatedBlock = { (token) in
             zonesDeleted(deletedZoneIDs)
-            // self.databaseChangeToken = token
+            self.databaseChangeToken = token
         }
         
         operation.fetchDatabaseChangesCompletionBlock = { (token, moreComing, error) in
-            self.handleError(error)
+             if let ckError = ErrorHandler.handleCloudKitError(error, operation: .fetchZones) {
+                // handle a few errors here if there are any
+                print("ERROR: \(ckError), \(ckError.userInfo), \(ckError.localizedDescription)")
+                
+                switch ckError.code {
+                case .changeTokenExpired:
+                    self.databaseChangeToken = nil
+                    self.fetchDatabaseChanges(zonesDeleted: zonesDeleted, saveChanges: saveChanges, completion: completion)
+                case .zoneNotFound:
+                    self.createdCustomZone = false
+                    self.createCustomZone() {
+                        self.fetchDatabaseChanges(zonesDeleted: zonesDeleted, saveChanges: saveChanges, completion: completion)
+                    }
+                default:
+                    break
+                }
+                
+                return
+            }
             
             zonesDeleted(deletedZoneIDs)
             self.databaseChangeToken = token
@@ -305,7 +368,25 @@ class CloudController {
         }
         
         operation.recordZoneFetchCompletionBlock = { (zoneID, token, _, _, error) in
-            self.handleError(error)
+            if let ckError = ErrorHandler.handleCloudKitError(error, operation: .fetchZones) {
+                // handle a few errors here if there are any
+                print("ERROR: \(ckError), \(ckError.userInfo), \(ckError.localizedDescription)")
+                
+                switch ckError.code {
+                case .changeTokenExpired:
+                    self.databaseChangeToken = nil
+                    self.fetchZoneChanges(zoneIDs: zoneIDs, saveChanges: saveChanges, completion: completion)
+                case .zoneNotFound:
+                    self.createdCustomZone = false
+                    self.createCustomZone() {
+                        self.fetchZoneChanges(zoneIDs: zoneIDs, saveChanges: saveChanges, completion: completion)
+                    }
+                default:
+                    break
+                }
+                
+                return
+            }
             
             saveChanges(changedRecords, deletedRecordIDs)
             self.zoneChangeToken = token
@@ -320,7 +401,7 @@ class CloudController {
         database.add(operation)
     }
     
-    func createCustomZone() {
+    func createCustomZone(_ completion: @escaping () -> Void = { }) {
         let createZoneGroup = DispatchGroup()
         
         if !self.createdCustomZone {
@@ -331,10 +412,15 @@ class CloudController {
             let createZoneOperation = CKModifyRecordZonesOperation(recordZonesToSave: [customZone], recordZoneIDsToDelete: [])
             
             createZoneOperation.modifyRecordZonesCompletionBlock = { (saved, deleted, error) in
-                if error == nil { self.createdCustomZone = true }
-                else { self.handleError(error) }
+                if let ckError = ErrorHandler.handleCloudKitError(error, operation: .modifyZones, affectedObjects: [customZone.zoneID]) {
+                    print("ERROR from createCustomZone() \(ckError)\nHandle appropriately. I don't know when or what zone issues there might be.")
+                    return
+                } else {
+                    self.createdCustomZone = true
+                }
                 
                 createZoneGroup.leave()
+                completion()
             }
             createZoneOperation.qualityOfService = .userInitiated
             

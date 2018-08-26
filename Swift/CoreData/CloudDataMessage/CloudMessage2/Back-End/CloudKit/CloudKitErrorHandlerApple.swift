@@ -13,7 +13,7 @@ import CloudKit
 
 // This should be used by the Cloud Controller to handle any errors that occur
 
-class CloudKitErrorHandler {
+class ErrorHandler {
     enum CloudKitOperationType: String {
         case accountStatus = "AccountStatus"// Doing account check with CKContainer.accountStatus.
         case fetchRecords = "FetchRecords"  // Fetching data from the CloudKit server.
@@ -31,9 +31,11 @@ class CloudKitErrorHandler {
     // This function does all the work
     // If it returns nil, it means that there is no error or the error is ignorable
     // If it returns a CKError, there is an error. The calls should determine how to handle it.
-    func handleCloudKitError(_ error: Error?, operation: CloudKitOperationType, affectedObjects: [Any]? = nil) -> CKError? {
+    static func handleCloudKitError(_ error: Error?, operation: CloudKitOperationType, affectedObjects: [Any]? = nil) -> CKError? {
         // if the error nil, everything is fine, the operation completion() can continue
         guard let nsError = error as NSError? else { return nil }
+        
+        print("!ERROR!: \(operation.rawValue) operation error: \(nsError), userInfo: \(nsError.userInfo), localizedDescription: \(nsError.localizedDescription)")
         
         // Partial errors can occur when fetching or changing the database
         //
@@ -90,8 +92,6 @@ class CloudKitErrorHandler {
                 }
             }
         }
-        
-        print("!ERROR!: \(operation.rawValue) operation error: \(nsError)")
         
         return error as? CKError
     }

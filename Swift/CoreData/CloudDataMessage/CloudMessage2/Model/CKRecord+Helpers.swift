@@ -19,3 +19,15 @@ extension CKRecord {
         return data as Data
     }
 }
+
+extension CKRecord: CloudUploadable {
+    var ckRecord: CKRecord {
+        get {
+            return self
+        }
+        set {
+            // Do nothing...
+            print("Tried to set ckRecord property of CKRecord (CloudUploadable extension). Handle appropriately.")
+        }
+    }
+}
