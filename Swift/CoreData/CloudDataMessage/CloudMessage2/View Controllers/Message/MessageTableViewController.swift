@@ -120,17 +120,19 @@ extension MessageTableViewController {
         let saveChanges: ([CKRecord], [CKRecordID]) -> Void = { (recordsChanged, recordIDsDeleted) in
             for record in recordsChanged {
                 didFetchRecords = true
-                print("New Message RecordID: \(record.recordID)")
                 
                 if let index = self.conversation.messages.index(where: { $0.ckRecord.recordID == record.recordID }) {
-                    self.conversation.messages[index].update(withRecord: record)
+                    print("Record ID of new message: \(record.recordID), text: \(String(describing: record["text"] as? String))")
+                    print("Record ID of old message: \(self.conversation.messages[index].ckRecord.recordID), text: \(self.conversation.messages[index].text)")
                     
-                    print("Editing Message: \(self.conversation.messages[index].coreDataMessage), Index: \(index)")
+                    self.conversation.messages[index].update(withRecord: record)
                     
                     let changedIndexPath = IndexPath(row: index, section: 0)
                     
                     DispatchQueue.main.sync {
+                        self.tableView.beginUpdates()
                         self.tableView.reloadRows(at: [changedIndexPath], with: .automatic)
+                        self.tableView.beginUpdates()
                         print("Reloaded (edited) row in messageTableViewController!")
                         
                         self.coreDataController.save()
