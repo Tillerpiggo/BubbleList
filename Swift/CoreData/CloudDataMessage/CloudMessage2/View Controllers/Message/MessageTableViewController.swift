@@ -93,7 +93,9 @@ extension MessageTableViewController {
     // MARK: - Delegate
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.beginUpdates()
         tableView.deselectRow(at: indexPath, animated: true)
+        tableView.endUpdates()
     }
 }
 
