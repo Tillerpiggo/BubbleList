@@ -26,9 +26,14 @@ class ConversationTableViewController: UITableViewController {
         
         updateWithCoreData()
         updateWithCloud()
-        registerAsNotificationDelegate()
         
         tableView.rowHeight = 60
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        registerAsNotificationDelegate()
     }
     
     // MARK: - Navigation
@@ -94,11 +99,19 @@ extension ConversationTableViewController {
                         self.tableView.beginUpdates()
                         self.tableView.reloadRows(at: [changedIndexPath], with: .automatic)
                         self.tableView.endUpdates()
+                        
+                        self.conversations.sort(by: { $0.dateLastModified > $1.dateLastModified })
+                        
+                        self.tableView.beginUpdates()
+                        self.tableView.moveRow(at: changedIndexPath, to: IndexPath(row: 0, section: 0))
+                        self.tableView.endUpdates()
+                        
                         self.coreDataController.save()
                     }
                 } else if record.recordType == "Conversation" {
                     self.conversations.append(Conversation(fromRecord: record, managedContext: self.coreDataController.managedContext))
-                    let newIndexPath = IndexPath(row: self.conversations.count - 1, section: 0)
+                    let newIndexPath = IndexPath(row: 0, section: 0)
+                    self.conversations.sort(by: { $0.dateLastModified > $1.dateLastModified })
                     
                     DispatchQueue.main.sync {
                         self.tableView.beginUpdates()
@@ -135,7 +148,7 @@ extension ConversationTableViewController {
                     
                     DispatchQueue.main.sync {
                         self.tableView.beginUpdates()
-                        self.tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
+                        self.tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .fade)
                         self.tableView.endUpdates()
                         
                         self.coreDataController.save()
@@ -166,9 +179,9 @@ extension ConversationTableViewController {
     
     func registerAsNotificationDelegate() {
         let appDelegate = UIApplication.shared.delegate as? AppDelegate
-        appDelegate?.notificationDelegates.append(self)
+        appDelegate?.notificationDelegate = self
         
-        print("Number of notification delegates: \(appDelegate?.notificationDelegates.count ?? 0)")
+        print("Conversation Table View Controller registered as the notification delegate")
     }
 }
 

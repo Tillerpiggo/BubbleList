@@ -85,8 +85,8 @@ class Conversation: CloudUploadable, CoreDataUploadable {
         let newCoreDataConversation = CoreDataConversation(context: managedContext)
         
         newCoreDataConversation.title = record["title"] as? String
-        newCoreDataConversation.creationDate = (record.creationDate ?? Date()) as NSDate
-        newCoreDataConversation.dateLastModified = (record.modificationDate ?? Date()) as NSDate
+        newCoreDataConversation.creationDate = record.creationDate! as NSDate
+        newCoreDataConversation.dateLastModified = record.modificationDate! as NSDate
         newCoreDataConversation.encodedSystemFields = record.encoded()
         
         self.coreDataConversation = newCoreDataConversation
@@ -96,6 +96,7 @@ class Conversation: CloudUploadable, CoreDataUploadable {
     }
     
     init(fromCoreDataConversation newCoreDataConversation: CoreDataConversation, zoneID: CKRecordZoneID) {
+        // Set CoreDataConversation
         self.coreDataConversation = newCoreDataConversation
         
         // Create CKRecord from an unarchiver
@@ -110,6 +111,7 @@ class Conversation: CloudUploadable, CoreDataUploadable {
             newCKRecord = CKRecord(recordType: "Conversation", zoneID: zoneID)
         }
         
+        // Configure CKRecord
         newCKRecord["title"] = newCoreDataConversation.title as CKRecordValue?
         if let latestMessage = newCoreDataConversation.messages?.firstObject as? CoreDataMessage {
             newCKRecord["latestMessage"] = (latestMessage.text ?? "") as CKRecordValue

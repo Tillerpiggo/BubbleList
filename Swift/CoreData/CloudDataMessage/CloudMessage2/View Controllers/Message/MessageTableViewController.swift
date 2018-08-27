@@ -41,12 +41,6 @@ class MessageTableViewController: UITableViewController {
         registerAsNotificationDelegate()
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        unregisterAsNotificationDelegate()
-    }
-    
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let navigationController = segue.destination as? UINavigationController,
@@ -178,26 +172,22 @@ extension MessageTableViewController {
                     }
                 }
             }
+            
+            if didFetchRecords {
+                self.delegate?.conversationDidChange(to: self.conversation, wasModified: true)
+            }
         }
         
         cloudController.fetchDatabaseChanges(zonesDeleted: zonesDeleted, saveChanges: saveChanges) {
-            self.delegate?.conversationDidChange(to: self.conversation, wasModified: false)
             completion(didFetchRecords)
         }
     }
     
     func registerAsNotificationDelegate() {
         let appDelegate = UIApplication.shared.delegate as? AppDelegate
-        appDelegate?.notificationDelegates.append(self)
+        appDelegate?.notificationDelegate? = self
         
-        print("Number of notification delegates: \(appDelegate?.notificationDelegates.count ?? 0)")
-    }
-    
-    func unregisterAsNotificationDelegate() {
-        let appDelegate = UIApplication.shared.delegate as? AppDelegate
-        appDelegate?.notificationDelegates.removeLast()
-        
-        print("Number of notification delegates: \(appDelegate?.notificationDelegates.count ?? 0)")
+        print("Message Table View Controller registered as the notification delegate")
     }
 }
 

@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return coreDataController
     }()
     
-    var notificationDelegates: [NotificationDelegate] = []
+    var notificationDelegate: NotificationDelegate?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         if let navigationController = window?.rootViewController as? UINavigationController,
@@ -46,12 +46,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let notification = CKNotification(fromRemoteNotificationDictionary: userInfo)
         var didRecieveData: Bool = false
         if notification.subscriptionID == "cloudkit-Conversation-changes" || notification.subscriptionID == "cloudkit-Message-changes" {
-            for notificationDelegate in notificationDelegates {
-                notificationDelegate.fetchChanges() { (didFetchRecords) in
-                    if !didRecieveData && didFetchRecords {
-                        completionHandler(.newData)
-                        didRecieveData = true
-                    }
+            notificationDelegate?.fetchChanges() { (didFetchRecords) in
+                if !didRecieveData && didFetchRecords {
+                    completionHandler(.newData)
+                    didRecieveData = true
                 }
             }
         }
