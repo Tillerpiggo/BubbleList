@@ -95,11 +95,13 @@ extension ConversationTableViewController {
                     print("Modified conversation from ConversationTableViewController (from Cloud)")
                     
                     let oldDateLastModified = self.conversations[index].dateLastModified
+                    print("Old date last modified: \(oldDateLastModified)")
                     
                     self.conversations[index].update(withRecord: record)
                     let changedIndexPath = IndexPath(row: index, section: 0)
                     
                     let newDateLastModified = self.conversations[index].dateLastModified
+                    print("New date last modified: \(newDateLastModified)")
                     
                     self.conversations.sort(by: { $0.dateLastModified > $1.dateLastModified })
                     
@@ -109,12 +111,6 @@ extension ConversationTableViewController {
                         self.tableView.beginUpdates()
                         self.tableView.reloadRows(at: [changedIndexPath], with: .automatic)
                         self.tableView.endUpdates()
-                        
-                        if newDateLastModified > oldDateLastModified {
-                            self.tableView.beginUpdates()
-                            self.tableView.moveRow(at: changedIndexPath, to: IndexPath(row: 0, section: 0))
-                            self.tableView.endUpdates()
-                        }
                     }
                 } else if record.recordType == "Conversation" {
                     print("Added conversation from ConversationTableViewController (from Cloud)")

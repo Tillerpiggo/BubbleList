@@ -359,12 +359,12 @@ class CloudController {
         let operation = CKFetchRecordZoneChangesOperation(recordZoneIDs: zoneIDs, optionsByRecordZoneID: optionsByRecordZoneID)
         
         operation.recordChangedBlock = { (record) in
-            print("Record changed: ", record)
+            print("Record changed in Cloud")
             changedRecords.append(record)
         }
         
         operation.recordWithIDWasDeletedBlock = { (recordID, _) in
-            print("Record deleted: ", recordID)
+            print("Record deleted from Cloud")
             deletedRecordIDs.append(recordID)
         }
         
