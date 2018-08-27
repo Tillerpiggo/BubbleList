@@ -92,6 +92,8 @@ extension ConversationTableViewController {
                 didFetchRecords = true
                 
                 if let index = self.conversations.index(where: { $0.ckRecord.recordID == record.recordID }) {
+                    print("Modified conversation from ConversationTableViewController (from Cloud)")
+                    
                     let oldDateLastModified = self.conversations[index].dateLastModified
                     
                     self.conversations[index].update(withRecord: record)
@@ -99,34 +101,38 @@ extension ConversationTableViewController {
                     
                     let newDateLastModified = self.conversations[index].dateLastModified
                     
+                    self.conversations.sort(by: { $0.dateLastModified > $1.dateLastModified })
+                    
                     DispatchQueue.main.sync {
+                        self.coreDataController.save()
+                        
                         self.tableView.beginUpdates()
                         self.tableView.reloadRows(at: [changedIndexPath], with: .automatic)
                         self.tableView.endUpdates()
-                        
-                        self.conversations.sort(by: { $0.dateLastModified > $1.dateLastModified })
                         
                         if newDateLastModified > oldDateLastModified {
                             self.tableView.beginUpdates()
                             self.tableView.moveRow(at: changedIndexPath, to: IndexPath(row: 0, section: 0))
                             self.tableView.endUpdates()
                         }
-                        
-                        self.coreDataController.save()
                     }
                 } else if record.recordType == "Conversation" {
+                    print("Added conversation from ConversationTableViewController (from Cloud)")
+                    
                     self.conversations.append(Conversation(fromRecord: record, managedContext: self.coreDataController.managedContext))
                     let newIndexPath = IndexPath(row: 0, section: 0)
                     self.conversations.sort(by: { $0.dateLastModified > $1.dateLastModified })
                     
                     DispatchQueue.main.sync {
+                        self.coreDataController.save()
+                        
                         self.tableView.beginUpdates()
                         self.tableView.insertRows(at: [newIndexPath], with: .automatic)
                         self.tableView.endUpdates()
-                        
-                        self.coreDataController.save()
                     }
                 } else if record.recordType == "Message" {
+                    print("Added message from ConversationTableViewController (from Cloud)")
+                    
                     guard let index = self.conversations.index(where: { record["owningConversation"] as? CKReference == CKReference(record: $0.ckRecord, action: .none) })
                         else { return }
                     
@@ -137,11 +143,11 @@ extension ConversationTableViewController {
                     }
                     
                     DispatchQueue.main.sync {
+                        self.coreDataController.save()
+                        
                         self.tableView.beginUpdates()
                         self.tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
                         self.tableView.endUpdates()
-                        
-                        self.coreDataController.save()
                     }
                 }
             }
@@ -150,6 +156,8 @@ extension ConversationTableViewController {
                 didFetchRecords = true
                 
                 if let index = self.conversations.index(where: { $0.ckRecord.recordID == recordID }) {
+                    print("Conversation deleted by ConversationTableViewController (from Cloud)")
+                    
                     self.coreDataController.delete(self.conversations.remove(at: index))
                     
                     DispatchQueue.main.sync {
@@ -158,6 +166,28 @@ extension ConversationTableViewController {
                         self.tableView.endUpdates()
                         
                         self.coreDataController.save()
+                    }
+                } else {
+                    var affectedIndexes: [Int] = []
+                    
+                    for (conversationIndex, conversation) in self.conversations.enumerated() {
+                        if let index = conversation.messages.index(where: { $0.ckRecord.recordID == recordID }) {
+                            print("Message deleted by ConversationTableViewController (from Cloud)")
+                            
+                            let deletedMessage = conversation.messages[index]
+                            self.coreDataController.delete(deletedMessage)
+                            conversation.coreDataConversation.removeFromMessages(deletedMessage.coreDataMessage)
+                            
+                            affectedIndexes.append(conversationIndex)
+                        }
+                    }
+                    
+                    DispatchQueue.main.sync {
+                        self.coreDataController.save()
+                        
+                        self.tableView.beginUpdates()
+                        self.tableView.reloadRows(at: affectedIndexes.map({ IndexPath(row: $0, section: 0)}), with: .automatic)
+                        self.tableView.endUpdates()
                     }
                 }
             }
@@ -276,6 +306,8 @@ extension ConversationTableViewController: NotificationDelegate {
 
 extension ConversationTableViewController: AddConversationTableViewControllerDelegate {
     func addedConversation(_ conversation: Conversation) {
+        print("Conversation added by ConversationTableViewController")
+        
         // Save change to the Cloud
         cloudController.save([conversation]) { }
         
@@ -298,6 +330,7 @@ extension ConversationTableViewController: AddConversationTableViewControllerDel
 
 extension ConversationTableViewController: MessageTableViewControllerDelegate {
     func conversationDidChange(to conversation: Conversation, wasModified: Bool) {
+        print("Conversation changed by MessageTableViewController")
         
         // Save change to Core Data
         coreDataController.save()

@@ -116,22 +116,22 @@ extension MessageTableViewController {
                 didFetchRecords = true
                 
                 if let index = self.conversation.messages.index(where: { $0.ckRecord.recordID == record.recordID }) {
-                    print("Record ID of new message: \(record.recordID), text: \(String(describing: record["text"] as? String))")
-                    print("Record ID of old message: \(self.conversation.messages[index].ckRecord.recordID), text: \(self.conversation.messages[index].text)")
+                    print("Message edited by MessageTableViewController (from Cloud)")
                     
                     self.conversation.messages[index].update(withRecord: record)
                     
                     let changedIndexPath = IndexPath(row: index, section: 0)
                     
                     DispatchQueue.main.sync {
+                        self.coreDataController.save()
+                        
                         self.tableView.beginUpdates()
                         self.tableView.reloadRows(at: [changedIndexPath], with: .automatic)
                         self.tableView.beginUpdates()
-                        print("Reloaded (edited) row in messageTableViewController!")
-                        
-                        self.coreDataController.save()
                     }
                 } else if record.recordType == "Message" && record["owningConversation"] as? CKReference == CKReference(record: self.conversation.ckRecord, action: .none) {
+                    print("Message added by MessageTableViewController (from Cloud)")
+                    
                     self.conversation.coreDataConversation.addToMessages(Message(fromRecord: record, managedContext: self.coreDataController.managedContext).coreDataMessage)
                     let newIndexPath = IndexPath(row: 0, section: 0)
                     
@@ -147,6 +147,8 @@ extension MessageTableViewController {
             }
             
             for recordID in recordIDsDeleted {
+                print("Message deleted by MessageTableViewController (from Cloud)")
+                
                 didFetchRecords = true
                 
                 if let index = self.conversation.messages.index(where: { $0.ckRecord.recordID == recordID }) {
@@ -206,6 +208,7 @@ extension MessageTableViewController: NotificationDelegate {
 
 extension MessageTableViewController: AddMessageTableViewControllerDelegate {
     func addedMessage(_ message: Message) {
+        print("Message added by MessageTableViewController (from user input)")
         
         // Save to the Cloud
         cloudController.save([message]) { print("Succesfully saved messages") }

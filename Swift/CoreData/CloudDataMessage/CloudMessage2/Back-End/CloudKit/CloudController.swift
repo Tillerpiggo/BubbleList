@@ -157,7 +157,7 @@ class CloudController {
     func save(_ cloudUploadables: [CloudUploadable], completion: @escaping () -> Void) {
         // Create and configure operation
         let operation = CKModifyRecordsOperation()
-        operation.savePolicy = .changedKeys
+        operation.savePolicy = .ifServerRecordUnchanged
         operation.isAtomic = true
         
         // Map conversations to records
