@@ -20,6 +20,22 @@ class ConversationTableViewController: UITableViewController {
     var cloudController: CloudController!
     var coreDataController: CoreDataController!
     
+    lazy var fetchedResultsController: NSFetchedResultsController<CoreDataConversation> = {
+        let fetchRequest: NSFetchRequest<CoreDataConversation> = CoreDataConversation.fetchRequest()
+        let sortByDateLastModified = NSSortDescriptor(key: #keyPath(CoreDataConversation.dateLastModified), ascending: true)
+        fetchRequest.sortDescriptors = [sortByDateLastModified]
+        
+        let fetchedResultsController = NSFetchedResultsController(
+            fetchRequest: fetchRequest,
+            managedObjectContext: coreDataController.managedContext,
+            sectionNameKeyPath: nil,
+            cacheName: "CloudMessage")
+        
+        fetchedResultsController.delegate = self
+        
+        return fetchedResultsController
+    }()
+    
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -207,6 +223,8 @@ extension ConversationTableViewController {
                 self.tableView.reloadData()
             }
         }
+        
+        
     }
     
     func registerAsNotificationDelegate() {
@@ -228,18 +246,26 @@ extension ConversationTableViewController {
     // MARK: - Data Source
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        guard let sections = fetchedResultsController.sections else {
+            return 0
+        }
+        
+        return sections.count
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return conversations.count
+        guard let sectionInfo = fetchedResultsController.sections?[section] else {
+            return 0
+        }
+        
+        return sectionInfo.numberOfObjects
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ConversationCell", for: indexPath)
         
         // Get model object
-        let conversation = conversations[indexPath.row]
+        let conversation = fetchedResultsController.object(at: indexPath)
         
         // Configure cell with model
         cell.textLabel?.text = conversation.title
@@ -281,6 +307,18 @@ extension ConversationTableViewController {
         tableView.endUpdates()
         
         selectedIndexPath = indexPath
+    }
+}
+
+// MARK: - NSFetchedResultsControllerDelegate
+
+extension ConversationTableViewController: NSFetchedResultsControllerDelegate {
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.beginUpdates()
+    }
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        
     }
 }
 
