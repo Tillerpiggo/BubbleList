@@ -210,15 +210,15 @@ extension MessageTableViewController: AddMessageTableViewControllerDelegate {
     func addedMessage(_ message: Message) {
         print("Message added by MessageTableViewController (from user input)")
         
-        // Save to the Cloud
-        cloudController.save([message]) { print("Succesfully saved messages") }
-        
         // Modify model
         conversation.coreDataConversation.addToMessages(message.coreDataMessage)
         conversation.ckRecord["latestMessage"] = message.text as CKRecordValue
         
         // Save to Core Data
         coreDataController.save()
+        
+        // Save to the Cloud
+        cloudController.save([message]) { print("Succesfully saved messages") }
         
         print("After adding a message, the conversation had \(conversation.messages.count) messages before saving.")
         

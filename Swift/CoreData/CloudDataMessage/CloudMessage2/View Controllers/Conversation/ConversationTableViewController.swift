@@ -22,7 +22,7 @@ class ConversationTableViewController: UITableViewController {
     
     lazy var fetchedResultsController: NSFetchedResultsController<CoreDataConversation> = {
         let fetchRequest: NSFetchRequest<CoreDataConversation> = CoreDataConversation.fetchRequest()
-        let sortByDateLastModified = NSSortDescriptor(key: #keyPath(CoreDataConversation.dateLastModified), ascending: true)
+        let sortByDateLastModified = NSSortDescriptor(key: #keyPath(CoreDataConversation.dateLastModified), ascending: false)
         fetchRequest.sortDescriptors = [sortByDateLastModified]
         
         let fetchedResultsController = NSFetchedResultsController(
@@ -32,6 +32,12 @@ class ConversationTableViewController: UITableViewController {
             cacheName: "CloudMessage")
         
         fetchedResultsController.delegate = self
+        
+        do {
+            try fetchedResultsController.performFetch()
+        } catch let error as NSError {
+            print("Fetching error: \(error), \(error.userInfo)")
+        }
         
         return fetchedResultsController
     }()
@@ -66,8 +72,8 @@ class ConversationTableViewController: UITableViewController {
             selectedIndexPath = indexPathForSelectedRow
             
             // Dependency injection of conversation
-            let selectedConversation = conversations[indexPathForSelectedRow.row]
-            destinationViewController.conversation = selectedConversation
+            let selectedConversation = fetchedResultsController.object(at: indexPathForSelectedRow)
+            destinationViewController.conversation = Conversation(fromCoreDataConversation: selectedConversation, zoneID: cloudController.zoneID)
             
             // Dependency injection of cloud controller
             destinationViewController.cloudController = cloudController
@@ -114,7 +120,7 @@ extension ConversationTableViewController {
                     print("Old date last modified: \(oldDateLastModified)")
                     
                     self.conversations[index].update(withRecord: record)
-                    let changedIndexPath = IndexPath(row: index, section: 0)
+                    //let changedIndexPath = IndexPath(row: index, section: 0)
                     
                     let newDateLastModified = self.conversations[index].dateLastModified
                     print("New date last modified: \(newDateLastModified)")
@@ -124,23 +130,23 @@ extension ConversationTableViewController {
                     DispatchQueue.main.sync {
                         self.coreDataController.save()
                         
-                        self.tableView.beginUpdates()
-                        self.tableView.reloadRows(at: [changedIndexPath], with: .automatic)
-                        self.tableView.endUpdates()
+                        //self.tableView.beginUpdates()
+                        //self.tableView.reloadRows(at: [changedIndexPath], with: .automatic)
+                        //self.tableView.endUpdates()
                     }
                 } else if record.recordType == "Conversation" {
                     print("Added conversation from ConversationTableViewController (from Cloud)")
                     
                     self.conversations.append(Conversation(fromRecord: record, managedContext: self.coreDataController.managedContext))
-                    let newIndexPath = IndexPath(row: 0, section: 0)
+                    //let newIndexPath = IndexPath(row: 0, section: 0)
                     self.conversations.sort(by: { $0.dateLastModified > $1.dateLastModified })
                     
                     DispatchQueue.main.sync {
                         self.coreDataController.save()
                         
-                        self.tableView.beginUpdates()
-                        self.tableView.insertRows(at: [newIndexPath], with: .automatic)
-                        self.tableView.endUpdates()
+                        //self.tableView.beginUpdates()
+                        //self.tableView.insertRows(at: [newIndexPath], with: .automatic)
+                        //self.tableView.endUpdates()
                     }
                 } else if record.recordType == "Message" {
                     print("Added message from ConversationTableViewController (from Cloud)")
@@ -157,9 +163,9 @@ extension ConversationTableViewController {
                     DispatchQueue.main.sync {
                         self.coreDataController.save()
                         
-                        self.tableView.beginUpdates()
-                        self.tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
-                        self.tableView.endUpdates()
+                        //self.tableView.beginUpdates()
+                        //self.tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
+                        //self.tableView.endUpdates()
                     }
                 }
             }
@@ -173,9 +179,9 @@ extension ConversationTableViewController {
                     self.coreDataController.delete(self.conversations.remove(at: index))
                     
                     DispatchQueue.main.sync {
-                        self.tableView.beginUpdates()
-                        self.tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .fade)
-                        self.tableView.endUpdates()
+                        //self.tableView.beginUpdates()
+                        //self.tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .fade)
+                        //self.tableView.endUpdates()
                         
                         self.coreDataController.save()
                     }
@@ -197,9 +203,9 @@ extension ConversationTableViewController {
                     DispatchQueue.main.sync {
                         self.coreDataController.save()
                         
-                        self.tableView.beginUpdates()
-                        self.tableView.reloadRows(at: affectedIndexes.map({ IndexPath(row: $0, section: 0)}), with: .automatic)
-                        self.tableView.endUpdates()
+                        //self.tableView.beginUpdates()
+                        //self.tableView.reloadRows(at: affectedIndexes.map({ IndexPath(row: $0, section: 0)}), with: .automatic)
+                        //self.tableView.endUpdates()
                     }
                 }
             }
@@ -220,7 +226,7 @@ extension ConversationTableViewController {
             self.conversations.sort() { $0.dateLastModified > $1.dateLastModified }
             
             DispatchQueue.main.async {
-                self.tableView.reloadData()
+                //self.tableView.reloadData()
             }
         }
         
@@ -291,11 +297,13 @@ extension ConversationTableViewController {
             // Delete from core data
             coreDataController.delete(deletedConversation)
             
+            coreDataController.save()
+            
             // Update View
             
-            self.tableView.beginUpdates()
-            tableView.deleteRows(at: [indexPath], with: .automatic)
-            self.tableView.endUpdates()
+            //self.tableView.beginUpdates()
+            //tableView.deleteRows(at: [indexPath], with: .automatic)
+            //self.tableView.endUpdates()
         }
     }
     
@@ -313,12 +321,26 @@ extension ConversationTableViewController {
 // MARK: - NSFetchedResultsControllerDelegate
 
 extension ConversationTableViewController: NSFetchedResultsControllerDelegate {
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.beginUpdates()
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        
+        switch type {
+        case .insert:
+            tableView.insertRows(at: [newIndexPath!], with: .automatic)
+        case .delete:
+            tableView.deleteRows(at: [indexPath!], with: .automatic)
+        case .update:
+            tableView.reloadRows(at: [indexPath!], with: .automatic)
+        case .move:
+            tableView.deleteRows(at: [indexPath!], with: .automatic)
+            tableView.insertRows(at: [newIndexPath!], with: .automatic)
+        }
+    }
+    
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.endUpdates()
     }
 }
 
@@ -342,18 +364,18 @@ extension ConversationTableViewController: AddConversationTableViewControllerDel
     func addedConversation(_ conversation: Conversation) {
         print("Conversation added by ConversationTableViewController")
         
-        // Save change to the Cloud
-        cloudController.save([conversation]) { }
-        
         // Save change to Core Data
         coreDataController.save()
         
         conversations.append(conversation)
         conversations.sort { $0.dateLastModified > $1.dateLastModified }
         
-        self.tableView.beginUpdates()
-        tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
-        self.tableView.endUpdates()
+        // Save change to the Cloud
+        cloudController.save([conversation]) { }
+        
+        //self.tableView.beginUpdates()
+        //tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+        //self.tableView.endUpdates()
     }
 }
 
@@ -366,23 +388,23 @@ extension ConversationTableViewController: MessageTableViewControllerDelegate {
     func conversationDidChange(to conversation: Conversation, wasModified: Bool) {
         print("Conversation changed by MessageTableViewController")
         
-        // Save change to Core Data
-        coreDataController.save()
-        
         if wasModified {
+            conversation.coreDataConversation.dateLastModified = NSDate()
+            
             // Save change to the cloud
             cloudController.save([conversation]) { }
-            
-            conversation.coreDataConversation.dateLastModified = NSDate()
         }
         
         conversations.sort(by: { $0.dateLastModified > $1.dateLastModified })
         
+        // Save change to Core Data
+        coreDataController.save()
+        
         if let selectedIndexPath = selectedIndexPath, selectedIndexPath.row < conversations.count {
             conversations[selectedIndexPath.row] = conversation
-            DispatchQueue.main.async {
-                self.tableView.reloadRows(at: [selectedIndexPath], with: .automatic)
-            }
+            //DispatchQueue.main.async {
+                //self.tableView.reloadRows(at: [selectedIndexPath], with: .automatic)
+            //}
         }
     }
 }
