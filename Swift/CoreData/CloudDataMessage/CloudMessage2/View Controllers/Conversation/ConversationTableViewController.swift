@@ -92,8 +92,12 @@ extension ConversationTableViewController {
                 didFetchRecords = true
                 
                 if let index = self.conversations.index(where: { $0.ckRecord.recordID == record.recordID }) {
+                    let oldDateLastModified = self.conversations[index].dateLastModified
+                    
                     self.conversations[index].update(withRecord: record)
                     let changedIndexPath = IndexPath(row: index, section: 0)
+                    
+                    let newDateLastModified = self.conversations[index].dateLastModified
                     
                     DispatchQueue.main.sync {
                         self.tableView.beginUpdates()
@@ -102,9 +106,11 @@ extension ConversationTableViewController {
                         
                         self.conversations.sort(by: { $0.dateLastModified > $1.dateLastModified })
                         
-                        self.tableView.beginUpdates()
-                        self.tableView.moveRow(at: changedIndexPath, to: IndexPath(row: 0, section: 0))
-                        self.tableView.endUpdates()
+                        if newDateLastModified > oldDateLastModified {
+                            self.tableView.beginUpdates()
+                            self.tableView.moveRow(at: changedIndexPath, to: IndexPath(row: 0, section: 0))
+                            self.tableView.endUpdates()
+                        }
                         
                         self.coreDataController.save()
                     }
@@ -226,7 +232,9 @@ extension ConversationTableViewController {
             }
             
             // Delete from cloud
-            cloudController.delete([deletedConversation]) { }
+            cloudController.delete([deletedConversation]) {
+                print("Deleted Conversation!")
+            }
             
             // Delete from core data
             coreDataController.delete(deletedConversation)
@@ -300,6 +308,8 @@ extension ConversationTableViewController: MessageTableViewControllerDelegate {
             
             conversation.coreDataConversation.dateLastModified = NSDate()
         }
+        
+        conversations.sort(by: { $0.dateLastModified > $1.dateLastModified })
         
         if let selectedIndexPath = selectedIndexPath, selectedIndexPath.row < conversations.count {
             conversations[selectedIndexPath.row] = conversation

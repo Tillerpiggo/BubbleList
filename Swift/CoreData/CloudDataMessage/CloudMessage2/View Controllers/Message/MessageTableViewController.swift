@@ -179,13 +179,14 @@ extension MessageTableViewController {
         }
         
         cloudController.fetchDatabaseChanges(zonesDeleted: zonesDeleted, saveChanges: saveChanges) {
+            self.delegate?.conversationDidChange(to: self.conversation, wasModified: false)
             completion(didFetchRecords)
         }
     }
     
     func registerAsNotificationDelegate() {
         let appDelegate = UIApplication.shared.delegate as? AppDelegate
-        appDelegate?.notificationDelegate? = self
+        appDelegate?.notificationDelegate = self
         
         print("Message Table View Controller registered as the notification delegate")
     }
