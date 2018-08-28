@@ -181,6 +181,7 @@ class CloudController {
                         serverRecord["latestMessage"] = clientRecord["latestMessage"]
                         
                         self.save([serverRecord], completion: completion)
+                        print("HANDLED SERVER RECORD CHANGED ERROR VIA MERGING")
                     }
                 case .zoneNotFound:
                     // TODO: Notify users that the conversation/class no longer exists.
@@ -204,6 +205,15 @@ class CloudController {
                         } else {
                             // TODO: Retry with "saved" records. I can't really do anything because the records won't really encounter any per-item errors.... I'll do it once I figure which errors I need to actually worry about.
                             print("Tried to retry save operation for .batchRequestFailed error handling, but failed because of lack of implementation.")
+                        }
+                    }
+                case .requestRateLimited, .zoneBusy, .serviceUnavailable:
+                    if let retryAfterValue = ckError.userInfo[CKErrorRetryAfterKey] as? Double {
+                        print("Handling error by retrying...")
+                        let delayTime = DispatchTime.now() + retryAfterValue
+                        DispatchQueue.main.asyncAfter(deadline: delayTime) {
+                            self.save(cloudUploadables, completion: completion)
+                            print("HANDLED ERROR BY RETRYING REQUEST")
                         }
                     }
                 default:
@@ -230,7 +240,7 @@ class CloudController {
         operation.recordIDsToDelete = recordIDsToDelete
         
         operation.modifyRecordsCompletionBlock = { (record, recordID, error) in
-            if let ckError = ErrorHandler.handleCloudKitError(error, operation: .deleteRecords, affectedObjects: recordIDsToDelete) {
+            if let _ = ErrorHandler.handleCloudKitError(error, operation: .deleteRecords, affectedObjects: recordIDsToDelete) {
                 // Handle error
                 print("Error handling for delete operation is currently unimplemented.")
                 
@@ -246,7 +256,7 @@ class CloudController {
     }
     
     func saveSubscription(for recordType: String, completion: @escaping () -> Void) {
-        if !subscribedToPrivateChanges {
+        if !subscribedToPrivateChanges || true {
             // Create and save a silent push subscription in order to be updated:
             let subscriptionID = "cloudkit-\(recordType)-changes"
         
@@ -319,6 +329,13 @@ class CloudController {
                     self.createCustomZone() {
                         self.fetchDatabaseChanges(zonesDeleted: zonesDeleted, saveChanges: saveChanges, completion: completion)
                     }
+                case .requestRateLimited, .zoneBusy, .serviceUnavailable:
+                    if let retryAfterValue = ckError.userInfo[CKErrorRetryAfterKey] as? Double {
+                        let delayTime = DispatchTime.now() + retryAfterValue
+                        DispatchQueue.main.asyncAfter(deadline: delayTime) {
+                            self.fetchDatabaseChanges(zonesDeleted: zonesDeleted, saveChanges: saveChanges, completion: completion)
+                        }
+                    }
                 default:
                     break
                 }
@@ -386,6 +403,13 @@ class CloudController {
                     self.createdCustomZone = false
                     self.createCustomZone() {
                         self.fetchZoneChanges(zoneIDs: zoneIDs, saveChanges: saveChanges, completion: completion)
+                    }
+                case .requestRateLimited, .zoneBusy, .serviceUnavailable:
+                    if let retryAfterValue = ckError.userInfo[CKErrorRetryAfterKey] as? Double {
+                        let delayTime = DispatchTime.now() + retryAfterValue
+                        DispatchQueue.main.asyncAfter(deadline: delayTime) {
+                            self.fetchZoneChanges(zoneIDs: zoneIDs, saveChanges: saveChanges, completion: completion)
+                        }
                     }
                 default:
                     break

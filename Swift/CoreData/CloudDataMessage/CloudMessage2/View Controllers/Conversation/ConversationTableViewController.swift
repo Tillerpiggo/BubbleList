@@ -111,9 +111,9 @@ extension ConversationTableViewController {
         
         let saveChanges: ([CKRecord], [CKRecordID]) -> Void = { (recordsChanged, recordIDsDeleted) in
             for record in recordsChanged {
-                didFetchRecords = true
-                
                 if let index = self.conversations.index(where: { $0.ckRecord.recordID == record.recordID }) {
+                    didFetchRecords = true
+                    
                     print("Modified conversation from ConversationTableViewController (from Cloud)")
                     
                     let oldDateLastModified = self.conversations[index].dateLastModified
@@ -135,6 +135,8 @@ extension ConversationTableViewController {
                         //self.tableView.endUpdates()
                     }
                 } else if record.recordType == "Conversation" {
+                    didFetchRecords = true
+                    
                     print("Added conversation from ConversationTableViewController (from Cloud)")
                     
                     self.conversations.append(Conversation(fromRecord: record, managedContext: self.coreDataController.managedContext))
@@ -149,6 +151,8 @@ extension ConversationTableViewController {
                         //self.tableView.endUpdates()
                     }
                 } else if record.recordType == "Message" {
+                    didFetchRecords = true
+                    
                     print("Added message from ConversationTableViewController (from Cloud)")
                     
                     guard let index = self.conversations.index(where: { record["owningConversation"] as? CKReference == CKReference(record: $0.ckRecord, action: .none) })
@@ -171,9 +175,9 @@ extension ConversationTableViewController {
             }
             
             for recordID in recordIDsDeleted {
-                didFetchRecords = true
-                
                 if let index = self.conversations.index(where: { $0.ckRecord.recordID == recordID }) {
+                    didFetchRecords = true
+                    
                     print("Conversation deleted by ConversationTableViewController (from Cloud)")
                     
                     self.coreDataController.delete(self.conversations.remove(at: index))
@@ -190,6 +194,8 @@ extension ConversationTableViewController {
                     
                     for (conversationIndex, conversation) in self.conversations.enumerated() {
                         if let index = conversation.messages.index(where: { $0.ckRecord.recordID == recordID }) {
+                            didFetchRecords = true
+                            
                             print("Message deleted by ConversationTableViewController (from Cloud)")
                             
                             let deletedMessage = conversation.messages[index]
@@ -281,29 +287,29 @@ extension ConversationTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            let deletedConversation = conversations.remove(at: indexPath.row)
+        if editingStyle == .delete, conversations.count > 0 {
+                let deletedConversation = conversations.remove(at: indexPath.row)
             
-            // Delete all cloud messages
-            for message in deletedConversation.messages {
-                coreDataController.delete(message)
-            }
+                // Delete all cloud messages
+                for message in deletedConversation.messages {
+                    coreDataController.delete(message)
+                }
             
-            // Delete from cloud
-            cloudController.delete([deletedConversation]) {
-                print("Deleted Conversation!")
-            }
+                // Delete from cloud
+                cloudController.delete([deletedConversation]) {
+                    print("Deleted Conversation!")
+                }
             
-            // Delete from core data
-            coreDataController.delete(deletedConversation)
+                // Delete from core data
+                coreDataController.delete(deletedConversation)
             
-            coreDataController.save()
+                coreDataController.save()
             
-            // Update View
+                // Update View
             
-            //self.tableView.beginUpdates()
-            //tableView.deleteRows(at: [indexPath], with: .automatic)
-            //self.tableView.endUpdates()
+                //self.tableView.beginUpdates()
+                //tableView.deleteRows(at: [indexPath], with: .automatic)
+                //self.tableView.endUpdates()
         }
     }
     

@@ -8,6 +8,7 @@
 
 import UIKit
 import CloudKit
+import CoreData
 
 protocol MessageTableViewControllerDelegate {
     func conversationDidChange(to conversation: Conversation, wasModified: Bool)
@@ -113,9 +114,9 @@ extension MessageTableViewController {
         
         let saveChanges: ([CKRecord], [CKRecordID]) -> Void = { (recordsChanged, recordIDsDeleted) in
             for record in recordsChanged {
-                didFetchRecords = true
-                
                 if let index = self.conversation.messages.index(where: { $0.ckRecord.recordID == record.recordID }) {
+                    didFetchRecords = true
+                    
                     print("Message edited by MessageTableViewController (from Cloud)")
                     
                     self.conversation.messages[index].update(withRecord: record)
@@ -130,6 +131,8 @@ extension MessageTableViewController {
                         self.tableView.beginUpdates()
                     }
                 } else if record.recordType == "Message" && record["owningConversation"] as? CKReference == CKReference(record: self.conversation.ckRecord, action: .none) {
+                    didFetchRecords = true
+                    
                     print("Message added by MessageTableViewController (from Cloud)")
                     
                     self.conversation.coreDataConversation.addToMessages(Message(fromRecord: record, managedContext: self.coreDataController.managedContext).coreDataMessage)
@@ -149,9 +152,9 @@ extension MessageTableViewController {
             for recordID in recordIDsDeleted {
                 print("Message deleted by MessageTableViewController (from Cloud)")
                 
-                didFetchRecords = true
-                
                 if let index = self.conversation.messages.index(where: { $0.ckRecord.recordID == recordID }) {
+                    didFetchRecords = true
+                    
                     let message = self.conversation.messages[index]
                     self.conversation.coreDataConversation.removeFromMessages(message.coreDataMessage)
                     
@@ -164,6 +167,8 @@ extension MessageTableViewController {
                         self.coreDataController.save()
                     }
                  } else if recordID == self.conversation.ckRecord.recordID {
+                    didFetchRecords = true
+                    
                     for message in self.conversation.messages {
                         self.coreDataController.delete(message)
                     }
@@ -175,13 +180,10 @@ extension MessageTableViewController {
                 }
             }
             
-            if didFetchRecords {
-                self.delegate?.conversationDidChange(to: self.conversation, wasModified: true)
-            }
+            self.delegate?.conversationDidChange(to: self.conversation, wasModified: didFetchRecords)
         }
         
         cloudController.fetchDatabaseChanges(zonesDeleted: zonesDeleted, saveChanges: saveChanges) {
-            self.delegate?.conversationDidChange(to: self.conversation, wasModified: false)
             completion(didFetchRecords)
         }
     }

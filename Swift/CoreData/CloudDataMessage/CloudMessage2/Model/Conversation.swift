@@ -21,7 +21,10 @@ class Conversation: CloudUploadable, CoreDataUploadable {
         return (coreDataMessages.map() { Message(fromCoreDataMessage: $0 as! CoreDataMessage, zoneID: self.ckRecord.recordID.zoneID) }).sorted() { $0.timestamp > $1.timestamp }
     }
     var creationDate: Date { return (coreDataConversation.creationDate ?? NSDate()) as Date }
-    var dateLastModified: Date { return (coreDataConversation.dateLastModified ?? NSDate()) as Date }
+    var dateLastModified: Date {
+        if coreDataConversation.dateLastModified == nil { print("DateLastModified was nil") }
+        return (coreDataConversation.dateLastModified ?? NSDate()) as Date
+    }
     var title: String { return coreDataConversation.title ?? "" }
     
     var latestMessage: String {
