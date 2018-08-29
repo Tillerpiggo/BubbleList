@@ -154,7 +154,7 @@ class CloudController {
     
     
     // Saves the given cloud up
-    func save(_ cloudUploadables: [CloudUploadable], completion: @escaping () -> Void, willRetry: Bool = true) {
+    func save(_ cloudUploadables: [CloudUploadable], recordChanged: @escaping (CKRecord) -> Void, willRetry: Bool = true) {
         // Create and configure operation
         let operation = CKModifyRecordsOperation()
         operation.savePolicy = .ifServerRecordUnchanged
@@ -180,29 +180,28 @@ class CloudController {
                         return
                     }
                     
-                    let retryCompletion = {
-                        completion()
-                        print("Completed retry from .serverRecordChanged error")
-                    }
-                    
                     if clientRecord.recordType == "Conversation" {
                         serverRecord["title"] = clientRecord["title"]
                         serverRecord["latestMessage"] = clientRecord["latestMessage"]
                         
-                        print("Merged Record: (Conversation)")
+                        recordChanged(serverRecord)
+                        
+                        print("Merged Record (Conversation)")
                         
                         if willRetry {
-                            self.save([serverRecord], completion: retryCompletion, willRetry: false)
+                            self.save([serverRecord], recordChanged: recordChanged, willRetry: false)
                             print(".serverRecordChanged (Conversation). Retried after merging.")
                         }
                     } else if clientRecord.recordType == "Message" {
                         serverRecord["text"] = clientRecord["text"]
                         serverRecord["timestamp"] = clientRecord["timestamp"]
                         
+                        recordChanged(serverRecord)
+                        
                         print("Merged Record (Message)")
                         
                         if willRetry {
-                            self.save([serverRecord], completion: retryCompletion, willRetry: false)
+                            self.save([serverRecord], recordChanged: recordChanged, willRetry: false)
                             print(".serverRecordChanged (Message). Retried after merging.")
                         }
                     }
@@ -235,7 +234,7 @@ class CloudController {
                         print("Handling error by retrying...")
                         let delayTime = DispatchTime.now() + retryAfterValue
                         DispatchQueue.main.asyncAfter(deadline: delayTime) {
-                            self.save(cloudUploadables, completion: completion)
+                            self.save(cloudUploadables, recordChanged: recordChanged) 
                             print("HANDLED ERROR BY RETRYING REQUEST")
                         }
                     }
@@ -245,7 +244,6 @@ class CloudController {
                 
                 return
             } else {
-                completion()
                 print("Modified records error-free")
             }
         }

@@ -385,7 +385,9 @@ extension ConversationTableViewController: AddConversationTableViewControllerDel
         conversations.sort { $0.dateLastModified > $1.dateLastModified }
         
         // Save change to the Cloud
-        cloudController.save([conversation], completion: { })
+        cloudController.save([conversation], recordChanged: { (updatedRecord) in
+            conversation.update(withRecord: updatedRecord)
+        })
         
         //self.tableView.beginUpdates()
         //tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
@@ -406,7 +408,9 @@ extension ConversationTableViewController: MessageTableViewControllerDelegate {
             conversation.coreDataConversation.dateLastModified = NSDate()
             
             // Save change to the cloud
-            cloudController.save([conversation], completion: { })
+            cloudController.save([conversation], recordChanged: { (updatedRecord) in
+                conversation.update(withRecord: updatedRecord)
+            })
         }
         
         conversations.sort(by: { $0.dateLastModified > $1.dateLastModified })

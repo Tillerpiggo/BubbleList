@@ -118,6 +118,8 @@ extension MessageTableViewController {
                 if let index = self.conversation.messages.index(where: { $0.ckRecord.recordID == record.recordID }) {
                     didFetchRecords = true
                     
+                    print("Fetched message: \(self.conversation.messages[index].text)")
+                    
                     print("Message edited by MessageTableViewController (from Cloud)")
                     
                     self.conversation.messages[index].update(withRecord: record)
@@ -220,7 +222,9 @@ extension MessageTableViewController: AddMessageTableViewControllerDelegate {
         coreDataController.save()
         
         // Save to the Cloud
-        cloudController.save([message], completion: { print("Succesfully saved messages") })
+        cloudController.save([message], recordChanged: { (updatedRecord) in
+            message.update(withRecord: updatedRecord)
+        })
         
         print("After adding a message, the conversation had \(conversation.messages.count) messages before saving.")
         
