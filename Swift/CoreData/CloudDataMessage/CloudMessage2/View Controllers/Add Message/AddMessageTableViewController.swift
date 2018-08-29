@@ -41,6 +41,7 @@ class AddMessageTableViewController: UITableViewController {
     
     @IBAction private func saveButtonTapped(_ sender: Any) {
         save()
+        saveButton.isEnabled = false
         dismiss(animated: true, completion: nil)
     }
     
@@ -63,9 +64,6 @@ class AddMessageTableViewController: UITableViewController {
     private func save() {
         let newMessage = Message(withText: textField.text ?? "", timestamp: Date(), managedContext: coreDataController.managedContext, owningConversation: owningConversation, zoneID: cloudController.zoneID)
         delegate?.addedMessage(newMessage)
-        if let owningConversation = newMessage.ckRecord["owningConversation"] as? CKReference {
-            print("RECORD TO SAVE HAD OWNING CONVERSATION: \(owningConversation)")
-        }
     }
     
     private func updateSaveButton() {

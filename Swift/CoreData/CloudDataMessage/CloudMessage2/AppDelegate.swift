@@ -83,6 +83,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        
+        notificationDelegate?.fetchChanges() { didFetchRecords in }
     }
 
     func applicationWillTerminate(_ application: UIApplication) {

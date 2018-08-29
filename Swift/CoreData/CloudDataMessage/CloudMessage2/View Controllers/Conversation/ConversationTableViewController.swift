@@ -411,14 +411,14 @@ extension ConversationTableViewController: MessageTableViewControllerDelegate {
         
         conversations.sort(by: { $0.dateLastModified > $1.dateLastModified })
         
-        // Save change to Core Data
-        coreDataController.save()
-        
         if let selectedIndexPath = selectedIndexPath, selectedIndexPath.row < conversations.count {
             conversations[selectedIndexPath.row] = conversation
             //DispatchQueue.main.async {
                 //self.tableView.reloadRows(at: [selectedIndexPath], with: .automatic)
             //}
         }
+        
+        // Save change to Core Data
+        coreDataController.save()
     }
 }

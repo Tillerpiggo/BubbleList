@@ -180,13 +180,6 @@ class CloudController {
                         return
                     }
                     
-                    var updatedRecord = serverRecord
-                    
-                    self.database.fetch(withRecordID: clientRecord.recordID) { record, error in
-                        guard let record = record else { return }
-                        updatedRecord = record
-                    }
-                    
                     let retryCompletion = {
                         completion()
                         print("Completed retry from .serverRecordChanged error")
@@ -199,7 +192,7 @@ class CloudController {
                         print("Merged Record: (Conversation)")
                         
                         if willRetry {
-                            self.save([updatedRecord], completion: retryCompletion, willRetry: false)
+                            self.save([serverRecord], completion: retryCompletion, willRetry: false)
                             print(".serverRecordChanged (Conversation). Retried after merging.")
                         }
                     } else if clientRecord.recordType == "Message" {
@@ -209,7 +202,7 @@ class CloudController {
                         print("Merged Record (Message)")
                         
                         if willRetry {
-                            self.save([updatedRecord], completion: retryCompletion, willRetry: false)
+                            self.save([serverRecord], completion: retryCompletion, willRetry: false)
                             print(".serverRecordChanged (Message). Retried after merging.")
                         }
                     }
