@@ -165,7 +165,10 @@ class CloudController {
         operation.recordsToSave = recordsToSave
         operation.qualityOfService = .userInitiated
         
-        operation.modifyRecordsCompletionBlock = { (record, recordID, error) in
+        operation.modifyRecordsCompletionBlock = { (records, recordIDs, error) in
+            
+            print("Records to save")
+            
             if let ckError = ErrorHandler.handleCloudKitError(error, operation: .modifyRecords, affectedObjects: recordsToSave.map({ $0.recordID })) {
                 // Handle error
                 switch ckError.code {
@@ -177,39 +180,36 @@ class CloudController {
                         return
                     }
                     
+                    var updatedRecord = serverRecord
+                    
+                    self.database.fetch(withRecordID: clientRecord.recordID) { record, error in
+                        guard let record = record else { return }
+                        updatedRecord = record
+                    }
+                    
                     let retryCompletion = {
                         completion()
                         print("Completed retry from .serverRecordChanged error")
                     }
                     
                     if clientRecord.recordType == "Conversation" {
-                        print("ServerRecord Title: \(serverRecord["title"] as! String)")
-                        print("ServerRecord LatestMessage: \(serverRecord["latestMessage"] as! String)")
-                        print("ClientRecord Title: \(serverRecord["title"] as! String)")
-                        print("ClientRecord LatestMessage: \(serverRecord["latestMessage"] as! String)")
-                        
                         serverRecord["title"] = clientRecord["title"]
                         serverRecord["latestMessage"] = clientRecord["latestMessage"]
                         
                         print("Merged Record: (Conversation)")
                         
                         if willRetry {
-                            self.save(cloudUploadables, completion: retryCompletion, willRetry: false)
+                            self.save([updatedRecord], completion: retryCompletion, willRetry: false)
                             print(".serverRecordChanged (Conversation). Retried after merging.")
                         }
                     } else if clientRecord.recordType == "Message" {
-                        print("ServerRecord Text: \(serverRecord["text"] as! String)")
-                        print("ServerRecord Timestamp: \(serverRecord["timestamp"] as! Date)")
-                        print("ClientRecord Text: \(serverRecord["text"] as! String)")
-                        print("ClientRecord Timestamp: \(serverRecord["timestamp"] as! Date)")
-                        
                         serverRecord["text"] = clientRecord["text"]
                         serverRecord["timestamp"] = clientRecord["timestamp"]
                         
                         print("Merged Record (Message)")
                         
                         if willRetry {
-                            self.save(cloudUploadables, completion: retryCompletion, willRetry: false)
+                            self.save([updatedRecord], completion: retryCompletion, willRetry: false)
                             print(".serverRecordChanged (Message). Retried after merging.")
                         }
                     }
@@ -253,6 +253,7 @@ class CloudController {
                 return
             } else {
                 completion()
+                print("Modified records error-free")
             }
         }
         
