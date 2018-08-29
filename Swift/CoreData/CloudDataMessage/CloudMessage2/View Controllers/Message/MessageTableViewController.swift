@@ -102,9 +102,9 @@ extension MessageTableViewController {
         var didFetchRecords: Bool = false
         
         let zonesDeleted: ([CKRecordZoneID]) -> Void = { (zoneIDs) in
-            didFetchRecords = true
-            
             if zoneIDs.count > 0 {
+                didFetchRecords = true
+                
                 // TODO: Implement this later (when you add zones), for now it will just delete everything
                 for message in self.conversation.messages {
                     self.coreDataController.delete(message)
