@@ -29,6 +29,8 @@ class AddConversationTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        titleTextField.becomeFirstResponder()
     }
     
     // IBACTIONS:

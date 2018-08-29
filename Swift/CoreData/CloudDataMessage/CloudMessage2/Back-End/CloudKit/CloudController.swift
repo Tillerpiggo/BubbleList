@@ -154,7 +154,7 @@ class CloudController {
     
     
     // Saves the given cloud up
-    func save(_ cloudUploadables: [CloudUploadable], completion: @escaping () -> Void) {
+    func save(_ cloudUploadables: [CloudUploadable], completion: @escaping () -> Void, willRetry: Bool = true) {
         // Create and configure operation
         let operation = CKModifyRecordsOperation()
         operation.savePolicy = .ifServerRecordUnchanged
@@ -163,12 +163,13 @@ class CloudController {
         // Map conversations to records
         let recordsToSave = cloudUploadables.map() { $0.ckRecord }
         operation.recordsToSave = recordsToSave
+        operation.qualityOfService = .userInitiated
         
         operation.modifyRecordsCompletionBlock = { (record, recordID, error) in
             if let ckError = ErrorHandler.handleCloudKitError(error, operation: .modifyRecords, affectedObjects: recordsToSave.map({ $0.recordID })) {
                 // Handle error
                 switch ckError.code {
-                case .serverRecordChanged:
+                case .serverRecordChanged: // Sometimes this gets recursively called, so I'm clearly not handling everything properly
                     // Overwrite the server record
                     guard let serverRecord = ckError.userInfo[CKRecordChangedErrorServerRecordKey] as? CKRecord,
                     let clientRecord = ckError.userInfo[CKRecordChangedErrorClientRecordKey] as? CKRecord else {
@@ -176,12 +177,41 @@ class CloudController {
                         return
                     }
                     
+                    let retryCompletion = {
+                        completion()
+                        print("Completed retry from .serverRecordChanged error")
+                    }
+                    
                     if clientRecord.recordType == "Conversation" {
+                        print("ServerRecord Title: \(serverRecord["title"] as! String)")
+                        print("ServerRecord LatestMessage: \(serverRecord["latestMessage"] as! String)")
+                        print("ClientRecord Title: \(serverRecord["title"] as! String)")
+                        print("ClientRecord LatestMessage: \(serverRecord["latestMessage"] as! String)")
+                        
                         serverRecord["title"] = clientRecord["title"]
                         serverRecord["latestMessage"] = clientRecord["latestMessage"]
                         
-                        self.save([serverRecord], completion: completion)
-                        print("HANDLED SERVER RECORD CHANGED ERROR VIA MERGING")
+                        print("Merged Record: (Conversation)")
+                        
+                        if willRetry {
+                            self.save(cloudUploadables, completion: retryCompletion, willRetry: false)
+                            print(".serverRecordChanged (Conversation). Retried after merging.")
+                        }
+                    } else if clientRecord.recordType == "Message" {
+                        print("ServerRecord Text: \(serverRecord["text"] as! String)")
+                        print("ServerRecord Timestamp: \(serverRecord["timestamp"] as! Date)")
+                        print("ClientRecord Text: \(serverRecord["text"] as! String)")
+                        print("ClientRecord Timestamp: \(serverRecord["timestamp"] as! Date)")
+                        
+                        serverRecord["text"] = clientRecord["text"]
+                        serverRecord["timestamp"] = clientRecord["timestamp"]
+                        
+                        print("Merged Record (Message)")
+                        
+                        if willRetry {
+                            self.save(cloudUploadables, completion: retryCompletion, willRetry: false)
+                            print(".serverRecordChanged (Message). Retried after merging.")
+                        }
                     }
                 case .zoneNotFound:
                     // TODO: Notify users that the conversation/class no longer exists.
@@ -221,11 +251,10 @@ class CloudController {
                 }
                 
                 return
+            } else {
+                completion()
             }
-            
-            completion()
         }
-        operation.qualityOfService = .userInitiated
         
         // Add/start the operation
         database.add(operation)

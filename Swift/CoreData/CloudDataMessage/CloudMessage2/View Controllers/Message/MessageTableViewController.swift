@@ -67,13 +67,14 @@ extension MessageTableViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let numberOfRowsInSection = conversation.messages.count
-        print("Number of rows in messageTableViewController: \(numberOfRowsInSection)")
         
         return numberOfRowsInSection
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MessageCell", for: indexPath)
+        
+        print("Loading cell at row \(indexPath.row)")
         
         // Get model object
         let message = conversation.messages[indexPath.row]
@@ -179,11 +180,10 @@ extension MessageTableViewController {
                     }
                 }
             }
-            
-            self.delegate?.conversationDidChange(to: self.conversation, wasModified: didFetchRecords)
         }
         
         cloudController.fetchDatabaseChanges(zonesDeleted: zonesDeleted, saveChanges: saveChanges) {
+            self.delegate?.conversationDidChange(to: self.conversation, wasModified: didFetchRecords)
             completion(didFetchRecords)
         }
     }
@@ -220,16 +220,16 @@ extension MessageTableViewController: AddMessageTableViewControllerDelegate {
         coreDataController.save()
         
         // Save to the Cloud
-        cloudController.save([message]) { print("Succesfully saved messages") }
+        cloudController.save([message], completion: { print("Succesfully saved messages") })
         
         print("After adding a message, the conversation had \(conversation.messages.count) messages before saving.")
-        
-        // Notify delegate
-        delegate?.conversationDidChange(to: conversation, wasModified: true)
         
         // Modify table view
         tableView.beginUpdates()
         tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
         tableView.endUpdates()
+        
+        // Notify delegate
+        delegate?.conversationDidChange(to: conversation, wasModified: true)
     }
 }

@@ -31,6 +31,9 @@ class AddMessageTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        textField.becomeFirstResponder()
+        
         updateSaveButton()
     }
     

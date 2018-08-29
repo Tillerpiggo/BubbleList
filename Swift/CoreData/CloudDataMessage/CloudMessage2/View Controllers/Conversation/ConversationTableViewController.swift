@@ -164,6 +164,8 @@ extension ConversationTableViewController {
                         self.conversations[index].coreDataConversation.addToMessages(Message(fromRecord: record, managedContext: self.coreDataController.managedContext).coreDataMessage)
                     }
                     
+                    self.conversations[index].coreDataConversation.dateLastModified = NSDate()
+                    
                     DispatchQueue.main.sync {
                         self.coreDataController.save()
                         
@@ -180,7 +182,13 @@ extension ConversationTableViewController {
                     
                     print("Conversation deleted by ConversationTableViewController (from Cloud)")
                     
-                    self.coreDataController.delete(self.conversations.remove(at: index))
+                    let deletedConversation = self.conversations.remove(at: index)
+                    
+                    self.coreDataController.delete(deletedConversation)
+                    
+                    for message in deletedConversation.messages {
+                        self.coreDataController.delete(message)
+                    }
                     
                     DispatchQueue.main.sync {
                         //self.tableView.beginUpdates()
@@ -377,7 +385,7 @@ extension ConversationTableViewController: AddConversationTableViewControllerDel
         conversations.sort { $0.dateLastModified > $1.dateLastModified }
         
         // Save change to the Cloud
-        cloudController.save([conversation]) { }
+        cloudController.save([conversation], completion: { })
         
         //self.tableView.beginUpdates()
         //tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
@@ -398,7 +406,7 @@ extension ConversationTableViewController: MessageTableViewControllerDelegate {
             conversation.coreDataConversation.dateLastModified = NSDate()
             
             // Save change to the cloud
-            cloudController.save([conversation]) { }
+            cloudController.save([conversation], completion: { })
         }
         
         conversations.sort(by: { $0.dateLastModified > $1.dateLastModified })
