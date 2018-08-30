@@ -277,7 +277,7 @@ class CloudController {
     }
     
     func saveSubscription(for recordType: String, completion: @escaping () -> Void) {
-        if !subscribedToPrivateChanges || true {
+        if !subscribedToPrivateChanges {
             // Create and save a silent push subscription in order to be updated:
             let subscriptionID = "cloudkit-\(recordType)-changes"
         
