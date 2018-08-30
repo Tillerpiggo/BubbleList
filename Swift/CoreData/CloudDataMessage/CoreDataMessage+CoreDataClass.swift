@@ -14,3 +14,9 @@ import CoreData
 public class CoreDataMessage: NSManagedObject {
     
 }
+
+extension CoreDataMessage: CoreDataUploadable {
+    var coreData: NSManagedObject {
+        return self
+    }
+}

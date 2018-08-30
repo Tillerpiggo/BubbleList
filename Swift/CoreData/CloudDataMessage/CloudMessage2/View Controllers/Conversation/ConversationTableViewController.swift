@@ -14,7 +14,7 @@ class ConversationTableViewController: UITableViewController {
     
     // MARK: - Properties
     
-    var conversations: [Conversation] = [Conversation]()
+    //var conversations: [Conversation] = [Conversation]()
     var selectedIndexPath: IndexPath? // Necessary because we deselect the row right after it is selected (otherwise it looks ugly)
     
     var cloudController: CloudController!
@@ -24,17 +24,20 @@ class ConversationTableViewController: UITableViewController {
         let fetchRequest: NSFetchRequest<CoreDataConversation> = CoreDataConversation.fetchRequest()
         let sortByDateLastModified = NSSortDescriptor(key: #keyPath(CoreDataConversation.dateLastModified), ascending: false)
         fetchRequest.sortDescriptors = [sortByDateLastModified]
+        fetchRequest.fetchBatchSize = 20
         
-        let fetchedResultsController = NSFetchedResultsController(
+        let fetchedResultsController = NSFetchedResultsController (
             fetchRequest: fetchRequest,
             managedObjectContext: coreDataController.managedContext,
             sectionNameKeyPath: nil,
-            cacheName: "CloudMessage")
+            cacheName: "CloudMessage"
+        )
         
         fetchedResultsController.delegate = self
         
         do {
             try fetchedResultsController.performFetch()
+            self.tableView.reloadData()
         } catch let error as NSError {
             print("Fetching error: \(error), \(error.userInfo)")
         }
@@ -46,7 +49,6 @@ class ConversationTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        updateWithCoreData()
         updateWithCloud()
         
         tableView.rowHeight = 60
@@ -99,17 +101,21 @@ extension ConversationTableViewController {
             if zoneIDs.count > 0 {
                 didFetchRecords = true
                 
+                guard let fetchedObjects = self.fetchedResultsController.fetchedObjects else { return }
+                
                 // TODO: Implement this later (when you add zones), for now it will just delete everything
-                for conversation in self.conversations {
+                for conversation in fetchedObjects {
                     self.coreDataController.delete(conversation)
                     
-                    for message in conversation.messages {
+                    guard let messages = conversation.messages?.array as? [CoreDataMessage] else {
+                        break
+                    }
+                    
+                    for message in messages {
                         self.coreDataController.delete(message)
                     }
                 }
                 self.coreDataController.save()
-                
-                self.conversations = []
             }
         }
         
@@ -131,13 +137,8 @@ extension ConversationTableViewController {
                     
                     self.conversations.sort(by: { $0.dateLastModified > $1.dateLastModified })
                     
-                    DispatchQueue.main.sync {
-                        self.coreDataController.save()
-                        
-                        //self.tableView.beginUpdates()
-                        //self.tableView.reloadRows(at: [changedIndexPath], with: .automatic)
-                        //self.tableView.endUpdates()
-                    }
+                    self.coreDataController.save()
+                    
                 } else if record.recordType == "Conversation" {
                     didFetchRecords = true
                     
@@ -147,13 +148,8 @@ extension ConversationTableViewController {
                     //let newIndexPath = IndexPath(row: 0, section: 0)
                     self.conversations.sort(by: { $0.dateLastModified > $1.dateLastModified })
                     
-                    DispatchQueue.main.sync {
-                        self.coreDataController.save()
-                        
-                        //self.tableView.beginUpdates()
-                        //self.tableView.insertRows(at: [newIndexPath], with: .automatic)
-                        //self.tableView.endUpdates()
-                    }
+                    self.coreDataController.save()
+                    
                 } else if record.recordType == "Message" {
                     didFetchRecords = true
                     
@@ -170,13 +166,7 @@ extension ConversationTableViewController {
                     
                     self.conversations[index].coreDataConversation.dateLastModified = NSDate()
                     
-                    DispatchQueue.main.sync {
-                        self.coreDataController.save()
-                        
-                        //self.tableView.beginUpdates()
-                        //self.tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
-                        //self.tableView.endUpdates()
-                    }
+                    self.coreDataController.save()
                 }
             }
             
@@ -194,13 +184,7 @@ extension ConversationTableViewController {
                         self.coreDataController.delete(message)
                     }
                     
-                    DispatchQueue.main.sync {
-                        //self.tableView.beginUpdates()
-                        //self.tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .fade)
-                        //self.tableView.endUpdates()
-                        
-                        self.coreDataController.save()
-                    }
+                    self.coreDataController.save()
                 } else {
                     var affectedIndexes: [Int] = []
                     
@@ -218,13 +202,7 @@ extension ConversationTableViewController {
                         }
                     }
                     
-                    DispatchQueue.main.sync {
-                        self.coreDataController.save()
-                        
-                        //self.tableView.beginUpdates()
-                        //self.tableView.reloadRows(at: affectedIndexes.map({ IndexPath(row: $0, section: 0)}), with: .automatic)
-                        //self.tableView.endUpdates()
-                    }
+                    self.coreDataController.save()
                 }
             }
         }
@@ -232,23 +210,6 @@ extension ConversationTableViewController {
         cloudController.fetchDatabaseChanges(zonesDeleted: zonesDeleted, saveChanges: saveChanges) {
             completion(didFetchRecords)
         }
-    }
-    
-    func updateWithCoreData() {
-        // Initialize Conversations:
-        // Get from Core Data
-        coreDataController.fetchConversations() { (coreDataConversations) in
-            for coreDataConversation in coreDataConversations {
-                self.conversations.append(Conversation(fromCoreDataConversation: coreDataConversation, zoneID: self.cloudController.zoneID))
-            }
-            self.conversations.sort() { $0.dateLastModified > $1.dateLastModified }
-            
-            DispatchQueue.main.async {
-                //self.tableView.reloadData()
-            }
-        }
-        
-        
     }
     
     func registerAsNotificationDelegate() {
@@ -300,28 +261,24 @@ extension ConversationTableViewController {
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete, conversations.count > 0 {
-                let deletedConversation = conversations.remove(at: indexPath.row)
+            let deletedConversation = fetchedResultsController.object(at: indexPath)
             
-                // Delete from core data
-                coreDataController.delete(deletedConversation)
+            // Delete from core data
+            coreDataController.delete(deletedConversation)
             
+            if let deletedMessages = deletedConversation.messages?.array as? [CoreDataMessage] {
                 // Delete all cloud messages
-                for message in deletedConversation.messages {
+                for message in deletedMessages {
                     coreDataController.delete(message)
                 }
-            
-                // Delete from cloud
-                cloudController.delete([deletedConversation]) {
-                    print("Deleted Conversation!")
-                }
-            
-                coreDataController.save()
-            
-                // Update View
-            
-                //self.tableView.beginUpdates()
-                //tableView.deleteRows(at: [indexPath], with: .automatic)
-                //self.tableView.endUpdates()
+            }
+        
+            // Delete from cloud
+            cloudController.delete([deletedConversation as! CloudUploadable]) {
+                print("Deleted Conversation!")
+            }
+        
+            coreDataController.save()
         }
     }
     
@@ -338,7 +295,7 @@ extension ConversationTableViewController {
 
 // MARK: - NSFetchedResultsControllerDelegate
 
-extension ConversationTableViewController: NSFetchedResultsControllerDelegate {
+extension MessageTableViewController: NSFetchedResultsControllerDelegate {
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.beginUpdates()
     }
@@ -384,9 +341,6 @@ extension ConversationTableViewController: AddConversationTableViewControllerDel
         
         // Save change to Core Data
         coreDataController.save()
-        
-        conversations.append(conversation)
-        conversations.sort { $0.dateLastModified > $1.dateLastModified }
         
         // Save change to the Cloud
         cloudController.save([conversation], recordChanged: { (updatedRecord) in

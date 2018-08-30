@@ -23,6 +23,30 @@ class MessageTableViewController: UITableViewController {
     var cloudController: CloudController!
     var coreDataController: CoreDataController!
     
+    lazy var fetchedResultsController: NSFetchedResultsController<CoreDataMessage> = {
+        let fetchRequest: NSFetchRequest<CoreDataMessage> = CoreDataMessage.fetchRequest()
+        let sortByDateLastModified = NSSortDescriptor(key: #keyPath(CoreDataConversation.dateLastModified), ascending: false)
+        fetchRequest.sortDescriptors = [sortByDateLastModified]
+        fetchRequest.fetchBatchSize = 20
+        
+        let fetchedResultsController = NSFetchedResultsController (
+            fetchRequest: fetchRequest,
+            managedObjectContext: coreDataController.managedContext,
+            sectionNameKeyPath: nil,
+            cacheName: "CloudMessage"
+        )
+        
+        fetchedResultsController.delegate = self
+        
+        do {
+            try fetchedResultsController.performFetch()
+        } catch let error as NSError {
+            print("Fetching error: \(error), \(error.userInfo)")
+        }
+        
+        return fetchedResultsController
+    }()
+    
     // MARK: - Initializer
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -128,9 +152,9 @@ extension MessageTableViewController {
                     
                     let changedIndexPath = IndexPath(row: index, section: 0)
                     
-                    DispatchQueue.main.sync {
-                        self.coreDataController.save()
-                        
+                    self.coreDataController.save()
+                    
+                    DispatchQueue.main.async {
                         self.tableView.beginUpdates()
                         self.tableView.reloadRows(at: [changedIndexPath], with: .automatic)
                         self.tableView.beginUpdates()
@@ -143,9 +167,9 @@ extension MessageTableViewController {
                     self.conversation.coreDataConversation.addToMessages(Message(fromRecord: record, managedContext: self.coreDataController.managedContext).coreDataMessage)
                     let newIndexPath = IndexPath(row: 0, section: 0)
                     
-                    DispatchQueue.main.sync {
-                        self.coreDataController.save()
-                        
+                    self.coreDataController.save()
+                    
+                    DispatchQueue.main.async {
                         self.tableView.beginUpdates()
                         self.tableView.insertRows(at: [newIndexPath], with: .automatic)
                         print("Inserted row in messageTableViewController!")
@@ -163,10 +187,9 @@ extension MessageTableViewController {
                     let message = self.conversation.messages[index]
                     self.conversation.coreDataConversation.removeFromMessages(message.coreDataMessage)
                     
-                    DispatchQueue.main.sync {
-                        
-                        self.coreDataController.save()
-                        
+                    self.coreDataController.save()
+                    
+                    DispatchQueue.main.async {
                         self.tableView.beginUpdates()
                         self.tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
                         print("Deleted row in messageTableViewController!")
@@ -181,8 +204,9 @@ extension MessageTableViewController {
                         self.coreDataController.delete(message)
                     }
                     
+                    self.coreDataController.save()
+                    
                     DispatchQueue.main.async {
-                        self.coreDataController.save()
                         self.navigationController?.popViewController(animated: true)
                         self.dismiss(animated: true, completion: nil)
                     }
@@ -224,6 +248,9 @@ extension MessageTableViewController: AddMessageTableViewControllerDelegate {
         conversation.coreDataConversation.addToMessages(message.coreDataMessage)
         conversation.ckRecord["latestMessage"] = message.text as CKRecordValue
         
+        // Notify delegate
+        delegate?.conversationDidChange(to: conversation, wasModified: true, saveToCloud: true)
+        
         // Save to Core Data
         coreDataController.save()
         
@@ -238,8 +265,31 @@ extension MessageTableViewController: AddMessageTableViewControllerDelegate {
         cloudController.save([message], recordChanged: { (updatedRecord) in
             message.update(withRecord: updatedRecord)
         })
-        
-        // Notify delegate
-        delegate?.conversationDidChange(to: conversation, wasModified: true, saveToCloud: true)
+    }
+}
+
+// MARK: - NSFetchedResultsControllerDelegate
+
+extension ConversationTableViewController: NSFetchedResultsControllerDelegate {
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.beginUpdates()
+    }
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        switch type {
+        case .insert:
+            tableView.insertRows(at: [newIndexPath!], with: .automatic)
+        case .delete:
+            tableView.deleteRows(at: [indexPath!], with: .automatic)
+        case .update:
+            tableView.reloadRows(at: [indexPath!], with: .automatic)
+        case .move:
+            tableView.deleteRows(at: [indexPath!], with: .automatic)
+            tableView.insertRows(at: [newIndexPath!], with: .automatic)
+        }
+    }
+    
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.endUpdates()
     }
 }
