@@ -11,7 +11,7 @@ import Foundation
 import CoreData
 import CloudKit
 
-@objc(CoreDataMessage)
+//@objc(CoreDataMessage)
 public class CoreDataMessage: NSManagedObject, CloudUploadable {
     var ckRecord: CKRecord = CKRecord(recordType: "Message")
     

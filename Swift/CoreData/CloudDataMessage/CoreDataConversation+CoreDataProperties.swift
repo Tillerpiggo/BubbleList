@@ -22,14 +22,6 @@ extension CoreDataConversation {
     @NSManaged public var title: String?
     @NSManaged public var messages: NSOrderedSet?
     @NSManaged public var encodedSystemFields: Data?
-    
-    var latestMessage: String {
-        if let latestMessage = messages?.lastObject as? CoreDataMessage, let text = latestMessage.text {
-            return text
-        } else {
-            return ""
-        }
-    }
 }
 
 // MARK: Generated accessors for messages

@@ -11,13 +11,31 @@ import Foundation
 import CoreData
 import CloudKit
 
-@objc(CoreDataConversation)
+//@objc(CoreDataConversation)
 public class CoreDataConversation: NSManagedObject, CloudUploadable {
     var ckRecord: CKRecord = CKRecord(recordType: "Conversation")
+    
+    var latestMessage: String {
+        if let latestMessage = messages?.lastObject as? CoreDataMessage, let text = latestMessage.text {
+            return text
+        } else {
+            return ""
+        }
+    }
+    
+    init(entity: NSEntityDescription, insertInto managedContext: NSManagedObjectContext) {
+        super.init(entity: entity, insertInto: managedContext)
+        
+        generateRecord()
+    }
     
     init(withTitle title: String, messages: [CoreDataMessage] = [CoreDataMessage](), managedContext: NSManagedObjectContext, zoneID: CKRecordZoneID) {
         let conversationDescription = NSEntityDescription.entity(forEntityName: "CoreDataConversation", in: managedContext)
         super.init(entity: conversationDescription!, insertInto: managedContext)
+        
+        // Configure CKRecord
+        ckRecord["title"] = title as CKRecordValue
+        ckRecord["latestMessage"] = latestMessage as CKRecordValue
         
         // Set properties
         self.title = title
@@ -28,14 +46,6 @@ public class CoreDataConversation: NSManagedObject, CloudUploadable {
         for message in messages {
             self.addToMessages(message)
         }
-        
-        // Create CKRecord
-        let newCKRecord = CKRecord(recordType: "Conversation", zoneID: zoneID)
-        
-        newCKRecord["title"] = title as CKRecordValue
-        newCKRecord["latestMessage"] = (messages.first?.text as CKRecordValue?) ?? ("" as CKRecordValue)
-        
-        self.ckRecord = newCKRecord
     }
     
     init(fromRecord record: CKRecord, managedContext: NSManagedObjectContext) {
@@ -59,6 +69,18 @@ public class CoreDataConversation: NSManagedObject, CloudUploadable {
         self.encodedSystemFields = record.encoded()
         
         self.ckRecord = record
+    }
+    
+    func generateRecord() {
+        if let encodedSystemFields = self.encodedSystemFields {
+            let unarchiver = NSKeyedUnarchiver(forReadingWith: encodedSystemFields)
+            unarchiver.requiresSecureCoding = true
+            let newCKRecord = CKRecord(coder: unarchiver)!
+            unarchiver.finishDecoding()
+            
+            newCKRecord["title"] = title as CKRecordValue?
+            newCKRecord["latestMessage"] = latestMessage as CKRecordValue
+        }
     }
 }
 
