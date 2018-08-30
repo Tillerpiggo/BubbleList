@@ -401,13 +401,14 @@ extension ConversationTableViewController: AddConversationTableViewControllerDel
 // MARK: - Message Table View Delegate
 
 extension ConversationTableViewController: MessageTableViewControllerDelegate {
-    func conversationDidChange(to conversation: Conversation, wasModified: Bool) {
+    func conversationDidChange(to conversation: Conversation, wasModified: Bool, saveToCloud: Bool) {
         print("Conversation changed by MessageTableViewController")
         
         if wasModified {
             conversation.coreDataConversation.dateLastModified = NSDate()
-            
-            // Save change to the cloud
+        }
+        
+        if saveToCloud {
             cloudController.save([conversation], recordChanged: { (updatedRecord) in
                 conversation.update(withRecord: updatedRecord)
             })

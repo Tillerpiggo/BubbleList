@@ -11,7 +11,7 @@ import CloudKit
 import CoreData
 
 protocol MessageTableViewControllerDelegate {
-    func conversationDidChange(to conversation: Conversation, wasModified: Bool)
+    func conversationDidChange(to conversation: Conversation, wasModified: Bool, saveToCloud: Bool)
 }
 
 class MessageTableViewController: UITableViewController {
@@ -142,12 +142,12 @@ extension MessageTableViewController {
                     let newIndexPath = IndexPath(row: 0, section: 0)
                     
                     DispatchQueue.main.sync {
+                        self.coreDataController.save()
+                        
                         self.tableView.beginUpdates()
                         self.tableView.insertRows(at: [newIndexPath], with: .automatic)
                         print("Inserted row in messageTableViewController!")
                         self.tableView.endUpdates()
-                        
-                        self.coreDataController.save()
                     }
                 }
             }
@@ -162,12 +162,13 @@ extension MessageTableViewController {
                     self.conversation.coreDataConversation.removeFromMessages(message.coreDataMessage)
                     
                     DispatchQueue.main.sync {
+                        
+                        self.coreDataController.save()
+                        
                         self.tableView.beginUpdates()
                         self.tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
                         print("Deleted row in messageTableViewController!")
                         self.tableView.endUpdates()
-                        
-                        self.coreDataController.save()
                     }
                  } else if recordID == self.conversation.ckRecord.recordID {
                     didFetchRecords = true
@@ -185,7 +186,7 @@ extension MessageTableViewController {
         }
         
         cloudController.fetchDatabaseChanges(zonesDeleted: zonesDeleted, saveChanges: saveChanges) {
-            self.delegate?.conversationDidChange(to: self.conversation, wasModified: didFetchRecords)
+            self.delegate?.conversationDidChange(to: self.conversation, wasModified: didFetchRecords, saveToCloud: false)
             completion(didFetchRecords)
         }
     }
@@ -221,11 +222,6 @@ extension MessageTableViewController: AddMessageTableViewControllerDelegate {
         // Save to Core Data
         coreDataController.save()
         
-        // Save to the Cloud
-        cloudController.save([message], recordChanged: { (updatedRecord) in
-            message.update(withRecord: updatedRecord)
-        })
-        
         print("After adding a message, the conversation had \(conversation.messages.count) messages before saving.")
         
         // Modify table view
@@ -233,7 +229,12 @@ extension MessageTableViewController: AddMessageTableViewControllerDelegate {
         tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
         tableView.endUpdates()
         
+        // Save to the Cloud
+        cloudController.save([message], recordChanged: { (updatedRecord) in
+            message.update(withRecord: updatedRecord)
+        })
+        
         // Notify delegate
-        delegate?.conversationDidChange(to: conversation, wasModified: true)
+        delegate?.conversationDidChange(to: conversation, wasModified: true, saveToCloud: true)
     }
 }
