@@ -171,9 +171,9 @@ extension ConversationTableViewController {
                     self.coreDataController.delete(deletedConversation)
                     
                     // TODO: Make a messages property of deletedConversation that is of the type [CoreDataMessage]/[Message] instead of NSOrderedSet
-                    guard let messages = deletedConversation.messages?.array as? [CoreDataMessage] else { return }
+                    guard let deletedMessages = deletedConversation.messages?.array as? [CoreDataMessage] else { return }
                     
-                    for message in deletedConversation.messages {
+                    for message in deletedMessages {
                         self.coreDataController.delete(message)
                     }
                     
@@ -181,17 +181,15 @@ extension ConversationTableViewController {
                 } else {
                     var affectedIndexes: [Int] = []
                     
-                    for (conversationIndex, conversation) in self.conversations.enumerated() {
-                        if let index = conversation.messages.index(where: { $0.ckRecord.recordID == recordID }) {
+                    for conversation in self.fetchedResultsController.fetchedObjects ?? [] {
+                        guard let messages = conversation.messages?.array as? [CoreDataMessage] else { return }
+                        if let deletedMessage = messages.first(where: { $0.ckRecord.recordID == recordID }) {
                             didFetchRecords = true
                             
                             print("Message deleted by ConversationTableViewController (from Cloud)")
                             
-                            let deletedMessage = conversation.messages[index]
                             self.coreDataController.delete(deletedMessage)
                             conversation.coreDataConversation.removeFromMessages(deletedMessage.coreDataMessage)
-                            
-                            affectedIndexes.append(conversationIndex)
                         }
                     }
                     
@@ -253,7 +251,7 @@ extension ConversationTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete, conversations.count > 0 {
+        if editingStyle == .delete, fetchedResultsController.fetchedObjects?.count ?? 0 > 0 {
             let deletedConversation = fetchedResultsController.object(at: indexPath)
             
             // Delete from core data
@@ -267,7 +265,7 @@ extension ConversationTableViewController {
             }
         
             // Delete from cloud
-            cloudController.delete([deletedConversation as! CloudUploadable]) {
+            cloudController.delete([deletedConversation]) {
                 print("Deleted Conversation!")
             }
         
@@ -352,7 +350,7 @@ extension ConversationTableViewController: MessageTableViewControllerDelegate {
         print("Conversation changed by MessageTableViewController")
         
         if wasModified {
-            conversation.coreDataConversation.dateLastModified = NSDate()
+            conversation.dateLastModified = NSDate()
         }
         
         if saveToCloud {

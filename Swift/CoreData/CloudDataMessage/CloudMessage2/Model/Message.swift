@@ -6,7 +6,7 @@
 //  Copyright © 2018 Beaglepig. All rights reserved.
 //
 
-
+/*
 import Foundation
 import CloudKit
 import CoreData
@@ -117,3 +117,4 @@ class Message: CloudUploadable, CoreDataUploadable {
         self.ckRecord = record
     }
 }
+ */
