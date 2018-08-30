@@ -12,7 +12,7 @@ import CoreData
 import CloudKit
 
 @objc(CoreDataConversation)
-public class CoreDataConversation: NSManagedObject {
+public class CoreDataConversation: NSManagedObject, CloudUploadable {
     var ckRecord: CKRecord = CKRecord(recordType: "Conversation")
     
     init(withTitle title: String, messages: [Message] = [Message](), managedContext: NSManagedObjectContext, zoneID: CKRecordZoneID) {

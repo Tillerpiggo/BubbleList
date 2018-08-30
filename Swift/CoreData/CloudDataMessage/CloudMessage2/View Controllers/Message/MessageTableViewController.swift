@@ -11,13 +11,13 @@ import CloudKit
 import CoreData
 
 protocol MessageTableViewControllerDelegate {
-    func conversationDidChange(to conversation: Conversation, wasModified: Bool, saveToCloud: Bool)
+    func conversationDidChange(to conversation: CoreDataConversation, wasModified: Bool, saveToCloud: Bool)
 }
 
 class MessageTableViewController: UITableViewController {
     
     // MARK: - Properties
-    var conversation: Conversation!
+    var conversation: CoreDataConversation!
     var delegate: MessageTableViewControllerDelegate?
     
     var cloudController: CloudController!
@@ -90,7 +90,7 @@ extension MessageTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let numberOfRowsInSection = conversation.messages.count
+        let numberOfRowsInSection = conversation.messages?.count ?? 0
         
         return numberOfRowsInSection
     }
@@ -101,7 +101,10 @@ extension MessageTableViewController {
         print("Loading cell at row \(indexPath.row)")
         
         // Get model object
-        let message = conversation.messages[indexPath.row]
+        guard let message = conversation.messages?[indexPath.row] as? Message else {
+            cell.textLabel?.text = "Could not get message object"
+            return cell
+        }
         
         // Configure cell
         cell.textLabel?.text = message.text
@@ -131,8 +134,10 @@ extension MessageTableViewController {
                 
                 self.coreDataController.delete(self.conversation)
                 
+                guard let messages = self.conversation.messages?.array as? [CoreDataMessage] else { return }
+                
                 // TODO: Implement this later (when you add zones), for now it will just delete everything
-                for message in self.conversation.messages {
+                for message in messages {
                     self.coreDataController.delete(message)
                 }
                 self.coreDataController.save()
@@ -140,8 +145,10 @@ extension MessageTableViewController {
         }
         
         let saveChanges: ([CKRecord], [CKRecordID]) -> Void = { (recordsChanged, recordIDsDeleted) in
+            guard let messages = self.conversation.messages?.array as? [CoreDataMessage] else { return }
+            
             for record in recordsChanged {
-                if let index = self.conversation.messages.index(where: { $0.ckRecord.recordID == record.recordID }) {
+                if let index = messages.index(where: { $0.ckRecord.recordID == record.recordID }) {
                     didFetchRecords = true
                     
                     print("Fetched message: \(self.conversation.messages[index].text)")
@@ -164,7 +171,7 @@ extension MessageTableViewController {
                     
                     print("Message added by MessageTableViewController (from Cloud)")
                     
-                    self.conversation.coreDataConversation.addToMessages(Message(fromRecord: record, managedContext: self.coreDataController.managedContext).coreDataMessage)
+                    self.conversation.addToMessages(Message(fromRecord: record, managedContext: self.coreDataController.managedContext).coreDataMessage)
                     let newIndexPath = IndexPath(row: 0, section: 0)
                     
                     self.coreDataController.save()
@@ -181,7 +188,7 @@ extension MessageTableViewController {
             for recordID in recordIDsDeleted {
                 print("Message deleted by MessageTableViewController (from Cloud)")
                 
-                if let index = self.conversation.messages.index(where: { $0.ckRecord.recordID == recordID }) {
+                if let index = messages.index(where: { $0.ckRecord.recordID == recordID }) {
                     didFetchRecords = true
                     
                     let message = self.conversation.messages[index]
@@ -200,7 +207,7 @@ extension MessageTableViewController {
                     
                     self.coreDataController.delete(self.conversation)
                     
-                    for message in self.conversation.messages {
+                    for message in messages {
                         self.coreDataController.delete(message)
                     }
                     
@@ -245,7 +252,7 @@ extension MessageTableViewController: AddMessageTableViewControllerDelegate {
         print("Message added by MessageTableViewController (from user input)")
         
         // Modify model
-        conversation.coreDataConversation.addToMessages(message.coreDataMessage)
+        conversation.addToMessages(message.coreDataMessage)
         conversation.ckRecord["latestMessage"] = message.text as CKRecordValue
         
         // Notify delegate
@@ -253,8 +260,6 @@ extension MessageTableViewController: AddMessageTableViewControllerDelegate {
         
         // Save to Core Data
         coreDataController.save()
-        
-        print("After adding a message, the conversation had \(conversation.messages.count) messages before saving.")
         
         // Modify table view
         tableView.beginUpdates()

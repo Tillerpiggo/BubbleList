@@ -75,7 +75,7 @@ class ConversationTableViewController: UITableViewController {
             
             // Dependency injection of conversation
             let selectedConversation = fetchedResultsController.object(at: indexPathForSelectedRow)
-            destinationViewController.conversation = Conversation(fromCoreDataConversation: selectedConversation, zoneID: cloudController.zoneID)
+            destinationViewController.conversation = selectedConversation
             
             // Dependency injection of cloud controller
             destinationViewController.cloudController = cloudController
@@ -107,9 +107,7 @@ extension ConversationTableViewController {
                 for conversation in fetchedObjects {
                     self.coreDataController.delete(conversation)
                     
-                    guard let messages = conversation.messages?.array as? [CoreDataMessage] else {
-                        break
-                    }
+                    guard let messages = conversation.messages?.array as? [CoreDataMessage] else { break }
                     
                     for message in messages {
                         self.coreDataController.delete(message)
@@ -126,7 +124,7 @@ extension ConversationTableViewController {
                     
                     print("Modified conversation from ConversationTableViewController (from Cloud)")
                     
-                    self.conversations[index].update(withRecord: record)
+                    self.fetchedResultsController.fetchedObjects?[index].update(withRecord: record)
                     //let changedIndexPath = IndexPath(row: index, section: 0)
                     
                     
@@ -139,9 +137,7 @@ extension ConversationTableViewController {
                     
                     print("Added conversation from ConversationTableViewController (from Cloud)")
                     
-                    self.conversations.append(Conversation(fromRecord: record, managedContext: self.coreDataController.managedContext))
-                    //let newIndexPath = IndexPath(row: 0, section: 0)
-                    self.conversations.sort(by: { $0.dateLastModified > $1.dateLastModified })
+                    let _ = CoreDataConversation(fromRecord: record, managedContext: self.coreDataController.managedContext)
                     
                     self.coreDataController.save()
                     
@@ -150,30 +146,32 @@ extension ConversationTableViewController {
                     
                     print("Added message from ConversationTableViewController (from Cloud)")
                     
-                    guard let index = self.conversations.index(where: { record["owningConversation"] as? CKReference == CKReference(record: $0.ckRecord, action: .none) })
+                    guard let conversation = self.fetchedResultsController.fetchedObjects?.first(where: { record["owningConversation"] as? CKReference == CKReference(record: $0.ckRecord, action: .none) }),
+                        let messages = conversation.messages?.array as? [CoreDataMessage]
                         else { return }
                     
-                    if let messageIndex = self.conversations[index].messages.index(where: { $0.ckRecord.recordID == record.recordID }) {
-                        self.conversations[index].messages[messageIndex].update(withRecord: record)
+                    if let message = messages.first(where: { $0.ckRecord.recordID == record.recordID }) {
+                        message.update(withRecord: record)
                     } else {
-                        self.conversations[index].coreDataConversation.addToMessages(Message(fromRecord: record, managedContext: self.coreDataController.managedContext).coreDataMessage)
+                        conversation.addToMessages(Message(fromRecord: record, managedContext: self.coreDataController.managedContext).coreDataMessage)
                     }
                     
-                    self.conversations[index].coreDataConversation.dateLastModified = NSDate()
+                    conversation.dateLastModified = NSDate()
                     
                     self.coreDataController.save()
                 }
             }
             
             for recordID in recordIDsDeleted {
-                if let index = self.conversations.index(where: { $0.ckRecord.recordID == recordID }) {
+                if let deletedConversation = self.fetchedResultsController.fetchedObjects?.first(where: { $0.ckRecord.recordID == recordID }) {
                     didFetchRecords = true
                     
                     print("Conversation deleted by ConversationTableViewController (from Cloud)")
                     
-                    let deletedConversation = self.conversations.remove(at: index)
-                    
                     self.coreDataController.delete(deletedConversation)
+                    
+                    // TODO: Make a messages property of deletedConversation that is of the type [CoreDataMessage]/[Message] instead of NSOrderedSet
+                    guard let messages = deletedConversation.messages?.array as? [CoreDataMessage] else { return }
                     
                     for message in deletedConversation.messages {
                         self.coreDataController.delete(message)
@@ -331,7 +329,7 @@ extension ConversationTableViewController: NotificationDelegate {
 // MARK: - Add Conversation Delegate
 
 extension ConversationTableViewController: AddConversationTableViewControllerDelegate {
-    func addedConversation(_ conversation: Conversation) {
+    func addedConversation(_ conversation: CoreDataConversation) {
         print("Conversation added by ConversationTableViewController")
         
         // Save change to Core Data
@@ -350,7 +348,7 @@ extension ConversationTableViewController: AddConversationTableViewControllerDel
 // MARK: - Message Table View Delegate
 
 extension ConversationTableViewController: MessageTableViewControllerDelegate {
-    func conversationDidChange(to conversation: Conversation, wasModified: Bool, saveToCloud: Bool) {
+    func conversationDidChange(to conversation: CoreDataConversation, wasModified: Bool, saveToCloud: Bool) {
         print("Conversation changed by MessageTableViewController")
         
         if wasModified {
