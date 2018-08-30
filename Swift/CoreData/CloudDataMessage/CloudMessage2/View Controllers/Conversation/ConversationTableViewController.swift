@@ -121,21 +121,16 @@ extension ConversationTableViewController {
         
         let saveChanges: ([CKRecord], [CKRecordID]) -> Void = { (recordsChanged, recordIDsDeleted) in
             for record in recordsChanged {
-                if let index = self.conversations.index(where: { $0.ckRecord.recordID == record.recordID }) {
+                if let index = self.fetchedResultsController.fetchedObjects?.index(where: { $0.ckRecord.recordID == record.recordID }) {
                     didFetchRecords = true
                     
                     print("Modified conversation from ConversationTableViewController (from Cloud)")
                     
-                    let oldDateLastModified = self.conversations[index].dateLastModified
-                    print("Old date last modified: \(oldDateLastModified)")
-                    
                     self.conversations[index].update(withRecord: record)
                     //let changedIndexPath = IndexPath(row: index, section: 0)
                     
-                    let newDateLastModified = self.conversations[index].dateLastModified
-                    print("New date last modified: \(newDateLastModified)")
                     
-                    self.conversations.sort(by: { $0.dateLastModified > $1.dateLastModified })
+                    //self.conversations.sort(by: { $0.dateLastModified > $1.dateLastModified })
                     
                     self.coreDataController.save()
                     
@@ -346,10 +341,6 @@ extension ConversationTableViewController: AddConversationTableViewControllerDel
         cloudController.save([conversation], recordChanged: { (updatedRecord) in
             conversation.update(withRecord: updatedRecord)
         })
-        
-        //self.tableView.beginUpdates()
-        //tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
-        //self.tableView.endUpdates()
     }
 }
 
@@ -370,15 +361,6 @@ extension ConversationTableViewController: MessageTableViewControllerDelegate {
             cloudController.save([conversation], recordChanged: { (updatedRecord) in
                 conversation.update(withRecord: updatedRecord)
             })
-        }
-        
-        conversations.sort(by: { $0.dateLastModified > $1.dateLastModified })
-        
-        if let selectedIndexPath = selectedIndexPath, selectedIndexPath.row < conversations.count {
-            conversations[selectedIndexPath.row] = conversation
-            //DispatchQueue.main.async {
-                //self.tableView.reloadRows(at: [selectedIndexPath], with: .automatic)
-            //}
         }
         
         // Save change to Core Data
