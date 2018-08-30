@@ -102,6 +102,10 @@ extension ConversationTableViewController {
                 // TODO: Implement this later (when you add zones), for now it will just delete everything
                 for conversation in self.conversations {
                     self.coreDataController.delete(conversation)
+                    
+                    for message in conversation.messages {
+                        self.coreDataController.delete(message)
+                    }
                 }
                 self.coreDataController.save()
                 
@@ -298,6 +302,9 @@ extension ConversationTableViewController {
         if editingStyle == .delete, conversations.count > 0 {
                 let deletedConversation = conversations.remove(at: indexPath.row)
             
+                // Delete from core data
+                coreDataController.delete(deletedConversation)
+            
                 // Delete all cloud messages
                 for message in deletedConversation.messages {
                     coreDataController.delete(message)
@@ -307,9 +314,6 @@ extension ConversationTableViewController {
                 cloudController.delete([deletedConversation]) {
                     print("Deleted Conversation!")
                 }
-            
-                // Delete from core data
-                coreDataController.delete(deletedConversation)
             
                 coreDataController.save()
             

@@ -105,6 +105,8 @@ extension MessageTableViewController {
             if zoneIDs.count > 0 {
                 didFetchRecords = true
                 
+                self.coreDataController.delete(self.conversation)
+                
                 // TODO: Implement this later (when you add zones), for now it will just delete everything
                 for message in self.conversation.messages {
                     self.coreDataController.delete(message)
@@ -173,12 +175,15 @@ extension MessageTableViewController {
                  } else if recordID == self.conversation.ckRecord.recordID {
                     didFetchRecords = true
                     
+                    self.coreDataController.delete(self.conversation)
+                    
                     for message in self.conversation.messages {
                         self.coreDataController.delete(message)
                     }
                     
                     DispatchQueue.main.async {
                         self.coreDataController.save()
+                        self.navigationController?.popViewController(animated: true)
                         self.dismiss(animated: true, completion: nil)
                     }
                 }
