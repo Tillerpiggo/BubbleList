@@ -101,10 +101,12 @@ extension MessageTableViewController {
         print("Loading cell at row \(indexPath.row)")
         
         // Get model object
-        guard let message = conversation.messages?[indexPath.row] as? CoreDataMessage else {
+        guard let messages = conversation.messages?.array as? [CoreDataMessage] else {
             cell.textLabel?.text = "Could not get message object"
             return cell
         }
+        
+        let message = messages[indexPath.row]
         
         // Configure cell
         cell.textLabel?.text = message.text
@@ -151,11 +153,9 @@ extension MessageTableViewController {
                 if let index = messages.index(where: { $0.ckRecord.recordID == record.recordID }) {
                     didFetchRecords = true
                     
-                    print("Fetched message: \(self.conversation.messages[index].text)")
-                    
                     print("Message edited by MessageTableViewController (from Cloud)")
                     
-                    self.conversation.messages[index].update(withRecord: record)
+                    messages[index].update(withRecord: record)
                     
                     let changedIndexPath = IndexPath(row: index, section: 0)
                     
@@ -171,7 +171,7 @@ extension MessageTableViewController {
                     
                     print("Message added by MessageTableViewController (from Cloud)")
                     
-                    self.conversation.addToMessages(Message(fromRecord: record, managedContext: self.coreDataController.managedContext).coreDataMessage)
+                    self.conversation.addToMessages(CoreDataMessage(fromRecord: record, managedContext: self.coreDataController.managedContext))
                     let newIndexPath = IndexPath(row: 0, section: 0)
                     
                     self.coreDataController.save()
@@ -191,8 +191,8 @@ extension MessageTableViewController {
                 if let index = messages.index(where: { $0.ckRecord.recordID == recordID }) {
                     didFetchRecords = true
                     
-                    let message = self.conversation.messages[index]
-                    self.conversation.coreDataConversation.removeFromMessages(message.coreDataMessage)
+                    let message = messages[index]
+                    self.conversation.removeFromMessages(message)
                     
                     self.coreDataController.save()
                     
@@ -252,8 +252,8 @@ extension MessageTableViewController: AddMessageTableViewControllerDelegate {
         print("Message added by MessageTableViewController (from user input)")
         
         // Modify model
-        conversation.addToMessages(message.coreDataMessage)
-        conversation.ckRecord["latestMessage"] = message.text as CKRecordValue
+        conversation.addToMessages(message)
+        conversation.ckRecord["latestMessage"] = message.text as CKRecordValue?
         
         // Notify delegate
         delegate?.conversationDidChange(to: conversation, wasModified: true, saveToCloud: true)

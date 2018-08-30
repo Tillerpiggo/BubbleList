@@ -179,8 +179,6 @@ extension ConversationTableViewController {
                     
                     self.coreDataController.save()
                 } else {
-                    var affectedIndexes: [Int] = []
-                    
                     for conversation in self.fetchedResultsController.fetchedObjects ?? [] {
                         guard let messages = conversation.messages?.array as? [CoreDataMessage] else { return }
                         if let deletedMessage = messages.first(where: { $0.ckRecord.recordID == recordID }) {

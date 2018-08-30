@@ -15,6 +15,15 @@ import CloudKit
 public class CoreDataMessage: NSManagedObject, CloudUploadable {
     var ckRecord: CKRecord = CKRecord(recordType: "Message")
     
+    var formattedTimestamp: String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .medium
+        dateFormatter.timeStyle = .short
+        
+        let formattedTimestamp = dateFormatter.string(from: timestamp! as Date)
+        return formattedTimestamp
+    }
+    
     init(withText text: String, timestamp: Date, managedContext: NSManagedObjectContext, owningConversation: CKReference, zoneID: CKRecordZoneID) {
         let messageDescription = NSEntityDescription.entity(forEntityName: "CoreDataMessage", in: managedContext)
         super.init(entity: messageDescription!, insertInto: managedContext)
