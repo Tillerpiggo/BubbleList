@@ -15,7 +15,7 @@ import CloudKit
 public class CoreDataConversation: NSManagedObject, CloudUploadable {
     var ckRecord: CKRecord = CKRecord(recordType: "Conversation")
     
-    init(withTitle title: String, messages: [Message] = [Message](), managedContext: NSManagedObjectContext, zoneID: CKRecordZoneID) {
+    init(withTitle title: String, messages: [CoreDataMessage] = [CoreDataMessage](), managedContext: NSManagedObjectContext, zoneID: CKRecordZoneID) {
         let conversationDescription = NSEntityDescription.entity(forEntityName: "CoreDataConversation", in: managedContext)
         super.init(entity: conversationDescription!, insertInto: managedContext)
         
@@ -26,7 +26,7 @@ public class CoreDataConversation: NSManagedObject, CloudUploadable {
         self.encodedSystemFields = ckRecord.encoded()
         
         for message in messages {
-            self.addToMessages(message.coreDataMessage)
+            self.addToMessages(message)
         }
         
         // Create CKRecord

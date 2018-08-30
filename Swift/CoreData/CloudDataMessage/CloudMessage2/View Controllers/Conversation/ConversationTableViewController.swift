@@ -153,7 +153,7 @@ extension ConversationTableViewController {
                     if let message = messages.first(where: { $0.ckRecord.recordID == record.recordID }) {
                         message.update(withRecord: record)
                     } else {
-                        conversation.addToMessages(Message(fromRecord: record, managedContext: self.coreDataController.managedContext).coreDataMessage)
+                        conversation.addToMessages(CoreDataMessage(fromRecord: record, managedContext: self.coreDataController.managedContext))
                     }
                     
                     conversation.dateLastModified = NSDate()
@@ -189,7 +189,7 @@ extension ConversationTableViewController {
                             print("Message deleted by ConversationTableViewController (from Cloud)")
                             
                             self.coreDataController.delete(deletedMessage)
-                            conversation.coreDataConversation.removeFromMessages(deletedMessage.coreDataMessage)
+                            conversation.removeFromMessages(deletedMessage)
                         }
                     }
                     

@@ -101,7 +101,7 @@ extension MessageTableViewController {
         print("Loading cell at row \(indexPath.row)")
         
         // Get model object
-        guard let message = conversation.messages?[indexPath.row] as? Message else {
+        guard let message = conversation.messages?[indexPath.row] as? CoreDataMessage else {
             cell.textLabel?.text = "Could not get message object"
             return cell
         }
@@ -248,7 +248,7 @@ extension MessageTableViewController: NotificationDelegate {
 // MARK: - Add Message Delegate
 
 extension MessageTableViewController: AddMessageTableViewControllerDelegate {
-    func addedMessage(_ message: Message) {
+    func addedMessage(_ message: CoreDataMessage) {
         print("Message added by MessageTableViewController (from user input)")
         
         // Modify model

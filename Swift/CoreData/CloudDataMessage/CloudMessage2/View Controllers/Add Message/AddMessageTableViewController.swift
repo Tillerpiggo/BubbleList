@@ -10,7 +10,7 @@ import UIKit
 import CloudKit
 
 protocol AddMessageTableViewControllerDelegate {
-    func addedMessage(_ message: Message)
+    func addedMessage(_ message: CoreDataMessage)
 }
 
 class AddMessageTableViewController: UITableViewController {
@@ -62,7 +62,7 @@ class AddMessageTableViewController: UITableViewController {
     // HELPER METHODS:
     
     private func save() {
-        let newMessage = Message(withText: textField.text ?? "", timestamp: Date(), managedContext: coreDataController.managedContext, owningConversation: owningConversation, zoneID: cloudController.zoneID)
+        let newMessage = CoreDataMessage(withText: textField.text ?? "", timestamp: Date(), managedContext: coreDataController.managedContext, owningConversation: owningConversation, zoneID: cloudController.zoneID)
         delegate?.addedMessage(newMessage)
     }
     
