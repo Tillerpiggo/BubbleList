@@ -25,7 +25,7 @@ class MessageTableViewController: UITableViewController {
     
     lazy var fetchedResultsController: NSFetchedResultsController<CoreDataMessage> = {
         let fetchRequest: NSFetchRequest<CoreDataMessage> = CoreDataMessage.fetchRequest()
-        let sortByDateLastModified = NSSortDescriptor(key: #keyPath(CoreDataConversation.dateLastModified), ascending: false)
+        let sortByDateLastModified = NSSortDescriptor(key: #keyPath(CoreDataMessage.timestamp), ascending: false)
         fetchRequest.sortDescriptors = [sortByDateLastModified]
         fetchRequest.fetchBatchSize = 20
         
@@ -159,15 +159,7 @@ extension MessageTableViewController {
                     
                     messages[index].update(withRecord: record)
                     
-                    let changedIndexPath = IndexPath(row: index, section: 0)
-                    
                     self.coreDataController.save()
-                    
-                    DispatchQueue.main.async {
-                        self.tableView.beginUpdates()
-                        self.tableView.reloadRows(at: [changedIndexPath], with: .automatic)
-                        self.tableView.beginUpdates()
-                    }
                 } else if record.recordType == "Message" && record["owningConversation"] as? CKReference == CKReference(record: self.conversation.ckRecord, action: .none) {
                     didFetchRecords = true
                     
@@ -177,13 +169,6 @@ extension MessageTableViewController {
                     let newIndexPath = IndexPath(row: 0, section: 0)
                     
                     self.coreDataController.save()
-                    
-                    DispatchQueue.main.async {
-                        self.tableView.beginUpdates()
-                        self.tableView.insertRows(at: [newIndexPath], with: .automatic)
-                        print("Inserted row in messageTableViewController!")
-                        self.tableView.endUpdates()
-                    }
                 }
             }
             
@@ -197,13 +182,6 @@ extension MessageTableViewController {
                     self.conversation.removeFromMessages(message)
                     
                     self.coreDataController.save()
-                    
-                    DispatchQueue.main.async {
-                        self.tableView.beginUpdates()
-                        self.tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
-                        print("Deleted row in messageTableViewController!")
-                        self.tableView.endUpdates()
-                    }
                  } else if recordID == self.conversation.ckRecord.recordID {
                     didFetchRecords = true
                     
@@ -262,11 +240,6 @@ extension MessageTableViewController: AddMessageTableViewControllerDelegate {
         
         // Save to Core Data
         coreDataController.save()
-        
-        // Modify table view
-        tableView.beginUpdates()
-        tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
-        tableView.endUpdates()
         
         // Save to the Cloud
         cloudController.save([message], recordChanged: { (updatedRecord) in
