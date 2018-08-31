@@ -13,7 +13,7 @@ import CloudKit
 import CoreData
 
 protocol MessageTableViewControllerDelegate {
-    func conversationDidChange(to conversation: CoreDataConversation, wasModified: Bool, saveToCloud: Bool)
+    func conversationDidChange(to conversation: CoreDataConversation, saveToCloud: Bool)
 }
 
 class MessageTableViewController: UITableViewController {
@@ -62,13 +62,7 @@ class MessageTableViewController: UITableViewController {
         // Core Data will already fetch messages until we optimize it not to
         // TODO: Optimize core data by only fetching and editing the title/dateModified of the conversation, loading/fetching messages later
         
-        updateWithCloud()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        registerAsNotificationDelegate()
+        // updateWithCloud()
     }
     
     // MARK: - Navigation
@@ -204,24 +198,11 @@ extension MessageTableViewController {
         }
         
         cloudController.fetchDatabaseChanges(zonesDeleted: zonesDeleted, saveChanges: saveChanges) {
-            self.delegate?.conversationDidChange(to: self.conversation, wasModified: didFetchRecords, saveToCloud: false)
-            completion(didFetchRecords)
-        }
-    }
-    
-    func registerAsNotificationDelegate() {
-        let appDelegate = UIApplication.shared.delegate as? AppDelegate
-        appDelegate?.notificationDelegate = self
-        
-        print("Message Table View Controller registered as the notification delegate")
-    }
-}
-
-// MARK: - Notification Delegate
-
-extension MessageTableViewController: NotificationDelegate {
-    func fetchChanges(completion: @escaping (Bool) -> Void) {
-        self.updateWithCloud { (didFetchRecords) in
+            if didFetchRecords {
+                self.conversation.dateLastModified = NSDate()
+            }
+            
+            self.delegate?.conversationDidChange(to: self.conversation, saveToCloud: false)
             completion(didFetchRecords)
         }
     }
@@ -236,9 +217,10 @@ extension MessageTableViewController: AddMessageTableViewControllerDelegate {
         // Modify model
         conversation.addToMessages(message)
         conversation.ckRecord["latestMessage"] = message.text as CKRecordValue?
+        conversation.dateLastModified = NSDate()
         
         // Notify delegate
-        delegate?.conversationDidChange(to: conversation, wasModified: true, saveToCloud: true)
+        delegate?.conversationDidChange(to: conversation, saveToCloud: true)
         
         // Save to Core Data
         coreDataController.save()

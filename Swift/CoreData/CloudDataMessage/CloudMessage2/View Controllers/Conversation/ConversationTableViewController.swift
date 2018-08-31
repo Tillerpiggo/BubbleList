@@ -10,6 +10,10 @@ import UIKit
 import CoreData
 import CloudKit
 
+protocol ConversationTableViewControllerDelegate {
+    func conversationDidChange(to conversation: CoreDataConversation)
+}
+
 class ConversationTableViewController: UITableViewController {
     
     // MARK: - Properties
@@ -50,14 +54,9 @@ class ConversationTableViewController: UITableViewController {
         super.viewDidLoad()
         
         updateWithCloud()
-        
-        tableView.rowHeight = 60
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
         registerAsNotificationDelegate()
+        
+        tableView.rowHeight = 80
     }
     
     // MARK: - Navigation
@@ -343,12 +342,7 @@ extension ConversationTableViewController: AddConversationTableViewControllerDel
 // MARK: - Message Table View Delegate
 
 extension ConversationTableViewController: MessageTableViewControllerDelegate {
-    func conversationDidChange(to conversation: CoreDataConversation, wasModified: Bool, saveToCloud: Bool) {
-        print("Conversation changed by MessageTableViewController")
-        
-        if wasModified {
-            conversation.dateLastModified = NSDate()
-        }
+    func conversationDidChange(to conversation: CoreDataConversation, saveToCloud: Bool) {
         
         if saveToCloud {
             cloudController.save([conversation], recordChanged: { (updatedRecord) in
