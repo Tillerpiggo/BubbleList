@@ -357,6 +357,6 @@ extension ConversationTableViewController: MessageTableViewControllerDelegate {
         }
         
         // Save change to Core Data
-        coreDataController.save()
+        DispatchQueue.main.async { self.coreDataController.save() }
     }
 }

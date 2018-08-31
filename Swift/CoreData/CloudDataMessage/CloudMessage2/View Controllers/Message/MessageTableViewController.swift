@@ -6,6 +6,8 @@
 //  Copyright © 2018 Beaglepig. All rights reserved.
 //
 
+// Just test stuff today. Then work on the shared database.
+
 import UIKit
 import CloudKit
 import CoreData
@@ -144,7 +146,7 @@ extension MessageTableViewController {
                 for message in messages {
                     self.coreDataController.delete(message)
                 }
-                self.coreDataController.save()
+                DispatchQueue.main.async { self.coreDataController.save() }
             }
         }
         
@@ -159,16 +161,15 @@ extension MessageTableViewController {
                     
                     messages[index].update(withRecord: record)
                     
-                    self.coreDataController.save()
+                    DispatchQueue.main.async { self.coreDataController.save() }
                 } else if record.recordType == "Message" && record["owningConversation"] as? CKReference == CKReference(record: self.conversation.ckRecord, action: .none) {
                     didFetchRecords = true
                     
                     print("Message added by MessageTableViewController (from Cloud)")
                     
                     self.conversation.addToMessages(CoreDataMessage(fromRecord: record, managedContext: self.coreDataController.managedContext))
-                    let newIndexPath = IndexPath(row: 0, section: 0)
                     
-                    self.coreDataController.save()
+                    DispatchQueue.main.async { self.coreDataController.save() }
                 }
             }
             
@@ -181,19 +182,20 @@ extension MessageTableViewController {
                     let message = messages[index]
                     self.conversation.removeFromMessages(message)
                     
-                    self.coreDataController.save()
+                    DispatchQueue.main.async { self.coreDataController.save() }
                  } else if recordID == self.conversation.ckRecord.recordID {
                     didFetchRecords = true
                     
-                    self.coreDataController.delete(self.conversation)
-                    
                     for message in messages {
+                        self.conversation.removeFromMessages(message)
                         self.coreDataController.delete(message)
                     }
                     
-                    self.coreDataController.save()
+                    self.coreDataController.delete(self.conversation)
                     
                     DispatchQueue.main.async {
+                        self.coreDataController.save()
+                        
                         self.navigationController?.popViewController(animated: true)
                         self.dismiss(animated: true, completion: nil)
                     }
@@ -262,7 +264,7 @@ extension ConversationTableViewController: NSFetchedResultsControllerDelegate {
         case .delete:
             tableView.deleteRows(at: [indexPath!], with: .automatic)
         case .update:
-            tableView.reloadRows(at: [indexPath!], with: .automatic)
+            tableView.reloadRows(at: [indexPath!], with: .none)
         case .move:
             tableView.deleteRows(at: [indexPath!], with: .automatic)
             tableView.insertRows(at: [newIndexPath!], with: .automatic)

@@ -13,7 +13,7 @@ import CloudKit
 
 
 public class CoreDataConversation: NSManagedObject, CloudUploadable {
-    var ckRecord: CKRecord = CKRecord(recordType: "Conversation")
+    var ckRecord: CKRecord = CKRecord(recordType: "Conversation") // This is only so NSManagedObject stops complaining. It shouldn't be used.
     
     var latestMessage: String {
         if let latestMessage = messages?.lastObject as? CoreDataMessage, let text = latestMessage.text {
@@ -33,8 +33,10 @@ public class CoreDataConversation: NSManagedObject, CloudUploadable {
         super.init(entity: conversationDescription!, insertInto: managedContext)
         
         // Configure CKRecord
-        ckRecord["title"] = title as CKRecordValue
-        ckRecord["latestMessage"] = latestMessage as CKRecordValue
+        let newCKRecord = CKRecord(recordType: "Conversation", zoneID: zoneID)
+        newCKRecord["title"] = title as CKRecordValue
+        newCKRecord["latestMessage"] = latestMessage as CKRecordValue
+        self.ckRecord = newCKRecord
         
         // Set properties
         self.title = title

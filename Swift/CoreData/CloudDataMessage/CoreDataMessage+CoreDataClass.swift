@@ -42,7 +42,6 @@ public class CoreDataMessage: NSManagedObject, CloudUploadable {
         let newCKRecord = CKRecord(recordType: "Message", zoneID: zoneID)
         newCKRecord["text"] = text as CKRecordValue
         newCKRecord["owningConversation"] = owningConversation as CKRecordValue
-        
         self.ckRecord = newCKRecord
     }
     
