@@ -11,7 +11,7 @@ import Foundation
 import CoreData
 import CloudKit
 
-//@objc(CoreDataConversation)
+
 public class CoreDataConversation: NSManagedObject, CloudUploadable {
     var ckRecord: CKRecord = CKRecord(recordType: "Conversation")
     
@@ -23,9 +23,8 @@ public class CoreDataConversation: NSManagedObject, CloudUploadable {
         }
     }
     
-    init(entity: NSEntityDescription, insertInto managedContext: NSManagedObjectContext) {
-        super.init(entity: entity, insertInto: managedContext)
-        
+    private override init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?) {
+        super.init(entity: entity, insertInto: context)
         generateRecord()
     }
     

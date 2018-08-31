@@ -68,7 +68,6 @@ class ConversationTableViewController: UITableViewController {
             destinationViewController.coreDataController = coreDataController
             destinationViewController.cloudController = cloudController
         } else if let destinationViewController = segue.destination as? MessageTableViewController, segue.identifier == "MessageTableView" {
-            
             // (didSelectRowAtIndexPath is actually called after prepare(for:)
             guard let indexPathForSelectedRow = tableView.indexPathForSelectedRow else { return }
             selectedIndexPath = indexPathForSelectedRow

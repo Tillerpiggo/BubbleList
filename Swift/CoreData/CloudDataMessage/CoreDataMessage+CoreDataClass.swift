@@ -11,7 +11,7 @@ import Foundation
 import CoreData
 import CloudKit
 
-//@objc(CoreDataMessage)
+
 public class CoreDataMessage: NSManagedObject, CloudUploadable {
     var ckRecord: CKRecord = CKRecord(recordType: "Message")
     
@@ -22,6 +22,11 @@ public class CoreDataMessage: NSManagedObject, CloudUploadable {
         
         let formattedTimestamp = dateFormatter.string(from: timestamp! as Date)
         return formattedTimestamp
+    }
+    
+    private override init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?) {
+        super.init(entity: entity, insertInto: context)
+        generateRecord()
     }
     
     init(withText text: String, timestamp: Date, managedContext: NSManagedObjectContext, owningConversation: CKReference, zoneID: CKRecordZoneID) {
@@ -60,6 +65,18 @@ public class CoreDataMessage: NSManagedObject, CloudUploadable {
         self.encodedSystemFields = record.encoded()
         
         self.ckRecord = record
+    }
+    
+    func generateRecord() {
+        if let encodedSystemFields = self.encodedSystemFields {
+            let unarchiver = NSKeyedUnarchiver(forReadingWith: encodedSystemFields)
+            unarchiver.requiresSecureCoding = true
+            let newCKRecord = CKRecord(coder: unarchiver)!
+            unarchiver.finishDecoding()
+            
+            newCKRecord["text"] = text as CKRecordValue?
+            // TODO: Figure out how to have owningConversation (or ignore)
+        }
     }
 }
 

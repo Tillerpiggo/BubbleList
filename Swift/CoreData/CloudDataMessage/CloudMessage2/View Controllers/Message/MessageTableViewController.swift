@@ -29,6 +29,9 @@ class MessageTableViewController: UITableViewController {
         fetchRequest.sortDescriptors = [sortByDateLastModified]
         fetchRequest.fetchBatchSize = 20
         
+        let isInConversationPredicate = NSPredicate(format: "owningConversation == %@", self.conversation)
+        fetchRequest.predicate = isInConversationPredicate
+        
         let fetchedResultsController = NSFetchedResultsController (
             fetchRequest: fetchRequest,
             managedObjectContext: coreDataController.managedContext,
@@ -86,27 +89,26 @@ extension MessageTableViewController {
     // MARK: - Data Source
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        guard let sections = fetchedResultsController.sections else {
+            return 0
+        }
+        
+        return sections.count
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let numberOfRowsInSection = conversation.messages?.count ?? 0
+        guard let sectionInfo = fetchedResultsController.sections?[section] else {
+            return 0
+        }
         
-        return numberOfRowsInSection
+        return sectionInfo.numberOfObjects
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MessageCell", for: indexPath)
         
-        print("Loading cell at row \(indexPath.row)")
-        
         // Get model object
-        guard let messages = conversation.messages?.array as? [CoreDataMessage] else {
-            cell.textLabel?.text = "Could not get message object"
-            return cell
-        }
-        
-        let message = messages[indexPath.row]
+        let message = fetchedResultsController.object(at: indexPath)
         
         // Configure cell
         cell.textLabel?.text = message.text
@@ -136,7 +138,7 @@ extension MessageTableViewController {
                 
                 self.coreDataController.delete(self.conversation)
                 
-                guard let messages = self.conversation.messages?.array as? [CoreDataMessage] else { return }
+                guard let messages = self.fetchedResultsController.fetchedObjects else { return }
                 
                 // TODO: Implement this later (when you add zones), for now it will just delete everything
                 for message in messages {
@@ -147,7 +149,7 @@ extension MessageTableViewController {
         }
         
         let saveChanges: ([CKRecord], [CKRecordID]) -> Void = { (recordsChanged, recordIDsDeleted) in
-            guard let messages = self.conversation.messages?.array as? [CoreDataMessage] else { return }
+            guard let messages = self.fetchedResultsController.fetchedObjects else { return }
             
             for record in recordsChanged {
                 if let index = messages.index(where: { $0.ckRecord.recordID == record.recordID }) {
