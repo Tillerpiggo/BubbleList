@@ -52,6 +52,8 @@ class MessageTableViewController: UITableViewController {
         return fetchedResultsController
     }()
     
+    
+    
     // MARK: - Initializer
     override func viewDidLoad() {
         super.viewDidLoad()
