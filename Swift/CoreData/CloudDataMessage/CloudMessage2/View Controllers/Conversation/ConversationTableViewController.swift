@@ -11,15 +11,13 @@ import CoreData
 import CloudKit
 
 protocol ConversationTableViewControllerDelegate {
-    func conversationDidChange(to conversation: CoreDataConversation)
+    func conversationDeleted()
 }
 
 class ConversationTableViewController: UITableViewController {
     
     // MARK: - Properties
     
-    //var conversations: [Conversation] = [Conversation]()
-    var selectedIndexPath: IndexPath? // Necessary because we deselect the row right after it is selected (otherwise it looks ugly)
     
     var cloudController: CloudController!
     var coreDataController: CoreDataController!
@@ -69,7 +67,6 @@ class ConversationTableViewController: UITableViewController {
         } else if let destinationViewController = segue.destination as? MessageTableViewController, segue.identifier == "MessageTableView" {
             // (didSelectRowAtIndexPath is actually called after prepare(for:)
             guard let indexPathForSelectedRow = tableView.indexPathForSelectedRow else { return }
-            selectedIndexPath = indexPathForSelectedRow
             
             // Dependency injection of conversation
             let selectedConversation = fetchedResultsController.object(at: indexPathForSelectedRow)
@@ -116,6 +113,12 @@ extension ConversationTableViewController {
         }
         
         let saveChanges: ([CKRecord], [CKRecordID]) -> Void = { (recordsChanged, recordIDsDeleted) in
+            do {
+                try self.fetchedResultsController.performFetch()
+            } catch let error as NSError {
+                print("Error fetching conversations: \(error)")
+            }
+            
             for record in recordsChanged {
                 if let index = self.fetchedResultsController.fetchedObjects?.index(where: { $0.ckRecord.recordID == record.recordID }) {
                     didFetchRecords = true
@@ -161,6 +164,8 @@ extension ConversationTableViewController {
             }
             
             for recordID in recordIDsDeleted {
+                print("number of objects fetched: \(self.fetchedResultsController.fetchedObjects?.count ?? 0)")
+                
                 if let deletedConversation = self.fetchedResultsController.fetchedObjects?.first(where: { $0.ckRecord.recordID == recordID }) {
                     didFetchRecords = true
                     
@@ -275,14 +280,12 @@ extension ConversationTableViewController {
         tableView.beginUpdates()
         tableView.deselectRow(at: indexPath, animated: true)
         tableView.endUpdates()
-        
-        selectedIndexPath = indexPath
     }
 }
 
 // MARK: - NSFetchedResultsControllerDelegate
 
-extension MessageTableViewController: NSFetchedResultsControllerDelegate {
+extension ConversationTableViewController: NSFetchedResultsControllerDelegate {
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.beginUpdates()
     }
@@ -296,8 +299,7 @@ extension MessageTableViewController: NSFetchedResultsControllerDelegate {
         case .update:
             tableView.reloadRows(at: [indexPath!], with: .automatic)
         case .move:
-            tableView.deleteRows(at: [indexPath!], with: .automatic)
-            tableView.insertRows(at: [newIndexPath!], with: .automatic)
+            tableView.moveRow(at: indexPath!, to: newIndexPath!)
         }
     }
     

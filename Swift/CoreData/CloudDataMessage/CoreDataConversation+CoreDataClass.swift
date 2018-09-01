@@ -81,6 +81,10 @@ public class CoreDataConversation: NSManagedObject, CloudUploadable {
             
             newCKRecord["title"] = title as CKRecordValue?
             newCKRecord["latestMessage"] = latestMessage as CKRecordValue
+            
+            self.ckRecord = newCKRecord
+        } else {
+            print("ERROR: Unable to reconstruct CKRecord from metadata; encodedSystemFields not found")
         }
     }
 }

@@ -75,6 +75,10 @@ public class CoreDataMessage: NSManagedObject, CloudUploadable {
             
             newCKRecord["text"] = text as CKRecordValue?
             // TODO: Figure out how to have owningConversation (or ignore)
+            
+            self.ckRecord = newCKRecord
+        } else {
+            print("ERROR: Unable to reconstruct CKRecord from metadata; encodedSystemFields not found")
         }
     }
 }

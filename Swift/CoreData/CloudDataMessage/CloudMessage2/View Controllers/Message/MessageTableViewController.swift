@@ -234,7 +234,7 @@ extension MessageTableViewController: AddMessageTableViewControllerDelegate {
 
 // MARK: - NSFetchedResultsControllerDelegate
 
-extension ConversationTableViewController: NSFetchedResultsControllerDelegate {
+extension MessageTableViewController: NSFetchedResultsControllerDelegate {
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.beginUpdates()
     }
@@ -248,12 +248,18 @@ extension ConversationTableViewController: NSFetchedResultsControllerDelegate {
         case .update:
             tableView.reloadRows(at: [indexPath!], with: .none)
         case .move:
-            tableView.deleteRows(at: [indexPath!], with: .automatic)
-            tableView.insertRows(at: [newIndexPath!], with: .automatic)
+            tableView.moveRow(at: indexPath!, to: newIndexPath!)
         }
     }
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.endUpdates()
+    }
+}
+
+extension MessageTableViewController: ConversationTableViewControllerDelegate {
+    func conversationDeleted() {
+        self.navigationController?.popViewController(animated: true)
+        dismiss(animated: true, completion: nil)
     }
 }
