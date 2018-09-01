@@ -13,21 +13,21 @@ import CloudKit
 import CoreData
 
 protocol MessageTableViewControllerDelegate {
-    func conversationDidChange(to conversation: CoreDataConversation, saveToCloud: Bool)
+    func conversationDidChange(to conversation: Conversation, saveToCloud: Bool)
 }
 
 class MessageTableViewController: UITableViewController {
     
     // MARK: - Properties
-    var conversation: CoreDataConversation!
+    var conversation: Conversation!
     var delegate: MessageTableViewControllerDelegate?
     
     var cloudController: CloudController!
     var coreDataController: CoreDataController!
     
-    lazy var fetchedResultsController: NSFetchedResultsController<CoreDataMessage> = {
-        let fetchRequest: NSFetchRequest<CoreDataMessage> = CoreDataMessage.fetchRequest()
-        let sortByDateLastModified = NSSortDescriptor(key: #keyPath(CoreDataMessage.timestamp), ascending: false)
+    lazy var fetchedResultsController: NSFetchedResultsController<Message> = {
+        let fetchRequest: NSFetchRequest<Message> = Message.fetchRequest()
+        let sortByDateLastModified = NSSortDescriptor(key: #keyPath(Message.timestamp), ascending: false)
         fetchRequest.sortDescriptors = [sortByDateLastModified]
         fetchRequest.fetchBatchSize = 20
         
@@ -124,96 +124,10 @@ extension MessageTableViewController {
     }
 }
 
-// MARK: - Helper Methods
-
-extension MessageTableViewController {
-    func updateWithCloud(completion: @escaping (Bool) -> Void = { (didFetchRecords) in }) {
-        var didFetchRecords: Bool = false
-        
-        let zonesDeleted: ([CKRecordZoneID]) -> Void = { (zoneIDs) in
-            if zoneIDs.count > 0 {
-                didFetchRecords = true
-                
-                self.coreDataController.delete(self.conversation)
-                
-                guard let messages = self.fetchedResultsController.fetchedObjects else { return }
-                
-                // TODO: Implement this later (when you add zones), for now it will just delete everything
-                for message in messages {
-                    self.coreDataController.delete(message)
-                }
-                DispatchQueue.main.async { self.coreDataController.save() }
-            }
-        }
-        
-        let saveChanges: ([CKRecord], [CKRecordID]) -> Void = { (recordsChanged, recordIDsDeleted) in
-            guard let messages = self.fetchedResultsController.fetchedObjects else { return }
-            
-            for record in recordsChanged {
-                if let index = messages.index(where: { $0.ckRecord.recordID == record.recordID }) {
-                    didFetchRecords = true
-                    
-                    print("Message edited by MessageTableViewController (from Cloud)")
-                    
-                    messages[index].update(withRecord: record)
-                    
-                    DispatchQueue.main.async { self.coreDataController.save() }
-                } else if record.recordType == "Message" && record["owningConversation"] as? CKReference == CKReference(record: self.conversation.ckRecord, action: .none) {
-                    didFetchRecords = true
-                    
-                    print("Message added by MessageTableViewController (from Cloud)")
-                    
-                    self.conversation.addToMessages(CoreDataMessage(fromRecord: record, managedContext: self.coreDataController.managedContext))
-                    
-                    DispatchQueue.main.async { self.coreDataController.save() }
-                }
-            }
-            
-            for recordID in recordIDsDeleted {
-                print("Message deleted by MessageTableViewController (from Cloud)")
-                
-                if let index = messages.index(where: { $0.ckRecord.recordID == recordID }) {
-                    didFetchRecords = true
-                    
-                    let message = messages[index]
-                    self.conversation.removeFromMessages(message)
-                    
-                    DispatchQueue.main.async { self.coreDataController.save() }
-                 } else if recordID == self.conversation.ckRecord.recordID {
-                    didFetchRecords = true
-                    
-                    for message in messages {
-                        self.conversation.removeFromMessages(message)
-                        self.coreDataController.delete(message)
-                    }
-                    
-                    self.coreDataController.delete(self.conversation)
-                    
-                    DispatchQueue.main.async {
-                        self.coreDataController.save()
-                        
-                        self.navigationController?.popViewController(animated: true)
-                        self.dismiss(animated: true, completion: nil)
-                    }
-                }
-            }
-        }
-        
-        cloudController.fetchDatabaseChanges(zonesDeleted: zonesDeleted, saveChanges: saveChanges) {
-            if didFetchRecords {
-                self.conversation.dateLastModified = NSDate()
-            }
-            
-            self.delegate?.conversationDidChange(to: self.conversation, saveToCloud: false)
-            completion(didFetchRecords)
-        }
-    }
-}
-
 // MARK: - Add Message Delegate
 
 extension MessageTableViewController: AddMessageTableViewControllerDelegate {
-    func addedMessage(_ message: CoreDataMessage) {
+    func addedMessage(_ message: Message) {
         print("Message added by MessageTableViewController (from user input)")
         
         // Modify model

@@ -12,7 +12,7 @@ import CoreData
 import CloudKit
 
 
-public class CoreDataMessage: NSManagedObject, CloudUploadable {
+public class Message: NSManagedObject, CloudUploadable {
     var ckRecord: CKRecord = CKRecord(recordType: "Message")
     
     var formattedTimestamp: String {
@@ -83,7 +83,7 @@ public class CoreDataMessage: NSManagedObject, CloudUploadable {
     }
 }
 
-extension CoreDataMessage: CoreDataUploadable {
+extension Message: CoreDataUploadable {
     var coreData: NSManagedObject {
         return self
     }

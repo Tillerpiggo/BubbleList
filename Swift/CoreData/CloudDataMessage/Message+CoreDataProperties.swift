@@ -11,14 +11,14 @@ import Foundation
 import CoreData
 
 
-extension CoreDataMessage {
+extension Message {
 
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<CoreDataMessage> {
-        return NSFetchRequest<CoreDataMessage>(entityName: "CoreDataMessage")
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<Message> {
+        return NSFetchRequest<Message>(entityName: "Message")
     }
 
     @NSManaged public var text: String?
     @NSManaged public var timestamp: NSDate?
-    @NSManaged public var owningConversation: CoreDataConversation?
+    @NSManaged public var owningConversation: Conversation?
     @NSManaged public var encodedSystemFields: Data?
 }

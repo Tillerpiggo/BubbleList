@@ -12,11 +12,11 @@ import CoreData
 import CloudKit
 
 
-public class CoreDataConversation: NSManagedObject, CloudUploadable {
+public class Conversation: NSManagedObject, CloudUploadable {
     var ckRecord: CKRecord = CKRecord(recordType: "Conversation") // This is only so NSManagedObject stops complaining. It shouldn't be used.
     
     var latestMessage: String {
-        if let latestMessage = messages?.lastObject as? CoreDataMessage, let text = latestMessage.text {
+        if let latestMessage = messages?.lastObject as? Message, let text = latestMessage.text {
             return text
         } else {
             return ""
@@ -28,8 +28,8 @@ public class CoreDataConversation: NSManagedObject, CloudUploadable {
         generateRecord()
     }
     
-    init(withTitle title: String, messages: [CoreDataMessage] = [CoreDataMessage](), managedContext: NSManagedObjectContext, zoneID: CKRecordZoneID) {
-        let conversationDescription = NSEntityDescription.entity(forEntityName: "CoreDataConversation", in: managedContext)
+    init(withTitle title: String, messages: [Message] = [Message](), managedContext: NSManagedObjectContext, zoneID: CKRecordZoneID) {
+        let conversationDescription = NSEntityDescription.entity(forEntityName: "Conversation", in: managedContext)
         super.init(entity: conversationDescription!, insertInto: managedContext)
         
         // Configure CKRecord
@@ -50,7 +50,7 @@ public class CoreDataConversation: NSManagedObject, CloudUploadable {
     }
     
     init(fromRecord record: CKRecord, managedContext: NSManagedObjectContext) {
-        let conversationDescription = NSEntityDescription.entity(forEntityName: "CoreDataConversation", in: managedContext)
+        let conversationDescription = NSEntityDescription.entity(forEntityName: "Conversation", in: managedContext)
         super.init(entity: conversationDescription!, insertInto: managedContext)
         
         // Set properties
@@ -89,7 +89,7 @@ public class CoreDataConversation: NSManagedObject, CloudUploadable {
     }
 }
 
-extension CoreDataConversation: CoreDataUploadable {
+extension Conversation: CoreDataUploadable {
     var coreData: NSManagedObject {
         return self
     }

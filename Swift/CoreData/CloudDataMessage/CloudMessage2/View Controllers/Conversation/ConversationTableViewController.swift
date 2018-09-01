@@ -22,9 +22,9 @@ class ConversationTableViewController: UITableViewController {
     var cloudController: CloudController!
     var coreDataController: CoreDataController!
     
-    lazy var fetchedResultsController: NSFetchedResultsController<CoreDataConversation> = {
-        let fetchRequest: NSFetchRequest<CoreDataConversation> = CoreDataConversation.fetchRequest()
-        let sortByDateLastModified = NSSortDescriptor(key: #keyPath(CoreDataConversation.dateLastModified), ascending: false)
+    lazy var fetchedResultsController: NSFetchedResultsController<Conversation> = {
+        let fetchRequest: NSFetchRequest<Conversation> = Conversation.fetchRequest()
+        let sortByDateLastModified = NSSortDescriptor(key: #keyPath(Conversation.dateLastModified), ascending: false)
         fetchRequest.sortDescriptors = [sortByDateLastModified]
         fetchRequest.fetchBatchSize = 20
         
@@ -102,7 +102,7 @@ extension ConversationTableViewController {
                 for conversation in fetchedObjects {
                     self.coreDataController.delete(conversation)
                     
-                    guard let messages = conversation.messages?.array as? [CoreDataMessage] else { break }
+                    guard let messages = conversation.messages?.array as? [Message] else { break }
                     
                     for message in messages {
                         self.coreDataController.delete(message)
@@ -138,7 +138,7 @@ extension ConversationTableViewController {
                     
                     print("Added conversation from ConversationTableViewController (from Cloud)")
                     
-                    let _ = CoreDataConversation(fromRecord: record, managedContext: self.coreDataController.managedContext)
+                    let _ = Conversation(fromRecord: record, managedContext: self.coreDataController.managedContext)
                     
                     self.coreDataController.save()
                     
@@ -148,13 +148,13 @@ extension ConversationTableViewController {
                     print("Added message from ConversationTableViewController (from Cloud)")
                     
                     guard let conversation = self.fetchedResultsController.fetchedObjects?.first(where: { record["owningConversation"] as? CKReference == CKReference(record: $0.ckRecord, action: .none) }),
-                        let messages = conversation.messages?.array as? [CoreDataMessage]
+                        let messages = conversation.messages?.array as? [Message]
                         else { return }
                     
                     if let message = messages.first(where: { $0.ckRecord.recordID == record.recordID }) {
                         message.update(withRecord: record)
                     } else {
-                        conversation.addToMessages(CoreDataMessage(fromRecord: record, managedContext: self.coreDataController.managedContext))
+                        conversation.addToMessages(Message(fromRecord: record, managedContext: self.coreDataController.managedContext))
                     }
                     
                     conversation.dateLastModified = NSDate()
@@ -174,7 +174,7 @@ extension ConversationTableViewController {
                     self.coreDataController.delete(deletedConversation)
                     
                     // TODO: Make a messages property of deletedConversation that is of the type [CoreDataMessage]/[Message] instead of NSOrderedSet
-                    guard let deletedMessages = deletedConversation.messages?.array as? [CoreDataMessage] else { return }
+                    guard let deletedMessages = deletedConversation.messages?.array as? [Message] else { return }
                     
                     for message in deletedMessages {
                         self.coreDataController.delete(message)
@@ -183,7 +183,7 @@ extension ConversationTableViewController {
                     self.coreDataController.save()
                 } else {
                     for conversation in self.fetchedResultsController.fetchedObjects ?? [] {
-                        guard let messages = conversation.messages?.array as? [CoreDataMessage] else { return }
+                        guard let messages = conversation.messages?.array as? [Message] else { return }
                         if let deletedMessage = messages.first(where: { $0.ckRecord.recordID == recordID }) {
                             didFetchRecords = true
                             
@@ -258,7 +258,7 @@ extension ConversationTableViewController {
             // Delete from core data
             coreDataController.delete(deletedConversation)
             
-            if let deletedMessages = deletedConversation.messages?.array as? [CoreDataMessage] {
+            if let deletedMessages = deletedConversation.messages?.array as? [Message] {
                 // Delete all cloud messages
                 for message in deletedMessages {
                     coreDataController.delete(message)
@@ -325,7 +325,7 @@ extension ConversationTableViewController: NotificationDelegate {
 // MARK: - Add Conversation Delegate
 
 extension ConversationTableViewController: AddConversationTableViewControllerDelegate {
-    func addedConversation(_ conversation: CoreDataConversation) {
+    func addedConversation(_ conversation: Conversation) {
         print("Conversation added by ConversationTableViewController")
         
         // Save change to Core Data
@@ -344,7 +344,7 @@ extension ConversationTableViewController: AddConversationTableViewControllerDel
 // MARK: - Message Table View Delegate
 
 extension ConversationTableViewController: MessageTableViewControllerDelegate {
-    func conversationDidChange(to conversation: CoreDataConversation, saveToCloud: Bool) {
+    func conversationDidChange(to conversation: Conversation, saveToCloud: Bool) {
         
         if saveToCloud {
             cloudController.save([conversation], recordChanged: { (updatedRecord) in

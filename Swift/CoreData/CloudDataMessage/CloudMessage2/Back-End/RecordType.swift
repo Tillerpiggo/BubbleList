@@ -24,9 +24,9 @@ enum RecordType: String {
     var coreDataValue: String {
         switch self {
         case .conversation:
-            return "CoreDataConversation"
+            return "Conversation"
         case .message:
-            return "CoreDataMessage"
+            return "Message"
         }
     }
 }

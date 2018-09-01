@@ -9,7 +9,7 @@
 import UIKit
 
 protocol AddConversationTableViewControllerDelegate {
-    func addedConversation(_ conversation: CoreDataConversation)
+    func addedConversation(_ conversation: Conversation)
 }
 
 class AddConversationTableViewController: UITableViewController {
@@ -51,7 +51,7 @@ class AddConversationTableViewController: UITableViewController {
     // HELPER METHODS:
     
     private func save() {
-        let newConversation = CoreDataConversation(withTitle: titleTextField.text!, managedContext: coreDataController.managedContext, zoneID: cloudController.zoneID)
+        let newConversation = Conversation(withTitle: titleTextField.text!, managedContext: coreDataController.managedContext, zoneID: cloudController.zoneID)
         delegate?.addedConversation(newConversation)
     }
     

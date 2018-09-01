@@ -26,10 +26,10 @@ class CoreDataController {
         }
     }
     
-    func fetchConversations(completion: @escaping ([CoreDataConversation]) -> Void) {
-        let fetchRequest: NSFetchRequest<CoreDataConversation> = CoreDataConversation.fetchRequest()
+    func fetchConversations(completion: @escaping ([Conversation]) -> Void) {
+        let fetchRequest: NSFetchRequest<Conversation> = Conversation.fetchRequest()
         
-        let asyncFetchRequest = NSAsynchronousFetchRequest<CoreDataConversation>(fetchRequest: fetchRequest) { (result) in
+        let asyncFetchRequest = NSAsynchronousFetchRequest<Conversation>(fetchRequest: fetchRequest) { (result) in
             guard let conversations = result.finalResult else { return }
             completion(conversations)
         }
@@ -41,10 +41,10 @@ class CoreDataController {
         }
     }
     
-    func fetchMessages(completion: @escaping ([CoreDataMessage]) -> Void) {
-        let fetchRequest: NSFetchRequest<CoreDataMessage> = CoreDataMessage.fetchRequest()
+    func fetchMessages(completion: @escaping ([Message]) -> Void) {
+        let fetchRequest: NSFetchRequest<Message> = Message.fetchRequest()
         
-        let asyncFetchRequest = NSAsynchronousFetchRequest<CoreDataMessage>(fetchRequest: fetchRequest) { (result) in
+        let asyncFetchRequest = NSAsynchronousFetchRequest<Message>(fetchRequest: fetchRequest) { (result) in
             guard let messages = result.finalResult else { return }
             completion(messages)
         }

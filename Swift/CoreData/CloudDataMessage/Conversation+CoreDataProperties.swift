@@ -11,10 +11,10 @@ import Foundation
 import CoreData
 
 
-extension CoreDataConversation {
+extension Conversation {
 
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<CoreDataConversation> {
-        return NSFetchRequest<CoreDataConversation>(entityName: "CoreDataConversation")
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<Conversation> {
+        return NSFetchRequest<Conversation>(entityName: "Conversation")
     }
 
     @NSManaged public var creationDate: NSDate?
@@ -25,13 +25,13 @@ extension CoreDataConversation {
 }
 
 // MARK: Generated accessors for messages
-extension CoreDataConversation {
+extension Conversation {
 
     @objc(addMessagesObject:)
-    @NSManaged public func addToMessages(_ value: CoreDataMessage)
+    @NSManaged public func addToMessages(_ value: Message)
 
     @objc(removeMessagesObject:)
-    @NSManaged public func removeFromMessages(_ value: CoreDataMessage)
+    @NSManaged public func removeFromMessages(_ value: Message)
 
     @objc(addMessages:)
     @NSManaged public func addToMessages(_ values: NSSet)
