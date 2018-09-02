@@ -22,6 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let coreDataController = CoreDataController(coreDataStack: coreDataStack)
         return coreDataController
     }()
+    var cloudController = CloudController()
     
     var notificationDelegate: NotificationDelegate?
 
@@ -30,7 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let conversationTableViewController = navigationController.topViewController as? ConversationTableViewController {
             
             // Dependency inject the CoreData/CloudKit Objects
-            conversationTableViewController.cloudController = CloudController()
+            conversationTableViewController.cloudController = cloudController
             conversationTableViewController.coreDataController = coreDataController
         }
         
@@ -61,7 +62,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // MARK: - CloudKit Sharing
     func application(_ application: UIApplication, userDidAcceptCloudKitShareWith cloudKitShareMetadata: CKShareMetadata) {
-        
+        cloudController.share(withShareMetadata: cloudKitShareMetadata) {
+            // Send the user to the appropriate location (the new conversation)
+            
+        }
     }
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {

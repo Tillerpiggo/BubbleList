@@ -207,6 +207,13 @@ extension ConversationTableViewController {
         
         print("Conversation Table View Controller registered as the notification delegate")
     }
+    
+    func openConversation(withRecordID recordID: CKRecordID) {
+        if let conversation = fetchedResultsController.fetchedObjects?.first(where: { $0.ckRecord.recordID == recordID }),
+            let conversationIndexPath = fetchedResultsController.indexPath(forObject: conversation) {
+                tableView.selectRow(at: conversationIndexPath, animated: true, scrollPosition: .middle)
+        }
+    }
 }
 
 

@@ -482,7 +482,7 @@ class CloudController {
         }
     }
     
-    func share(withCloudKitShareMetadata shareMetadata: CKShareMetadata, completion: @escaping () -> Void) {
+    func share(withShareMetadata shareMetadata: CKShareMetadata, completion: @escaping () -> Void) {
         let acceptShareOperation: CKAcceptSharesOperation = CKAcceptSharesOperation(shareMetadatas: [shareMetadata])
         
         acceptShareOperation.qualityOfService = .userInteractive
