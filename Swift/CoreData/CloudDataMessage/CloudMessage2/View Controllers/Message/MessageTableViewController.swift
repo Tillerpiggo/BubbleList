@@ -12,15 +12,10 @@ import UIKit
 import CloudKit
 import CoreData
 
-protocol MessageTableViewControllerDelegate {
-    func conversationDidChange(to conversation: Conversation, saveToCloud: Bool)
-}
-
 class MessageTableViewController: UITableViewController {
     
     // MARK: - Properties
     var conversation: Conversation!
-    var delegate: MessageTableViewControllerDelegate?
     
     var cloudController: CloudController!
     var coreDataController: CoreDataController!
@@ -135,15 +130,16 @@ extension MessageTableViewController: AddMessageTableViewControllerDelegate {
         conversation.ckRecord["latestMessage"] = message.text as CKRecordValue?
         conversation.dateLastModified = NSDate()
         
-        // Notify delegate
-        delegate?.conversationDidChange(to: conversation, saveToCloud: true)
-        
         // Save to Core Data
         coreDataController.save()
         
         // Save to the Cloud
-        cloudController.save([message], recordChanged: { (updatedRecord) in
-            message.update(withRecord: updatedRecord)
+        cloudController.save([message, self.conversation], recordChanged: { (updatedRecord) in
+            if updatedRecord.recordType == "Message" {
+                message.update(withRecord: updatedRecord)
+            } else {
+                self.conversation.update(withRecord: updatedRecord)
+            }
         })
     }
 }

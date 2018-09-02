@@ -76,9 +76,6 @@ class ConversationTableViewController: UITableViewController {
             destinationViewController.cloudController = cloudController
             destinationViewController.coreDataController = coreDataController
             
-            // Set up delegate
-            destinationViewController.delegate = self
-            
             // Set the title
             destinationViewController.navigationItem.title = selectedConversation.title
         }
@@ -335,24 +332,5 @@ extension ConversationTableViewController: AddConversationTableViewControllerDel
         cloudController.save([conversation], recordChanged: { (updatedRecord) in
             conversation.update(withRecord: updatedRecord)
         })
-    }
-}
-
-
-
-
-// MARK: - Message Table View Delegate
-
-extension ConversationTableViewController: MessageTableViewControllerDelegate {
-    func conversationDidChange(to conversation: Conversation, saveToCloud: Bool) {
-        
-        if saveToCloud {
-            cloudController.save([conversation], recordChanged: { (updatedRecord) in
-                conversation.update(withRecord: updatedRecord)
-            })
-        }
-        
-        // Save change to Core Data
-        DispatchQueue.main.async { self.coreDataController.save() }
     }
 }
