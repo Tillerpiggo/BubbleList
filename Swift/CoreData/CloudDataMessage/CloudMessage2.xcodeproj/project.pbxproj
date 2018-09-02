@@ -12,8 +12,6 @@
 		2340E23621162F8E00F83681 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2340E23521162F8E00F83681 /* Assets.xcassets */; };
 		2340E23921162F8E00F83681 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2340E23721162F8E00F83681 /* LaunchScreen.storyboard */; };
 		2340E2432116316600F83681 /* ConversationTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2340E2422116316600F83681 /* ConversationTableViewController.swift */; };
-		2340E2462116336E00F83681 /* Conversation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2340E2452116336E00F83681 /* Conversation.swift */; };
-		2340E248211635AD00F83681 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2340E247211635AD00F83681 /* Message.swift */; };
 		2340E24B2116459400F83681 /* AddConversationTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2340E24A2116459400F83681 /* AddConversationTableViewController.swift */; };
 		2340E24D2116618C00F83681 /* MessageTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2340E24C2116618C00F83681 /* MessageTableViewController.swift */; };
 		2340E2512116639600F83681 /* AddMessageTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2340E2502116639600F83681 /* AddMessageTableViewController.swift */; };
@@ -42,8 +40,6 @@
 		2340E23821162F8E00F83681 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2340E23A21162F8E00F83681 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2340E2422116316600F83681 /* ConversationTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationTableViewController.swift; sourceTree = "<group>"; };
-		2340E2452116336E00F83681 /* Conversation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Conversation.swift; sourceTree = "<group>"; };
-		2340E247211635AD00F83681 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		2340E24A2116459400F83681 /* AddConversationTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddConversationTableViewController.swift; sourceTree = "<group>"; };
 		2340E24C2116618C00F83681 /* MessageTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageTableViewController.swift; sourceTree = "<group>"; };
 		2340E2502116639600F83681 /* AddMessageTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMessageTableViewController.swift; sourceTree = "<group>"; };
@@ -52,10 +48,10 @@
 		2340E2582118BB6700F83681 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		2340E25A2118C5A600F83681 /* CloudUploadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudUploadable.swift; sourceTree = "<group>"; };
 		2340E25D211A5E0900F83681 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
-		2382AD3B2123E9DF00E20250 /* Message+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Message+CoreDataClass.swift"; path = "../../../../Message+CoreDataClass.swift"; sourceTree = "<group>"; };
-		2382AD3C2123E9DF00E20250 /* Message+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Message+CoreDataProperties.swift"; path = "../../../../Message+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		2382AD3D2123E9DF00E20250 /* Conversation+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Conversation+CoreDataClass.swift"; path = "../../../../Conversation+CoreDataClass.swift"; sourceTree = "<group>"; };
-		2382AD3E2123E9DF00E20250 /* Conversation+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Conversation+CoreDataProperties.swift"; path = "../../../../Conversation+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		2382AD3B2123E9DF00E20250 /* Message+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Message+CoreDataClass.swift"; sourceTree = "<group>"; };
+		2382AD3C2123E9DF00E20250 /* Message+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Message+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		2382AD3D2123E9DF00E20250 /* Conversation+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Conversation+CoreDataClass.swift"; sourceTree = "<group>"; };
+		2382AD3E2123E9DF00E20250 /* Conversation+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Conversation+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		2382AD432124802100E20250 /* CoreDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataController.swift; sourceTree = "<group>"; };
 		2382AD45212480CC00E20250 /* RecordType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordType.swift; sourceTree = "<group>"; };
 		2382AD47212484C500E20250 /* CoreDataUploadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataUploadable.swift; sourceTree = "<group>"; };
@@ -124,8 +120,8 @@
 		2340E24121162FAA00F83681 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				2340E2452116336E00F83681 /* Conversation.swift */,
-				2340E247211635AD00F83681 /* Message.swift */,
+				23F40D8E213AFBCD003276C5 /* Message */,
+				23F40D91213AFBE5003276C5 /* Conversation */,
 				2382AD4B212B253500E20250 /* CKRecord+Helpers.swift */,
 			);
 			path = Model;
@@ -207,12 +203,26 @@
 		2382AD3A2123E8F600E20250 /* NSManagedObject Subclasses */ = {
 			isa = PBXGroup;
 			children = (
-				2382AD3B2123E9DF00E20250 /* Message+CoreDataClass.swift */,
+			);
+			path = "NSManagedObject Subclasses";
+			sourceTree = "<group>";
+		};
+		23F40D8E213AFBCD003276C5 /* Message */ = {
+			isa = PBXGroup;
+			children = (
 				2382AD3C2123E9DF00E20250 /* Message+CoreDataProperties.swift */,
+				2382AD3B2123E9DF00E20250 /* Message+CoreDataClass.swift */,
+			);
+			path = Message;
+			sourceTree = "<group>";
+		};
+		23F40D91213AFBE5003276C5 /* Conversation */ = {
+			isa = PBXGroup;
+			children = (
 				2382AD3D2123E9DF00E20250 /* Conversation+CoreDataClass.swift */,
 				2382AD3E2123E9DF00E20250 /* Conversation+CoreDataProperties.swift */,
 			);
-			path = "NSManagedObject Subclasses";
+			path = Conversation;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -299,10 +309,8 @@
 			files = (
 				2382AD4E212FA39600E20250 /* CloudKitErrorHandler.swift in Sources */,
 				2340E2512116639600F83681 /* AddMessageTableViewController.swift in Sources */,
-				2340E2462116336E00F83681 /* Conversation.swift in Sources */,
 				2382AD502130ABBC00E20250 /* CloudKitErrorHandlerApple.swift in Sources */,
 				2382AD412123E9DF00E20250 /* Conversation+CoreDataClass.swift in Sources */,
-				2340E248211635AD00F83681 /* Message.swift in Sources */,
 				2382AD422123E9DF00E20250 /* Conversation+CoreDataProperties.swift in Sources */,
 				2382AD3F2123E9DF00E20250 /* Message+CoreDataClass.swift in Sources */,
 				2340E25E211A5E0900F83681 /* CoreDataStack.swift in Sources */,
