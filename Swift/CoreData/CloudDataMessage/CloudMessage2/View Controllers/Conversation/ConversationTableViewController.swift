@@ -170,7 +170,7 @@ extension ConversationTableViewController {
                     
                     self.coreDataController.delete(deletedConversation)
                     
-                    // TODO: Make a messages property of deletedConversation that is of the type [CoreDataMessage]/[Message] instead of NSOrderedSet
+                    // TODO: Make a messages property of deletedConversation that is of the type [Message] instead of NSOrderedSet
                     guard let deletedMessages = deletedConversation.messages?.array as? [Message] else { return }
                     
                     for message in deletedMessages {

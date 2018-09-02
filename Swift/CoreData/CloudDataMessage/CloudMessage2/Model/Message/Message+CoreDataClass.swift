@@ -30,7 +30,7 @@ public class Message: NSManagedObject, CloudUploadable {
     }
     
     init(withText text: String, timestamp: Date, managedContext: NSManagedObjectContext, owningConversation: CKReference, zoneID: CKRecordZoneID) {
-        let messageDescription = NSEntityDescription.entity(forEntityName: "CoreDataMessage", in: managedContext)
+        let messageDescription = NSEntityDescription.entity(forEntityName: "Message", in: managedContext)
         super.init(entity: messageDescription!, insertInto: managedContext)
         
         // Set properties
@@ -46,7 +46,7 @@ public class Message: NSManagedObject, CloudUploadable {
     }
     
     init(fromRecord record: CKRecord, managedContext: NSManagedObjectContext) {
-        let messageDescription = NSEntityDescription.entity(forEntityName: "CoreDataMessage", in: managedContext)
+        let messageDescription = NSEntityDescription.entity(forEntityName: "Message", in: managedContext)
         super.init(entity: messageDescription!, insertInto: managedContext)
         
         // Set properties
