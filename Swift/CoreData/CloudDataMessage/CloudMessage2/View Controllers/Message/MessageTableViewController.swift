@@ -47,7 +47,27 @@ class MessageTableViewController: UITableViewController {
         return fetchedResultsController
     }()
     
+    // MARK: - IBActions
     
+    @IBAction func shareButtonTapped(_ sender: UIBarButtonItem) {
+        // Create a share for the conversation
+        let conversationShare = CKShare(rootRecord: conversation.ckRecord)
+        
+        conversationShare[CKShareTitleKey] = "Share the conversation: \(conversation.title ?? "[Untitled]")" as CKRecordValue?
+        conversationShare[CKShareTypeKey] = "Conversation" as CKRecordValue?
+        
+        // Create a UIShareController to give the user a UI for sharing
+        let sharingController = UICloudSharingController(preparationHandler: { (controller, handler: @escaping (CKShare?, CKContainer?, Error?) -> Void) in
+            self.cloudController.save([self.conversation.ckRecord, conversationShare], recordChanged: { (record) in }) { (error) in
+                handler(conversationShare, CKContainer.default(), error)
+            }
+        })
+        
+        sharingController.availablePermissions = [.allowReadWrite, .allowPrivate]
+        sharingController.delegate = self
+        
+        present(sharingController, animated: true, completion: nil)
+    }
     
     // MARK: - Initializer
     override func viewDidLoad() {
@@ -71,7 +91,7 @@ class MessageTableViewController: UITableViewController {
         destinationViewController.delegate = self
         destinationViewController.coreDataController = coreDataController
         destinationViewController.cloudController = cloudController
-        destinationViewController.owningConversation = CKReference(record: conversation.ckRecord, action: .none)
+        destinationViewController.owningConversation = CKReference(record: conversation.ckRecord, action: .deleteSelf)
     }
 }
 
@@ -158,7 +178,7 @@ extension MessageTableViewController: NSFetchedResultsControllerDelegate {
         case .delete:
             tableView.deleteRows(at: [indexPath!], with: .automatic)
         case .update:
-            tableView.reloadRows(at: [indexPath!], with: .none)
+            tableView.reloadRows(at: [indexPath!], with: .automatic)
         case .move:
             tableView.moveRow(at: indexPath!, to: newIndexPath!)
         }
@@ -169,9 +189,26 @@ extension MessageTableViewController: NSFetchedResultsControllerDelegate {
     }
 }
 
-extension MessageTableViewController: ConversationTableViewControllerDelegate {
-    func conversationDeleted() {
-        self.navigationController?.popViewController(animated: true)
-        dismiss(animated: true, completion: nil)
+// MARK: - UICloudSharingControllerDelegate
+
+extension MessageTableViewController: UICloudSharingControllerDelegate {
+    func cloudSharingController(_ csc: UICloudSharingController, failedToSaveShareWithError error: Error) {
+        // TODO: Show the user that the operation failed, handle the error
+        print(error)
+    }
+    
+    func itemThumbnailData(for csc: UICloudSharingController) -> Data? {
+        // Set the image
+        if let thumbnail = UIImage(named: "cloudThumbnail") {
+            return UIImagePNGRepresentation(thumbnail)
+        } else {
+            return nil
+        }
+    }
+    
+    func itemTitle(for csc: UICloudSharingController) -> String? {
+        // Set the title here
+        return conversation.title ?? "Untitled Conversation"
     }
 }
+

@@ -144,7 +144,7 @@ extension ConversationTableViewController {
                     
                     print("Added message from ConversationTableViewController (from Cloud)")
                     
-                    guard let conversation = self.fetchedResultsController.fetchedObjects?.first(where: { record["owningConversation"] as? CKReference == CKReference(record: $0.ckRecord, action: .none) }),
+                    guard let conversation = self.fetchedResultsController.fetchedObjects?.first(where: { record["owningConversation"] as? CKReference == CKReference(record: $0.ckRecord, action: .deleteSelf) }),
                         let messages = conversation.messages?.array as? [Message]
                         else { return }
                     

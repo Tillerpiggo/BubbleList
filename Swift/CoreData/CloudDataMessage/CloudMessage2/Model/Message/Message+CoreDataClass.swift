@@ -29,7 +29,7 @@ public class Message: NSManagedObject, CloudUploadable {
         generateRecord()
     }
     
-    init(withText text: String, timestamp: Date, managedContext: NSManagedObjectContext, owningConversation: CKReference, zoneID: CKRecordZoneID) {
+    init(withText text: String, timestamp: Date, managedContext: NSManagedObjectContext, owningConversation: CKRecord, zoneID: CKRecordZoneID) {
         let messageDescription = NSEntityDescription.entity(forEntityName: "Message", in: managedContext)
         super.init(entity: messageDescription!, insertInto: managedContext)
         
@@ -41,7 +41,10 @@ public class Message: NSManagedObject, CloudUploadable {
         // Create CKRecord
         let newCKRecord = CKRecord(recordType: "Message", zoneID: zoneID)
         newCKRecord["text"] = text as CKRecordValue
-        newCKRecord["owningConversation"] = owningConversation as CKRecordValue
+        let owningConversationReference = CKReference(record: owningConversation, action: .deleteSelf)
+        newCKRecord["owningConversation"] = owningConversationReference as CKRecordValue
+        newCKRecord.setParent(owningConversation)
+        
         self.ckRecord = newCKRecord
     }
     

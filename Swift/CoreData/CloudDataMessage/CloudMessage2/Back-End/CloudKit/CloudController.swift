@@ -127,7 +127,7 @@ class CloudController {
         let parentRecordID = parent.ckRecord.recordID
         
         // Create query
-        let parentReference = CKReference(recordID: parentRecordID, action: .none)
+        let parentReference = CKReference(recordID: parentRecordID, action: .deleteSelf)
         let predicate = NSPredicate(format: "owningConversation == %@", parentReference) // The name of this field needs to be changing (owningList, owningClass, etc.)
         
         let query = CKQuery(recordType: recordType.cloudValue, predicate: predicate)
@@ -154,7 +154,7 @@ class CloudController {
     
     
     // Saves the given cloud up
-    func save(_ cloudUploadables: [CloudUploadable], recordChanged: @escaping (CKRecord) -> Void, willRetry: Bool = true) {
+    func save(_ cloudUploadables: [CloudUploadable], recordChanged: @escaping (CKRecord) -> Void, willRetry: Bool = true, completion: @escaping (Error?) -> Void = { (error) in }) {
         // Create and configure operation
         let operation = CKModifyRecordsOperation()
         operation.savePolicy = .ifServerRecordUnchanged
@@ -170,6 +170,8 @@ class CloudController {
             print("Records to save")
             
             if let ckError = ErrorHandler.handleCloudKitError(error, operation: .modifyRecords, affectedObjects: recordsToSave.map({ $0.recordID })) {
+                completion(ckError)
+                
                 // Handle error
                 switch ckError.code {
                 case .serverRecordChanged: // Sometimes this gets recursively called, so I'm clearly not handling everything properly
@@ -245,6 +247,7 @@ class CloudController {
                 return
             } else {
                 print("Modified records error-free")
+                completion(nil)
             }
         }
         
@@ -477,6 +480,21 @@ class CloudController {
             
             self.database.add(createZoneOperation)
         }
+    }
+    
+    func share(withCloudKitShareMetadata shareMetadata: CKShareMetadata, completion: @escaping () -> Void) {
+        let acceptShareOperation: CKAcceptSharesOperation = CKAcceptSharesOperation(shareMetadatas: [shareMetadata])
+        
+        acceptShareOperation.qualityOfService = .userInteractive
+        acceptShareOperation.perShareCompletionBlock = { (meta, share, error) in
+            print("Share was accepted")
+        }
+        
+        acceptShareOperation.acceptSharesCompletionBlock = { error in
+            completion()
+        }
+        
+        CKContainer(identifier: shareMetadata.containerIdentifier).add(acceptShareOperation)
     }
     
     func handleError(_ error: Error?) {
