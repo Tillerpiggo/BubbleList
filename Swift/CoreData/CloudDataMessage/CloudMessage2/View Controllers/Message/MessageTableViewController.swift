@@ -58,7 +58,7 @@ class MessageTableViewController: UITableViewController {
         
         // Create a UIShareController to give the user a UI for sharing
         let sharingController = UICloudSharingController(preparationHandler: { (controller, handler: @escaping (CKShare?, CKContainer?, Error?) -> Void) in
-            self.cloudController.save([self.conversation.ckRecord, conversationShare], recordChanged: { (record) in }) { (error) in
+            self.cloudController.save([self.conversation.ckRecord, conversationShare], inDatabase: .private, recordChanged: { (record) in }) { (error) in
                 handler(conversationShare, CKContainer.default(), error)
             }
         })
@@ -91,7 +91,7 @@ class MessageTableViewController: UITableViewController {
         destinationViewController.delegate = self
         destinationViewController.coreDataController = coreDataController
         destinationViewController.cloudController = cloudController
-        destinationViewController.owningConversation = CKReference(record: conversation.ckRecord, action: .deleteSelf)
+        destinationViewController.owningConversation = conversation.ckRecord
     }
 }
 
@@ -154,7 +154,7 @@ extension MessageTableViewController: AddMessageTableViewControllerDelegate {
         coreDataController.save()
         
         // Save to the Cloud
-        cloudController.save([message, self.conversation], recordChanged: { (updatedRecord) in
+        cloudController.save([message, self.conversation], inDatabase: .private, recordChanged: { (updatedRecord) in // Needs to be .shared sometimes (when you don't own the conversation)
             if updatedRecord.recordType == "Message" {
                 message.update(withRecord: updatedRecord)
             } else {
@@ -194,7 +194,7 @@ extension MessageTableViewController: NSFetchedResultsControllerDelegate {
 extension MessageTableViewController: UICloudSharingControllerDelegate {
     func cloudSharingController(_ csc: UICloudSharingController, failedToSaveShareWithError error: Error) {
         // TODO: Show the user that the operation failed, handle the error
-        print(error)
+        print("Cloud sharing error: \(error)")
     }
     
     func itemThumbnailData(for csc: UICloudSharingController) -> Data? {

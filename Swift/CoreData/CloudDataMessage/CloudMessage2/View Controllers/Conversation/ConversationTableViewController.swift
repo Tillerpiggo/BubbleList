@@ -196,7 +196,11 @@ extension ConversationTableViewController {
             }
         }
         
-        cloudController.fetchDatabaseChanges(zonesDeleted: zonesDeleted, saveChanges: saveChanges) {
+        cloudController.fetchDatabaseChanges(inDatabase: .private, zonesDeleted: zonesDeleted, saveChanges: saveChanges) {
+            completion(didFetchRecords)
+        }
+        
+        cloudController.fetchDatabaseChanges(inDatabase: .shared, zonesDeleted: zonesDeleted, saveChanges: saveChanges) {
             completion(didFetchRecords)
         }
     }
@@ -270,7 +274,7 @@ extension ConversationTableViewController {
             }
         
             // Delete from cloud
-            cloudController.delete([deletedConversation]) {
+            cloudController.delete([deletedConversation], inDatabase: .private) { // TODO: Make this the shared database sometimes
                 print("Deleted Conversation!")
             }
         
@@ -336,7 +340,7 @@ extension ConversationTableViewController: AddConversationTableViewControllerDel
         coreDataController.save()
         
         // Save change to the Cloud
-        cloudController.save([conversation], recordChanged: { (updatedRecord) in
+        cloudController.save([conversation], inDatabase: .private, recordChanged: { (updatedRecord) in
             conversation.update(withRecord: updatedRecord)
         })
     }

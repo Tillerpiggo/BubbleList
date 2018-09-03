@@ -13,7 +13,9 @@ import CloudKit
 
 class CloudController {
     
-    var database = CKContainer.default().privateCloudDatabase // Change depending on needs, may include zone as well
+    var privateDatabase = CKContainer.default().privateCloudDatabase
+    var sharedDatabase = CKContainer.default().sharedCloudDatabase
+    
     let zoneID = CKRecordZoneID(zoneName: "CloudMessage", ownerName: CKCurrentUserDefaultName)
     
     var createdCustomZone: Bool {
@@ -66,10 +68,15 @@ class CloudController {
         }
     }
     
+    enum DatabaseType {
+        case `private`
+        case shared
+    }
+    
+    /*
     func fetchRecords(ofType recordType: RecordType, perZoneCompletion: @escaping ([CKRecord]) -> Void) {
         // Create and configure fetchAllRecordZonesOperation
         let operation = CKFetchRecordZonesOperation.fetchAllRecordZonesOperation()
-        operation.database = database
         
         var fetchedRecords = [CKRecord]()
         
@@ -88,7 +95,11 @@ class CloudController {
         }
         operation.qualityOfService = .userInitiated
         
-        database.add(operation)
+        operation.database = privateDatabase
+        privateDatabase.add(operation)
+        
+        operation.database = sharedDatabase
+        sharedDatabase.add(operation)
     }
     
     // Fetches conversations of a particular zone, does not include any messages. REMINDER: Add a firstMessage property to a conversation record type
@@ -117,7 +128,8 @@ class CloudController {
         operation.qualityOfService = .userInitiated
         
         // Add/start the operation
-        database.add(operation)
+        privateDatabase.add(operation)
+        sharedDatabase.add(operation)
     }
     
     // TODO: Not working properly I think, or the upload isn't working properly
@@ -149,12 +161,14 @@ class CloudController {
         
         
         // Add/start the operation
-        database.add(operation)
+        privateDatabase.add(operation)
+        sharedDatabase.add(operation)
     }
+    */
     
     
     // Saves the given cloud up
-    func save(_ cloudUploadables: [CloudUploadable], recordChanged: @escaping (CKRecord) -> Void, willRetry: Bool = true, completion: @escaping (Error?) -> Void = { (error) in }) {
+    func save(_ cloudUploadables: [CloudUploadable], inDatabase databaseType: DatabaseType, recordChanged: @escaping (CKRecord) -> Void, willRetry: Bool = true, completion: @escaping (Error?) -> Void = { (error) in }) {
         // Create and configure operation
         let operation = CKModifyRecordsOperation()
         operation.savePolicy = .ifServerRecordUnchanged
@@ -191,7 +205,7 @@ class CloudController {
                         print("Merged Record (Conversation)")
                         
                         if willRetry {
-                            self.save([serverRecord], recordChanged: recordChanged, willRetry: false)
+                            self.save([serverRecord], inDatabase: databaseType, recordChanged: recordChanged, willRetry: false)
                             print(".serverRecordChanged (Conversation). Retried after merging.")
                         }
                     } else if clientRecord.recordType == "Message" {
@@ -203,7 +217,7 @@ class CloudController {
                         print("Merged Record (Message)")
                         
                         if willRetry {
-                            self.save([serverRecord], recordChanged: recordChanged, willRetry: false)
+                            self.save([serverRecord], inDatabase: databaseType, recordChanged: recordChanged, willRetry: false)
                             print(".serverRecordChanged (Message). Retried after merging.")
                         }
                     }
@@ -236,7 +250,7 @@ class CloudController {
                         print("Handling error by retrying...")
                         let delayTime = DispatchTime.now() + retryAfterValue
                         DispatchQueue.main.asyncAfter(deadline: delayTime) {
-                            self.save(cloudUploadables, recordChanged: recordChanged) 
+                            self.save(cloudUploadables, inDatabase: databaseType, recordChanged: recordChanged)
                             print("HANDLED ERROR BY RETRYING REQUEST")
                         }
                     }
@@ -251,11 +265,16 @@ class CloudController {
             }
         }
         
-        // Add/start the operation
-        database.add(operation)
+        // Add the operation
+        switch databaseType {
+        case .private:
+            privateDatabase.add(operation)
+        case .shared:
+            sharedDatabase.add(operation)
+        }
     }
     
-    func delete(_ cloudUploadables: [CloudUploadable], completion: @escaping () -> Void) {
+    func delete(_ cloudUploadables: [CloudUploadable], inDatabase databaseType: DatabaseType, completion: @escaping () -> Void) {
         // Create and configure operation
         let operation = CKModifyRecordsOperation()
         
@@ -267,19 +286,22 @@ class CloudController {
             if let _ = ErrorHandler.handleCloudKitError(error, operation: .deleteRecords, affectedObjects: recordIDsToDelete) {
                 // Handle error
                 print("Error handling for delete operation is currently unimplemented.")
-                
-                return
+            } else {
+                completion()
             }
-            
-            completion()
         }
         operation.qualityOfService = .userInitiated
         
-        // Add/start the operation
-        database.add(operation)
+        // Check if the record is in a conversation the user actually owns or not, and delete it in the private or shared database... for now, do both, because it will simply ignore it if the record isn't found
+        switch databaseType {
+        case .private:
+            privateDatabase.add(operation)
+        case .shared:
+            sharedDatabase.add(operation)
+        }
     }
     
-    func saveSubscription(for recordType: String, completion: @escaping () -> Void) {
+    func saveSubscription(for recordType: String, inDatabase databaseType: DatabaseType, completion: @escaping () -> Void) {
         if !subscribedToPrivateChanges {
             // Create and save a silent push subscription in order to be updated:
             let subscriptionID = "cloudkit-\(recordType)-changes"
@@ -303,13 +325,34 @@ class CloudController {
             let operation = CKModifySubscriptionsOperation(subscriptionsToSave: [subscription], subscriptionIDsToDelete: [])
         
             operation.modifySubscriptionsCompletionBlock = { (_, _, error) in
-                self.handleError(error)
+                if let ckError = ErrorHandler.handleCloudKitError(error, operation: .modifySubscriptions, affectedObjects: [subscription.zoneID ?? nil]) {
+                    switch ckError.code {
+                    case .serviceUnavailable, .requestRateLimited, .zoneBusy:
+                        if let retryAfterValue = ckError.userInfo[CKErrorRetryAfterKey] as? Double {
+                            print("Handling error by retrying...")
+                            let delayTime = DispatchTime.now() + retryAfterValue
+                            DispatchQueue.main.asyncAfter(deadline: delayTime) {
+                                self.saveSubscription(for: recordType, inDatabase: databaseType, completion: completion)
+                                print("HANDLED ERROR BY RETRYING REQUEST")
+                            }
+                        }
+                    default:
+                        break
+                    }
+                }
                 
                 completion()
             }
             operation.qualityOfService = .userInitiated
-        
-            database.add(operation)
+            
+            // Do it for both for now
+            // TODO: Determine which one to subscribne to and when
+            switch databaseType {
+            case .private:
+                privateDatabase.add(operation)
+            case .shared:
+                sharedDatabase.add(operation)
+            }
             
             subscribedToPrivateChanges = true
         }
@@ -317,7 +360,7 @@ class CloudController {
     
     // Note: there could be a problem with change tokens where I commit them to memory too early - https://developer.apple.com/library/archive/documentation/DataManagement/Conceptual/CloudKitQuickStart/MaintainingaLocalCacheofCloudKitRecords/MaintainingaLocalCacheofCloudKitRecords.html
     
-    func fetchDatabaseChanges(zonesDeleted: @escaping ([CKRecordZoneID]) -> Void, saveChanges: @escaping ([CKRecord], [CKRecordID]) -> Void,
+    func fetchDatabaseChanges(inDatabase databaseType: DatabaseType, zonesDeleted: @escaping ([CKRecordZoneID]) -> Void, saveChanges: @escaping ([CKRecord], [CKRecordID]) -> Void,
                               completion: @escaping () -> Void) {
         
         var changedZoneIDs = [CKRecordZoneID]()
@@ -347,17 +390,17 @@ class CloudController {
                 switch ckError.code {
                 case .changeTokenExpired:
                     self.databaseChangeToken = nil
-                    self.fetchDatabaseChanges(zonesDeleted: zonesDeleted, saveChanges: saveChanges, completion: completion)
+                    self.fetchDatabaseChanges(inDatabase: databaseType, zonesDeleted: zonesDeleted, saveChanges: saveChanges, completion: completion)
                 case .zoneNotFound:
                     self.createdCustomZone = false
-                    self.createCustomZone() {
-                        self.fetchDatabaseChanges(zonesDeleted: zonesDeleted, saveChanges: saveChanges, completion: completion)
+                    self.createCustomZone(inDatabase: .private) {
+                        self.fetchDatabaseChanges(inDatabase: databaseType, zonesDeleted: zonesDeleted, saveChanges: saveChanges, completion: completion)
                     }
                 case .requestRateLimited, .zoneBusy, .serviceUnavailable:
                     if let retryAfterValue = ckError.userInfo[CKErrorRetryAfterKey] as? Double {
                         let delayTime = DispatchTime.now() + retryAfterValue
                         DispatchQueue.main.asyncAfter(deadline: delayTime) {
-                            self.fetchDatabaseChanges(zonesDeleted: zonesDeleted, saveChanges: saveChanges, completion: completion)
+                            self.fetchDatabaseChanges(inDatabase: databaseType, zonesDeleted: zonesDeleted, saveChanges: saveChanges, completion: completion)
                         }
                     }
                 default:
@@ -371,7 +414,7 @@ class CloudController {
             self.databaseChangeToken = token
             
             if changedZoneIDs.count > 0 {
-                self.fetchZoneChanges(zoneIDs: changedZoneIDs, saveChanges: saveChanges) {
+                self.fetchZoneChanges(inDatabase: databaseType, zoneIDs: changedZoneIDs, saveChanges: saveChanges) {
                     completion()
                 }
             } else {
@@ -381,10 +424,16 @@ class CloudController {
         }
         operation.qualityOfService = .userInitiated
         
-        database.add(operation)
+        // Perform operation (add operation to queue)
+        switch databaseType {
+        case .private:
+            privateDatabase.add(operation)
+        case .shared:
+            sharedDatabase.add(operation)
+        }
     }
     
-    func fetchZoneChanges(zoneIDs: [CKRecordZoneID], saveChanges: @escaping ([CKRecord], [CKRecordID]) -> Void, completion: @escaping () -> Void) {
+    func fetchZoneChanges(inDatabase databaseType: DatabaseType, zoneIDs: [CKRecordZoneID], saveChanges: @escaping ([CKRecord], [CKRecordID]) -> Void, completion: @escaping () -> Void) {
         // Memory for changed and deleted records
         var changedRecords: [CKRecord] = []
         var deletedRecordIDs: [CKRecordID] = []
@@ -422,17 +471,17 @@ class CloudController {
                 switch ckError.code {
                 case .changeTokenExpired:
                     self.databaseChangeToken = nil
-                    self.fetchZoneChanges(zoneIDs: zoneIDs, saveChanges: saveChanges, completion: completion)
+                    self.fetchZoneChanges(inDatabase: databaseType, zoneIDs: zoneIDs, saveChanges: saveChanges, completion: completion)
                 case .zoneNotFound:
                     self.createdCustomZone = false
-                    self.createCustomZone() {
-                        self.fetchZoneChanges(zoneIDs: zoneIDs, saveChanges: saveChanges, completion: completion)
+                    self.createCustomZone(inDatabase: databaseType) {
+                        self.fetchZoneChanges(inDatabase: databaseType, zoneIDs: zoneIDs, saveChanges: saveChanges, completion: completion)
                     }
                 case .requestRateLimited, .zoneBusy, .serviceUnavailable:
                     if let retryAfterValue = ckError.userInfo[CKErrorRetryAfterKey] as? Double {
                         let delayTime = DispatchTime.now() + retryAfterValue
                         DispatchQueue.main.asyncAfter(deadline: delayTime) {
-                            self.fetchZoneChanges(zoneIDs: zoneIDs, saveChanges: saveChanges, completion: completion)
+                            self.fetchZoneChanges(inDatabase: databaseType, zoneIDs: zoneIDs, saveChanges: saveChanges, completion: completion)
                         }
                     }
                 default:
@@ -452,10 +501,15 @@ class CloudController {
         }
         operation.qualityOfService = .userInitiated
         
-        database.add(operation)
+        switch databaseType {
+        case .private:
+            privateDatabase.add(operation)
+        case .shared:
+            sharedDatabase.add(operation)
+        }
     }
     
-    func createCustomZone(_ completion: @escaping () -> Void = { }) {
+    func createCustomZone(inDatabase databaseType: DatabaseType, _ completion: @escaping () -> Void = { }) {
         let createZoneGroup = DispatchGroup()
         
         if !self.createdCustomZone {
@@ -478,11 +532,16 @@ class CloudController {
             }
             createZoneOperation.qualityOfService = .userInitiated
             
-            self.database.add(createZoneOperation)
+            switch databaseType {
+            case .private:
+                privateDatabase.add(createZoneOperation)
+            case .shared:
+                sharedDatabase.add(createZoneOperation)
+            }
         }
     }
     
-    func share(withShareMetadata shareMetadata: CKShareMetadata, completion: @escaping () -> Void) {
+    func acceptShare(withShareMetadata shareMetadata: CKShareMetadata, completion: @escaping () -> Void) {
         let acceptShareOperation: CKAcceptSharesOperation = CKAcceptSharesOperation(shareMetadatas: [shareMetadata])
         
         acceptShareOperation.qualityOfService = .userInteractive
@@ -497,17 +556,12 @@ class CloudController {
         CKContainer(identifier: shareMetadata.containerIdentifier).add(acceptShareOperation)
     }
     
-    func handleError(_ error: Error?) {
-        if let error = error {
-            print("Error: \(error.localizedDescription)")
-            print(error)
-        }
-    }
-    
     init() {
-        saveSubscription(for: "Conversation") { }
-        saveSubscription(for: "Message") { }
+        saveSubscription(for: "Conversation", inDatabase: .private) { }
+        saveSubscription(for: "Message", inDatabase: .private) { }
+        saveSubscription(for: "Conversation", inDatabase: .shared) { }
+        saveSubscription(for: "Message", inDatabase: .shared) { }
         
-        createCustomZone()
+        createCustomZone(inDatabase: .private)
     }
 }

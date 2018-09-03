@@ -62,9 +62,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // MARK: - CloudKit Sharing
     func application(_ application: UIApplication, userDidAcceptCloudKitShareWith cloudKitShareMetadata: CKShareMetadata) {
-        cloudController.share(withShareMetadata: cloudKitShareMetadata) {
-            // Send the user to the appropriate location (the new conversation)
-            
+        cloudController.acceptShare(withShareMetadata: cloudKitShareMetadata) {
+            self.notificationDelegate?.fetchChanges() { _ in 
+                // Send the user to the appropriate location (the new conversation)
+                DispatchQueue.main.async {
+                    if let navigationController = self.window?.rootViewController as? UINavigationController,
+                        let conversationTableViewController = navigationController.topViewController as? ConversationTableViewController {
+                        conversationTableViewController.openConversation(withRecordID: cloudKitShareMetadata.rootRecordID)
+                    }
+                }
+            }
         }
     }
     

@@ -20,7 +20,7 @@ class AddMessageTableViewController: UITableViewController {
     var delegate: AddMessageTableViewControllerDelegate?
     var coreDataController: CoreDataController!
     var cloudController: CloudController!
-    var owningConversation: CKReference!
+    var owningConversation: CKRecord!
     
     // IBOUTLETS:
     
