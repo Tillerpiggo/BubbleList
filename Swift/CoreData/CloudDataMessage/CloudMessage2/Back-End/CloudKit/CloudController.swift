@@ -73,100 +73,6 @@ class CloudController {
         case shared
     }
     
-    /*
-    func fetchRecords(ofType recordType: RecordType, perZoneCompletion: @escaping ([CKRecord]) -> Void) {
-        // Create and configure fetchAllRecordZonesOperation
-        let operation = CKFetchRecordZonesOperation.fetchAllRecordZonesOperation()
-        
-        var fetchedRecords = [CKRecord]()
-        
-        operation.fetchRecordZonesCompletionBlock = { (recordZones, error) in
-            self.handleError(error)
-            
-            guard let recordZones = recordZones else { return }
-            
-            // Get all the zoneIDs from recordZones (the tuple (recordZoneID, recordZone)
-            for zoneID in recordZones.map({ $0.0 }) {
-                self.fetchRecords(ofType: recordType, inZone: zoneID) { (records) in
-                    records.forEach() { fetchedRecords.append($0) }
-                    perZoneCompletion(fetchedRecords)
-                }
-            }
-        }
-        operation.qualityOfService = .userInitiated
-        
-        operation.database = privateDatabase
-        privateDatabase.add(operation)
-        
-        operation.database = sharedDatabase
-        sharedDatabase.add(operation)
-    }
-    
-    // Fetches conversations of a particular zone, does not include any messages. REMINDER: Add a firstMessage property to a conversation record type
-    private func fetchRecords(ofType recordType: RecordType, inZone zoneID: CKRecordZoneID, completion: @escaping ([CKRecord]) -> Void) {
-        // Search for ALL conversations in a particular zone in the Cloud:
-        
-        // Create query
-        let predicate = NSPredicate(value: true)
-        let query = CKQuery(recordType: recordType.cloudValue, predicate: predicate)
-        
-        // Create and configure operation
-        let operation = CKQueryOperation(query: query)
-        operation.zoneID = zoneID
-        
-        var fetchedRecords = [CKRecord]()
-        
-        operation.recordFetchedBlock = { record in
-            fetchedRecords.append(record)
-        }
-        
-        operation.queryCompletionBlock = { (cursor, error) in
-            self.handleError(error)
-            
-            completion(fetchedRecords)
-        }
-        operation.qualityOfService = .userInitiated
-        
-        // Add/start the operation
-        privateDatabase.add(operation)
-        sharedDatabase.add(operation)
-    }
-    
-    // TODO: Not working properly I think, or the upload isn't working properly
-    func fetchRecords(ofType recordType: RecordType, withParent parent: CloudUploadable, completion: @escaping ([CKRecord]) -> Void) {
-        // Search for all messages that belong to a certain conversation in the Cloud:
-        
-        let parentRecordID = parent.ckRecord.recordID
-        
-        // Create query
-        let parentReference = CKReference(recordID: parentRecordID, action: .deleteSelf)
-        let predicate = NSPredicate(format: "owningConversation == %@", parentReference) // The name of this field needs to be changing (owningList, owningClass, etc.)
-        
-        let query = CKQuery(recordType: recordType.cloudValue, predicate: predicate)
-        
-        // Create operation
-        let operation = CKQueryOperation(query: query)
-        
-        var fetchedRecords = [CKRecord]()
-        operation.recordFetchedBlock = { record in
-            fetchedRecords.append(record)
-        }
-        
-        operation.queryCompletionBlock = { (cursor, error) in
-            self.handleError(error)
-            
-            completion(fetchedRecords)
-        }
-        operation.qualityOfService = .userInitiated
-        
-        
-        // Add/start the operation
-        privateDatabase.add(operation)
-        sharedDatabase.add(operation)
-    }
-    */
-    
-    
     // Saves the given cloud up
     func save(_ cloudUploadables: [CloudUploadable], inDatabase databaseType: DatabaseType, recordChanged: @escaping (CKRecord) -> Void, willRetry: Bool = true, completion: @escaping (Error?) -> Void = { (error) in }) {
         // Create and configure operation
@@ -265,7 +171,6 @@ class CloudController {
             }
         }
         
-        // Add the operation
         switch databaseType {
         case .private:
             privateDatabase.add(operation)
@@ -323,9 +228,10 @@ class CloudController {
         
             // Configure subscription operation
             let operation = CKModifySubscriptionsOperation(subscriptionsToSave: [subscription], subscriptionIDsToDelete: [])
+            
         
             operation.modifySubscriptionsCompletionBlock = { (_, _, error) in
-                if let ckError = ErrorHandler.handleCloudKitError(error, operation: .modifySubscriptions, affectedObjects: [subscription.zoneID ?? nil]) {
+                if let ckError = ErrorHandler.handleCloudKitError(error, operation: .modifySubscriptions, affectedObjects: [subscription.zoneID!]) {
                     switch ckError.code {
                     case .serviceUnavailable, .requestRateLimited, .zoneBusy:
                         if let retryAfterValue = ckError.userInfo[CKErrorRetryAfterKey] as? Double {
@@ -339,14 +245,12 @@ class CloudController {
                     default:
                         break
                     }
+                } else {
+                    completion()
                 }
-                
-                completion()
             }
             operation.qualityOfService = .userInitiated
             
-            // Do it for both for now
-            // TODO: Determine which one to subscribne to and when
             switch databaseType {
             case .private:
                 privateDatabase.add(operation)
@@ -368,6 +272,7 @@ class CloudController {
         
         let operation = CKFetchDatabaseChangesOperation(previousServerChangeToken: databaseChangeToken)
         operation.fetchAllChanges = true
+        
         
         operation.recordZoneWithIDChangedBlock = { (zoneID) in
             changedZoneIDs.append(zoneID)
@@ -408,23 +313,22 @@ class CloudController {
                 }
                 
                 return
-            }
-            
-            zonesDeleted(deletedZoneIDs)
-            self.databaseChangeToken = token
-            
-            if changedZoneIDs.count > 0 {
-                self.fetchZoneChanges(inDatabase: databaseType, zoneIDs: changedZoneIDs, saveChanges: saveChanges) {
+             } else {
+                zonesDeleted(deletedZoneIDs)
+                self.databaseChangeToken = token
+                
+                if changedZoneIDs.count > 0 {
+                    self.fetchZoneChanges(inDatabase: databaseType, zoneIDs: changedZoneIDs, saveChanges: saveChanges) {
+                        completion()
+                    }
+                } else {
+                    print("No zones found changed")
                     completion()
                 }
-            } else {
-                print("No zones found changed")
-                completion()
             }
         }
         operation.qualityOfService = .userInitiated
         
-        // Perform operation (add operation to queue)
         switch databaseType {
         case .private:
             privateDatabase.add(operation)
@@ -447,6 +351,8 @@ class CloudController {
         }
         
         let operation = CKFetchRecordZoneChangesOperation(recordZoneIDs: zoneIDs, optionsByRecordZoneID: optionsByRecordZoneID)
+        operation.fetchAllChanges = true
+        
         
         operation.recordChangedBlock = { (record) in
             print("Record changed in Cloud")
@@ -489,15 +395,36 @@ class CloudController {
                 }
                 
                 return
+            } else {
+                saveChanges(changedRecords, deletedRecordIDs)
+                self.zoneChangeToken = token
             }
-            
-            saveChanges(changedRecords, deletedRecordIDs)
-            self.zoneChangeToken = token
         }
         
         operation.fetchRecordZoneChangesCompletionBlock = { (error) in
-            self.handleError(error)
-            completion()
+            if let ckError = ErrorHandler.handleCloudKitError(error, operation: .fetchZones) {
+                switch ckError.code {
+                case .changeTokenExpired:
+                    self.databaseChangeToken = nil
+                    self.fetchZoneChanges(inDatabase: databaseType, zoneIDs: zoneIDs, saveChanges: saveChanges, completion: completion)
+                case .zoneNotFound:
+                    self.createdCustomZone = false
+                    self.createCustomZone(inDatabase: databaseType) {
+                        self.fetchZoneChanges(inDatabase: databaseType, zoneIDs: zoneIDs, saveChanges: saveChanges, completion: completion)
+                    }
+                case .requestRateLimited, .zoneBusy, .serviceUnavailable:
+                    if let retryAfterValue = ckError.userInfo[CKErrorRetryAfterKey] as? Double {
+                        let delayTime = DispatchTime.now() + retryAfterValue
+                        DispatchQueue.main.asyncAfter(deadline: delayTime) {
+                            self.fetchZoneChanges(inDatabase: databaseType, zoneIDs: zoneIDs, saveChanges: saveChanges, completion: completion)
+                        }
+                    }
+                default:
+                    break
+                }
+            } else {
+                completion()
+            }
         }
         operation.qualityOfService = .userInitiated
         
@@ -518,6 +445,7 @@ class CloudController {
             let customZone = CKRecordZone(zoneID: zoneID)
             
             let createZoneOperation = CKModifyRecordZonesOperation(recordZonesToSave: [customZone], recordZoneIDsToDelete: [])
+            
             
             createZoneOperation.modifyRecordZonesCompletionBlock = { (saved, deleted, error) in
                 if let ckError = ErrorHandler.handleCloudKitError(error, operation: .modifyZones, affectedObjects: [customZone.zoneID]) {
@@ -553,7 +481,7 @@ class CloudController {
             completion()
         }
         
-        CKContainer(identifier: shareMetadata.containerIdentifier).add(acceptShareOperation)
+        CKContainer.default().add(acceptShareOperation)
     }
     
     init() {

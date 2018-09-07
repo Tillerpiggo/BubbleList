@@ -198,10 +198,10 @@ extension ConversationTableViewController {
         
         cloudController.fetchDatabaseChanges(inDatabase: .private, zonesDeleted: zonesDeleted, saveChanges: saveChanges) {
             completion(didFetchRecords)
-        }
-        
-        cloudController.fetchDatabaseChanges(inDatabase: .shared, zonesDeleted: zonesDeleted, saveChanges: saveChanges) {
-            completion(didFetchRecords)
+            
+            self.cloudController.fetchDatabaseChanges(inDatabase: .shared, zonesDeleted: zonesDeleted, saveChanges: saveChanges) {
+                completion(didFetchRecords)
+            }
         }
     }
     
@@ -213,9 +213,11 @@ extension ConversationTableViewController {
     }
     
     func openConversation(withRecordID recordID: CKRecordID) {
-        if let conversation = fetchedResultsController.fetchedObjects?.first(where: { $0.ckRecord.recordID == recordID }),
-            let conversationIndexPath = fetchedResultsController.indexPath(forObject: conversation) {
-                tableView.selectRow(at: conversationIndexPath, animated: true, scrollPosition: .middle)
+        self.updateWithCloud() { didFetchRecords in
+            if let conversation = self.fetchedResultsController.fetchedObjects?.first(where: { $0.ckRecord.recordID == recordID }),
+                let conversationIndexPath = self.fetchedResultsController.indexPath(forObject: conversation), didFetchRecords {
+                    self.tableView.selectRow(at: conversationIndexPath, animated: true, scrollPosition: .middle)
+            }
         }
     }
 }
