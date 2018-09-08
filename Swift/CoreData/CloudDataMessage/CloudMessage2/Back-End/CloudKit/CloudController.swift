@@ -73,6 +73,8 @@ class CloudController {
         case shared
     }
     
+    var operationIsInProgress: Bool = false
+    
     // Saves the given cloud up
     func save(_ cloudUploadables: [CloudUploadable], inDatabase databaseType: DatabaseType, recordChanged: @escaping (CKRecord) -> Void, willRetry: Bool = true, completion: @escaping (Error?) -> Void = { (error) in }) {
         // Create and configure operation
@@ -231,7 +233,7 @@ class CloudController {
             
         
             operation.modifySubscriptionsCompletionBlock = { (_, _, error) in
-                if let ckError = ErrorHandler.handleCloudKitError(error, operation: .modifySubscriptions, affectedObjects: [subscription.zoneID!]) {
+                if let zoneID = subscription.zoneID, let ckError = ErrorHandler.handleCloudKitError(error, operation: .modifySubscriptions, affectedObjects: [zoneID]) {
                     switch ckError.code {
                     case .serviceUnavailable, .requestRateLimited, .zoneBusy:
                         if let retryAfterValue = ckError.userInfo[CKErrorRetryAfterKey] as? Double {
@@ -298,7 +300,7 @@ class CloudController {
                     self.fetchDatabaseChanges(inDatabase: databaseType, zonesDeleted: zonesDeleted, saveChanges: saveChanges, completion: completion)
                 case .zoneNotFound:
                     self.createdCustomZone = false
-                    self.createCustomZone(inDatabase: .private) {
+                    self.createCustomZone(inDatabase: databaseType) {
                         self.fetchDatabaseChanges(inDatabase: databaseType, zonesDeleted: zonesDeleted, saveChanges: saveChanges, completion: completion)
                     }
                 case .requestRateLimited, .zoneBusy, .serviceUnavailable:

@@ -68,7 +68,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 DispatchQueue.main.async {
                     if let navigationController = self.window?.rootViewController as? UINavigationController,
                         let conversationTableViewController = navigationController.topViewController as? ConversationTableViewController {
-                            conversationTableViewController.openConversation(withRecordID: cloudKitShareMetadata.rootRecordID)
+                            //conversationTableViewController.openConversation(withRecordID: cloudKitShareMetadata.rootRecordID)
+                        print("Try to open conversation")
                     }
                 }
             }

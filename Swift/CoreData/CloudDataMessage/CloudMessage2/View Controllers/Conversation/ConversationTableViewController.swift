@@ -213,11 +213,9 @@ extension ConversationTableViewController {
     }
     
     func openConversation(withRecordID recordID: CKRecordID) {
-        self.updateWithCloud() { didFetchRecords in
-            if let conversation = self.fetchedResultsController.fetchedObjects?.first(where: { $0.ckRecord.recordID == recordID }),
-                let conversationIndexPath = self.fetchedResultsController.indexPath(forObject: conversation), didFetchRecords {
-                    self.tableView.selectRow(at: conversationIndexPath, animated: true, scrollPosition: .middle)
-            }
+        if let conversation = self.fetchedResultsController.fetchedObjects?.first(where: { $0.ckRecord.recordID == recordID }),
+            let conversationIndexPath = self.fetchedResultsController.indexPath(forObject: conversation) {
+                self.tableView.selectRow(at: conversationIndexPath, animated: true, scrollPosition: .middle)
         }
     }
 }
