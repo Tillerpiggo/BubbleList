@@ -227,6 +227,14 @@ extension ConversationTableViewController {
                 self.tableView.selectRow(at: conversationIndexPath, animated: true, scrollPosition: .middle)
         }
     }
+    
+    func alertUserOfFailure() {
+        let alertController = UIAlertController(title: "Something went wrong!", message: "A network failure or another error occurred.", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "Ok", style: .default)
+        alertController.addAction(okAction)
+        
+        present(alertController, animated: true, completion: nil)
+    }
 }
 
 
@@ -351,6 +359,18 @@ extension ConversationTableViewController: AddConversationTableViewControllerDel
         // Save change to the Cloud
         cloudController.save([conversation], inDatabase: .private, recordChanged: { (updatedRecord) in
             conversation.update(withRecord: updatedRecord)
-        })
+        }) { (error) in
+            guard let error = error as? CKError else { return }
+            switch error.code {
+            case .requestRateLimited, .zoneBusy, .serviceUnavailable:
+                break
+            default:
+                self.coreDataController.delete(conversation)
+                DispatchQueue.main.async {
+                    self.alertUserOfFailure()
+                    self.coreDataController.save()
+                }
+            }
+        }
     }
 }

@@ -78,8 +78,6 @@ class MessageTableViewController: UITableViewController {
         
         // Core Data will already fetch messages until we optimize it not to
         // TODO: Optimize core data by only fetching and editing the title/dateModified of the conversation, loading/fetching messages later
-        
-        // updateWithCloud()
     }
     
     // MARK: - Navigation
@@ -160,7 +158,19 @@ extension MessageTableViewController: AddMessageTableViewControllerDelegate {
             } else {
                 self.conversation.update(withRecord: updatedRecord)
             }
-        })
+        }) { (error) in
+            guard let error = error as? CKError else { return }
+            switch error.code {
+            case .requestRateLimited, .zoneBusy, .serviceUnavailable:
+                break
+            default:
+                self.coreDataController.delete(message)
+                DispatchQueue.main.async {
+                    self.alertUserOfFailure()
+                    self.coreDataController.save()
+                }
+            }
+        }
     }
 }
 
@@ -209,6 +219,18 @@ extension MessageTableViewController: UICloudSharingControllerDelegate {
     func itemTitle(for csc: UICloudSharingController) -> String? {
         // Set the title here
         return conversation.title ?? "Untitled Conversation"
+    }
+}
+
+// MARK: - Helper Methods
+
+extension MessageTableViewController {
+    func alertUserOfFailure() {
+        let alertController = UIAlertController(title: "Something went wrong!", message: "A network failure or another error occurred.", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "Ok", style: .default)
+        alertController.addAction(okAction)
+        
+        present(alertController, animated: true, completion: nil)
     }
 }
 
