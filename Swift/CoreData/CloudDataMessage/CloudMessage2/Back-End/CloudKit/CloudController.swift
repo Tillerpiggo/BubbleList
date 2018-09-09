@@ -138,37 +138,11 @@ class CloudController {
                 // Handle error
                 switch ckError.code {
                 case .serverRecordChanged: // Sometimes this gets recursively called, so I'm clearly not handling everything properly
-                    // Overwrite the server record
-                    guard let serverRecord = ckError.userInfo[CKRecordChangedErrorServerRecordKey] as? CKRecord,
-                    let clientRecord = ckError.userInfo[CKRecordChangedErrorClientRecordKey] as? CKRecord else {
-                        print("Could not get the necessary records to merge in CloudController.save error handling (.serverRecordChanged)")
-                        return
-                    }
-                    
-                    if clientRecord.recordType == "Conversation" {
-                        serverRecord["title"] = clientRecord["title"]
-                        serverRecord["latestMessage"] = clientRecord["latestMessage"]
-                        
-                        recordChanged(serverRecord)
-                        
-                        print("Merged Record (Conversation)")
-                        
-                        if willRetry {
-                            self.save([serverRecord], inDatabase: databaseType, recordChanged: recordChanged, willRetry: false)
-                            print(".serverRecordChanged (Conversation). Retried after merging.")
-                        }
-                    } else if clientRecord.recordType == "Message" {
-                        serverRecord["text"] = clientRecord["text"]
-                        serverRecord["timestamp"] = clientRecord["timestamp"]
-                        
-                        recordChanged(serverRecord)
-                        
-                        print("Merged Record (Message)")
-                        
-                        if willRetry {
-                            self.save([serverRecord], inDatabase: databaseType, recordChanged: recordChanged, willRetry: false)
-                            print(".serverRecordChanged (Message). Retried after merging.")
-                        }
+                    // Overwrite the home record
+                    guard let serverRecord = ckError.userInfo[CKRecordChangedErrorServerRecordKey] as? CKRecord else { return }
+                    if let oldObject = cloudUploadables.first(where: { $0.ckRecord.recordID == serverRecord.recordID }) {
+                        oldObject.update(withRecord: serverRecord)
+                        self.save(cloudUploadables, inDatabase: databaseType, recordChanged: recordChanged, completion: completion)
                     }
                 case .zoneNotFound:
                     // TODO: Notify users that the conversation/class no longer exists.
@@ -581,7 +555,7 @@ class CloudController {
     }
     
     init() {
-        if true {
+        if !subscribedToChanges {
             print("Subscribing to changes...")
             saveSubscription(for: "Conversation", inDatabase: .private) { }
             saveSubscription(for: "Message", inDatabase: .private) { }
@@ -593,5 +567,31 @@ class CloudController {
         subscribedToChanges = true
         
         createCustomZone(inDatabase: .private)
+    }
+    
+    // MARK: - For testing
+    
+    func removeAllSubscriptions() {
+        privateDatabase.fetchAllSubscriptions() { subscriptions, error in
+            guard let subscriptions = subscriptions else { return }
+            
+            for subscription in subscriptions {
+                self.privateDatabase.delete(withSubscriptionID: subscription.subscriptionID, completionHandler: { (subscriptionID, _) in
+                    print("Deleted subscription with ID: \(subscriptionID ?? "no subscription id")")
+                })
+            }
+        }
+        
+        sharedDatabase.fetchAllSubscriptions() { subscriptions, error in
+            guard let subscriptions = subscriptions else { return }
+            
+            for subscription in subscriptions {
+                self.sharedDatabase.delete(withSubscriptionID: subscription.subscriptionID, completionHandler: { (subscriptionID, _) in
+                    print("Deleted subscription with ID: \(subscriptionID ?? "no subscription id")")
+                })
+            }
+        }
+        
+        subscribedToChanges = false
     }
 }

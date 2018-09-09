@@ -153,7 +153,7 @@ extension ConversationTableViewController {
                     
                     print("Added message from ConversationTableViewController (from Cloud)")
                     
-                    guard let conversation = self.fetchedResultsController.fetchedObjects?.first(where: { record["owningConversation"] as? CKReference == CKReference(record: $0.ckRecord, action: .none) }),
+                    guard let conversation = self.fetchedResultsController.fetchedObjects?.first(where: { record["owningConversation"] as? CKReference == CKReference(record: $0.ckRecord, action: .deleteSelf) }),
                         let messages = conversation.messages?.array as? [Message]
                         else { return }
                     
@@ -279,23 +279,22 @@ extension ConversationTableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete, fetchedResultsController.fetchedObjects?.count ?? 0 > 0 {
             let deletedConversation = fetchedResultsController.object(at: indexPath)
-            
-            // Delete from core data
-            coreDataController.delete(deletedConversation)
-            
-            if let deletedMessages = deletedConversation.messages?.array as? [Message] {
-                // Delete all cloud messages
-                for message in deletedMessages {
-                    coreDataController.delete(message)
-                }
-            }
         
             // Delete from cloud
             cloudController.delete([deletedConversation], inDatabase: .private) { // TODO: Make this the shared database sometimes
                 print("Deleted Conversation!")
+                // Delete from core data
+                self.coreDataController.delete(deletedConversation)
+                
+                if let deletedMessages = deletedConversation.messages?.array as? [Message] {
+                    // Delete all cloud messages
+                    for message in deletedMessages {
+                        self.coreDataController.delete(message)
+                    }
+                }
+                
+                DispatchQueue.main.async { self.coreDataController.save() }
             }
-        
-            coreDataController.save()
         }
     }
     
