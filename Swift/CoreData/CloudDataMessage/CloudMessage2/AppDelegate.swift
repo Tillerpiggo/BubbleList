@@ -47,7 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let notification = CKNotification(fromRemoteNotificationDictionary: userInfo)
         
         var didRecieveData: Bool = false
-        if notification.subscriptionID == "cloudkit-Conversation-changes" || notification.subscriptionID == "cloudkit-Message-changes" {
+        if notification.subscriptionID == "cloudkit-privateConversation-changes" || notification.subscriptionID == "cloudkit-privateMessage-changes" || notification.subscriptionID == "cloudkit-sharedConversation-changes" || notification.subscriptionID == "cloudkit-sharedMessage-changes" {
             notificationDelegate?.fetchChanges() { (didFetchRecords) in
                 if !didRecieveData && didFetchRecords {
                     completionHandler(.newData)

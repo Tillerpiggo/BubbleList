@@ -102,9 +102,9 @@ class CloudController {
         }
     }
     
-    enum DatabaseType {
-        case `private`
-        case shared
+    enum DatabaseType: String {
+        case `private` = "private"
+        case shared = "shared"
     }
     
     var operationIsInProgress: Bool = false
@@ -249,7 +249,7 @@ class CloudController {
     func saveSubscription(for recordType: String, inDatabase databaseType: DatabaseType, completion: @escaping () -> Void) {
         if !subscribedToPrivateChanges {
             // Create and save a silent push subscription in order to be updated:
-            let subscriptionID = "cloudkit-\(recordType)-changes"
+            let subscriptionID = "cloudkit-\(databaseType.rawValue)\(recordType)-changes"
         
             // Notify for all chnages
             let predicate = NSPredicate(value: true)
@@ -374,7 +374,7 @@ class CloudController {
                         }
                     }
                 case .invalidArguments:
-                    print("Handle invalid arguments")
+                    print("Didn't handle invalid arguments; not implemented")
                 default:
                     break
                 }
@@ -447,9 +447,9 @@ class CloudController {
         operation.recordZoneChangeTokensUpdatedBlock = { (zoneID, token, data) in
             switch databaseType {
             case .private:
-                self.privateDatabaseChangeToken = token
+                self.privateZoneChangeToken = token
             case .shared:
-                self.sharedDatabaseChangeToken = token
+                self.sharedZoneChangeToken = token
             }
             saveChanges(changedRecords, deletedRecordIDs)
         }
@@ -463,9 +463,9 @@ class CloudController {
                 case .changeTokenExpired:
                     switch databaseType {
                     case .private:
-                        self.privateDatabaseChangeToken = nil
+                        self.privateZoneChangeToken = nil
                     case .shared:
-                        self.sharedDatabaseChangeToken = nil
+                        self.sharedZoneChangeToken = nil
                     }
                     self.fetchZoneChanges(inDatabase: databaseType, zoneIDs: zoneIDs, saveChanges: saveChanges, completion: completion)
                 case .zoneNotFound:
@@ -489,9 +489,9 @@ class CloudController {
                 saveChanges(changedRecords, deletedRecordIDs)
                 switch databaseType {
                 case .private:
-                    self.privateDatabaseChangeToken = token
+                    self.privateZoneChangeToken = token
                 case .shared:
-                    self.sharedDatabaseChangeToken = token
+                    self.sharedZoneChangeToken = token
                 }
             }
         }
@@ -502,9 +502,9 @@ class CloudController {
                 case .changeTokenExpired:
                     switch databaseType {
                     case .private:
-                        self.privateDatabaseChangeToken = nil
+                        self.privateZoneChangeToken = nil
                     case .shared:
-                        self.sharedDatabaseChangeToken = nil
+                        self.sharedZoneChangeToken = nil
                     }
                     self.fetchZoneChanges(inDatabase: databaseType, zoneIDs: zoneIDs, saveChanges: saveChanges, completion: completion)
                 case .zoneNotFound:

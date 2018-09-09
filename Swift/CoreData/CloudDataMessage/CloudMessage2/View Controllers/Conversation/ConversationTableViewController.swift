@@ -117,6 +117,7 @@ extension ConversationTableViewController {
             }
             
             print("Number of records changed: \(recordsChanged.count)")
+            print("Number of records deleted: \(recordIDsDeleted.count)")
             
             let sortedRecordsChanged = recordsChanged.sorted {
                 if $0.recordType == "Conversation" && $1.recordType == "Message" {
