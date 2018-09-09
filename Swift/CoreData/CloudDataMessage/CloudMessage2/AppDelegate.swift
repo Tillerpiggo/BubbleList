@@ -69,7 +69,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     if let navigationController = self.window?.rootViewController as? UINavigationController,
                         let conversationTableViewController = navigationController.topViewController as? ConversationTableViewController {
                             //conversationTableViewController.openConversation(withRecordID: cloudKitShareMetadata.rootRecordID)
-                        print("Try to open conversation")
+                        print("Tried to open conversation")
                     }
                 }
             }
@@ -101,8 +101,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-        
-        notificationDelegate?.fetchChanges() { didFetchRecords in }
     }
 
     func applicationWillTerminate(_ application: UIApplication) {

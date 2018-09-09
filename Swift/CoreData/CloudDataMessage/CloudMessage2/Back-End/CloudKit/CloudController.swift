@@ -18,6 +18,8 @@ class CloudController {
     
     let zoneID = CKRecordZoneID(zoneName: "CloudMessage", ownerName: CKCurrentUserDefaultName)
     
+    let operationQueue = OperationQueue.main
+    
     var createdCustomZone: Bool {
         get {
             return UserDefaults.standard.bool(forKey: "createdCustomZone")
@@ -68,9 +70,9 @@ class CloudController {
         }
     }
     
-    var zoneChangeToken: CKServerChangeToken? {
+    var privateZoneChangeToken: CKServerChangeToken? {
         get {
-            if let data = UserDefaults.standard.data(forKey: "zoneChangeToken") {
+            if let data = UserDefaults.standard.data(forKey: "privateZoneChangeToken") {
                 return NSKeyedUnarchiver.unarchiveObject(with: data) as? CKServerChangeToken
             } else {
                 return nil
@@ -80,7 +82,23 @@ class CloudController {
             guard let newValue = newValue else { return }
             
             let data = NSKeyedArchiver.archivedData(withRootObject: newValue)
-            UserDefaults.standard.set(data, forKey: "zoneChangeToken")
+            UserDefaults.standard.set(data, forKey: "privateZoneChangeToken")
+        }
+    }
+    
+    var sharedZoneChangeToken: CKServerChangeToken? {
+        get {
+            if let data = UserDefaults.standard.data(forKey: "sharedZoneChangeToken") {
+                return NSKeyedUnarchiver.unarchiveObject(with: data) as? CKServerChangeToken
+            } else {
+                return nil
+            }
+        }
+        set {
+            guard let newValue = newValue else { return }
+            
+            let data = NSKeyedArchiver.archivedData(withRootObject: newValue)
+            UserDefaults.standard.set(data, forKey: "sharedZoneChangeToken")
         }
     }
     
@@ -97,6 +115,13 @@ class CloudController {
         let operation = CKModifyRecordsOperation()
         operation.savePolicy = .ifServerRecordUnchanged
         operation.isAtomic = true
+        
+        switch databaseType {
+        case .private:
+            operation.database = privateDatabase
+        case .shared:
+            operation.database = sharedDatabase
+        }
         
         // Map conversations to records
         let recordsToSave = cloudUploadables.map() { $0.ckRecord }
@@ -189,17 +214,19 @@ class CloudController {
             }
         }
         
-        switch databaseType {
-        case .private:
-            privateDatabase.add(operation)
-        case .shared:
-            sharedDatabase.add(operation)
-        }
+        operationQueue.addOperation(operation)
     }
     
     func delete(_ cloudUploadables: [CloudUploadable], inDatabase databaseType: DatabaseType, completion: @escaping () -> Void) {
         // Create and configure operation
         let operation = CKModifyRecordsOperation()
+        
+        switch databaseType {
+        case .private:
+            operation.database = privateDatabase
+        case .shared:
+            operation.database = sharedDatabase
+        }
         
         // Map conversations to recordIDs
         let recordIDsToDelete = cloudUploadables.map { $0.ckRecord.recordID }
@@ -216,12 +243,7 @@ class CloudController {
         operation.qualityOfService = .userInitiated
         
         // Check if the record is in a conversation the user actually owns or not, and delete it in the private or shared database... for now, do both, because it will simply ignore it if the record isn't found
-        switch databaseType {
-        case .private:
-            privateDatabase.add(operation)
-        case .shared:
-            sharedDatabase.add(operation)
-        }
+        operationQueue.addOperation(operation)
     }
     
     func saveSubscription(for recordType: String, inDatabase databaseType: DatabaseType, completion: @escaping () -> Void) {
@@ -247,6 +269,12 @@ class CloudController {
             // Configure subscription operation
             let operation = CKModifySubscriptionsOperation(subscriptionsToSave: [subscription], subscriptionIDsToDelete: [])
             
+            switch databaseType {
+            case .private:
+                operation.database = privateDatabase
+            case .shared:
+                operation.database = sharedDatabase
+            }
         
             operation.modifySubscriptionsCompletionBlock = { (_, _, error) in
                 if let zoneID = subscription.zoneID, let ckError = ErrorHandler.handleCloudKitError(error, operation: .modifySubscriptions, affectedObjects: [zoneID]) {
@@ -269,12 +297,7 @@ class CloudController {
             }
             operation.qualityOfService = .userInitiated
             
-            switch databaseType {
-            case .private:
-                privateDatabase.add(operation)
-            case .shared:
-                sharedDatabase.add(operation)
-            }
+            operationQueue.addOperation(operation)
             
             subscribedToPrivateChanges = true
         }
@@ -288,7 +311,7 @@ class CloudController {
         var changedZoneIDs = [CKRecordZoneID]()
         var deletedZoneIDs = [CKRecordZoneID]()
         
-        var databaseChangeToken: CKServerChangeToken?
+        let databaseChangeToken: CKServerChangeToken?
         switch databaseType {
         case .private:
             databaseChangeToken = privateDatabaseChangeToken
@@ -299,6 +322,12 @@ class CloudController {
         let operation = CKFetchDatabaseChangesOperation(previousServerChangeToken: databaseChangeToken)
         operation.fetchAllChanges = true
         
+        switch databaseType {
+        case .private:
+            operation.database = privateDatabase
+        case .shared:
+            operation.database = sharedDatabase
+        }
         
         operation.recordZoneWithIDChangedBlock = { (zoneID) in
             changedZoneIDs.append(zoneID)
@@ -310,17 +339,27 @@ class CloudController {
         
         operation.changeTokenUpdatedBlock = { (token) in
             zonesDeleted(deletedZoneIDs)
-            databaseChangeToken = token
+            
+            switch databaseType {
+            case .private:
+                self.privateDatabaseChangeToken = token
+            case .shared:
+                self.sharedDatabaseChangeToken = token
+            }
         }
         
         operation.fetchDatabaseChangesCompletionBlock = { (token, moreComing, error) in
-             if let ckError = ErrorHandler.handleCloudKitError(error, operation: .fetchZones) {
+             if let ckError = ErrorHandler.handleCloudKitError(error, operation: .fetchChanges) {
                 // handle a few errors here if there are any
                 print("ERROR: \(ckError), \(ckError.userInfo), \(ckError.localizedDescription)")
-                
                 switch ckError.code {
                 case .changeTokenExpired:
-                    databaseChangeToken = nil
+                    switch databaseType {
+                    case .private:
+                        self.privateDatabaseChangeToken = nil
+                    case .shared:
+                        self.sharedDatabaseChangeToken = nil
+                    }
                     self.fetchDatabaseChanges(inDatabase: databaseType, zonesDeleted: zonesDeleted, saveChanges: saveChanges, completion: completion)
                 case .zoneNotFound:
                     self.createdCustomZone = false
@@ -334,6 +373,8 @@ class CloudController {
                             self.fetchDatabaseChanges(inDatabase: databaseType, zonesDeleted: zonesDeleted, saveChanges: saveChanges, completion: completion)
                         }
                     }
+                case .invalidArguments:
+                    print("Handle invalid arguments")
                 default:
                     break
                 }
@@ -341,7 +382,12 @@ class CloudController {
                 return
              } else {
                 zonesDeleted(deletedZoneIDs)
-                databaseChangeToken = token
+                switch databaseType {
+                case .private:
+                    self.privateDatabaseChangeToken = token
+                case .shared:
+                    self.sharedDatabaseChangeToken = token
+                }
                 
                 if changedZoneIDs.count > 0 {
                     self.fetchZoneChanges(inDatabase: databaseType, zoneIDs: changedZoneIDs, saveChanges: saveChanges) {
@@ -355,12 +401,7 @@ class CloudController {
         }
         operation.qualityOfService = .userInitiated
         
-        switch databaseType {
-        case .private:
-            privateDatabase.add(operation)
-        case .shared:
-            sharedDatabase.add(operation)
-        }
+        operationQueue.addOperation(operation)
     }
     
     func fetchZoneChanges(inDatabase databaseType: DatabaseType, zoneIDs: [CKRecordZoneID], saveChanges: @escaping ([CKRecord], [CKRecordID]) -> Void, completion: @escaping () -> Void) {
@@ -368,26 +409,30 @@ class CloudController {
         var changedRecords: [CKRecord] = []
         var deletedRecordIDs: [CKRecordID] = []
         
-        // Get the proper database change token
-        var databaseChangeToken: CKServerChangeToken?
-        switch databaseType {
-        case .private:
-            databaseChangeToken = privateDatabaseChangeToken
-        case .shared:
-            databaseChangeToken = sharedDatabaseChangeToken
-        }
-        
         // Look up the previous change token for each zone
         var optionsByRecordZoneID = [CKRecordZoneID: CKFetchRecordZoneChangesOptions]()
         for zoneID in zoneIDs {
             let options = CKFetchRecordZoneChangesOptions()
-            options.previousServerChangeToken = self.zoneChangeToken
+            switch databaseType {
+            case .private:
+                options.previousServerChangeToken = self.privateZoneChangeToken
+            case .shared:
+                options.previousServerChangeToken = self.sharedZoneChangeToken
+            }
             optionsByRecordZoneID[zoneID] = options
         }
+        
+        
         
         let operation = CKFetchRecordZoneChangesOperation(recordZoneIDs: zoneIDs, optionsByRecordZoneID: optionsByRecordZoneID)
         operation.fetchAllChanges = true
         
+        switch databaseType {
+        case .private:
+            operation.database = privateDatabase
+        case .shared:
+            operation.database = sharedDatabase
+        }
         
         operation.recordChangedBlock = { (record) in
             print("Record changed in Cloud")
@@ -400,7 +445,12 @@ class CloudController {
         }
         
         operation.recordZoneChangeTokensUpdatedBlock = { (zoneID, token, data) in
-            self.zoneChangeToken = token
+            switch databaseType {
+            case .private:
+                self.privateDatabaseChangeToken = token
+            case .shared:
+                self.sharedDatabaseChangeToken = token
+            }
             saveChanges(changedRecords, deletedRecordIDs)
         }
         
@@ -411,7 +461,12 @@ class CloudController {
                 
                 switch ckError.code {
                 case .changeTokenExpired:
-                    databaseChangeToken = nil
+                    switch databaseType {
+                    case .private:
+                        self.privateDatabaseChangeToken = nil
+                    case .shared:
+                        self.sharedDatabaseChangeToken = nil
+                    }
                     self.fetchZoneChanges(inDatabase: databaseType, zoneIDs: zoneIDs, saveChanges: saveChanges, completion: completion)
                 case .zoneNotFound:
                     self.createdCustomZone = false
@@ -432,7 +487,12 @@ class CloudController {
                 return
             } else {
                 saveChanges(changedRecords, deletedRecordIDs)
-                self.zoneChangeToken = token
+                switch databaseType {
+                case .private:
+                    self.privateDatabaseChangeToken = token
+                case .shared:
+                    self.sharedDatabaseChangeToken = token
+                }
             }
         }
         
@@ -440,7 +500,12 @@ class CloudController {
             if let ckError = ErrorHandler.handleCloudKitError(error, operation: .fetchZones) {
                 switch ckError.code {
                 case .changeTokenExpired:
-                    databaseChangeToken = nil
+                    switch databaseType {
+                    case .private:
+                        self.privateDatabaseChangeToken = nil
+                    case .shared:
+                        self.sharedDatabaseChangeToken = nil
+                    }
                     self.fetchZoneChanges(inDatabase: databaseType, zoneIDs: zoneIDs, saveChanges: saveChanges, completion: completion)
                 case .zoneNotFound:
                     self.createdCustomZone = false
@@ -463,14 +528,7 @@ class CloudController {
         }
         operation.qualityOfService = .userInitiated
         
-        switch databaseType {
-        case .private:
-            privateDatabase.add(operation)
-            break
-        case .shared:
-            sharedDatabase.add(operation)
-            break
-        }
+        operationQueue.addOperation(operation)
     }
     
     func createCustomZone(inDatabase databaseType: DatabaseType, _ completion: @escaping () -> Void = { }) {
@@ -483,6 +541,12 @@ class CloudController {
             
             let createZoneOperation = CKModifyRecordZonesOperation(recordZonesToSave: [customZone], recordZoneIDsToDelete: [])
             
+            switch databaseType {
+            case .private:
+                createZoneOperation.database = privateDatabase
+            case .shared:
+                createZoneOperation.database = sharedDatabase
+            }
             
             createZoneOperation.modifyRecordZonesCompletionBlock = { (saved, deleted, error) in
                 if let ckError = ErrorHandler.handleCloudKitError(error, operation: .modifyZones, affectedObjects: [customZone.zoneID]) {
@@ -497,12 +561,7 @@ class CloudController {
             }
             createZoneOperation.qualityOfService = .userInitiated
             
-            switch databaseType {
-            case .private:
-                privateDatabase.add(createZoneOperation)
-            case .shared:
-                sharedDatabase.add(createZoneOperation)
-            }
+            operationQueue.addOperation(createZoneOperation)
         }
     }
     

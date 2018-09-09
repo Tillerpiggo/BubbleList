@@ -116,17 +116,25 @@ extension ConversationTableViewController {
                 print("Error fetching conversations: \(error)")
             }
             
-            for record in recordsChanged {
+            print("Number of records changed: \(recordsChanged.count)")
+            
+            let sortedRecordsChanged = recordsChanged.sorted {
+                if $0.recordType == "Conversation" && $1.recordType == "Message" {
+                    return false
+                } else {
+                    return true
+                }
+            }
+            
+            for record in sortedRecordsChanged {
+                print("Record type of changed record: \(record.recordType)")
+                
                 if let index = self.fetchedResultsController.fetchedObjects?.index(where: { $0.ckRecord.recordID == record.recordID }) {
                     didFetchRecords = true
                     
                     print("Modified conversation from ConversationTableViewController (from Cloud)")
                     
                     self.fetchedResultsController.fetchedObjects?[index].update(withRecord: record)
-                    //let changedIndexPath = IndexPath(row: index, section: 0)
-                    
-                    
-                    //self.conversations.sort(by: { $0.dateLastModified > $1.dateLastModified })
                     
                     self.coreDataController.save()
                     
@@ -144,7 +152,7 @@ extension ConversationTableViewController {
                     
                     print("Added message from ConversationTableViewController (from Cloud)")
                     
-                    guard let conversation = self.fetchedResultsController.fetchedObjects?.first(where: { record["owningConversation"] as? CKReference == CKReference(record: $0.ckRecord, action: .deleteSelf) }),
+                    guard let conversation = self.fetchedResultsController.fetchedObjects?.first(where: { record["owningConversation"] as? CKReference == CKReference(record: $0.ckRecord, action: .none) }),
                         let messages = conversation.messages?.array as? [Message]
                         else { return }
                     
