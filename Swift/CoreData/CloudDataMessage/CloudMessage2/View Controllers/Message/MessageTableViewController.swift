@@ -234,3 +234,12 @@ extension MessageTableViewController {
     }
 }
 
+// MARK: - ConversationTableViewControllerDelegate
+
+extension MessageTableViewController: ConversationTableViewControllerDelegate {
+    func conversationDeleted() {
+        self.navigationController?.popViewController(animated: true)
+        self.dismiss(animated: true, completion: nil)
+    }
+}
+

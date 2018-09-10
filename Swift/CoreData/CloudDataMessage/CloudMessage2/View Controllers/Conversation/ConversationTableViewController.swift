@@ -12,6 +12,7 @@ import CloudKit
 
 protocol ConversationTableViewControllerDelegate {
     func conversationDeleted()
+    var conversation: Conversation! { get set }
 }
 
 class ConversationTableViewController: UITableViewController {
@@ -21,6 +22,8 @@ class ConversationTableViewController: UITableViewController {
     
     var cloudController: CloudController!
     var coreDataController: CoreDataController!
+    
+    var delegate: ConversationTableViewControllerDelegate?
     
     lazy var fetchedResultsController: NSFetchedResultsController<Conversation> = {
         let fetchRequest: NSFetchRequest<Conversation> = Conversation.fetchRequest()
@@ -78,6 +81,8 @@ class ConversationTableViewController: UITableViewController {
             
             // Set the title
             destinationViewController.navigationItem.title = selectedConversation.title
+            
+            delegate = destinationViewController
         }
     }
 }
@@ -184,6 +189,10 @@ extension ConversationTableViewController {
                     
                     for message in deletedMessages {
                         self.coreDataController.delete(message)
+                    }
+                    
+                    if self.delegate?.conversation.ckRecord.recordID == recordID {
+                        DispatchQueue.main.async { self.delegate?.conversationDeleted() }
                     }
                     
                     self.coreDataController.save()
