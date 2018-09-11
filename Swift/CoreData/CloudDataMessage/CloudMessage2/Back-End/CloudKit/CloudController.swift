@@ -20,6 +20,8 @@ class CloudController {
     
     let operationQueue = OperationQueue.main
     
+    var isOperationInProgress: Bool = false
+    
     var createdCustomZone: Bool {
         get {
             return UserDefaults.standard.bool(forKey: "createdCustomZone")
@@ -106,8 +108,6 @@ class CloudController {
         case `private` = "private"
         case shared = "shared"
     }
-    
-    var operationIsInProgress: Bool = false
     
     // Saves the given cloud up
     func save(_ cloudUploadables: [CloudUploadable], inDatabase databaseType: DatabaseType, recordChanged: @escaping (CKRecord) -> Void, willRetry: Bool = true, completion: @escaping (Error?) -> Void = { (error) in }) {
@@ -227,13 +227,14 @@ class CloudController {
         
         // Notify for all chnages
         let predicate = NSPredicate(value: true)
-    
+        
         // Initialize subscription
         let subscription = CKQuerySubscription(
             recordType: recordType,
             predicate: predicate,
             subscriptionID: subscriptionID,
             options: [.firesOnRecordUpdate, .firesOnRecordCreation, .firesOnRecordDeletion])
+        
     
         // Configure silent push notifications
         let notificationInfo = CKNotificationInfo()
@@ -268,6 +269,35 @@ class CloudController {
                 default:
                     break
                 }
+            } else {
+                completion()
+            }
+        }
+        operation.qualityOfService = .userInitiated
+        
+        operationQueue.addOperation(operation)
+    }
+    
+    func saveSharedSubscription(completion: @escaping () -> Void) {
+        // Create and save a silent push subscription in order to be updated:
+        let subscriptionID = "cloudkit-sharedDatabase-changes"
+        
+        // Initialize subscription
+        let subscription = CKDatabaseSubscription(subscriptionID: subscriptionID)
+        
+        let notificationInfo = CKNotificationInfo()
+        notificationInfo.shouldSendContentAvailable = true
+        subscription.notificationInfo = notificationInfo
+        
+        // Configure subscription operation
+        let operation = CKModifySubscriptionsOperation(subscriptionsToSave: [subscription], subscriptionIDsToDelete: [])
+        operation.database = sharedDatabase
+        
+        operation.modifySubscriptionsCompletionBlock = { (_, _, error) in
+            print("Successfully added subscription")
+            
+            if let _ = ErrorHandler.handleCloudKitError(error, operation: .modifySubscriptions) {
+                print("Save shared subscription error handling not yet implemented")
             } else {
                 completion()
             }
@@ -554,12 +584,17 @@ class CloudController {
         CKContainer.default().add(acceptShareOperation)
     }
     
+    func isRecordUserCreated(record: CKRecord, completion: @escaping (Bool) -> Void) {
+        
+    }
+    
     init() {
-        if !subscribedToChanges {
+        if !subscribedToChanges { // If there is no "!" before "subscribedToChanges", then I'm testing because I changed the subscriptions
             print("Subscribing to changes...")
             saveSubscription(for: "Conversation", inDatabase: .private) { }
             saveSubscription(for: "Message", inDatabase: .private) { }
             saveSubscription(for: "Conversation", inDatabase: .shared) { }
+            saveSharedSubscription { }
             saveSubscription(for: "Message", inDatabase: .shared) {
                 print("Subscribed to changes")
             }

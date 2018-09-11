@@ -49,7 +49,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         var didRecieveData: Bool = false
         
         print("SubscriptionID of Notification: \(notification.subscriptionID)")
-        if notification.subscriptionID == "cloudkit-privateConversation-changes" || notification.subscriptionID == "cloudkit-privateMessage-changes" || notification.subscriptionID == "cloudkit-sharedConversation-changes" || notification.subscriptionID == "cloudkit-sharedMessage-changes" {
+        if notification.subscriptionID == "cloudkit-privateConversation-changes" || notification.subscriptionID == "cloudkit-privateMessage-changes" || notification.subscriptionID == "cloudkit-sharedConversation-changes" || notification.subscriptionID == "cloudkit-sharedMessage-changes" || notification.subscriptionID == "cloudkit-sharedDatabase-changes" {
             notificationDelegate?.fetchChanges() { (didFetchRecords) in
                 if !didRecieveData && didFetchRecords {
                     completionHandler(.newData)
@@ -103,6 +103,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        self.notificationDelegate?.fetchChanges() { _ in
+            print("Fetched changes due to becoming active")
+        }
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
