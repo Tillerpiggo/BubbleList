@@ -114,7 +114,7 @@ extension ConversationTableViewController {
             }
         }
         
-        let saveChanges: ([CKRecord], [CKRecordID]) -> Void = { (recordsChanged, recordIDsDeleted) in
+        let saveChanges: ([CKRecord], [CKRecordID], DatabaseType) -> Void = { (recordsChanged, recordIDsDeleted, databaseType) in
             do {
                 try self.fetchedResultsController.performFetch()
             } catch let error as NSError {
@@ -149,7 +149,14 @@ extension ConversationTableViewController {
                     
                     print("Added conversation from ConversationTableViewController (from Cloud)")
                     
-                    let _ = Conversation(fromRecord: record, managedContext: self.coreDataController.managedContext)
+                    let newConversation = Conversation(fromRecord: record, managedContext: self.coreDataController.managedContext)
+                    
+                    switch databaseType {
+                    case .private:
+                        newConversation.isUserCreated = true
+                    case .shared:
+                        newConversation.isUserCreated = false
+                    }
                     
                     self.coreDataController.save()
                     

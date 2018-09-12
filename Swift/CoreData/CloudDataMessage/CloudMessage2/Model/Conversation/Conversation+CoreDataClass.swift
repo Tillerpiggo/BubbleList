@@ -48,6 +48,7 @@ public class Conversation: NSManagedObject, CloudUploadable {
         self.creationDate = NSDate()
         self.dateLastModified = NSDate()
         self.encodedSystemFields = ckRecord.encoded()
+        self.isUserCreated = true
         
         for message in messages {
             self.addToMessages(message)
@@ -63,6 +64,7 @@ public class Conversation: NSManagedObject, CloudUploadable {
         self.creationDate = record.creationDate! as NSDate
         self.dateLastModified = record.modificationDate! as NSDate
         self.encodedSystemFields = record.encoded()
+        self.isUserCreated = true // just default value, make sure to set after init
         
         // Set CKRecord
         self.ckRecord = record

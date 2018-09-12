@@ -22,6 +22,7 @@ extension Conversation {
     @NSManaged public var title: String?
     @NSManaged public var messages: NSOrderedSet?
     @NSManaged public var encodedSystemFields: Data?
+    @NSManaged public var isUserCreated: Bool
 }
 
 // MARK: Generated accessors for messages

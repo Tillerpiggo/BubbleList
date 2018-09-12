@@ -9,6 +9,11 @@
 import Foundation
 import CloudKit
 
+enum DatabaseType: String {
+    case `private` = "private"
+    case shared = "shared"
+}
+
 // An object that allows you to save and fetch data from the Cloud
 
 class CloudController {
@@ -102,11 +107,6 @@ class CloudController {
             let data = NSKeyedArchiver.archivedData(withRootObject: newValue)
             UserDefaults.standard.set(data, forKey: "sharedZoneChangeToken")
         }
-    }
-    
-    enum DatabaseType: String {
-        case `private` = "private"
-        case shared = "shared"
     }
     
     // Saves the given cloud up
@@ -309,7 +309,7 @@ class CloudController {
     
     // Note: there could be a problem with change tokens where I commit them to memory too early - https://developer.apple.com/library/archive/documentation/DataManagement/Conceptual/CloudKitQuickStart/MaintainingaLocalCacheofCloudKitRecords/MaintainingaLocalCacheofCloudKitRecords.html
     
-    func fetchDatabaseChanges(inDatabase databaseType: DatabaseType, zonesDeleted: @escaping ([CKRecordZoneID]) -> Void, saveChanges: @escaping ([CKRecord], [CKRecordID]) -> Void,
+    func fetchDatabaseChanges(inDatabase databaseType: DatabaseType, zonesDeleted: @escaping ([CKRecordZoneID]) -> Void, saveChanges: @escaping ([CKRecord], [CKRecordID], DatabaseType) -> Void,
                               completion: @escaping () -> Void) {
         
         var changedZoneIDs = [CKRecordZoneID]()
@@ -408,7 +408,7 @@ class CloudController {
         operationQueue.addOperation(operation)
     }
     
-    func fetchZoneChanges(inDatabase databaseType: DatabaseType, zoneIDs: [CKRecordZoneID], saveChanges: @escaping ([CKRecord], [CKRecordID]) -> Void, completion: @escaping () -> Void) {
+    func fetchZoneChanges(inDatabase databaseType: DatabaseType, zoneIDs: [CKRecordZoneID], saveChanges: @escaping ([CKRecord], [CKRecordID], DatabaseType) -> Void, completion: @escaping () -> Void) {
         // Memory for changed and deleted records
         var changedRecords: [CKRecord] = []
         var deletedRecordIDs: [CKRecordID] = []
@@ -455,7 +455,7 @@ class CloudController {
             case .shared:
                 self.sharedZoneChangeToken = token
             }
-            saveChanges(changedRecords, deletedRecordIDs)
+            saveChanges(changedRecords, deletedRecordIDs, databaseType)
         }
         
         operation.recordZoneFetchCompletionBlock = { (zoneID, token, _, _, error) in
@@ -490,7 +490,7 @@ class CloudController {
                 
                 return
             } else {
-                saveChanges(changedRecords, deletedRecordIDs)
+                saveChanges(changedRecords, deletedRecordIDs, databaseType)
                 switch databaseType {
                 case .private:
                     self.privateZoneChangeToken = token

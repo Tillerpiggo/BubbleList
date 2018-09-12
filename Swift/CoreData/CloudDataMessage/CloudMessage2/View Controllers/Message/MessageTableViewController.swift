@@ -151,8 +151,10 @@ extension MessageTableViewController: AddMessageTableViewControllerDelegate {
         // Save to Core Data
         coreDataController.save()
         
+        let databaseType: DatabaseType = conversation.isUserCreated ? .private : .shared
+        
         // Save to the Cloud
-        cloudController.save([message, self.conversation], inDatabase: .private, recordChanged: { (updatedRecord) in // Needs to be .shared sometimes (when you don't own the conversation)
+        cloudController.save([message, self.conversation], inDatabase: databaseType, recordChanged: { (updatedRecord) in // Needs to be .shared sometimes (when you don't own the conversation)
             if updatedRecord.recordType == "Message" {
                 message.update(withRecord: updatedRecord)
             } else {
