@@ -29,13 +29,11 @@ class MessageTableViewController: UITableViewController {
         let isInConversationPredicate = NSPredicate(format: "owningConversation == %@", self.conversation)
         fetchRequest.predicate = isInConversationPredicate
         
-        print("Conversation title: \(self.conversation.title)")
-        
         let fetchedResultsController = NSFetchedResultsController (
             fetchRequest: fetchRequest,
             managedObjectContext: coreDataController.managedContext,
             sectionNameKeyPath: nil,
-            cacheName: "CloudMessage\(self.conversation.title)"
+            cacheName: "\(self.conversation.ckRecord.recordID.recordName)"
         )
         
         fetchedResultsController.delegate = self
