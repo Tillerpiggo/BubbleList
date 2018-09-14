@@ -29,17 +29,22 @@ class MessageTableViewController: UITableViewController {
         let isInConversationPredicate = NSPredicate(format: "owningConversation == %@", self.conversation)
         fetchRequest.predicate = isInConversationPredicate
         
+        print("Conversation title: \(self.conversation.title)")
+        
         let fetchedResultsController = NSFetchedResultsController (
             fetchRequest: fetchRequest,
             managedObjectContext: coreDataController.managedContext,
             sectionNameKeyPath: nil,
-            cacheName: "CloudMessage"
+            cacheName: "CloudMessage\(self.conversation.title)"
         )
         
         fetchedResultsController.delegate = self
         
         do {
             try fetchedResultsController.performFetch()
+            for message in fetchedResultsController.fetchedObjects ?? [] {
+                print("Message from FetchedResultsController: \(message.text ?? "No message"), owningConversation: \(message.owningConversation?.title ?? "No owning conversation")")
+            }
         } catch let error as NSError {
             print("Fetching error: \(error), \(error.userInfo)")
         }
@@ -76,8 +81,9 @@ class MessageTableViewController: UITableViewController {
         // Multiple lines per message
         tableView.rowHeight = UITableViewAutomaticDimension
         
-        // Core Data will already fetch messages until we optimize it not to
-        // TODO: Optimize core data by only fetching and editing the title/dateModified of the conversation, loading/fetching messages later
+        for message in conversation.messageArray ?? [] {
+            print("Message from CoreData: \(message.text ?? "No message"), owningConversation: \(message.owningConversation?.title ?? "No owning conversation")")
+        }
     }
     
     // MARK: - Navigation
@@ -89,7 +95,7 @@ class MessageTableViewController: UITableViewController {
         destinationViewController.delegate = self
         destinationViewController.coreDataController = coreDataController
         destinationViewController.cloudController = cloudController
-        destinationViewController.owningConversation = conversation.ckRecord
+        destinationViewController.owningConversation = conversation
     }
 }
 
@@ -145,6 +151,7 @@ extension MessageTableViewController: AddMessageTableViewControllerDelegate {
         
         // Modify model
         conversation.addToMessages(message)
+        message.owningConversation = conversation
         conversation.ckRecord["latestMessage"] = message.text as CKRecordValue?
         conversation.dateLastModified = NSDate()
         

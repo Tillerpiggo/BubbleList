@@ -41,6 +41,7 @@ public class Message: NSManagedObject, CloudUploadable {
         // Create CKRecord
         let newCKRecord = CKRecord(recordType: "Message", zoneID: zoneID)
         newCKRecord["text"] = text as CKRecordValue
+        
         let owningConversationReference = CKReference(record: owningConversation, action: .deleteSelf)
         newCKRecord["owningConversation"] = owningConversationReference as CKRecordValue
         newCKRecord.setParent(owningConversation)

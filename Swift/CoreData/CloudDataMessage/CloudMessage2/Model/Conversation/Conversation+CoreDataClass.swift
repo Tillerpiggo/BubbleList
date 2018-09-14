@@ -28,6 +28,14 @@ public class Conversation: NSManagedObject, CloudUploadable {
         }
     }
     
+    var messageArray: [Message]? {
+        if let messageArray = messages?.array as? [Message] {
+            return messageArray
+        } else {
+            return nil
+        }
+    }
+    
     private override init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?) {
         super.init(entity: entity, insertInto: context)
         generateRecord()
@@ -52,6 +60,7 @@ public class Conversation: NSManagedObject, CloudUploadable {
         
         for message in messages {
             self.addToMessages(message)
+            message.owningConversation = self
         }
     }
     

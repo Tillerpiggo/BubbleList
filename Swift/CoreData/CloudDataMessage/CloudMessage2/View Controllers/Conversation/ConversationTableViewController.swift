@@ -166,13 +166,18 @@ extension ConversationTableViewController {
                     print("Added message from ConversationTableViewController (from Cloud)")
                     
                     guard let conversation = self.fetchedResultsController.fetchedObjects?.first(where: { record["owningConversation"] as? CKReference == CKReference(record: $0.ckRecord, action: .deleteSelf) }),
-                        let messages = conversation.messages?.array as? [Message]
+                        let messages = conversation.messageArray
                         else { return }
+                    
+                    print("Adding to the conversation: \(conversation.title)")
                     
                     if let message = messages.first(where: { $0.ckRecord.recordID == record.recordID }) {
                         message.update(withRecord: record)
                     } else {
-                        conversation.addToMessages(Message(fromRecord: record, managedContext: self.coreDataController.managedContext))
+                        let message = Message(fromRecord: record, managedContext: self.coreDataController.managedContext)
+                        conversation.addToMessages(message)
+                        message.owningConversation = conversation
+                        print("New message owningConversation: \(message.owningConversation?.title)")
                     }
                     
                     conversation.dateLastModified = NSDate()

@@ -20,7 +20,7 @@ class AddMessageTableViewController: UITableViewController {
     var delegate: AddMessageTableViewControllerDelegate?
     var coreDataController: CoreDataController!
     var cloudController: CloudController!
-    var owningConversation: CKRecord!
+    var owningConversation: Conversation!
     
     // IBOUTLETS:
     
@@ -62,7 +62,8 @@ class AddMessageTableViewController: UITableViewController {
     // HELPER METHODS:
     
     private func save() {
-        let newMessage = Message(withText: textField.text ?? "", timestamp: Date(), managedContext: coreDataController.managedContext, owningConversation: owningConversation, zoneID: cloudController.zoneID)
+        let zoneID = owningConversation.isUserCreated ? cloudController.zoneID : owningConversation.ckRecord.recordID.zoneID
+        let newMessage = Message(withText: textField.text ?? "", timestamp: Date(), managedContext: coreDataController.managedContext, owningConversation: owningConversation.ckRecord, zoneID: zoneID)
         delegate?.addedMessage(newMessage)
     }
     
