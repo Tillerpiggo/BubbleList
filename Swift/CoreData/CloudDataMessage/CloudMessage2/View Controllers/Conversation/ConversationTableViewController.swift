@@ -124,15 +124,7 @@ extension ConversationTableViewController {
             print("Number of records changed: \(recordsChanged.count)")
             print("Number of records deleted: \(recordIDsDeleted.count)")
             
-            let sortedRecordsChanged = recordsChanged.sorted {
-                if $0.recordType == "Conversation" && $1.recordType == "Message" {
-                    return false
-                } else {
-                    return true
-                }
-            }
-            
-            for record in sortedRecordsChanged {
+            for record in recordsChanged {
                 print("Record type of changed record: \(record.recordType)")
                 
                 if let index = self.fetchedResultsController.fetchedObjects?.index(where: { $0.ckRecord.recordID == record.recordID }) {
@@ -169,15 +161,12 @@ extension ConversationTableViewController {
                         let messages = conversation.messageArray
                         else { return }
                     
-                    print("Adding to the conversation: \(conversation.title)")
-                    
                     if let message = messages.first(where: { $0.ckRecord.recordID == record.recordID }) {
                         message.update(withRecord: record)
                     } else {
                         let message = Message(fromRecord: record, managedContext: self.coreDataController.managedContext)
                         conversation.addToMessages(message)
                         message.owningConversation = conversation
-                        print("New message owningConversation: \(message.owningConversation?.title)")
                     }
                     
                     conversation.dateLastModified = NSDate()

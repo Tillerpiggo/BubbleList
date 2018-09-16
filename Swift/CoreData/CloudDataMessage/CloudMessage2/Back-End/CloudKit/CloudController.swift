@@ -334,22 +334,17 @@ class CloudController {
         }
         
         operation.recordZoneWithIDChangedBlock = { (zoneID) in
-            changedZoneIDs.append(zoneID)
+            changedZoneIDs.insert(zoneID, at: 0)
         }
         
         operation.recordZoneWithIDWasDeletedBlock = { (zoneID) in
-            deletedZoneIDs.append(zoneID)
+            deletedZoneIDs.insert(zoneID, at: 0)
         }
         
         operation.changeTokenUpdatedBlock = { (token) in
             zonesDeleted(deletedZoneIDs)
             
-            switch databaseType {
-            case .private:
-                self.privateDatabaseChangeToken = token
-            case .shared:
-                self.sharedDatabaseChangeToken = token
-            }
+            // Don't update the change token since you're not saving any of the changes
         }
         
         operation.fetchDatabaseChangesCompletionBlock = { (token, moreComing, error) in
@@ -440,12 +435,12 @@ class CloudController {
         
         operation.recordChangedBlock = { (record) in
             print("Record changed in Cloud")
-            changedRecords.append(record)
+            changedRecords.insert(record, at: 0)
         }
         
         operation.recordWithIDWasDeletedBlock = { (recordID, _) in
             print("Record deleted from Cloud")
-            deletedRecordIDs.append(recordID)
+            deletedRecordIDs.insert(recordID, at: 0)
         }
         
         operation.recordZoneChangeTokensUpdatedBlock = { (zoneID, token, data) in
@@ -458,7 +453,7 @@ class CloudController {
             saveChanges(changedRecords, deletedRecordIDs, databaseType)
         }
         
-        operation.recordZoneFetchCompletionBlock = { (zoneID, token, _, _, error) in
+        operation.recordZoneFetchCompletionBlock = { (zoneID, token, lastChangeToken, moreComing, error) in
             if let ckError = ErrorHandler.handleCloudKitError(error, operation: .fetchZones) {
                 // handle a few errors here if there are any
                 print("ERROR: \(ckError), \(ckError.userInfo), \(ckError.localizedDescription)")
