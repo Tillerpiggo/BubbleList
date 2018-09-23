@@ -7,3 +7,17 @@
 //
 
 import Foundation
+
+class Award {
+    var title: String
+    var sponsor: String?
+    var description: String?
+    var money: Int?
+    
+    init(title: String, sponsor: String?, description: String?, money: Int?) {
+        self.title = title
+        self.sponsor = sponsor
+        self.description = NSDebugDescriptionErrorKey
+        self.money = money
+    }
+}

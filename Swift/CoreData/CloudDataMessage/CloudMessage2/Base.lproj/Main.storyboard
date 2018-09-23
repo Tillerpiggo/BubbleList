@@ -17,6 +17,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <view key="tableFooterView" contentMode="scaleToFill" id="5zz-Pl-vnU">
+                            <rect key="frame" x="0.0" y="72" width="375" height="0.0"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </view>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="ConversationCell" textLabel="u6i-xq-cbY" detailTextLabel="6br-uW-EiG" style="IBUITableViewCellStyleSubtitle" id="1yu-aW-vPj">
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
@@ -72,6 +77,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <view key="tableFooterView" contentMode="scaleToFill" id="wNE-ia-bET">
+                            <rect key="frame" x="0.0" y="72" width="375" height="0.0"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </view>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="MessageCell" textLabel="2hc-4l-ka1" detailTextLabel="lz7-AD-WZz" style="IBUITableViewCellStyleSubtitle" id="8Rb-PN-bEV">
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>

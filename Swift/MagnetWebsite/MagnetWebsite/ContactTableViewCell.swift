@@ -10,9 +10,16 @@ import UIKit
 
 class ContactTableViewCell: UITableViewCell {
 
+    @IBOutlet weak var nameTextField: UILabel!
+    @IBOutlet weak var emailTextField: UILabel!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+    }
+    
+    func update(with contact: Contact) {
+        nameTextField.text = contact.name
+        emailTextField.text = contact.email
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

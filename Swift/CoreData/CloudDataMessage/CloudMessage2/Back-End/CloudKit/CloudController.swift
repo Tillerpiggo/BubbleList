@@ -142,7 +142,6 @@ class CloudController {
                     guard let serverRecord = ckError.userInfo[CKRecordChangedErrorServerRecordKey] as? CKRecord else { return }
                     if let oldObject = cloudUploadables.first(where: { $0.ckRecord.recordID == serverRecord.recordID }) {
                         oldObject.update(withRecord: serverRecord)
-                        self.save(cloudUploadables, inDatabase: databaseType, recordChanged: recordChanged, completion: completion)
                     }
                 case .zoneNotFound:
                     // TODO: Notify users that the conversation/class no longer exists.

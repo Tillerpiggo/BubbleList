@@ -29,7 +29,6 @@ class ConversationTableViewController: UITableViewController {
         let fetchRequest: NSFetchRequest<Conversation> = Conversation.fetchRequest()
         let sortByDateLastModified = NSSortDescriptor(key: #keyPath(Conversation.dateLastModified), ascending: false)
         fetchRequest.sortDescriptors = [sortByDateLastModified]
-        fetchRequest.fetchBatchSize = 20
         
         let fetchedResultsController = NSFetchedResultsController (
             fetchRequest: fetchRequest,
@@ -42,7 +41,6 @@ class ConversationTableViewController: UITableViewController {
         
         do {
             try fetchedResultsController.performFetch()
-            self.tableView.reloadData()
         } catch let error as NSError {
             print("Fetching error: \(error), \(error.userInfo)")
         }
@@ -110,7 +108,7 @@ extension ConversationTableViewController {
                         self.coreDataController.delete(message)
                     }
                 }
-                self.coreDataController.save()
+                //self.coreDataController.save()
             }
         }
         
@@ -134,14 +132,14 @@ extension ConversationTableViewController {
                     
                     self.fetchedResultsController.fetchedObjects?[index].update(withRecord: record)
                     
-                    self.coreDataController.save()
+                    //self.coreDataController.save()
                     
                 } else if record.recordType == "Conversation" {
                     didFetchRecords = true
                     
-                    print("Added conversation from ConversationTableViewController (from Cloud)")
-                    
                     let newConversation = Conversation(fromRecord: record, managedContext: self.coreDataController.managedContext)
+                    
+                    print("Added conversation from ConversationTableViewController (from Cloud). Title: \(newConversation.title ?? "Untitled")")
                     
                     switch databaseType {
                     case .private:
@@ -150,7 +148,7 @@ extension ConversationTableViewController {
                         newConversation.isUserCreated = false
                     }
                     
-                    self.coreDataController.save()
+                    //self.coreDataController.save()
                     
                 } else if record.recordType == "Message" {
                     didFetchRecords = true
@@ -160,6 +158,9 @@ extension ConversationTableViewController {
                     guard let conversation = self.fetchedResultsController.fetchedObjects?.first(where: { record["owningConversation"] as? CKReference == CKReference(record: $0.ckRecord, action: .deleteSelf) }),
                         let messages = conversation.messageArray
                         else { return }
+                    
+                    print("Messages: \(messages.map { $0.text })")
+                    print("Message RecordIDName: \(messages.first?.ckRecord.recordID.recordName ?? "")\nNewMessage RecordIDName: \(record.recordID.recordName)")
                     
                     if let message = messages.first(where: { $0.ckRecord.recordID == record.recordID }) {
                         message.update(withRecord: record)
@@ -171,7 +172,7 @@ extension ConversationTableViewController {
                     
                     conversation.dateLastModified = NSDate()
                     
-                    self.coreDataController.save()
+                    //self.coreDataController.save()
                 }
             }
             
@@ -181,7 +182,7 @@ extension ConversationTableViewController {
                 if let deletedConversation = self.fetchedResultsController.fetchedObjects?.first(where: { $0.ckRecord.recordID == recordID }) {
                     didFetchRecords = true
                     
-                    print("Conversation deleted by ConversationTableViewController (from Cloud)")
+                    print("Conversation deleted by ConversationTableViewController (from Cloud). Title: \(deletedConversation.title ?? "Untitled")")
                     
                     self.coreDataController.delete(deletedConversation)
                     
@@ -196,7 +197,7 @@ extension ConversationTableViewController {
                         DispatchQueue.main.async { self.delegate?.conversationDeleted() }
                     }
                     
-                    self.coreDataController.save()
+                    //self.coreDataController.save()
                 } else {
                     for conversation in self.fetchedResultsController.fetchedObjects ?? [] {
                         guard let messages = conversation.messages?.array as? [Message] else { return }
@@ -210,9 +211,11 @@ extension ConversationTableViewController {
                         }
                     }
                     
-                    self.coreDataController.save()
+                    //self.coreDataController.save()
                 }
             }
+            
+            self.coreDataController.save()
         }
         
         cloudController.fetchDatabaseChanges(inDatabase: .private, zonesDeleted: zonesDeleted, saveChanges: saveChanges) {
