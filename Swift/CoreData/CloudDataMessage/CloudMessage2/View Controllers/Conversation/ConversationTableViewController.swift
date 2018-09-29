@@ -77,6 +77,9 @@ class ConversationTableViewController: UITableViewController {
             destinationViewController.cloudController = cloudController
             destinationViewController.coreDataController = coreDataController
             
+            // Set self as delegate to reload rows when necessary (a message is added)
+            destinationViewController.delegate = self
+            
             // Set the title
             destinationViewController.navigationItem.title = selectedConversation.title
             
@@ -214,6 +217,7 @@ extension ConversationTableViewController {
             
             DispatchQueue.main.sync {
                 self.coreDataController.save()
+                self.tableView.reloadData()
             }
         }
         
@@ -355,7 +359,15 @@ extension ConversationTableViewController: NotificationDelegate {
 }
 
 
+// MARK: - MessageTableViewControllerDelegate
 
+extension ConversationTableViewController: MessageTableViewControllerDelegate {
+    func reloadConversation(_ conversation: Conversation) {
+        if let conversationRow = fetchedResultsController.fetchedObjects?.index(where: { $0.ckRecord.recordID == conversation.ckRecord.recordID }) {
+            tableView.reloadRows(at: [IndexPath(row: conversationRow, section: 0)], with: .automatic)
+        }
+    }
+}
 
 
 // MARK: - Add Conversation Delegate

@@ -12,6 +12,10 @@ import UIKit
 import CloudKit
 import CoreData
 
+protocol MessageTableViewControllerDelegate {
+    func reloadConversation(_ conversation: Conversation)
+}
+
 class MessageTableViewController: UITableViewController {
     
     // MARK: - Properties
@@ -19,6 +23,8 @@ class MessageTableViewController: UITableViewController {
     
     var cloudController: CloudController!
     var coreDataController: CoreDataController!
+    
+    var delegate: MessageTableViewControllerDelegate?
     
     lazy var fetchedResultsController: NSFetchedResultsController<Message> = {
         let fetchRequest: NSFetchRequest<Message> = Message.fetchRequest()
@@ -148,6 +154,8 @@ extension MessageTableViewController: AddMessageTableViewControllerDelegate {
         
         // Save to Core Data
         coreDataController.save()
+        
+        delegate?.reloadConversation(conversation)
         
         let databaseType: DatabaseType = conversation.isUserCreated ? .private : .shared
         
