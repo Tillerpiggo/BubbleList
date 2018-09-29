@@ -40,9 +40,6 @@ class MessageTableViewController: UITableViewController {
         
         do {
             try fetchedResultsController.performFetch()
-            for message in fetchedResultsController.fetchedObjects ?? [] {
-                print("Message from FetchedResultsController: \(message.text ?? "No message"), owningConversation: \(message.owningConversation?.title ?? "No owning conversation")")
-            }
         } catch let error as NSError {
             print("Fetching error: \(error), \(error.userInfo)")
         }
@@ -78,10 +75,6 @@ class MessageTableViewController: UITableViewController {
         
         // Multiple lines per message
         tableView.rowHeight = UITableViewAutomaticDimension
-        
-        for message in conversation.messageArray ?? [] {
-            print("Message from CoreData: \(message.text ?? "No message"), owningConversation: \(message.owningConversation?.title ?? "No owning conversation")")
-        }
     }
     
     // MARK: - Navigation
@@ -159,7 +152,7 @@ extension MessageTableViewController: AddMessageTableViewControllerDelegate {
         let databaseType: DatabaseType = conversation.isUserCreated ? .private : .shared
         
         // Save to the Cloud
-        cloudController.save([message, self.conversation], inDatabase: databaseType, recordChanged: { (updatedRecord) in // Needs to be .shared sometimes (when you don't own the conversation)
+        cloudController.save([message, self.conversation], inDatabase: databaseType, recordChanged: { (updatedRecord) in
             if updatedRecord.recordType == "Message" {
                 message.update(withRecord: updatedRecord)
             } else {

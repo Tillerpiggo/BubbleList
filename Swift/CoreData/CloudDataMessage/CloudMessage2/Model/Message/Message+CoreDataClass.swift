@@ -27,7 +27,6 @@ public class Message: NSManagedObject, CloudUploadable {
     private override init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?) {
         super.init(entity: entity, insertInto: context)
         generateRecord()
-        print("Message: \(text), CKRecordID.recordName: \(ckRecord.recordID.recordName)")
     }
     
     init(withText text: String, timestamp: Date, managedContext: NSManagedObjectContext, owningConversation: CKRecord, zoneID: CKRecordZoneID) {
@@ -48,7 +47,6 @@ public class Message: NSManagedObject, CloudUploadable {
         
         self.ckRecord = newCKRecord
         self.encodedSystemFields = newCKRecord.encoded()
-        print("Message: \(text), CKRecordID.recordName: \(ckRecord.recordID.recordName)")
     }
     
     init(fromRecord record: CKRecord, managedContext: NSManagedObjectContext) {

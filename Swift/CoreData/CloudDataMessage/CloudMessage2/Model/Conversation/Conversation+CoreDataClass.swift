@@ -16,16 +16,26 @@ public class Conversation: NSManagedObject, CloudUploadable {
     var ckRecord: CKRecord = CKRecord(recordType: "Conversation") // This is only so NSManagedObject stops complaining. It shouldn't be used.
     
     var latestMessage: String {
-        guard let messages = messages else { return "" }
+        let compareBlock: (Message, Message) -> Bool = { (message1, message2) in
+            guard let timestamp1 = message1.timestamp, let timestamp2 = message2.timestamp else { return false }
+            let comparisonResult = timestamp1.compare(timestamp2 as Date)
+            
+            switch comparisonResult {
+            case .orderedSame:
+                return false
+            case .orderedAscending:
+                return false
+            case .orderedDescending:
+                return true
+            }
+        }
         
-        let sortByDateLastModified = NSSortDescriptor(key: #keyPath(Message.timestamp), ascending: false)
-        let sortedMessages = messages.sortedArray(using: [sortByDateLastModified])
-        
-        if let latestMessage = sortedMessages.first as? Message, let text = latestMessage.text {
+        if let latestMessage = messageArray?.max(by: compareBlock), let text = latestMessage.text {
             return text
         } else {
             return ""
         }
+        
     }
     
     var messageArray: [Message]? {

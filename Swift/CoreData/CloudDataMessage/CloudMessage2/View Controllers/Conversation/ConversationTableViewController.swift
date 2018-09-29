@@ -108,7 +108,6 @@ extension ConversationTableViewController {
                         self.coreDataController.delete(message)
                     }
                 }
-                //self.coreDataController.save()
             }
         }
         
@@ -122,7 +121,11 @@ extension ConversationTableViewController {
             print("Number of records changed: \(recordsChanged.count)")
             print("Number of records deleted: \(recordIDsDeleted.count)")
             
-            for record in recordsChanged {
+            let sortedRecordsChanged = recordsChanged.sorted(by: { $0.creationDate! < $1.creationDate!})
+            
+            
+            
+            for record in sortedRecordsChanged {
                 print("Record type of changed record: \(record.recordType)")
                 
                 if let index = self.fetchedResultsController.fetchedObjects?.index(where: { $0.ckRecord.recordID == record.recordID }) {
@@ -131,9 +134,7 @@ extension ConversationTableViewController {
                     print("Modified conversation from ConversationTableViewController (from Cloud)")
                     
                     self.fetchedResultsController.fetchedObjects?[index].update(withRecord: record)
-                    
-                    //self.coreDataController.save()
-                    
+                    DispatchQueue.main.sync { self.coreDataController.save() }
                 } else if record.recordType == "Conversation" {
                     didFetchRecords = true
                     
@@ -148,8 +149,7 @@ extension ConversationTableViewController {
                         newConversation.isUserCreated = false
                     }
                     
-                    //self.coreDataController.save()
-                    
+                    DispatchQueue.main.sync { self.coreDataController.save() }
                 } else if record.recordType == "Message" {
                     didFetchRecords = true
                     
@@ -157,10 +157,10 @@ extension ConversationTableViewController {
                     
                     guard let conversation = self.fetchedResultsController.fetchedObjects?.first(where: { record["owningConversation"] as? CKReference == CKReference(record: $0.ckRecord, action: .deleteSelf) }),
                         let messages = conversation.messageArray
-                        else { return }
-                    
-                    print("Messages: \(messages.map { $0.text })")
-                    print("Message RecordIDName: \(messages.first?.ckRecord.recordID.recordName ?? "")\nNewMessage RecordIDName: \(record.recordID.recordName)")
+                        else {
+                            print("ERR: Couldn't find owning conversation of CloudMessage while applying changes.")
+                            return
+                    }
                     
                     if let message = messages.first(where: { $0.ckRecord.recordID == record.recordID }) {
                         message.update(withRecord: record)
@@ -172,7 +172,7 @@ extension ConversationTableViewController {
                     
                     conversation.dateLastModified = NSDate()
                     
-                    //self.coreDataController.save()
+                    DispatchQueue.main.sync { self.coreDataController.save() }
                 }
             }
             
@@ -197,7 +197,6 @@ extension ConversationTableViewController {
                         DispatchQueue.main.async { self.delegate?.conversationDeleted() }
                     }
                     
-                    //self.coreDataController.save()
                 } else {
                     for conversation in self.fetchedResultsController.fetchedObjects ?? [] {
                         guard let messages = conversation.messages?.array as? [Message] else { return }
@@ -210,12 +209,12 @@ extension ConversationTableViewController {
                             conversation.removeFromMessages(deletedMessage)
                         }
                     }
-                    
-                    //self.coreDataController.save()
                 }
             }
             
-            self.coreDataController.save()
+            DispatchQueue.main.sync {
+                self.coreDataController.save()
+            }
         }
         
         cloudController.fetchDatabaseChanges(inDatabase: .private, zonesDeleted: zonesDeleted, saveChanges: saveChanges) {
