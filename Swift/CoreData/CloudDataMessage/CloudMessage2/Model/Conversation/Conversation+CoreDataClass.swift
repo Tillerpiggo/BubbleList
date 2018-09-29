@@ -24,9 +24,9 @@ public class Conversation: NSManagedObject, CloudUploadable {
             case .orderedSame:
                 return false
             case .orderedAscending:
-                return false
-            case .orderedDescending:
                 return true
+            case .orderedDescending:
+                return false
             }
         }
         
