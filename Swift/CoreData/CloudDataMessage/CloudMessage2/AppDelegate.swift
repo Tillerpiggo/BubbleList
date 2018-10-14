@@ -8,13 +8,14 @@
 
 import UIKit
 import CloudKit
+import UserNotifications
 
 protocol NotificationDelegate {
     func fetchChanges(completion: @escaping (Bool) -> Void)
 }
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
 
     var window: UIWindow?
     lazy var coreDataController = { () -> CoreDataController in
@@ -35,8 +36,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             conversationTableViewController.coreDataController = coreDataController
         }
         
-        // Register for silent push notifications from CloudKit
-        application.registerForRemoteNotifications()
+        // Try to register for notifications
+        UNUserNotificationCenter.current().delegate = self
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound], completionHandler: { authorized, error in
+            if authorized {
+                DispatchQueue.main.sync() { application.registerForRemoteNotifications() }
+            }
+        })
         
         return true
     }

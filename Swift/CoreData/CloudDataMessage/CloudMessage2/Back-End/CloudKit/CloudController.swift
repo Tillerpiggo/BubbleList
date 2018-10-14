@@ -277,6 +277,61 @@ class CloudController {
         operationQueue.addOperation(operation)
     }
     
+    func saveNotificationSubscription(completion: @escaping () -> Void) {
+        // Create and save a silent push subscription in order to be updated:
+        let subscriptionID = "cloudkit-otheruser-changes"
+        print("Subscription ID: \(subscriptionID)")
+        
+        // Notify for all chnages
+        let predicate = NSPredicate(value: true)
+        
+        // Initialize subscription
+        let subscription = CKQuerySubscription(
+            recordType: RecordType.message.cloudValue,
+            predicate: predicate,
+            subscriptionID: subscriptionID,
+            options: [.firesOnRecordCreation])
+        
+        
+        // Configure silent push notifications
+        let notificationInfo = CKNotificationInfo()
+        notificationInfo.shouldSendContentAvailable = true
+        notificationInfo.alertBody = "%1$@ : %2$@"
+        notificationInfo.alertLocalizationArgs = ["FromName", "Text"]
+        subscription.notificationInfo = notificationInfo
+        
+        
+        // Configure subscription operation
+        let operation = CKModifySubscriptionsOperation(subscriptionsToSave: [subscription], subscriptionIDsToDelete: [])
+        
+        operation.database = sharedDatabase
+        
+        operation.modifySubscriptionsCompletionBlock = { (_, _, error) in
+            print("Succesfully added subscription")
+            
+            if let zoneID = subscription.zoneID, let ckError = ErrorHandler.handleCloudKitError(error, operation: .modifySubscriptions, affectedObjects: [zoneID]) {
+                switch ckError.code {
+                case .serviceUnavailable, .requestRateLimited, .zoneBusy:
+                    if let retryAfterValue = ckError.userInfo[CKErrorRetryAfterKey] as? Double {
+                        print("Handling error by retrying...")
+                        let delayTime = DispatchTime.now() + retryAfterValue
+                        DispatchQueue.main.asyncAfter(deadline: delayTime) {
+                            self.saveSubscription(for: RecordType.message.cloudValue, inDatabase: .shared, completion: completion)
+                            print("HANDLED ERROR BY RETRYING REQUEST")
+                        }
+                    }
+                default:
+                    break
+                }
+            } else {
+                completion()
+            }
+        }
+        operation.qualityOfService = .userInitiated
+        
+        operationQueue.addOperation(operation)
+    }
+    
     func saveSharedSubscription(completion: @escaping () -> Void) {
         // Create and save a silent push subscription in order to be updated:
         let subscriptionID = "cloudkit-sharedDatabase-changes"
@@ -443,13 +498,13 @@ class CloudController {
         }
         
         operation.recordZoneChangeTokensUpdatedBlock = { (zoneID, token, data) in
-            switch databaseType {
-            case .private:
-                self.privateZoneChangeToken = token
-            case .shared:
-                self.sharedZoneChangeToken = token
-            }
-            saveChanges(changedRecords, deletedRecordIDs, databaseType)
+//            switch databaseType {
+//            case .private:
+//                self.privateZoneChangeToken = token
+//            case .shared:
+//                self.sharedZoneChangeToken = token
+//            }
+//            saveChanges(changedRecords, deletedRecordIDs, databaseType)
         }
         
         operation.recordZoneFetchCompletionBlock = { (zoneID, token, lastChangeToken, moreComing, error) in
@@ -592,6 +647,7 @@ class CloudController {
             saveSubscription(for: "Message", inDatabase: .shared) {
                 print("Subscribed to changes")
             }
+            saveNotificationSubscription { print("Saved notification subscription. Should recieve notifications when somebody else adds something to the cloud database.")}
         }
         subscribedToChanges = true
         

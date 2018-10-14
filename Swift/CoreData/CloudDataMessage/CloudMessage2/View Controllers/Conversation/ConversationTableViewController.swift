@@ -124,9 +124,14 @@ extension ConversationTableViewController {
             print("Number of records changed: \(recordsChanged.count)")
             print("Number of records deleted: \(recordIDsDeleted.count)")
             
-            let sortedRecordsChanged = recordsChanged.sorted(by: { $0.creationDate! < $1.creationDate!})
-            
-            
+            let sortedRecordsChanged = recordsChanged.sorted(by:
+            {
+                if $0.recordType == "Conversation" && $1.recordType != "Conversation" {
+                    return false
+                }
+                
+                return $0.creationDate! < $1.creationDate!
+            })
             
             for record in sortedRecordsChanged {
                 print("Record type of changed record: \(record.recordType)")
@@ -158,25 +163,25 @@ extension ConversationTableViewController {
                     
                     print("Added message from ConversationTableViewController (from Cloud)")
                     
-                    guard let conversation = self.fetchedResultsController.fetchedObjects?.first(where: { record["owningConversation"] as? CKReference == CKReference(record: $0.ckRecord, action: .deleteSelf) }),
-                        let messages = conversation.messageArray
-                        else {
-                            print("ERR: Couldn't find owning conversation of CloudMessage while applying changes.")
-                            return
-                    }
-                    
-                    if let message = messages.first(where: { $0.ckRecord.recordID == record.recordID }) {
-                        message.update(withRecord: record)
+                    if let conversation = self.fetchedResultsController.fetchedObjects?.first(where: { record["owningConversation"] as? CKReference == CKReference(record: $0.ckRecord, action: .deleteSelf) }), let messages = conversation.messageArray {
+                        if let message = messages.first(where: { $0.ckRecord.recordID == record.recordID }) {
+                            message.update(withRecord: record)
+                        } else {
+                            let message = Message(fromRecord: record, managedContext: self.coreDataController.managedContext)
+                            conversation.addToMessages(message)
+                            message.owningConversation = conversation
+                        }
+                        
+                        conversation.dateLastModified = NSDate()
                     } else {
-                        let message = Message(fromRecord: record, managedContext: self.coreDataController.managedContext)
-                        conversation.addToMessages(message)
-                        message.owningConversation = conversation
+                        print("ERR: Couldn't find owning conversation of CloudMessage while applying changes.")
+                        print("Message: \(String(describing: record["text"] as? String))")
                     }
-                    
-                    conversation.dateLastModified = NSDate()
-                    
-                    DispatchQueue.main.sync { self.coreDataController.save() }
+                } else {
+                    print("CloudKit.Share recieved. Do nothing.")
                 }
+                    
+                DispatchQueue.main.sync { self.coreDataController.save() }
             }
             
             for recordID in recordIDsDeleted {
