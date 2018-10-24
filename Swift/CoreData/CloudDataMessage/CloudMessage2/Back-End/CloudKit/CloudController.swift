@@ -238,6 +238,9 @@ class CloudController {
         // Configure silent push notifications
         let notificationInfo = CKNotificationInfo()
         notificationInfo.shouldSendContentAvailable = true
+        notificationInfo.shouldBadge = true
+        notificationInfo.soundName = "default"
+        notificationInfo.alertBody = "Recieved a change from your private database! (\(databaseType.rawValue))"
         subscription.notificationInfo = notificationInfo
     
         // Configure subscription operation
@@ -296,8 +299,9 @@ class CloudController {
         // Configure silent push notifications
         let notificationInfo = CKNotificationInfo()
         notificationInfo.shouldSendContentAvailable = true
-        notificationInfo.alertBody = "%1$@ : %2$@"
-        notificationInfo.alertLocalizationArgs = ["FromName", "Text"]
+        notificationInfo.alertBody = "Something was updated in CloudMessage!"
+        notificationInfo.shouldBadge = true
+        notificationInfo.soundName = "default"
         subscription.notificationInfo = notificationInfo
         
         
@@ -341,6 +345,9 @@ class CloudController {
         
         let notificationInfo = CKNotificationInfo()
         notificationInfo.shouldSendContentAvailable = true
+        notificationInfo.alertBody = "Got a message from the Cloud!"
+        notificationInfo.shouldBadge = true
+        notificationInfo.soundName = "default"
         subscription.notificationInfo = notificationInfo
         
         // Configure subscription operation
@@ -642,12 +649,9 @@ class CloudController {
             print("Subscribing to changes...")
             saveSubscription(for: "Conversation", inDatabase: .private) { }
             saveSubscription(for: "Message", inDatabase: .private) { }
-            saveSubscription(for: "Conversation", inDatabase: .shared) { }
-            saveSharedSubscription { }
-            saveSubscription(for: "Message", inDatabase: .shared) {
+            saveSharedSubscription() { }
                 print("Subscribed to changes")
-            }
-            saveNotificationSubscription { print("Saved notification subscription. Should recieve notifications when somebody else adds something to the cloud database.")}
+            //saveNotificationSubscription { print("Saved notification subscription. Should recieve notifications when somebody else adds something to the cloud database.")}
         }
         subscribedToChanges = true
         
