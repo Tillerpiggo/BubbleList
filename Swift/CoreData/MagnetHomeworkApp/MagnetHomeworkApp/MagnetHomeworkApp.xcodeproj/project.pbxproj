@@ -7,29 +7,27 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		23436CE62151CF6100E466B0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23436CE52151CF6100E466B0 /* AppDelegate.swift */; };
-		23436CE82151CF6100E466B0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23436CE72151CF6100E466B0 /* ViewController.swift */; };
-		23436CEB2151CF6100E466B0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23436CE92151CF6100E466B0 /* Main.storyboard */; };
-		23436CEE2151CF6100E466B0 /* ConnectFour.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 23436CEC2151CF6100E466B0 /* ConnectFour.xcdatamodeld */; };
-		23436CF02151CF6400E466B0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 23436CEF2151CF6400E466B0 /* Assets.xcassets */; };
-		23436CF32151CF6400E466B0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23436CF12151CF6400E466B0 /* LaunchScreen.storyboard */; };
-		23436CFB2151CF8100E466B0 /* ConnectFourBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23436CFA2151CF8100E466B0 /* ConnectFourBoard.swift */; };
+		23CD109121803C530034FFA7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CD109021803C530034FFA7 /* AppDelegate.swift */; };
+		23CD109321803C530034FFA7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CD109221803C530034FFA7 /* ViewController.swift */; };
+		23CD109621803C530034FFA7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23CD109421803C530034FFA7 /* Main.storyboard */; };
+		23CD109921803C530034FFA7 /* MagnetHomeworkApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 23CD109721803C530034FFA7 /* MagnetHomeworkApp.xcdatamodeld */; };
+		23CD109B21803C550034FFA7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 23CD109A21803C550034FFA7 /* Assets.xcassets */; };
+		23CD109E21803C550034FFA7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23CD109C21803C550034FFA7 /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		23436CE22151CF6100E466B0 /* ConnectFour.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ConnectFour.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		23436CE52151CF6100E466B0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		23436CE72151CF6100E466B0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		23436CEA2151CF6100E466B0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		23436CED2151CF6100E466B0 /* ConnectFour.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ConnectFour.xcdatamodel; sourceTree = "<group>"; };
-		23436CEF2151CF6400E466B0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		23436CF22151CF6400E466B0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		23436CF42151CF6400E466B0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		23436CFA2151CF8100E466B0 /* ConnectFourBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectFourBoard.swift; sourceTree = "<group>"; };
+		23CD108D21803C530034FFA7 /* MagnetHomeworkApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MagnetHomeworkApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		23CD109021803C530034FFA7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		23CD109221803C530034FFA7 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		23CD109521803C530034FFA7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		23CD109821803C530034FFA7 /* MagnetHomeworkApp.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MagnetHomeworkApp.xcdatamodel; sourceTree = "<group>"; };
+		23CD109A21803C550034FFA7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		23CD109D21803C550034FFA7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		23CD109F21803C550034FFA7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		23436CDF2151CF6100E466B0 /* Frameworks */ = {
+		23CD108A21803C530034FFA7 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -39,73 +37,72 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		23436CD92151CF6100E466B0 = {
+		23CD108421803C530034FFA7 = {
 			isa = PBXGroup;
 			children = (
-				23436CE42151CF6100E466B0 /* ConnectFour */,
-				23436CE32151CF6100E466B0 /* Products */,
+				23CD108F21803C530034FFA7 /* MagnetHomeworkApp */,
+				23CD108E21803C530034FFA7 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		23436CE32151CF6100E466B0 /* Products */ = {
+		23CD108E21803C530034FFA7 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				23436CE22151CF6100E466B0 /* ConnectFour.app */,
+				23CD108D21803C530034FFA7 /* MagnetHomeworkApp.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		23436CE42151CF6100E466B0 /* ConnectFour */ = {
+		23CD108F21803C530034FFA7 /* MagnetHomeworkApp */ = {
 			isa = PBXGroup;
 			children = (
-				23436CE52151CF6100E466B0 /* AppDelegate.swift */,
-				23436CE72151CF6100E466B0 /* ViewController.swift */,
-				23436CFA2151CF8100E466B0 /* ConnectFourBoard.swift */,
-				23436CE92151CF6100E466B0 /* Main.storyboard */,
-				23436CEF2151CF6400E466B0 /* Assets.xcassets */,
-				23436CF12151CF6400E466B0 /* LaunchScreen.storyboard */,
-				23436CF42151CF6400E466B0 /* Info.plist */,
-				23436CEC2151CF6100E466B0 /* ConnectFour.xcdatamodeld */,
+				23CD109021803C530034FFA7 /* AppDelegate.swift */,
+				23CD109221803C530034FFA7 /* ViewController.swift */,
+				23CD109421803C530034FFA7 /* Main.storyboard */,
+				23CD109A21803C550034FFA7 /* Assets.xcassets */,
+				23CD109C21803C550034FFA7 /* LaunchScreen.storyboard */,
+				23CD109F21803C550034FFA7 /* Info.plist */,
+				23CD109721803C530034FFA7 /* MagnetHomeworkApp.xcdatamodeld */,
 			);
-			path = ConnectFour;
+			path = MagnetHomeworkApp;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		23436CE12151CF6100E466B0 /* ConnectFour */ = {
+		23CD108C21803C530034FFA7 /* MagnetHomeworkApp */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 23436CF72151CF6400E466B0 /* Build configuration list for PBXNativeTarget "ConnectFour" */;
+			buildConfigurationList = 23CD10A221803C550034FFA7 /* Build configuration list for PBXNativeTarget "MagnetHomeworkApp" */;
 			buildPhases = (
-				23436CDE2151CF6100E466B0 /* Sources */,
-				23436CDF2151CF6100E466B0 /* Frameworks */,
-				23436CE02151CF6100E466B0 /* Resources */,
+				23CD108921803C530034FFA7 /* Sources */,
+				23CD108A21803C530034FFA7 /* Frameworks */,
+				23CD108B21803C530034FFA7 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = ConnectFour;
-			productName = ConnectFour;
-			productReference = 23436CE22151CF6100E466B0 /* ConnectFour.app */;
+			name = MagnetHomeworkApp;
+			productName = MagnetHomeworkApp;
+			productReference = 23CD108D21803C530034FFA7 /* MagnetHomeworkApp.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		23436CDA2151CF6100E466B0 /* Project object */ = {
+		23CD108521803C530034FFA7 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0940;
-				LastUpgradeCheck = 0940;
+				LastSwiftUpdateCheck = 1000;
+				LastUpgradeCheck = 1000;
 				ORGANIZATIONNAME = Beaglepig;
 				TargetAttributes = {
-					23436CE12151CF6100E466B0 = {
-						CreatedOnToolsVersion = 9.4.1;
+					23CD108C21803C530034FFA7 = {
+						CreatedOnToolsVersion = 10.0;
 					};
 				};
 			};
-			buildConfigurationList = 23436CDD2151CF6100E466B0 /* Build configuration list for PBXProject "ConnectFour" */;
+			buildConfigurationList = 23CD108821803C530034FFA7 /* Build configuration list for PBXProject "MagnetHomeworkApp" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -113,56 +110,55 @@
 				en,
 				Base,
 			);
-			mainGroup = 23436CD92151CF6100E466B0;
-			productRefGroup = 23436CE32151CF6100E466B0 /* Products */;
+			mainGroup = 23CD108421803C530034FFA7;
+			productRefGroup = 23CD108E21803C530034FFA7 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				23436CE12151CF6100E466B0 /* ConnectFour */,
+				23CD108C21803C530034FFA7 /* MagnetHomeworkApp */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		23436CE02151CF6100E466B0 /* Resources */ = {
+		23CD108B21803C530034FFA7 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				23436CF32151CF6400E466B0 /* LaunchScreen.storyboard in Resources */,
-				23436CF02151CF6400E466B0 /* Assets.xcassets in Resources */,
-				23436CEB2151CF6100E466B0 /* Main.storyboard in Resources */,
+				23CD109E21803C550034FFA7 /* LaunchScreen.storyboard in Resources */,
+				23CD109B21803C550034FFA7 /* Assets.xcassets in Resources */,
+				23CD109621803C530034FFA7 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		23436CDE2151CF6100E466B0 /* Sources */ = {
+		23CD108921803C530034FFA7 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				23436CE82151CF6100E466B0 /* ViewController.swift in Sources */,
-				23436CE62151CF6100E466B0 /* AppDelegate.swift in Sources */,
-				23436CEE2151CF6100E466B0 /* ConnectFour.xcdatamodeld in Sources */,
-				23436CFB2151CF8100E466B0 /* ConnectFourBoard.swift in Sources */,
+				23CD109921803C530034FFA7 /* MagnetHomeworkApp.xcdatamodeld in Sources */,
+				23CD109321803C530034FFA7 /* ViewController.swift in Sources */,
+				23CD109121803C530034FFA7 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		23436CE92151CF6100E466B0 /* Main.storyboard */ = {
+		23CD109421803C530034FFA7 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				23436CEA2151CF6100E466B0 /* Base */,
+				23CD109521803C530034FFA7 /* Base */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
-		23436CF12151CF6400E466B0 /* LaunchScreen.storyboard */ = {
+		23CD109C21803C550034FFA7 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				23436CF22151CF6400E466B0 /* Base */,
+				23CD109D21803C550034FFA7 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -170,7 +166,7 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		23436CF52151CF6400E466B0 /* Debug */ = {
+		23CD10A021803C550034FFA7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -221,8 +217,9 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
-				MTL_ENABLE_DEBUG_INFO = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
@@ -230,7 +227,7 @@
 			};
 			name = Debug;
 		};
-		23436CF62151CF6400E466B0 /* Release */ = {
+		23CD10A121803C550034FFA7 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -275,8 +272,9 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
@@ -284,38 +282,38 @@
 			};
 			name = Release;
 		};
-		23436CF82151CF6400E466B0 /* Debug */ = {
+		23CD10A321803C550034FFA7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UBS5J9L934;
-				INFOPLIST_FILE = ConnectFour/Info.plist;
+				INFOPLIST_FILE = MagnetHomeworkApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.beaglepig.ConnectFour;
+				PRODUCT_BUNDLE_IDENTIFIER = com.beaglepig.MagnetHomeworkApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
-		23436CF92151CF6400E466B0 /* Release */ = {
+		23CD10A421803C550034FFA7 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UBS5J9L934;
-				INFOPLIST_FILE = ConnectFour/Info.plist;
+				INFOPLIST_FILE = MagnetHomeworkApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.beaglepig.ConnectFour;
+				PRODUCT_BUNDLE_IDENTIFIER = com.beaglepig.MagnetHomeworkApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -323,20 +321,20 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		23436CDD2151CF6100E466B0 /* Build configuration list for PBXProject "ConnectFour" */ = {
+		23CD108821803C530034FFA7 /* Build configuration list for PBXProject "MagnetHomeworkApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				23436CF52151CF6400E466B0 /* Debug */,
-				23436CF62151CF6400E466B0 /* Release */,
+				23CD10A021803C550034FFA7 /* Debug */,
+				23CD10A121803C550034FFA7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		23436CF72151CF6400E466B0 /* Build configuration list for PBXNativeTarget "ConnectFour" */ = {
+		23CD10A221803C550034FFA7 /* Build configuration list for PBXNativeTarget "MagnetHomeworkApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				23436CF82151CF6400E466B0 /* Debug */,
-				23436CF92151CF6400E466B0 /* Release */,
+				23CD10A321803C550034FFA7 /* Debug */,
+				23CD10A421803C550034FFA7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -344,17 +342,17 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		23436CEC2151CF6100E466B0 /* ConnectFour.xcdatamodeld */ = {
+		23CD109721803C530034FFA7 /* MagnetHomeworkApp.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				23436CED2151CF6100E466B0 /* ConnectFour.xcdatamodel */,
+				23CD109821803C530034FFA7 /* MagnetHomeworkApp.xcdatamodel */,
 			);
-			currentVersion = 23436CED2151CF6100E466B0 /* ConnectFour.xcdatamodel */;
-			path = ConnectFour.xcdatamodeld;
+			currentVersion = 23CD109821803C530034FFA7 /* MagnetHomeworkApp.xcdatamodel */;
+			path = MagnetHomeworkApp.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
 /* End XCVersionGroup section */
 	};
-	rootObject = 23436CDA2151CF6100E466B0 /* Project object */;
+	rootObject = 23CD108521803C530034FFA7 /* Project object */;
 }
