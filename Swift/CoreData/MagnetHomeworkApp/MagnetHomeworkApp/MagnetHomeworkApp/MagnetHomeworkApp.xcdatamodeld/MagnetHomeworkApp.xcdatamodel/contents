@@ -1,4 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1" systemVersion="11A491" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <elements/>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14315.18" systemVersion="18A391" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Assignment" representedClassName=".Assignment" syncable="YES">
+        <attribute name="creationDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="dateLastModified" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="encodedSystemFields" optional="YES" attributeType="Transformable" customClassName="." syncable="YES"/>
+        <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="owningClass" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Class" inverseName="assignments" inverseEntity="Class" syncable="YES"/>
+    </entity>
+    <entity name="Class" representedClassName=".Class" syncable="YES">
+        <attribute name="creationDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="dateLastModified" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="encodedSystemFields" optional="YES" attributeType="Transformable" customClassName="." syncable="YES"/>
+        <attribute name="isUserCreated" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="assignments" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Assignment" inverseName="owningClass" inverseEntity="Assignment" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Assignment" positionX="273.20703125" positionY="-52.4609375" width="128" height="120"/>
+        <element name="Class" positionX="-63" positionY="-18" width="128" height="133"/>
+    </elements>
 </model>

@@ -7,23 +7,54 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		23484C562182250E007C5CCF /* CKRecord+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23484C552182250E007C5CCF /* CKRecord+Helpers.swift */; };
+		23484C5A21822CA6007C5CCF /* Assignment+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23484C5821822CA6007C5CCF /* Assignment+CoreDataClass.swift */; };
+		23484C5B21822CA6007C5CCF /* Assignment+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23484C5921822CA6007C5CCF /* Assignment+CoreDataProperties.swift */; };
+		23484C5D21822CEE007C5CCF /* RecordType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23484C5C21822CEE007C5CCF /* RecordType.swift */; };
+		23484C5F21854A1E007C5CCF /* ClassTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23484C5E21854A1E007C5CCF /* ClassTableViewController.swift */; };
+		23484C6121866927007C5CCF /* AddClassTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23484C6021866927007C5CCF /* AddClassTableViewController.swift */; };
+		23484C64218963E0007C5CCF /* AssignmentTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23484C63218963E0007C5CCF /* AssignmentTableViewController.swift */; };
 		23CD109121803C530034FFA7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CD109021803C530034FFA7 /* AppDelegate.swift */; };
-		23CD109321803C530034FFA7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CD109221803C530034FFA7 /* ViewController.swift */; };
 		23CD109621803C530034FFA7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23CD109421803C530034FFA7 /* Main.storyboard */; };
 		23CD109921803C530034FFA7 /* MagnetHomeworkApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 23CD109721803C530034FFA7 /* MagnetHomeworkApp.xcdatamodeld */; };
 		23CD109B21803C550034FFA7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 23CD109A21803C550034FFA7 /* Assets.xcassets */; };
 		23CD109E21803C550034FFA7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23CD109C21803C550034FFA7 /* LaunchScreen.storyboard */; };
+		23CD10A821803D010034FFA7 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23CD10A721803D010034FFA7 /* CloudKit.framework */; };
+		23CD10AA21803E4D0034FFA7 /* CloudController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CD10A921803E4D0034FFA7 /* CloudController.swift */; };
+		23CD10AD2180413E0034FFA7 /* CloudUploadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CD10AC2180413E0034FFA7 /* CloudUploadable.swift */; };
+		23CD10AF21814F790034FFA7 /* CloudKitErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CD10AE21814F790034FFA7 /* CloudKitErrorHandler.swift */; };
+		23CD10B121814F9B0034FFA7 /* CoreDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CD10B021814F9B0034FFA7 /* CoreDataController.swift */; };
+		23CD10B421814FBE0034FFA7 /* CoreDataUploadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CD10B321814FBE0034FFA7 /* CoreDataUploadable.swift */; };
+		23CD10B621814FE10034FFA7 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CD10B521814FE10034FFA7 /* CoreDataStack.swift */; };
+		23CD10BD2181A0660034FFA7 /* Class+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CD10B92181A0660034FFA7 /* Class+CoreDataClass.swift */; };
+		23CD10C52181A11F0034FFA7 /* Class+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CD10C42181A11F0034FFA7 /* Class+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		23484C552182250E007C5CCF /* CKRecord+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKRecord+Helpers.swift"; sourceTree = "<group>"; };
+		23484C5821822CA6007C5CCF /* Assignment+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Assignment+CoreDataClass.swift"; sourceTree = "<group>"; };
+		23484C5921822CA6007C5CCF /* Assignment+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Assignment+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		23484C5C21822CEE007C5CCF /* RecordType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordType.swift; sourceTree = "<group>"; };
+		23484C5E21854A1E007C5CCF /* ClassTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassTableViewController.swift; sourceTree = "<group>"; };
+		23484C6021866927007C5CCF /* AddClassTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddClassTableViewController.swift; sourceTree = "<group>"; };
+		23484C63218963E0007C5CCF /* AssignmentTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentTableViewController.swift; sourceTree = "<group>"; };
 		23CD108D21803C530034FFA7 /* MagnetHomeworkApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MagnetHomeworkApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		23CD109021803C530034FFA7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		23CD109221803C530034FFA7 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		23CD109521803C530034FFA7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		23CD109821803C530034FFA7 /* MagnetHomeworkApp.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MagnetHomeworkApp.xcdatamodel; sourceTree = "<group>"; };
 		23CD109A21803C550034FFA7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		23CD109D21803C550034FFA7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		23CD109F21803C550034FFA7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		23CD10A521803CFD0034FFA7 /* MagnetHomeworkApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MagnetHomeworkApp.entitlements; sourceTree = "<group>"; };
+		23CD10A721803D010034FFA7 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		23CD10A921803E4D0034FFA7 /* CloudController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudController.swift; sourceTree = "<group>"; };
+		23CD10AC2180413E0034FFA7 /* CloudUploadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudUploadable.swift; sourceTree = "<group>"; };
+		23CD10AE21814F790034FFA7 /* CloudKitErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitErrorHandler.swift; sourceTree = "<group>"; };
+		23CD10B021814F9B0034FFA7 /* CoreDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataController.swift; sourceTree = "<group>"; };
+		23CD10B321814FBE0034FFA7 /* CoreDataUploadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataUploadable.swift; sourceTree = "<group>"; };
+		23CD10B521814FE10034FFA7 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
+		23CD10B92181A0660034FFA7 /* Class+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Class+CoreDataClass.swift"; sourceTree = "<group>"; };
+		23CD10C42181A11F0034FFA7 /* Class+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Class+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,17 +62,39 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				23CD10A821803D010034FFA7 /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		23484C5721822945007C5CCF /* Back-End */ = {
+			isa = PBXGroup;
+			children = (
+				23CD10B221814FA10034FFA7 /* Core Data */,
+				23CD10AB218041120034FFA7 /* iCloud */,
+				23484C5C21822CEE007C5CCF /* RecordType.swift */,
+			);
+			path = "Back-End";
+			sourceTree = "<group>";
+		};
+		23484C6221866946007C5CCF /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				23484C5E21854A1E007C5CCF /* ClassTableViewController.swift */,
+				23484C6021866927007C5CCF /* AddClassTableViewController.swift */,
+				23484C63218963E0007C5CCF /* AssignmentTableViewController.swift */,
+			);
+			path = "View Controllers";
+			sourceTree = "<group>";
+		};
 		23CD108421803C530034FFA7 = {
 			isa = PBXGroup;
 			children = (
 				23CD108F21803C530034FFA7 /* MagnetHomeworkApp */,
 				23CD108E21803C530034FFA7 /* Products */,
+				23CD10A621803D010034FFA7 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -56,15 +109,76 @@
 		23CD108F21803C530034FFA7 /* MagnetHomeworkApp */ = {
 			isa = PBXGroup;
 			children = (
+				23CD10A521803CFD0034FFA7 /* MagnetHomeworkApp.entitlements */,
 				23CD109021803C530034FFA7 /* AppDelegate.swift */,
-				23CD109221803C530034FFA7 /* ViewController.swift */,
 				23CD109421803C530034FFA7 /* Main.storyboard */,
+				23484C6221866946007C5CCF /* View Controllers */,
+				23CD10C32181A0AA0034FFA7 /* Model */,
+				23484C5721822945007C5CCF /* Back-End */,
 				23CD109A21803C550034FFA7 /* Assets.xcassets */,
 				23CD109C21803C550034FFA7 /* LaunchScreen.storyboard */,
 				23CD109F21803C550034FFA7 /* Info.plist */,
 				23CD109721803C530034FFA7 /* MagnetHomeworkApp.xcdatamodeld */,
 			);
 			path = MagnetHomeworkApp;
+			sourceTree = "<group>";
+		};
+		23CD10A621803D010034FFA7 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				23CD10A721803D010034FFA7 /* CloudKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		23CD10AB218041120034FFA7 /* iCloud */ = {
+			isa = PBXGroup;
+			children = (
+				23CD10A921803E4D0034FFA7 /* CloudController.swift */,
+				23CD10AC2180413E0034FFA7 /* CloudUploadable.swift */,
+				23CD10AE21814F790034FFA7 /* CloudKitErrorHandler.swift */,
+			);
+			path = iCloud;
+			sourceTree = "<group>";
+		};
+		23CD10B221814FA10034FFA7 /* Core Data */ = {
+			isa = PBXGroup;
+			children = (
+				23CD10B021814F9B0034FFA7 /* CoreDataController.swift */,
+				23CD10B521814FE10034FFA7 /* CoreDataStack.swift */,
+				23CD10B321814FBE0034FFA7 /* CoreDataUploadable.swift */,
+			);
+			path = "Core Data";
+			sourceTree = "<group>";
+		};
+		23CD10C12181A0800034FFA7 /* Class */ = {
+			isa = PBXGroup;
+			children = (
+				23CD10B92181A0660034FFA7 /* Class+CoreDataClass.swift */,
+				23CD10C42181A11F0034FFA7 /* Class+CoreDataProperties.swift */,
+			);
+			name = Class;
+			path = ../..;
+			sourceTree = "<group>";
+		};
+		23CD10C22181A0950034FFA7 /* Assignment */ = {
+			isa = PBXGroup;
+			children = (
+				23484C5821822CA6007C5CCF /* Assignment+CoreDataClass.swift */,
+				23484C5921822CA6007C5CCF /* Assignment+CoreDataProperties.swift */,
+			);
+			name = Assignment;
+			path = ../..;
+			sourceTree = "<group>";
+		};
+		23CD10C32181A0AA0034FFA7 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				23CD10C12181A0800034FFA7 /* Class */,
+				23CD10C22181A0950034FFA7 /* Assignment */,
+				23484C552182250E007C5CCF /* CKRecord+Helpers.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -99,6 +213,14 @@
 				TargetAttributes = {
 					23CD108C21803C530034FFA7 = {
 						CreatedOnToolsVersion = 10.0;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -138,9 +260,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				23484C5F21854A1E007C5CCF /* ClassTableViewController.swift in Sources */,
+				23CD10AD2180413E0034FFA7 /* CloudUploadable.swift in Sources */,
+				23484C562182250E007C5CCF /* CKRecord+Helpers.swift in Sources */,
+				23484C5A21822CA6007C5CCF /* Assignment+CoreDataClass.swift in Sources */,
 				23CD109921803C530034FFA7 /* MagnetHomeworkApp.xcdatamodeld in Sources */,
-				23CD109321803C530034FFA7 /* ViewController.swift in Sources */,
+				23CD10B621814FE10034FFA7 /* CoreDataStack.swift in Sources */,
+				23484C6121866927007C5CCF /* AddClassTableViewController.swift in Sources */,
+				23484C64218963E0007C5CCF /* AssignmentTableViewController.swift in Sources */,
+				23CD10C52181A11F0034FFA7 /* Class+CoreDataProperties.swift in Sources */,
+				23CD10B121814F9B0034FFA7 /* CoreDataController.swift in Sources */,
 				23CD109121803C530034FFA7 /* AppDelegate.swift in Sources */,
+				23CD10BD2181A0660034FFA7 /* Class+CoreDataClass.swift in Sources */,
+				23CD10AF21814F790034FFA7 /* CloudKitErrorHandler.swift in Sources */,
+				23CD10AA21803E4D0034FFA7 /* CloudController.swift in Sources */,
+				23484C5B21822CA6007C5CCF /* Assignment+CoreDataProperties.swift in Sources */,
+				23484C5D21822CEE007C5CCF /* RecordType.swift in Sources */,
+				23CD10B421814FBE0034FFA7 /* CoreDataUploadable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -286,6 +422,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = MagnetHomeworkApp/MagnetHomeworkApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UBS5J9L934;
 				INFOPLIST_FILE = MagnetHomeworkApp/Info.plist;
@@ -304,6 +441,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = MagnetHomeworkApp/MagnetHomeworkApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UBS5J9L934;
 				INFOPLIST_FILE = MagnetHomeworkApp/Info.plist;

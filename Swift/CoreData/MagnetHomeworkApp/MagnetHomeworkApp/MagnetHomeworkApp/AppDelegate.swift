@@ -7,17 +7,90 @@
 //
 
 import UIKit
-import CoreData
+import CloudKit
+import UserNotifications
+
+protocol NotificationDelegate {
+    func fetchChanges(completion: @escaping (Bool) -> Void)
+}
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
 
     var window: UIWindow?
-
+    
+    var cloudController = CloudController()
+    lazy var coreDataController = { () -> CoreDataController in
+        let coreDataStack = CoreDataStack(modelName: "MagnetHomeworkApp")
+        let coreDataController = CoreDataController(coreDataStack: coreDataStack)
+        return coreDataController
+    }()
+    
+    var notificationDelegate: NotificationDelegate?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        if let navigationController = window?.rootViewController as? UINavigationController,
+            let classTableViewController = navigationController.topViewController as? ClassTableViewController {
+            
+            // Dependency inject the CoreData/CloudKit Objects
+            classTableViewController.cloudController = cloudController
+            classTableViewController.coreDataController = coreDataController
+        }
+        
+        // Try to register for notifications
+        UNUserNotificationCenter.current().delegate = self
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound], completionHandler: { authorized, error in
+            if authorized {
+                DispatchQueue.main.sync() { application.registerForRemoteNotifications() }
+            }
+        })
+        
         return true
+    }
+    
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping(UIBackgroundFetchResult) -> Void) {
+        print("Received notification!")
+        
+        let notification = CKNotification(fromRemoteNotificationDictionary: userInfo)
+        
+        var didReceiveData: Bool = false
+        
+        if notification.subscriptionID == "cloudkit-privateClass-changes" || notification.subscriptionID == "cloudkit-privateAssignment-changes" || notification.subscriptionID == "cloudkit-sharedClass-changes" || notification.subscriptionID == "cloudkit-sharedAssignment-changes" || notification.subscriptionID == "cloudkit-sharedDatabase-changes" {
+            notificationDelegate?.fetchChanges() { (didFetchRecords) in
+                if !didReceiveData {
+                    completionHandler(.noData)
+                    didReceiveData = true
+                }
+            }
+        }
+        if !didReceiveData {
+            completionHandler(.noData)
+        }
+    }
+    
+    // MARK: - CloudKit Sharing
+    func application(_ application: UIApplication, userDidAcceptCloudKitShareWith cloudKitShareMetadata: CKShare.Metadata) {
+        cloudController.acceptShare(withShareMetadata: cloudKitShareMetadata) {
+            self.notificationDelegate?.fetchChanges() { _ in
+                // TODO: Send the user to tyhe approriate location (the new conversation)
+                DispatchQueue.main.async {
+                    if let navigationController = self.window?.rootViewController as? UINavigationController,
+                        let classTableViewController = navigationController.topViewController as? ClassTableViewController {
+                        // classTableViewController.openClass(withRecordID: cloudKitShareMetadata.rootRecordID)
+                        print("Tried to open conversation (not currently implemented)")
+                    }
+                    
+                }
+            }
+        }
+    }
+    
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        print("Did register for remote notifications with device token")
+    }
+    
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        print("Did fail to register for remote notifications with device token")
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -26,8 +99,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
-        // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-        // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        coreDataController.save()
+        
+        // TODO: Save Cloud Stuff (persistent)
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -36,58 +110,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        
+        self.notificationDelegate?.fetchChanges() { _ in
+            print("Fetched changes due to becoming active")
+        }
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
-        self.saveContext()
+        coreDataController.save()
+        
+        // TODO: Save Cloud Stuff (persistent)
     }
-
-    // MARK: - Core Data stack
-
-    lazy var persistentContainer: NSPersistentContainer = {
-        /*
-         The persistent container for the application. This implementation
-         creates and returns a container, having loaded the store for the
-         application to it. This property is optional since there are legitimate
-         error conditions that could cause the creation of the store to fail.
-        */
-        let container = NSPersistentContainer(name: "MagnetHomeworkApp")
-        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
-            if let error = error as NSError? {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                 
-                /*
-                 Typical reasons for an error here include:
-                 * The parent directory does not exist, cannot be created, or disallows writing.
-                 * The persistent store is not accessible, due to permissions or data protection when the device is locked.
-                 * The device is out of space.
-                 * The store could not be migrated to the current model version.
-                 Check the error message to determine what the actual problem was.
-                 */
-                fatalError("Unresolved error \(error), \(error.userInfo)")
-            }
-        })
-        return container
-    }()
-
-    // MARK: - Core Data Saving support
-
-    func saveContext () {
-        let context = persistentContainer.viewContext
-        if context.hasChanges {
-            do {
-                try context.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nserror = error as NSError
-                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
-            }
-        }
-    }
-
 }
 
