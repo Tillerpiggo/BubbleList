@@ -14,6 +14,7 @@
 		23484C5F21854A1E007C5CCF /* ClassTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23484C5E21854A1E007C5CCF /* ClassTableViewController.swift */; };
 		23484C6121866927007C5CCF /* AddClassTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23484C6021866927007C5CCF /* AddClassTableViewController.swift */; };
 		23484C64218963E0007C5CCF /* AssignmentTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23484C63218963E0007C5CCF /* AssignmentTableViewController.swift */; };
+		23484C6621896B62007C5CCF /* AddAssignmentTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23484C6521896B62007C5CCF /* AddAssignmentTableViewController.swift */; };
 		23CD109121803C530034FFA7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CD109021803C530034FFA7 /* AppDelegate.swift */; };
 		23CD109621803C530034FFA7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23CD109421803C530034FFA7 /* Main.storyboard */; };
 		23CD109921803C530034FFA7 /* MagnetHomeworkApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 23CD109721803C530034FFA7 /* MagnetHomeworkApp.xcdatamodeld */; };
@@ -38,6 +39,7 @@
 		23484C5E21854A1E007C5CCF /* ClassTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassTableViewController.swift; sourceTree = "<group>"; };
 		23484C6021866927007C5CCF /* AddClassTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddClassTableViewController.swift; sourceTree = "<group>"; };
 		23484C63218963E0007C5CCF /* AssignmentTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentTableViewController.swift; sourceTree = "<group>"; };
+		23484C6521896B62007C5CCF /* AddAssignmentTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAssignmentTableViewController.swift; sourceTree = "<group>"; };
 		23CD108D21803C530034FFA7 /* MagnetHomeworkApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MagnetHomeworkApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		23CD109021803C530034FFA7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		23CD109521803C530034FFA7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -85,6 +87,7 @@
 				23484C5E21854A1E007C5CCF /* ClassTableViewController.swift */,
 				23484C6021866927007C5CCF /* AddClassTableViewController.swift */,
 				23484C63218963E0007C5CCF /* AssignmentTableViewController.swift */,
+				23484C6521896B62007C5CCF /* AddAssignmentTableViewController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -272,6 +275,7 @@
 				23CD10B121814F9B0034FFA7 /* CoreDataController.swift in Sources */,
 				23CD109121803C530034FFA7 /* AppDelegate.swift in Sources */,
 				23CD10BD2181A0660034FFA7 /* Class+CoreDataClass.swift in Sources */,
+				23484C6621896B62007C5CCF /* AddAssignmentTableViewController.swift in Sources */,
 				23CD10AF21814F790034FFA7 /* CloudKitErrorHandler.swift in Sources */,
 				23CD10AA21803E4D0034FFA7 /* CloudController.swift in Sources */,
 				23484C5B21822CA6007C5CCF /* Assignment+CoreDataProperties.swift in Sources */,

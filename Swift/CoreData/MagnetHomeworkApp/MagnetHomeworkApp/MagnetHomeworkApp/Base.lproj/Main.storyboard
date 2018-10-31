@@ -17,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="V02-wg-EWV">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ClassCell" id="V02-wg-EWV">
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="V02-wg-EWV" id="s0a-4u-MG9">
@@ -25,7 +25,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <segue destination="ggM-QS-hVL" kind="show" id="O8m-dX-oS2"/>
+                                    <segue destination="ggM-QS-hVL" kind="show" identifier="AssignmentTableView" id="O8m-dX-oS2"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -37,7 +37,7 @@
                     <navigationItem key="navigationItem" id="fi2-aA-qJj">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="ebn-np-kyV">
                             <connections>
-                                <segue destination="dES-rV-ice" kind="presentation" id="IGs-1i-IrF"/>
+                                <segue destination="dES-rV-ice" kind="presentation" identifier="AddClass" id="IGs-1i-IrF"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -55,7 +55,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="qAH-Iz-dT1">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="AssignmentCell" id="qAH-Iz-dT1">
                                 <rect key="frame" x="0.0" y="55.5" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="qAH-Iz-dT1" id="9qw-Eh-9CY">
@@ -73,7 +73,7 @@
                         <rightBarButtonItems>
                             <barButtonItem systemItem="add" id="rfJ-zD-nwi">
                                 <connections>
-                                    <segue destination="mgt-yA-6ff" kind="presentation" id="UOp-eT-qtK"/>
+                                    <segue destination="mgt-yA-6ff" kind="presentation" identifier="AddAssignment" id="UOp-eT-qtK"/>
                                 </connections>
                             </barButtonItem>
                             <barButtonItem systemItem="action" id="IbG-Dr-WiS"/>
@@ -87,44 +87,63 @@
         <!--New Assignment-->
         <scene sceneID="WP3-pV-8x6">
             <objects>
-                <tableViewController id="xWQ-qw-jWg" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="UZf-Gs-LDf">
+                <tableViewController id="xWQ-qw-jWg" customClass="AddAssignmentTableViewController" customModule="MagnetHomeworkApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="UZf-Gs-LDf">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="n1t-Gf-wND">
-                                <rect key="frame" x="0.0" y="55.5" width="375" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="n1t-Gf-wND" id="6fq-Re-J3T">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Assignment name (e.g. Vocab 7)" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4Yi-sZ-kfX">
-                                            <rect key="frame" x="16" y="7" width="343" height="29.5"/>
-                                            <nil key="textColor"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                            <textInputTraits key="textInputTraits"/>
-                                        </textField>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstAttribute="trailing" secondItem="4Yi-sZ-kfX" secondAttribute="trailing" constant="16" id="4BF-QK-clT"/>
-                                        <constraint firstItem="4Yi-sZ-kfX" firstAttribute="leading" secondItem="6fq-Re-J3T" secondAttribute="leading" constant="16" id="WgI-Ue-2jM"/>
-                                        <constraint firstItem="4Yi-sZ-kfX" firstAttribute="top" secondItem="6fq-Re-J3T" secondAttribute="top" constant="7" id="bll-h1-yCn"/>
-                                        <constraint firstAttribute="bottom" secondItem="4Yi-sZ-kfX" secondAttribute="bottom" constant="7" id="jdv-cK-TGH"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
+                        <sections>
+                            <tableViewSection id="iI9-OP-3S3">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="n1t-Gf-wND">
+                                        <rect key="frame" x="0.0" y="35" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="n1t-Gf-wND" id="6fq-Re-J3T">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Assignment name (e.g. Vocab 7)" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4Yi-sZ-kfX">
+                                                    <rect key="frame" x="16" y="7" width="343" height="29.5"/>
+                                                    <nil key="textColor"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                    <connections>
+                                                        <action selector="textFieldTextChanged:" destination="xWQ-qw-jWg" eventType="editingDidEnd" id="Gtj-KY-52N"/>
+                                                    </connections>
+                                                </textField>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="4Yi-sZ-kfX" secondAttribute="trailing" constant="16" id="4BF-QK-clT"/>
+                                                <constraint firstItem="4Yi-sZ-kfX" firstAttribute="leading" secondItem="6fq-Re-J3T" secondAttribute="leading" constant="16" id="WgI-Ue-2jM"/>
+                                                <constraint firstItem="4Yi-sZ-kfX" firstAttribute="top" secondItem="6fq-Re-J3T" secondAttribute="top" constant="7" id="bll-h1-yCn"/>
+                                                <constraint firstAttribute="bottom" secondItem="4Yi-sZ-kfX" secondAttribute="bottom" constant="7" id="jdv-cK-TGH"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                        </sections>
                         <connections>
                             <outlet property="dataSource" destination="xWQ-qw-jWg" id="cZB-1E-Ht8"/>
                             <outlet property="delegate" destination="xWQ-qw-jWg" id="dXL-zh-ufX"/>
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="New Assignment" id="ePR-OC-KQh">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="Cvq-gV-PxI"/>
-                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="dfV-EF-Vbq"/>
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="Cvq-gV-PxI">
+                            <connections>
+                                <action selector="cancelButtonTapped:" destination="xWQ-qw-jWg" id="1r1-pn-Lrb"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="dfV-EF-Vbq">
+                            <connections>
+                                <action selector="saveButtonTapped:" destination="xWQ-qw-jWg" id="xaf-kg-WzD"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="saveButton" destination="dfV-EF-Vbq" id="DIN-m4-mu4"/>
+                        <outlet property="textField" destination="4Yi-sZ-kfX" id="KKN-1c-MLy"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="V0h-w9-S0n" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
