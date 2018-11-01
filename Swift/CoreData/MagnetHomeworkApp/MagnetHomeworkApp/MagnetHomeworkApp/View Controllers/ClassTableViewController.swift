@@ -33,7 +33,7 @@ class ClassTableViewController: UITableViewController {
             fetchRequest: fetchRequest,
             managedObjectContext: coreDataController.managedContext,
             sectionNameKeyPath: nil,
-            cacheName: "CloudMessage"
+            cacheName: "MagnetHomeworkApp"
         )
         
         fetchedResultsController.delegate = self
@@ -57,17 +57,34 @@ class ClassTableViewController: UITableViewController {
         tableView.rowHeight = 80
     }
     
-//    // MARK: - Navigation
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        // Add Assignment
-//        if let destinationViewController = segue.destination.childViewControllers.first as? AddClassTableViewController, segue.identifier == "AddClass" {
-//            destinationViewController.delegate = self
-//            destinationViewController.coreDataController = coreDataController
-//            destinationViewController.cloudController = cloudController
-//        } else if let destinationViewController = segue.destination as? AssignmentTableViewController, segue.identifier == "AssignmentTableView" {
-//
-//        }
-//    }
+    // MARK: - Navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Add Assignment
+        if let destinationViewController = segue.destination.children.first as? AddClassTableViewController, segue.identifier == "AddClass" {
+            destinationViewController.delegate = self
+            destinationViewController.coreDataController = coreDataController
+            destinationViewController.cloudController = cloudController
+        } else if let destinationViewController = segue.destination as? AssignmentTableViewController, segue.identifier == "AssignmentTableView" {
+            // (didSelectRowAtIndexPath is actually called after prepare(for:)
+            guard let indexPathForSelectedRow = tableView.indexPathForSelectedRow else { return }
+            
+            // Dependency injection of class
+            let selectedClass = fetchedResultsController.object(at: indexPathForSelectedRow)
+            destinationViewController.`class` = selectedClass
+            
+            // Dependency injection of cloud controller
+            destinationViewController.cloudController = cloudController
+            destinationViewController.coreDataController = coreDataController
+            
+            // Set self as delegate to reload rows when necessary (a message is added)
+            destinationViewController.delegate = self
+            
+            // Set th title
+            destinationViewController.navigationItem.title = selectedClass.name
+            
+            delegate = destinationViewController
+        }
+    }
 }
 
 // MARK: - Helper Methods
@@ -94,6 +111,8 @@ extension ClassTableViewController {
                 }
             }
         }
+        
+        // MARK: - Save Changes Block
         
         let saveChanges: ([CKRecord], [CKRecord.ID], DatabaseType) -> Void = { (recordsChanged, recordIDsDeleted, databaseType) in
             do {
@@ -324,6 +343,10 @@ extension ClassTableViewController: NSFetchedResultsControllerDelegate {
         case .move:
             tableView.moveRow(at: indexPath!, to: newIndexPath!)
         }
+    }
+    
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.endUpdates()
     }
 }
 

@@ -57,6 +57,13 @@ public class Class: NSManagedObject, CloudUploadable {
         self.name = name
         self.creationDate = NSDate()
         self.dateLastModified = NSDate()
+        self.encodedSystemFields = ckRecord.encoded()
+        self.isUserCreated = true
+        
+        for assignment in assignments {
+            self.addToAssignments(assignment)
+            assignment.owningClass = self
+        }
     }
     
     init(fromRecord record: CKRecord, managedContext: NSManagedObjectContext) {
@@ -86,15 +93,19 @@ public class Class: NSManagedObject, CloudUploadable {
     
     func generateRecord() {
         if let encodedSystemFields = self.encodedSystemFields {
-            let unarchiver = try! NSKeyedUnarchiver(forReadingFrom: encodedSystemFields)
-            unarchiver.requiresSecureCoding = true
-            let newCKRecord = CKRecord(coder: unarchiver)!
-            unarchiver.finishDecoding()
+            do {
+                let unarchiver = try NSKeyedUnarchiver(forReadingFrom: encodedSystemFields)
+                unarchiver.requiresSecureCoding = true
+                let newCKRecord = CKRecord(coder: unarchiver)!
+                unarchiver.finishDecoding()
             
-            newCKRecord["name"] = name as CKRecordValue?
-            newCKRecord["latestAssignment"] = latestAssignment as CKRecordValue
+                newCKRecord["name"] = name as CKRecordValue?
+                newCKRecord["latestAssignment"] = latestAssignment as CKRecordValue
             
-            self.ckRecord = newCKRecord
+                self.ckRecord = newCKRecord
+            } catch {
+                print("Error with NSKeyedUnarchiver in Class+CoreDataClass")
+            }
         } else {
             print("ERROR: Unable to reconstruct CKRecord from metadata; encodedSystemFields not found")
         }

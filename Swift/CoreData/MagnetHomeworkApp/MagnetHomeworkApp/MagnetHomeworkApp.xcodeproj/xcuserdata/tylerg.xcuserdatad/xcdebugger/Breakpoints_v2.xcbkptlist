@@ -9,14 +9,14 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "MagnetHomeworkApp/View Controllers/AddClassTableViewController.swift"
-            timestampString = "562656097.144266"
+            filePath = "MagnetHomeworkApp/Model/CKRecord+Helpers.swift"
+            timestampString = "562737265.7798769"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "26"
-            endingLineNumber = "26"
-            landmarkName = "AddClassTableViewController"
-            landmarkType = "3">
+            startingLineNumber = "17"
+            endingLineNumber = "17"
+            landmarkName = "encoded()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

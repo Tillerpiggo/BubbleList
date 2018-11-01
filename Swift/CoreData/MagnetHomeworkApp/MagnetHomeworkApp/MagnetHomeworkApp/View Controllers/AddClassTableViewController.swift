@@ -44,12 +44,13 @@ class AddClassTableViewController: UITableViewController {
     
     @IBAction func textFieldTextChanged(_ sender: UITextField) {
         updateSaveButton()
+        print("Text Field Text Changed")
     }
     
     // MARK: - Helper Methods
     
     private func save() {
-        let newClass = Class(withName: nameTextField.text!, managedContext: coreDataController.managedContext, zoneID: cloudController.zoneID)
+        let newClass = Class(withName: nameTextField.text ?? "", managedContext: coreDataController.managedContext, zoneID: cloudController.zoneID)
         delegate?.addedClass(newClass)
     }
     
