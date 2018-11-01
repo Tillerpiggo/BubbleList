@@ -26,12 +26,12 @@ class CoreDataController {
         }
     }
     
-    func fetchConversations(completion: @escaping ([Class]) -> Void) {
+    func fetchClasses(completion: @escaping ([Class]) -> Void) {
         let fetchRequest: NSFetchRequest<Class> = Class.fetchRequest()
         
         let asyncFetchRequest = NSAsynchronousFetchRequest<Class>(fetchRequest: fetchRequest) { (result) in
-            guard let conversations = result.finalResult else { return }
-            completion(conversations)
+            guard let classes = result.finalResult else { return }
+            completion(classes)
         }
         
         do {
@@ -43,12 +43,12 @@ class CoreDataController {
     
     func fetchMessages(completion: @escaping ([Assignment]) -> Void) {
 //        let fetchRequest: NSFetchRequest<Assignment> = Assignment.fetchRequest() as! NSFetchRequest<Assignment>
-//        
+//
 //        let asyncFetchRequest = NSAsynchronousFetchRequest<Assignment>(fetchRequest: fetchRequest) { (result) in
 //            guard let messages = result.finalResult else { return }
 //            completion(messages)
 //        }
-//        
+//
 //        do {
 //            try coreDataStack.managedContext.execute(asyncFetchRequest)
 //        } catch let error as NSError {

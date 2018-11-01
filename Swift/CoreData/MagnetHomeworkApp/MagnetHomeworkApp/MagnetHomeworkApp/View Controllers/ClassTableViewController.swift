@@ -76,7 +76,7 @@ class ClassTableViewController: UITableViewController {
             destinationViewController.cloudController = cloudController
             destinationViewController.coreDataController = coreDataController
             
-            // Set self as delegate to reload rows when necessary (a message is added)
+            // Set self as delegate to reload rows when necessary (a assignment is added)
             destinationViewController.delegate = self
             
             // Set th title
@@ -118,7 +118,7 @@ extension ClassTableViewController {
             do {
                 try self.fetchedResultsController.performFetch()
             } catch let error as NSError {
-                print("Error fetching conversations: \(error)")
+                print("Error fetching classes: \(error)")
             }
             
             print("Number of records changed: \(recordsChanged.count)")
@@ -139,7 +139,7 @@ extension ClassTableViewController {
                 if let index = self.fetchedResultsController.fetchedObjects?.index(where: { $0.ckRecord.recordID == record.recordID }) {
                     didFetchRecords = true
                     
-                    print("Modified conversation from ConversationTableViewController (from Cloud)")
+                    print("Modified class from ClassTableViewController (from Cloud)")
                     
                     self.fetchedResultsController.fetchedObjects?[index].update(withRecord: record)
                     DispatchQueue.main.async { self.coreDataController.save() }
@@ -148,7 +148,7 @@ extension ClassTableViewController {
                     
                     let newClass = Class(fromRecord: record, managedContext: self.coreDataController.managedContext)
                     
-                    print("Added conversation from ConversationTableViewController (from Cloud). Title: \(newClass.name ?? "Untitled")")
+                    print("Added class from ClassTableViewController (from Cloud). Title: \(newClass.name ?? "Untitled")")
                     
                     switch databaseType {
                     case .private:
@@ -161,7 +161,7 @@ extension ClassTableViewController {
                 } else if record.recordType == "Assignment" {
                     didFetchRecords = true
                     
-                    print("Added message from ClassTableViewController (from Cloud)")
+                    print("Added assignment from ClassTableViewController (from Cloud)")
                     
                     if let `class` = self.fetchedResultsController.fetchedObjects?.first(where: { record["owningClass"] as? CKRecord.Reference == CKRecord.Reference(record: $0.ckRecord, action: .deleteSelf) }),
                         let assignments = `class`.assignmentArray {
@@ -175,8 +175,8 @@ extension ClassTableViewController {
                         
                         `class`.dateLastModified = NSDate()
                     } else {
-                        print("ERR: Couldn't find owning conversation of MagnetHomeworkApp while applying changes.")
-                        print("Message: \(String(describing: record["text"] as? String))")
+                        print("ERR: Couldn't find owning class of MagnetHomeworkApp while applying changes.")
+                        print("Assignment: \(String(describing: record["text"] as? String))")
                     }
                 } else {
                     print("CloudKit.Share received. Do nohting.")
@@ -186,7 +186,7 @@ extension ClassTableViewController {
             }
             
             for recordID in recordIDsDeleted {
-                print("Number of objects fetched: \(self.fetchedResultsController.fetchedObjects?.count ?? 0)")
+                print("Number of objects fetched to be deleted: \(self.fetchedResultsController.fetchedObjects?.count ?? 0)")
                 
                 if let deletedClass = self.fetchedResultsController.fetchedObjects?.first(where: { $0.ckRecord.recordID == recordID }) {
                     didFetchRecords = true
@@ -300,12 +300,12 @@ extension ClassTableViewController {
             
             // Delete from cloud
             cloudController.delete([deletedClass], inDatabase: .private) {
-                print("Deleted Conversation!")
+                print("Deleted Class!")
                 // Delete from core data
                 self.coreDataController.delete(deletedClass)
                 
                 if let deletedAssignments = deletedClass.assignments?.array as? [Assignment] {
-                    // Delete all cloud messages
+                    // Delete all cloud assignments
                     for assignment in deletedAssignments {
                         self.coreDataController.delete(assignment)
                     }
@@ -371,7 +371,7 @@ extension ClassTableViewController: AssignmentTableViewControllerDelegate {
 }
 
 
-// MARK: - Add Conversation Delegate
+// MARK: - Add Class Delegate
 
 extension ClassTableViewController: AddClassTableViewControllerDelegate {
     func addedClass(_ `class`: Class) {

@@ -126,7 +126,7 @@ class CloudController {
             operation.database = sharedDatabase
         }
         
-        // Map conversations to records
+        // Map classes to records
         let recordsToSave = cloudUploadables.map() { $0.ckRecord }
         operation.recordsToSave = recordsToSave
         operation.qualityOfService = .userInitiated
@@ -147,10 +147,10 @@ class CloudController {
                         oldObject.update(withRecord: serverRecord)
                     }
                 case .zoneNotFound:
-                    // TODO: Notify users that the conversation/class no longer exists.
+                    // TODO: Notify users that the class/assignment no longer exists.
                     print("Zone not found in CloudController.save(_:completion:) operation.")
                 case .unknownItem:
-                    // TODO: Notify users that the conversation/class no longer exists
+                    // TODO: Notify users that the class/assignment no longer exists
                     print("Record not found in CloudController.save(_:completion:) operation. - this shouldn't happen, it should just append the record to the database.")
                 case .batchRequestFailed:
                     // Note: probably doesn't work
@@ -204,7 +204,7 @@ class CloudController {
             operation.database = sharedDatabase
         }
         
-        // Map conversations to recordIDs
+        // Map classes to recordIDs
         let recordIDsToDelete = cloudUploadables.map { $0.ckRecord.recordID }
         operation.recordIDsToDelete = recordIDsToDelete
         
@@ -218,7 +218,7 @@ class CloudController {
         }
         operation.qualityOfService = .userInitiated
         
-        // Check if the record is in a conversation the user actually owns or not, and delete it in the private or shared database... for now, do both, because it will simply ignore it if the record isn't found
+        // Check if the record is in a class the user actually owns or not, and delete it in the private or shared database... for now, do both, because it will simply ignore it if the record isn't found
         operationQueue.addOperation(operation)
     }
     
@@ -293,7 +293,7 @@ class CloudController {
         
         // Initialize subscription
         let subscription = CKQuerySubscription(
-            recordType: RecordType.message.cloudValue,
+            recordType: RecordType.assignment.cloudValue,
             predicate: predicate,
             subscriptionID: subscriptionID,
             options: [.firesOnRecordCreation])
@@ -302,7 +302,7 @@ class CloudController {
         // Configure silent push notifications
         let notificationInfo = CKSubscription.NotificationInfo()
         notificationInfo.shouldSendContentAvailable = true
-        notificationInfo.alertBody = "Something was updated in CloudMessage!"
+        notificationInfo.alertBody = "Something was updated in MagnetHomeworkApp!"
         notificationInfo.shouldBadge = true
         notificationInfo.soundName = "default"
         subscription.notificationInfo = notificationInfo
@@ -323,7 +323,7 @@ class CloudController {
                         print("Handling error by retrying...")
                         let delayTime = DispatchTime.now() + retryAfterValue
                         DispatchQueue.main.asyncAfter(deadline: delayTime) {
-                            self.saveSubscription(for: RecordType.message.cloudValue, inDatabase: .shared, completion: completion)
+                            self.saveSubscription(for: RecordType.assignment.cloudValue, inDatabase: .shared, completion: completion)
                             print("HANDLED ERROR BY RETRYING REQUEST")
                         }
                     }
@@ -348,7 +348,7 @@ class CloudController {
         
         let notificationInfo = CKSubscription.NotificationInfo()
         notificationInfo.shouldSendContentAvailable = true
-        notificationInfo.alertBody = "Got a message from the Cloud!"
+        notificationInfo.alertBody = "Got a assignment from the Cloud!"
         notificationInfo.shouldBadge = true
         notificationInfo.soundName = "default"
         subscription.notificationInfo = notificationInfo
@@ -650,8 +650,8 @@ class CloudController {
     init() {
         if !subscribedToChanges { // If there is no "!" before "subscribedToChanges", then I'm testing because I changed the subscriptions
             print("Subscribing to changes...")
-            saveSubscription(for: "Conversation", inDatabase: .private) { }
-            saveSubscription(for: "Message", inDatabase: .private) { }
+            saveSubscription(for: "Class", inDatabase: .private) { }
+            saveSubscription(for: "Assignment", inDatabase: .private) { }
             saveSharedSubscription() { }
             print("Subscribed to changes")
             //saveNotificationSubscription { print("Saved notification subscription. Should receive notifications when somebody else adds something to the cloud database.")}

@@ -78,7 +78,7 @@ class AssignmentTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Multiple lines per message
+        // Multiple lines per assignment
         tableView.rowHeight = UITableView.automaticDimension
     }
 
@@ -143,7 +143,7 @@ extension AssignmentTableViewController {
 
 extension AssignmentTableViewController: AddAssignmentTableViewControllerDelegate {
     func addedAssignment(_ assignment: Assignment) {
-        print("Message added by AssignmentTableViewController (from user input)")
+        print("Assignment added by AssignmentTableViewController (from user input)")
         
         // Modify model
         `class`.addToAssignments(assignment)

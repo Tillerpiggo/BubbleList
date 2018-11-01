@@ -72,12 +72,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func application(_ application: UIApplication, userDidAcceptCloudKitShareWith cloudKitShareMetadata: CKShare.Metadata) {
         cloudController.acceptShare(withShareMetadata: cloudKitShareMetadata) {
             self.notificationDelegate?.fetchChanges() { _ in
-                // TODO: Send the user to tyhe approriate location (the new conversation)
+                // TODO: Send the user to tyhe approriate location (the new class)
                 DispatchQueue.main.async {
                     if let navigationController = self.window?.rootViewController as? UINavigationController,
                         let classTableViewController = navigationController.topViewController as? ClassTableViewController {
                         // classTableViewController.openClass(withRecordID: cloudKitShareMetadata.rootRecordID)
-                        print("Tried to open conversation (not currently implemented)")
+                        print("Tried to open class (not currently implemented)")
                     }
                     
                 }
