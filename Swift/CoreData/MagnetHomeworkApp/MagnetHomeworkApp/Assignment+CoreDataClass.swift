@@ -86,7 +86,7 @@ public class Assignment: NSManagedObject, CloudUploadable {
             
             self.ckRecord = newCKRecord
         } else {
-            print("ERROR: Unable to reconstruct CKRecord from metadata; encodedSystemFields not found")
+            print("ERROR: Unable to reconstruct CKRecord from metadata (Assignment); encodedSystemFields not found")
         }
     }
 }

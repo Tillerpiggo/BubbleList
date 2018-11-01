@@ -11,11 +11,10 @@ import CloudKit
 
 extension CKRecord {
     func encoded() -> Data {
-        let data = NSMutableData()
         let archiver = NSKeyedArchiver(requiringSecureCoding: true)
         encodeSystemFields(with: archiver)
         archiver.finishEncoding()
-        return data as Data
+        return archiver.encodedData as Data
     }
 }
 

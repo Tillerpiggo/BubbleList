@@ -29,6 +29,8 @@ class AddClassTableViewController: UITableViewController {
         super.viewDidLoad()
         
         nameTextField.becomeFirstResponder()
+        
+        updateSaveButton()
     }
     
     // MARK:- IBActions
@@ -58,7 +60,6 @@ class AddClassTableViewController: UITableViewController {
         let nameText = nameTextField.text ?? ""
         saveButton.isEnabled = !nameText.isEmpty
     }
-    
     
     // MARK: - Table View
     

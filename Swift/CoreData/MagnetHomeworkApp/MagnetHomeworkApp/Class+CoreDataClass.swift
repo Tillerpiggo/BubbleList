@@ -42,8 +42,8 @@ public class Class: NSManagedObject, CloudUploadable {
     
     init(withName name: String, assignments: [Assignment] = [Assignment](), managedContext: NSManagedObjectContext, zoneID: CKRecordZone.ID) {
         // Create entity
-        let conversationDescription = NSEntityDescription.entity(forEntityName: "Class", in: managedContext)
-        super.init(entity: conversationDescription!, insertInto: managedContext)
+        let classDescription = NSEntityDescription.entity(forEntityName: "Class", in: managedContext)
+        super.init(entity: classDescription!, insertInto: managedContext)
         
         // Configure CKRecord
         let recordName = UUID().uuidString
@@ -104,10 +104,10 @@ public class Class: NSManagedObject, CloudUploadable {
             
                 self.ckRecord = newCKRecord
             } catch {
-                print("Error with NSKeyedUnarchiver in Class+CoreDataClass")
+                print("ERROR: Something went wrong with NSKeyedUnarchiver in Class+CoreDataClass")
             }
         } else {
-            print("ERROR: Unable to reconstruct CKRecord from metadata; encodedSystemFields not found")
+            print("ERROR: Unable to reconstruct CKRecord from metadata (Class); encodedSystemFields not found")
         }
     }
 }

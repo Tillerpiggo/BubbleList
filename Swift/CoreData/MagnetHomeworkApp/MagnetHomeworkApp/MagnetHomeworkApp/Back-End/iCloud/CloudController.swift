@@ -20,7 +20,7 @@ class CloudController {
     var privateDatabase = CKContainer.default().privateCloudDatabase
     var sharedDatabase = CKContainer.default().sharedCloudDatabase
     
-    let zoneID = CKRecordZone.ID(zoneName: "CloudMessage", ownerName: CKCurrentUserDefaultName)
+    let zoneID = CKRecordZone.ID(zoneName: "MagnetHomeworkApp", ownerName: CKCurrentUserDefaultName)
     
     let operationQueue = OperationQueue.main
     

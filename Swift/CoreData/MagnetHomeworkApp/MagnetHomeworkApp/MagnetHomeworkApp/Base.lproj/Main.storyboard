@@ -49,7 +49,7 @@
         <!--Class Name-->
         <scene sceneID="NdN-in-Lqu">
             <objects>
-                <tableViewController id="ggM-QS-hVL" sceneMemberID="viewController">
+                <tableViewController id="ggM-QS-hVL" customClass="AssignmentTableViewController" customModule="MagnetHomeworkApp" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="sUR-Sn-ytF">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -106,9 +106,9 @@
                                                     <rect key="frame" x="16" y="7" width="343" height="29.5"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                     <connections>
-                                                        <action selector="textFieldTextChanged:" destination="xWQ-qw-jWg" eventType="editingDidEnd" id="Gtj-KY-52N"/>
+                                                        <action selector="textFieldTextChanged:" destination="xWQ-qw-jWg" eventType="editingChanged" id="b4k-xB-bBQ"/>
                                                     </connections>
                                                 </textField>
                                             </subviews>
@@ -190,7 +190,7 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
                                                     <connections>
-                                                        <action selector="textFieldTextChanged:" destination="sZx-Av-RD0" eventType="editingDidEnd" id="Vfg-n0-YtY"/>
+                                                        <action selector="textFieldTextChanged:" destination="sZx-Av-RD0" eventType="editingChanged" id="iDB-A0-CLe"/>
                                                     </connections>
                                                 </textField>
                                             </subviews>

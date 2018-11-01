@@ -63,7 +63,7 @@ class AddAssignmentTableViewController: UITableViewController {
     // MARK: - Helper Methods
     
     private func save() {
-        let zoneID = owningClass.isUserCreated ? cloudController.zoneID : owningClass.ckRecord.recordID.zoneID
+        let zoneID = owningClass.ckRecord.recordID.zoneID
         let newAssignment = Assignment(withText: textField.text ?? "", managedContext: coreDataController.managedContext, owningClass: owningClass.ckRecord, zoneID: zoneID)
         delegate?.addedAssignment(newAssignment)
     }
