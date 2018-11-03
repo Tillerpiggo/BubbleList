@@ -41,7 +41,7 @@ public class Assignment: NSManagedObject, CloudUploadable {
         // Create CKRecord
         let recordName = UUID().uuidString
         let recordID = CKRecord.ID(recordName: recordName, zoneID: zoneID)
-        let newCKRecord = CKRecord(recordType: "Class", recordID: recordID)
+        let newCKRecord = CKRecord(recordType: "Assignment", recordID: recordID)
         newCKRecord["text"] = text as CKRecordValue
         let owningClassReference = CKRecord.Reference(record: owningClass, action: .deleteSelf)
         newCKRecord["owningClass"] = owningClassReference as CKRecordValue

@@ -158,6 +158,8 @@ extension AssignmentTableViewController: AddAssignmentTableViewControllerDelegat
         
         let databaseType: DatabaseType = `class`.isUserCreated ? .private : .shared
         
+        print("ClassNameToSave: \(self.`class`.ckRecord["name"] as String?)")
+        
         // Save to the Cloud
         cloudController.save([assignment, self.`class`], inDatabase: databaseType, recordChanged: { (updatedRecord) in
             if updatedRecord.recordType == "Assignment" {

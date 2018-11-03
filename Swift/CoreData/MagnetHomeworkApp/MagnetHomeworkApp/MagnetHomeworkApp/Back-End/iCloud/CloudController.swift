@@ -88,7 +88,10 @@ class CloudController {
             }
         }
         set {
-            guard let newValue = newValue else { return }
+            guard let newValue = newValue else {
+                UserDefaults.standard.set(nil, forKey: "privateZoneChangeToken")
+                return
+            }
             
             let data = try? NSKeyedArchiver.archivedData(withRootObject: newValue, requiringSecureCoding: true)
             UserDefaults.standard.set(data, forKey: "privateZoneChangeToken")
@@ -105,7 +108,10 @@ class CloudController {
             }
         }
         set {
-            guard let newValue = newValue else { return }
+            guard let newValue = newValue else {
+                UserDefaults.standard.set(nil, forKey: "sharedZoneChangeToken")
+                return
+            }
             
             let data = try? NSKeyedArchiver.archivedData(withRootObject: newValue, requiringSecureCoding: true)
             UserDefaults.standard.set(data, forKey: "sharedZoneChangeToken")
@@ -130,6 +136,11 @@ class CloudController {
         let recordsToSave = cloudUploadables.map() { $0.ckRecord }
         operation.recordsToSave = recordsToSave
         operation.qualityOfService = .userInitiated
+        
+        for record in recordsToSave {
+            print("RecordToSave: \(record["name"] as String?)")
+            print("AssignmentName?: \(record["text"] as String?)")
+        }
         
         operation.modifyRecordsCompletionBlock = { (records, recordIDs, error) in
             
@@ -283,61 +294,61 @@ class CloudController {
         operationQueue.addOperation(operation)
     }
     
-    func saveNotificationSubscription(completion: @escaping () -> Void) {
-        // Create and save a silent push subscription in order to be updated:
-        let subscriptionID = "cloudkit-otheruser-changes"
-        print("Subscription ID: \(subscriptionID)")
-        
-        // Notify for all chnages
-        let predicate = NSPredicate(value: true)
-        
-        // Initialize subscription
-        let subscription = CKQuerySubscription(
-            recordType: RecordType.assignment.cloudValue,
-            predicate: predicate,
-            subscriptionID: subscriptionID,
-            options: [.firesOnRecordCreation])
-        
-        
-        // Configure silent push notifications
-        let notificationInfo = CKSubscription.NotificationInfo()
-        notificationInfo.shouldSendContentAvailable = true
-        notificationInfo.alertBody = "Something was updated in MagnetHomeworkApp!"
-        notificationInfo.shouldBadge = true
-        notificationInfo.soundName = "default"
-        subscription.notificationInfo = notificationInfo
-        
-        
-        // Configure subscription operation
-        let operation = CKModifySubscriptionsOperation(subscriptionsToSave: [subscription], subscriptionIDsToDelete: [])
-        
-        operation.database = sharedDatabase
-        
-        operation.modifySubscriptionsCompletionBlock = { (_, _, error) in
-            print("Succesfully added subscription")
-            
-            if let zoneID = subscription.zoneID, let ckError = ErrorHandler.handleCloudKitError(error, operation: .modifySubscriptions, affectedObjects: [zoneID]) {
-                switch ckError.code {
-                case .serviceUnavailable, .requestRateLimited, .zoneBusy:
-                    if let retryAfterValue = ckError.userInfo[CKErrorRetryAfterKey] as? Double {
-                        print("Handling error by retrying...")
-                        let delayTime = DispatchTime.now() + retryAfterValue
-                        DispatchQueue.main.asyncAfter(deadline: delayTime) {
-                            self.saveSubscription(for: RecordType.assignment.cloudValue, inDatabase: .shared, completion: completion)
-                            print("HANDLED ERROR BY RETRYING REQUEST")
-                        }
-                    }
-                default:
-                    break
-                }
-            } else {
-                completion()
-            }
-        }
-        operation.qualityOfService = .userInitiated
-        
-        operationQueue.addOperation(operation)
-    }
+//    func saveNotificationSubscription(completion: @escaping () -> Void) {
+//        // Create and save a silent push subscription in order to be updated:
+//        let subscriptionID = "cloudkit-otheruser-changes"
+//        print("Subscription ID: \(subscriptionID)")
+//
+//        // Notify for all chnages
+//        let predicate = NSPredicate(value: true)
+//
+//        // Initialize subscription
+//        let subscription = CKQuerySubscription(
+//            recordType: RecordType.assignment.cloudValue,
+//            predicate: predicate,
+//            subscriptionID: subscriptionID,
+//            options: [.firesOnRecordCreation])
+//
+//
+//        // Configure silent push notifications
+//        let notificationInfo = CKSubscription.NotificationInfo()
+//        notificationInfo.shouldSendContentAvailable = true
+//        notificationInfo.alertBody = "Something was updated in MagnetHomeworkApp!"
+//        notificationInfo.shouldBadge = true
+//        notificationInfo.soundName = "default"
+//        subscription.notificationInfo = notificationInfo
+//
+//
+//        // Configure subscription operation
+//        let operation = CKModifySubscriptionsOperation(subscriptionsToSave: [subscription], subscriptionIDsToDelete: [])
+//
+//        operation.database = sharedDatabase
+//
+//        operation.modifySubscriptionsCompletionBlock = { (_, _, error) in
+//            print("Succesfully added subscription")
+//
+//            if let zoneID = subscription.zoneID, let ckError = ErrorHandler.handleCloudKitError(error, operation: .modifySubscriptions, affectedObjects: [zoneID]) {
+//                switch ckError.code {
+//                case .serviceUnavailable, .requestRateLimited, .zoneBusy:
+//                    if let retryAfterValue = ckError.userInfo[CKErrorRetryAfterKey] as? Double {
+//                        print("Handling error by retrying...")
+//                        let delayTime = DispatchTime.now() + retryAfterValue
+//                        DispatchQueue.main.asyncAfter(deadline: delayTime) {
+//                            self.saveSubscription(for: RecordType.assignment.cloudValue, inDatabase: .shared, completion: completion)
+//                            print("HANDLED ERROR BY RETRYING REQUEST")
+//                        }
+//                    }
+//                default:
+//                    break
+//                }
+//            } else {
+//                completion()
+//            }
+//        }
+//        operation.qualityOfService = .userInitiated
+//
+//        operationQueue.addOperation(operation)
+//    }
     
     func saveSharedSubscription(completion: @escaping () -> Void) {
         // Create and save a silent push subscription in order to be updated:
@@ -473,21 +484,21 @@ class CloudController {
         var deletedRecordIDs: [CKRecord.ID] = []
         
         // Look up the previous change token for each zone
-        var optionsByRecordZoneID = [CKRecordZone.ID: CKFetchRecordZoneChangesOperation.ZoneConfiguration]()
+        var configurationsByRecordZoneID = [CKRecordZone.ID: CKFetchRecordZoneChangesOperation.ZoneConfiguration]()
         for zoneID in zoneIDs {
-            let options = CKFetchRecordZoneChangesOperation.ZoneConfiguration()
+            let configuration = CKFetchRecordZoneChangesOperation.ZoneConfiguration()
             switch databaseType {
             case .private:
-                options.previousServerChangeToken = self.privateZoneChangeToken
+                configuration.previousServerChangeToken = self.privateZoneChangeToken
             case .shared:
-                options.previousServerChangeToken = self.sharedZoneChangeToken
+                configuration.previousServerChangeToken = self.sharedZoneChangeToken
             }
-            optionsByRecordZoneID[zoneID] = options
+            configurationsByRecordZoneID[zoneID] = configuration
         }
         
         
         
-        let operation = CKFetchRecordZoneChangesOperation(recordZoneIDs: zoneIDs, configurationsByRecordZoneID: optionsByRecordZoneID)
+        let operation = CKFetchRecordZoneChangesOperation(recordZoneIDs: zoneIDs, configurationsByRecordZoneID: configurationsByRecordZoneID)
         operation.fetchAllChanges = true
         
         switch databaseType {
@@ -649,7 +660,9 @@ class CloudController {
     
     init() {
         if !subscribedToChanges { // If there is no "!" before "subscribedToChanges", then I'm testing because I changed the subscriptions
+            removeAllSubscriptions()
             print("Subscribing to changes...")
+            // TODO: Group these together to use less subscription saving opersations
             saveSubscription(for: "Class", inDatabase: .private) { }
             saveSubscription(for: "Assignment", inDatabase: .private) { }
             saveSharedSubscription() { }

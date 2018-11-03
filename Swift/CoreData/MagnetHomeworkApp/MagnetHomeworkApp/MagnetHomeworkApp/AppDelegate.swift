@@ -49,13 +49,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping(UIBackgroundFetchResult) -> Void) {
-        print("Received notification!")
-        
+
         let notification = CKNotification(fromRemoteNotificationDictionary: userInfo)
         
         var didReceiveData: Bool = false
         
-        if notification.subscriptionID == "cloudkit-privateClass-changes" || notification.subscriptionID == "cloudkit-privateAssignment-changes" || notification.subscriptionID == "cloudkit-sharedClass-changes" || notification.subscriptionID == "cloudkit-sharedAssignment-changes" || notification.subscriptionID == "cloudkit-sharedDatabase-changes" {
+        print("Received notification: \(notification.subscriptionID)")
+        
+        if notification.subscriptionID == "cloudkit-privateClass-changes" || notification.subscriptionID == "cloudkit-privateAssignment-changes" || notification.subscriptionID == "cloudkit-sharedDatabase-changes" {
             notificationDelegate?.fetchChanges() { (didFetchRecords) in
                 if !didReceiveData {
                     completionHandler(.noData)
@@ -110,10 +111,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-        
-        self.notificationDelegate?.fetchChanges() { _ in
-            print("Fetched changes due to becoming active")
-        }
+        self.notificationDelegate?.fetchChanges() { _ in }
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
