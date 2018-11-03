@@ -22,4 +22,5 @@ extension Assignment {
     @NSManaged public var encodedSystemFields: Data?
     @NSManaged public var text: String?
     @NSManaged public var owningClass: Class?
+    @NSManaged public var toDo: ToDo?
 }

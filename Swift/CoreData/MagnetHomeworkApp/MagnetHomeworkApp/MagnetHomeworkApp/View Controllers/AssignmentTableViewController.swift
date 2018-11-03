@@ -160,23 +160,45 @@ extension AssignmentTableViewController: AddAssignmentTableViewControllerDelegat
         
         print("ClassNameToSave: \(self.`class`.ckRecord["name"] as String?)")
         
-        // Save to the Cloud
-        cloudController.save([assignment, self.`class`], inDatabase: databaseType, recordChanged: { (updatedRecord) in
-            if updatedRecord.recordType == "Assignment" {
-                assignment.update(withRecord: updatedRecord)
-            } else {
-                self.`class`.update(withRecord: updatedRecord)
+        if databaseType == .private {
+            // Save to the Cloud
+            cloudController.save([assignment, assignment.toDo!, self.`class`], inDatabase: databaseType, recordChanged: { (updatedRecord) in
+                if updatedRecord.recordType == "Assignment" {
+                    assignment.update(withRecord: updatedRecord)
+                } else if updatedRecord.recordType == "ToDo" {
+                    assignment.toDo?.update(withRecord: updatedRecord)
+                } else {
+                    self.`class`.update(withRecord: updatedRecord)
+                }
+            }) { (error) in
+                guard let error = error as? CKError else { return }
+                switch error.code {
+                case .requestRateLimited, .zoneBusy, .serviceUnavailable:
+                    break
+                default:
+                    self.coreDataController.delete(assignment)
+                    DispatchQueue.main.async {
+                        self.alertUserOfFailure()
+                        self.coreDataController.save()
+                    }
+                }
             }
-        }) { (error) in
-            guard let error = error as? CKError else { return }
-            switch error.code {
-            case .requestRateLimited, .zoneBusy, .serviceUnavailable:
-                break
-            default:
-                self.coreDataController.delete(assignment)
-                DispatchQueue.main.async {
-                    self.alertUserOfFailure()
-                    self.coreDataController.save()
+        } else {
+            // Save to the Cloud
+            // Save to the Cloud
+            cloudController.save([assignment.toDo!], inDatabase: .private, recordChanged: { (updatedRecord) in
+                assignment.toDo?.update(withRecord: updatedRecord)
+            }) { (error) in
+                guard let error = error as? CKError else { return }
+                switch error.code {
+                case .requestRateLimited, .zoneBusy, .serviceUnavailable:
+                    break
+                default:
+                    self.coreDataController.delete(assignment)
+                    DispatchQueue.main.async {
+                        self.alertUserOfFailure()
+                        self.coreDataController.save()
+                    }
                 }
             }
         }

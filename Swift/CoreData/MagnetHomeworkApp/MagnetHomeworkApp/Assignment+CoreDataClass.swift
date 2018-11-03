@@ -22,6 +22,8 @@ public class Assignment: NSManagedObject, CloudUploadable {
 
         let formattedTimestamp = dateFormatter.string(from: creationDate! as Date)
         return formattedTimestamp
+        
+        // TODO: Change to fit prototype
     }
     
     private override init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?) {
@@ -29,7 +31,7 @@ public class Assignment: NSManagedObject, CloudUploadable {
         generateRecord()
     }
     
-    init(withText text: String, managedContext: NSManagedObjectContext, owningClass: CKRecord, zoneID: CKRecordZone.ID) {
+    init(withText text: String, managedContext: NSManagedObjectContext, owningClass: CKRecord, zoneID: CKRecordZone.ID, toDoZoneID: CKRecordZone.ID) {
         let assignmentDescription = NSEntityDescription.entity(forEntityName: "Assignment", in: managedContext)
         super.init(entity: assignmentDescription!, insertInto: managedContext)
         
@@ -37,6 +39,7 @@ public class Assignment: NSManagedObject, CloudUploadable {
         self.text = text
         self.creationDate = NSDate()
         self.dateLastModified = NSDate()
+        self.toDo = ToDo(isCompleted: false, managedContext: managedContext, assignment: self, zoneID: toDoZoneID)
         
         // Create CKRecord
         let recordName = UUID().uuidString
@@ -51,7 +54,7 @@ public class Assignment: NSManagedObject, CloudUploadable {
         self.encodedSystemFields = newCKRecord.encoded()
     }
     
-    init(fromRecord record: CKRecord, managedContext: NSManagedObjectContext) {
+    init(fromRecord record: CKRecord, managedContext: NSManagedObjectContext, toDoZoneID: CKRecordZone.ID) {
         let assignmentDescription = NSEntityDescription.entity(forEntityName: "Assignment", in: managedContext)
         super.init(entity: assignmentDescription!, insertInto: managedContext)
         
@@ -60,6 +63,7 @@ public class Assignment: NSManagedObject, CloudUploadable {
         self.creationDate = record.creationDate! as NSDate
         self.dateLastModified = record.modificationDate! as NSDate
         self.encodedSystemFields = record.encoded()
+        self.toDo = ToDo(isCompleted: false, managedContext: managedContext, assignment: self, zoneID: toDoZoneID)
         
         // Set CKRecord
         self.ckRecord = record
@@ -70,6 +74,7 @@ public class Assignment: NSManagedObject, CloudUploadable {
         self.creationDate = record.creationDate! as NSDate
         self.dateLastModified = record.modificationDate! as NSDate
         self.encodedSystemFields = record.encoded()
+        // Not the responsibility of the Assignment to find the corresponding to-do if it changes
         
         self.ckRecord = record
     }

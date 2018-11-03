@@ -168,7 +168,7 @@ extension ClassTableViewController {
                         if let assignment = assignments.first(where: { $0.ckRecord.recordID == record.recordID }) {
                             assignment.update(withRecord: record)
                         } else {
-                            let assignment = Assignment(fromRecord: record, managedContext: self.coreDataController.managedContext)
+                            let assignment = Assignment(fromRecord: record, managedContext: self.coreDataController.managedContext, toDoZoneID: self.cloudController.zoneID)
                             `class`.addToAssignments(assignment)
                             assignment.owningClass = `class`
                         }
@@ -178,8 +178,20 @@ extension ClassTableViewController {
                         print("ERR: Couldn't find owning class of MagnetHomeworkApp while applying changes.")
                         print("Assignment: \(String(describing: record["text"] as? String))")
                     }
+                } else if record.recordType == "ToDo" {
+                    didFetchRecords = true
+                    
+                    print("Added to-do from ClassTableViewController (from Cloud)")
+                    
+                    if let `class` = self.fetchedResultsController.fetchedObjects?.first(where: { record["classRecordName"] as? String == $0.ckRecord.recordID.recordName }), let assignments = `class`.assignmentArray {
+                        if let assignment = assignments.first(where: { $0.ckRecord.recordID.recordName == record["assignmentRecordName"] as? String }) {
+                            assignment.toDo?.update(withRecord: record)
+                        } else {
+                            // TODO: figure out what to do... maybe delete the todo?
+                        }
+                    }
                 } else {
-                    print("CloudKit.Share received. Do nohting.")
+                    print("CloudKit.Share received. Do nothing.")
                 }
                 
                 DispatchQueue.main.sync { self.coreDataController.save() }
