@@ -665,9 +665,9 @@ class CloudController {
             // TODO: Group these together to use less subscription saving opersations
             saveSubscription(for: "Class", inDatabase: .private) { }
             saveSubscription(for: "Assignment", inDatabase: .private) { }
+            saveSubscription(for: "ToDo", inDatabase: .private) { }
             saveSharedSubscription() { }
             print("Subscribed to changes")
-            //saveNotificationSubscription { print("Saved notification subscription. Should receive notifications when somebody else adds something to the cloud database.")}
         }
         subscribedToChanges = true
         

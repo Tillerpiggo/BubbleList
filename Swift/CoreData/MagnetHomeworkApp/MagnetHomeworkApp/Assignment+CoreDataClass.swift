@@ -31,7 +31,7 @@ public class Assignment: NSManagedObject, CloudUploadable {
         generateRecord()
     }
     
-    init(withText text: String, managedContext: NSManagedObjectContext, owningClass: CKRecord, zoneID: CKRecordZone.ID, toDoZoneID: CKRecordZone.ID) {
+    init(withText text: String, managedContext: NSManagedObjectContext, owningClass: Class, zoneID: CKRecordZone.ID, toDoZoneID: CKRecordZone.ID) {
         let assignmentDescription = NSEntityDescription.entity(forEntityName: "Assignment", in: managedContext)
         super.init(entity: assignmentDescription!, insertInto: managedContext)
         
@@ -39,22 +39,24 @@ public class Assignment: NSManagedObject, CloudUploadable {
         self.text = text
         self.creationDate = NSDate()
         self.dateLastModified = NSDate()
-        self.toDo = ToDo(isCompleted: false, managedContext: managedContext, assignment: self, zoneID: toDoZoneID)
+        self.owningClass = owningClass
         
         // Create CKRecord
         let recordName = UUID().uuidString
         let recordID = CKRecord.ID(recordName: recordName, zoneID: zoneID)
         let newCKRecord = CKRecord(recordType: "Assignment", recordID: recordID)
         newCKRecord["text"] = text as CKRecordValue
-        let owningClassReference = CKRecord.Reference(record: owningClass, action: .deleteSelf)
+        let owningClassReference = CKRecord.Reference(record: owningClass.ckRecord, action: .deleteSelf)
         newCKRecord["owningClass"] = owningClassReference as CKRecordValue
-        newCKRecord.setParent(owningClass)
+        newCKRecord.setParent(owningClass.ckRecord)
         
         self.ckRecord = newCKRecord
         self.encodedSystemFields = newCKRecord.encoded()
+        
+        self.toDo = ToDo(isCompleted: false, managedContext: managedContext, assignment: self, zoneID: toDoZoneID)
     }
     
-    init(fromRecord record: CKRecord, managedContext: NSManagedObjectContext, toDoZoneID: CKRecordZone.ID) {
+    init(fromRecord record: CKRecord, owningClass: Class, managedContext: NSManagedObjectContext) {
         let assignmentDescription = NSEntityDescription.entity(forEntityName: "Assignment", in: managedContext)
         super.init(entity: assignmentDescription!, insertInto: managedContext)
         
@@ -63,7 +65,8 @@ public class Assignment: NSManagedObject, CloudUploadable {
         self.creationDate = record.creationDate! as NSDate
         self.dateLastModified = record.modificationDate! as NSDate
         self.encodedSystemFields = record.encoded()
-        self.toDo = ToDo(isCompleted: false, managedContext: managedContext, assignment: self, zoneID: toDoZoneID)
+        self.owningClass = owningClass
+        // Remember to set ToDo while retrieving from the Cloud
         
         // Set CKRecord
         self.ckRecord = record

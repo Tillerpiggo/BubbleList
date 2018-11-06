@@ -55,6 +55,8 @@ class ClassTableViewController: UITableViewController {
         registerAsNotificationDelegate()
         
         tableView.rowHeight = 80
+        
+        configureNavigationBar()
     }
     
     // MARK: - Navigation
@@ -128,6 +130,10 @@ extension ClassTableViewController {
             {
                 if $0.recordType == "Class" && $1.recordType != "Class" {
                     return false
+                } else if $0.recordType == "Assignment" && $1.recordType == "ToDo" {
+                    return false
+                } else if $0.recordType == "ToDo" && $1.recordType != "ToDo" {
+                    //return true
                 }
                 
                 return $0.creationDate! < $1.creationDate!
@@ -168,9 +174,8 @@ extension ClassTableViewController {
                         if let assignment = assignments.first(where: { $0.ckRecord.recordID == record.recordID }) {
                             assignment.update(withRecord: record)
                         } else {
-                            let assignment = Assignment(fromRecord: record, managedContext: self.coreDataController.managedContext, toDoZoneID: self.cloudController.zoneID)
+                            let assignment = Assignment(fromRecord: record, owningClass: `class`, managedContext: self.coreDataController.managedContext)
                             `class`.addToAssignments(assignment)
-                            assignment.owningClass = `class`
                         }
                         
                         `class`.dateLastModified = NSDate()
@@ -178,18 +183,30 @@ extension ClassTableViewController {
                         print("ERR: Couldn't find owning class of MagnetHomeworkApp while applying changes.")
                         print("Assignment: \(String(describing: record["text"] as? String))")
                     }
+                    
+                    DispatchQueue.main.sync { self.coreDataController.save() }
                 } else if record.recordType == "ToDo" {
                     didFetchRecords = true
                     
                     print("Added to-do from ClassTableViewController (from Cloud)")
                     
                     if let `class` = self.fetchedResultsController.fetchedObjects?.first(where: { record["classRecordName"] as? String == $0.ckRecord.recordID.recordName }), let assignments = `class`.assignmentArray {
+                        
+                        print("NUMBER OF ASSIGNMENTS: \(assignments.count)")
+                        print("ASSIGNMENT RECORD NAME: \(record["assignmentRecordName"] as? String)")
                         if let assignment = assignments.first(where: { $0.ckRecord.recordID.recordName == record["assignmentRecordName"] as? String }) {
-                            assignment.toDo?.update(withRecord: record)
+                            if let toDo = assignment.toDo {
+                                toDo.update(withRecord: record)
+                                print("IS COMPLETED: \(toDo.isCompleted)")
+                            } else {
+                                assignment.toDo = ToDo(fromRecord: record, managedContext: self.coreDataController.managedContext)
+                            }
                         } else {
                             // TODO: figure out what to do... maybe delete the todo?
                         }
                     }
+                    
+                    DispatchQueue.main.sync { self.coreDataController.save() }
                 } else {
                     print("CloudKit.Share received. Do nothing.")
                 }
@@ -268,6 +285,13 @@ extension ClassTableViewController {
         alertController.addAction(okAction)
         
         present(alertController, animated:  true, completion: nil)
+    }
+    
+    func configureNavigationBar() {
+        // Get gradient
+        let blueGradient = UIImage(named: "blueGradient")
+        let imageView = UIImageView(image: blueGradient)
+        self.navigationItem.titleView = imageView
     }
 }
 
@@ -401,7 +425,6 @@ extension ClassTableViewController: AddClassTableViewControllerDelegate {
             case .requestRateLimited, .zoneBusy, .serviceUnavailable:
                 break
             default:
-                self.coreDataController.delete(`class`)
                 DispatchQueue.main.async {
                     self.alertUserOfFailure()
                     self.coreDataController.save()

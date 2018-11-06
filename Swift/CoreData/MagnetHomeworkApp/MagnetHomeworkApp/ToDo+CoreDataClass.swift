@@ -33,9 +33,9 @@ public class ToDo: NSManagedObject, CloudUploadable {
         let recordID = CKRecord.ID(recordName: recordName, zoneID: zoneID)
         let newCKRecord = CKRecord(recordType: "ToDo", recordID: recordID)
         newCKRecord["isCompleted"] = isCompleted as CKRecordValue
-        newCKRecord["assignmentRecordName"] = self.assignment?.ckRecord.recordID.recordName
-        newCKRecord["assignmentZoneName"] = self.assignment?.ckRecord.recordID.zoneID.zoneName
-        newCKRecord["classRecordName"] = (self.assignment?.ckRecord["owningClass"] as? CKRecord.Reference)?.recordID.recordName
+        newCKRecord["assignmentRecordName"] = assignment.ckRecord.recordID.recordName
+        newCKRecord["classRecordName"] = assignment.owningClass!.ckRecord.recordID.recordName
+        print("INFO: RecordName - \(assignment.ckRecord.recordID.recordName)")
         
         self.ckRecord = newCKRecord
         self.encodedSystemFields = newCKRecord.encoded()

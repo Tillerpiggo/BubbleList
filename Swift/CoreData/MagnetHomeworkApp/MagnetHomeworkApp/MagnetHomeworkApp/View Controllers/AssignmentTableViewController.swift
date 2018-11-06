@@ -52,6 +52,10 @@ class AssignmentTableViewController: UITableViewController {
         return fetchedResultsController
     }()
     
+    // MARK: - IBOutlets
+    
+    @IBOutlet weak var addAssignmentView: UIView!
+    
     // MARK: - IBActions
     
     @IBAction func shareButtonTapped(_ sender: UIBarButtonItem) {
@@ -79,7 +83,10 @@ class AssignmentTableViewController: UITableViewController {
         super.viewDidLoad()
         
         // Multiple lines per assignment
-        tableView.rowHeight = UITableView.automaticDimension
+        tableView.rowHeight = 44
+        
+        configureAddAssignmentView()
+        configureNavigationBar()
     }
 
     // MARK - Navigation
@@ -118,14 +125,14 @@ extension AssignmentTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "AssignmentCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "AssignmentCell", for: indexPath) as! AssignmentTableViewCell
         
         // Get model object
         let assignment = fetchedResultsController.object(at: indexPath)
         
         // Configure cell
-        cell.textLabel?.text = assignment.text
-        cell.detailTextLabel?.text = assignment.formattedCreationDate
+        cell.configure(withAssignment: assignment)
+        cell.delegate = self
         
         return cell
     }
@@ -176,7 +183,6 @@ extension AssignmentTableViewController: AddAssignmentTableViewControllerDelegat
                 case .requestRateLimited, .zoneBusy, .serviceUnavailable:
                     break
                 default:
-                    self.coreDataController.delete(assignment)
                     DispatchQueue.main.async {
                         self.alertUserOfFailure()
                         self.coreDataController.save()
@@ -184,7 +190,6 @@ extension AssignmentTableViewController: AddAssignmentTableViewControllerDelegat
                 }
             }
         } else {
-            // Save to the Cloud
             // Save to the Cloud
             cloudController.save([assignment.toDo!], inDatabase: .private, recordChanged: { (updatedRecord) in
                 assignment.toDo?.update(withRecord: updatedRecord)
@@ -194,7 +199,28 @@ extension AssignmentTableViewController: AddAssignmentTableViewControllerDelegat
                 case .requestRateLimited, .zoneBusy, .serviceUnavailable:
                     break
                 default:
-                    self.coreDataController.delete(assignment)
+                    DispatchQueue.main.async {
+                        self.alertUserOfFailure()
+                        self.coreDataController.save()
+                    }
+                }
+            }
+            
+            // Save to the Cloud
+            cloudController.save([assignment, self.`class`], inDatabase: databaseType, recordChanged: { (updatedRecord) in
+                if updatedRecord.recordType == "Assignment" {
+                    assignment.update(withRecord: updatedRecord)
+                } else if updatedRecord.recordType == "ToDo" {
+                    assignment.toDo?.update(withRecord: updatedRecord)
+                } else {
+                    self.`class`.update(withRecord: updatedRecord)
+                }
+            }) { (error) in
+                guard let error = error as? CKError else { return }
+                switch error.code {
+                case .requestRateLimited, .zoneBusy, .serviceUnavailable:
+                    break
+                default:
                     DispatchQueue.main.async {
                         self.alertUserOfFailure()
                         self.coreDataController.save()
@@ -248,7 +274,7 @@ extension AssignmentTableViewController: UICloudSharingControllerDelegate {
     }
     
     func itemTitle(for csc: UICloudSharingController) -> String? {
-        // Se t the title here
+        // Set the title here
         return `class`.name ?? "Untitled Class"
     }
 }
@@ -263,6 +289,18 @@ extension AssignmentTableViewController {
         
         present(alertController, animated: true, completion: nil)
     }
+    
+    func configureAddAssignmentView() {
+        addAssignmentView.layer.cornerRadius = 5
+        addAssignmentView.addDropShadow(color: .black, opacity: 0.4, radius: 5)
+    }
+    
+    func configureNavigationBar() {
+        // Get gradient
+        let blueGradient = UIImage(named: "blueGradient")
+        let imageView = UIImageView(image: blueGradient)
+        self.navigationItem.titleView = imageView
+    }
 }
 
 // MARK: - ClassTableViewControllerDelegate
@@ -274,3 +312,34 @@ extension AssignmentTableViewController: ClassTableViewControllerDelegate {
     }
 }
 
+// MARK: - AssignmentTableViewCellDelegate
+
+extension AssignmentTableViewController: AssignmentTableViewCellDelegate {
+    func buttonPressed(assignment: Assignment) -> Bool {
+        if let assignment = fetchedResultsController.fetchedObjects?.first(where: { $0 == assignment }), let toDo = assignment.toDo {
+            toDo.isCompleted = !toDo.isCompleted
+            toDo.ckRecord["isCompleted"] = toDo.isCompleted as CKRecordValue?
+            
+            cloudController.save([toDo], inDatabase: .private, recordChanged: { (updatedRecord) in
+                assignment.toDo?.update(withRecord: updatedRecord)
+            }) { (error) in
+                guard let error = error as? CKError else { return }
+                switch error.code {
+                case .requestRateLimited, .zoneBusy, .serviceUnavailable:
+                    break
+                default:
+                    print("ERROR: \(error.code)")
+                    DispatchQueue.main.async {
+                        self.alertUserOfFailure()
+                        self.coreDataController.save()
+                    }
+                }
+            }
+            
+            return toDo.isCompleted
+        } else {
+            print("Couldn't find associated assignment; look at AssignmentTableViewController: AssignmentTableViewCellDelegate")
+            return true
+        }
+    }
+}

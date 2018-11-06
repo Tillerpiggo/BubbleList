@@ -11,22 +11,16 @@ import Foundation
 enum RecordType: String {
     case `class` = "Class"
     case assignment = "Assignment"
+    case toDo = "ToDo"
     
-    var cloudValue: String {
+    var string: String {
         switch self {
         case .class:
             return "Class"
         case .assignment:
             return "Assignment"
-        }
-    }
-    
-    var coreDataValue: String {
-        switch self {
-        case .class:
-            return "Class"
-        case .assignment:
-            return "Assignment"
+        case .toDo:
+            return "ToDo"
         }
     }
 }
