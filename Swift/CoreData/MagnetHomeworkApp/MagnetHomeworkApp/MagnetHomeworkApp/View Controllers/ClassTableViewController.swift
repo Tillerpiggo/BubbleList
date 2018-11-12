@@ -66,20 +66,25 @@ class ClassTableViewController: UITableViewController {
         updateWithCloud()
         registerAsNotificationDelegate()
         
-        tableView.rowHeight = 95
-        tableView.contentInsetAdjustmentBehavior = .automatic
+        tableView.rowHeight = 100
+        tableView.estimatedRowHeight = 100
+//        tableView.estimatedRowHeight = 0
+//        tableView.estimatedSectionFooterHeight = 0
+//        tableView.estimatedSectionHeaderHeight = 0
+        //tableView.contentInsetAdjustmentBehavior = .automatic
         
         configureNavigationBar()
         configureAddClassView(duration: 0.0)
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        tableView.contentInsetAdjustmentBehavior = .automatic
+        //tableView.contentInsetAdjustmentBehavior = .automatic
+        tableView.isScrollEnabled = true
     }
     
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        //tableView.contentInsetAdjustmentBehavior = .never
+        tableView.isScrollEnabled = true
         
         // Add Assignment
         if let destinationViewController = segue.destination.children.first as? AddClassTableViewController, segue.identifier == "AddClass" {

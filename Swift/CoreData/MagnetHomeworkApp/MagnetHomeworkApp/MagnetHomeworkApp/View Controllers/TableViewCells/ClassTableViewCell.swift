@@ -20,7 +20,9 @@ class ClassTableViewCell: UITableViewCell {
         nameLabel.text = `class`.name
         if let previewAssignment = `class`.previewAssignment() {
             previewAssignmentLabel.isHidden = false
+            previewAssignmentSectionLabel.isHidden = false
             previewAssignmentSectionLabel.text = previewAssignment.dueDateSection
+            previewAssignmentLabel.textColor = .highlightColor
             if previewAssignment.dueDateSection == "Due Later" {
                 previewAssignmentSectionLabel.text = "Due in a While"
             }
@@ -42,9 +44,10 @@ class ClassTableViewCell: UITableViewCell {
                 previewAssignmentSectionLabel.textColor = .unscheduledColor
             }
         } else {
-            previewAssignmentLabel.isHidden = true
-            previewAssignmentSectionLabel.text = "Nothing Due"
-            previewAssignmentSectionLabel.textColor = .nothingDueColor
+            previewAssignmentLabel.isHidden = false
+            previewAssignmentSectionLabel.isHidden = true
+            previewAssignmentLabel.textColor = .nothingDueColor
+            previewAssignmentLabel.text = "All Done, Have Fun"
         }
     }
 }

@@ -96,6 +96,12 @@ class AssignmentTableViewController: UITableViewController {
         
         configureAddAssignmentView(duration: 0)
         updateHeaderView()
+        
+        tableView.rowHeight = 44
+        tableView.estimatedRowHeight = 44
+//        tableView.estimatedRowHeight = 0
+//        tableView.estimatedSectionFooterHeight = 0
+//        tableView.estimatedSectionHeaderHeight = 0
     }
 
     // MARK: - Navigation
