@@ -3,6 +3,9 @@
     <entity name="Assignment" representedClassName=".Assignment" syncable="YES">
         <attribute name="creationDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="dateLastModified" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="dueDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="dueDateSection" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="dueDateSectionNumber" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="encodedSystemFields" optional="YES" attributeType="Transformable" customClassName="." syncable="YES"/>
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="owningClass" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Class" inverseName="assignments" inverseEntity="Class" syncable="YES"/>
@@ -22,7 +25,7 @@
         <relationship name="assignment" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Assignment" inverseName="toDo" inverseEntity="Assignment" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Assignment" positionX="273.20703125" positionY="-52.4609375" width="128" height="135"/>
+        <element name="Assignment" positionX="273.20703125" positionY="-52.4609375" width="128" height="180"/>
         <element name="Class" positionX="-63" positionY="-18" width="128" height="133"/>
         <element name="ToDo" positionX="108" positionY="18" width="128" height="90"/>
     </elements>

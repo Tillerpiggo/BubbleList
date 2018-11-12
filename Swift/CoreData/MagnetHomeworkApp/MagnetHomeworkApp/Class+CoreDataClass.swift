@@ -20,9 +20,28 @@ public class Class: NSManagedObject, CloudUploadable {
     
     // MARK: - Computed Properties
     
-    var latestAssignment: String {
-        // Figure out later
-        return ""
+    func previewAssignment() -> Assignment? {
+        let compareBlock: (Assignment, Assignment) -> Bool = { (assignment1, assignment2) in
+            guard let dueDate1 = assignment1.dueDate else { return false }
+            guard let dueDate2 = assignment2.dueDate else { return true }
+            let comparisonResult = dueDate1.compare(dueDate2 as Date)
+
+            return comparisonResult == .orderedDescending
+        }
+        
+        if let filteredAssignmentArray = assignmentArray?.filter({ $0.dueDate != nil }), filteredAssignmentArray.count > 0 {
+            if let previewAssignment = filteredAssignmentArray.max(by: compareBlock) {
+                return previewAssignment
+            } else {
+                return nil
+            }
+        } else {
+            if let previewAssignment = assignmentArray?.max(by: compareBlock) {
+                return previewAssignment
+            } else {
+                return nil
+            }
+        }
     }
     
     var assignmentArray: [Assignment]? {
@@ -50,7 +69,7 @@ public class Class: NSManagedObject, CloudUploadable {
         let recordID = CKRecord.ID(recordName: recordName, zoneID: zoneID)
         let newCKRecord = CKRecord(recordType: "Class", recordID: recordID)
         newCKRecord["name"] = name as CKRecordValue?
-        newCKRecord["latestAssignment"] = latestAssignment as CKRecordValue
+        //newCKRecord["latestAssignment"] = previewAssignment() as CKRecordValue?
         self.ckRecord = newCKRecord
         
         // Set properties
@@ -100,8 +119,8 @@ public class Class: NSManagedObject, CloudUploadable {
                 unarchiver.finishDecoding()
             
                 newCKRecord["name"] = name as CKRecordValue?
-                newCKRecord["latestAssignment"] = latestAssignment as CKRecordValue
-            
+                //newCKRecord["latestAssignment"] = previewAssignment() as CKRecordValue?
+                
                 self.ckRecord = newCKRecord
             } catch {
                 print("ERROR: Something went wrong with NSKeyedUnarchiver in Class+CoreDataClass")

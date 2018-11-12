@@ -24,9 +24,13 @@ class ClassTableViewController: UITableViewController {
     
     var delegate: ClassTableViewControllerDelegate?
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
     lazy var fetchedResultsController: NSFetchedResultsController<Class> = {
         let fetchRequest: NSFetchRequest<Class> = Class.fetchRequest()
-        let sortByDateLastModified = NSSortDescriptor(key: #keyPath(Class.dateLastModified), ascending: false)
+        let sortByDateLastModified = NSSortDescriptor(key: #keyPath(Class.creationDate), ascending: true)
         fetchRequest.sortDescriptors = [sortByDateLastModified]
         
         let fetchedResultsController = NSFetchedResultsController (
@@ -47,20 +51,36 @@ class ClassTableViewController: UITableViewController {
         return fetchedResultsController
     }()
     
-    // MARK: - View life cycle
+    // MARK: - IBOutlets
+    
+    @IBOutlet weak var addClassContainerView: UIView!
+    @IBOutlet weak var addClassView: UIView!
+    @IBOutlet weak var addClassButton: UIButton!
+    @IBOutlet weak var addClassTextField: UITextField!
+    @IBOutlet weak var addClassText: UILabel!
+    
+    // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
         updateWithCloud()
         registerAsNotificationDelegate()
         
-        tableView.rowHeight = 80
+        tableView.rowHeight = 95
+        tableView.contentInsetAdjustmentBehavior = .automatic
         
         configureNavigationBar()
+        configureAddClassView(duration: 0.0)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        tableView.contentInsetAdjustmentBehavior = .automatic
     }
     
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        //tableView.contentInsetAdjustmentBehavior = .never
+        
         // Add Assignment
         if let destinationViewController = segue.destination.children.first as? AddClassTableViewController, segue.identifier == "AddClass" {
             destinationViewController.delegate = self
@@ -193,7 +213,6 @@ extension ClassTableViewController {
                     if let `class` = self.fetchedResultsController.fetchedObjects?.first(where: { record["classRecordName"] as? String == $0.ckRecord.recordID.recordName }), let assignments = `class`.assignmentArray {
                         
                         print("NUMBER OF ASSIGNMENTS: \(assignments.count)")
-                        print("ASSIGNMENT RECORD NAME: \(record["assignmentRecordName"] as? String)")
                         if let assignment = assignments.first(where: { $0.ckRecord.recordID.recordName == record["assignmentRecordName"] as? String }) {
                             if let toDo = assignment.toDo {
                                 toDo.update(withRecord: record)
@@ -288,10 +307,14 @@ extension ClassTableViewController {
     }
     
     func configureNavigationBar() {
-        // Get gradient
-        let blueGradient = UIImage(named: "blueGradient")
-        let imageView = UIImageView(image: blueGradient)
-        self.navigationItem.titleView = imageView
+        // GRADIENT
+        let colors: [UIColor] = [.lightColor, .darkColor]
+        navigationController?.navigationBar.setGradientBackground(colors: colors)
+        
+        navigationController?.navigationBar.barTintColor = .navigationBarColor
+        
+        // TINT COLOR
+        navigationController?.navigationBar.tintColor = .onDarkTextColor
     }
 }
 
@@ -318,14 +341,13 @@ extension ClassTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ClassCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ClassCell", for: indexPath) as! ClassTableViewCell
         
         // Get model object
         let `class` = fetchedResultsController.object(at: indexPath)
         
         // Configure cell with model
-        cell.textLabel?.text = `class`.name
-        cell.detailTextLabel?.text = `class`.latestAssignment
+        cell.configure(withClass: `class`)
         
         return cell
     }
@@ -334,20 +356,21 @@ extension ClassTableViewController {
         if editingStyle == .delete, fetchedResultsController.fetchedObjects?.count ?? 0 > 0 {
             let deletedClass = fetchedResultsController.object(at: indexPath)
             
+            // Delete from core data
+            self.coreDataController.delete(deletedClass)
+            
+            if let deletedAssignments = deletedClass.assignments?.array as? [Assignment] {
+                // Delete all cloud assignments
+                for assignment in deletedAssignments {
+                    self.coreDataController.delete(assignment)
+                }
+            }
+            
+            self.coreDataController.save()
+            
             // Delete from cloud
             cloudController.delete([deletedClass], inDatabase: .private) {
                 print("Deleted Class!")
-                // Delete from core data
-                self.coreDataController.delete(deletedClass)
-                
-                if let deletedAssignments = deletedClass.assignments?.array as? [Assignment] {
-                    // Delete all cloud assignments
-                    for assignment in deletedAssignments {
-                        self.coreDataController.delete(assignment)
-                    }
-                }
-                
-                DispatchQueue.main.async { self.coreDataController.save() }
             }
         }
     }
@@ -431,5 +454,97 @@ extension ClassTableViewController: AddClassTableViewControllerDelegate {
                 }
             }
         }
+    }
+}
+
+// MARK: - Add Class View
+
+extension ClassTableViewController: UITextFieldDelegate, UITextDragDelegate {
+    @IBAction func addClassButtonPressed(_ sender: Any) {
+        addClassButton.isHidden = true
+        UIView.animate(withDuration: 0.1, animations: {
+            self.addClassView.backgroundColor = .white
+        })
+        
+        addClassText.isHidden = true
+        addClassTextField.isHidden = false
+        
+        addClassTextField.becomeFirstResponder()
+        addDoneButton()
+    }
+    
+    @IBAction func addClassButtonPressedDown(_ sender: Any) {
+        UIView.animate(withDuration: 0.1, animations: {
+            self.addClassView.backgroundColor = UIColor.highlightColor
+        })
+    }
+    
+    @IBAction func addClassButtonDraggedOutside(_ sender: Any) {
+        UIView.animate(withDuration: 0.1, animations: {
+            self.addClassView.backgroundColor = UIColor.primaryColor
+        })
+    }
+    
+    @IBAction func addClassButtonTouchCanceled(_ sender: Any) {
+        configureAddClassView(duration: 0.1)
+    }
+    
+    @IBAction func addClassButtonDraggedInside(_ sender: Any) {
+        UIView.animate(withDuration: 0.1, animations: {
+            self.addClassView.backgroundColor = UIColor.highlightColor
+        })
+    }
+    
+    @IBAction func addClassButtonDragExited(_ sender: Any) {
+        configureAddClassView(duration: 0.1)
+    }
+    
+    func configureAddClassView(duration: TimeInterval) {
+        addClassView.layer.cornerRadius = 5
+        addClassView.addDropShadow(color: .black, opacity: 0.15, radius: 4)
+        addClassTextField.text = ""
+        
+        self.addClassTextField.isHidden = true
+        self.addClassText.isHidden = false
+        
+        UIView.animate(withDuration: duration, animations: {
+            self.addClassView.backgroundColor = UIColor.primaryColor
+            self.navigationItem.rightBarButtonItem = nil
+        }, completion: { (bool) in
+            self.addClassButton.isHidden = false
+        })
+    }
+    
+    func addDoneButton() {
+        self.navigationItem.setRightBarButton(UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(ClassTableViewController.donePressed(sender:))), animated: true)
+    }
+    
+    @objc func donePressed(sender: UIBarButtonItem) {
+        addClassTextField.resignFirstResponder()
+    }
+    
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        if let name = addClassTextField.text, name != "" {
+            saveClass(withName: name)
+        }
+        
+        configureAddClassView(duration: 0.2)
+        
+        return true
+    }
+    
+    func textDraggableView(_ textDraggableView: UIView & UITextDraggable, dragSessionDidEnd session: UIDragSession, with operation: UIDropOperation) {
+        addClassTextField.resignFirstResponder()
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        addClassTextField.resignFirstResponder()
+        return true
+    }
+    
+    private func saveClass(withName name: String) {
+        // Create new assignment
+        let newClass = Class(withName: name, managedContext: coreDataController.managedContext, zoneID: cloudController.zoneID)
+        addedClass(newClass)
     }
 }

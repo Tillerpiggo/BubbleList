@@ -25,10 +25,18 @@ class AssignmentTableViewController: UITableViewController {
     
     var delegate: AssignmentTableViewControllerDelegate?
     
+    var selectedAssignment: Assignment?
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
     lazy var fetchedResultsController: NSFetchedResultsController<Assignment> = {
         let fetchRequest: NSFetchRequest<Assignment> = Assignment.fetchRequest()
-        let sortByDateLastModified = NSSortDescriptor(key: #keyPath(Assignment.creationDate), ascending: false)
-        fetchRequest.sortDescriptors = [sortByDateLastModified]
+        let sortBySectionNumber = NSSortDescriptor(key: #keyPath(Assignment.dueDateSectionNumber), ascending: true)
+        let sortByDueDate = NSSortDescriptor(key: #keyPath(Assignment.dueDate), ascending: true)
+        let sortByCreationDate = NSSortDescriptor(key: #keyPath(Assignment.creationDate), ascending: true)
+        fetchRequest.sortDescriptors = [sortBySectionNumber, sortByDueDate, sortByCreationDate]
         fetchRequest.fetchBatchSize = 20 // TODO: May need to adjust
         
         let isInClassPredicate = NSPredicate(format: "owningClass == %@", self.`class`)
@@ -37,7 +45,7 @@ class AssignmentTableViewController: UITableViewController {
         let fetchedResultsController = NSFetchedResultsController (
             fetchRequest: fetchRequest,
             managedObjectContext: coreDataController.managedContext,
-            sectionNameKeyPath: nil,
+            sectionNameKeyPath: #keyPath(Assignment.dueDateSection),
             cacheName: "\(self.`class`.ckRecord.recordID.recordName)"
         )
         
@@ -55,6 +63,10 @@ class AssignmentTableViewController: UITableViewController {
     // MARK: - IBOutlets
     
     @IBOutlet weak var addAssignmentView: UIView!
+    @IBOutlet weak var addAssignmentContainerView: UIView!
+    @IBOutlet weak var addAssignmentButton: UIButton!
+    @IBOutlet weak var addAssignmentTextField: UITextField!
+    @IBOutlet weak var addAssignmentText: UILabel!
     
     // MARK: - IBActions
     
@@ -82,23 +94,20 @@ class AssignmentTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Multiple lines per assignment
-        tableView.rowHeight = 44
-        
-        configureAddAssignmentView()
-        configureNavigationBar()
+        configureAddAssignmentView(duration: 0)
+        updateHeaderView()
     }
 
-    // MARK - Navigation
+    // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let navigationController = segue.destination as? UINavigationController,
-            let destinationViewController = navigationController.topViewController as? AddAssignmentTableViewController,
-            segue.identifier == "AddAssignment" else { return }
+            let destinationViewController = navigationController.topViewController as? ScheduleTableViewController,
+            let selectedAssignment = self.selectedAssignment,
+            segue.identifier == "ScheduleTableView" else { return }
         
-        destinationViewController.delegate = self
+        destinationViewController.assignment = selectedAssignment
         destinationViewController.coreDataController = coreDataController
-        destinationViewController.cloudController = cloudController
-        destinationViewController.owningClass = `class`
+        destinationViewController.delegate = self
     }
 }
 
@@ -125,6 +134,7 @@ extension AssignmentTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "AssignmentCell", for: indexPath) as! AssignmentTableViewCell
         
         // Get model object
@@ -133,8 +143,75 @@ extension AssignmentTableViewController {
         // Configure cell
         cell.configure(withAssignment: assignment)
         cell.delegate = self
+        //cell.separatorView.isHidden = indexPath.row == tableView.numberOfRows(inSection: indexPath.section) - 1
+        cell.separatorView.isHidden = true
+        if tableView.numberOfRows(inSection: indexPath.section) == 1 {
+            //cell.addDropShadow(color: .black, opacity: 0.07, radius: 5, yOffset: -10)
+        } else if indexPath.row == tableView.numberOfRows(inSection: indexPath.section) - 1 {
+            //cell.separatorView.isHidden = true
+            //cell.addDropShadow(color: .black, opacity: 0.07, radius: 3, yOffset: 12)
+        } else if indexPath.row == 0 {
+            //cell.addDropShadow(color: .black, opacity: 0.07, radius: 5, yOffset: -10)
+        } else {
+            cell.separatorView.isHidden = true
+            cell.subviews.first?.removeDropShadow()
+        }
         
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        let sectionInfo = fetchedResultsController.sections?[section]
+        return sectionInfo?.name
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let assignment = fetchedResultsController.object(at: indexPath)
+
+        if let dueDate = assignment.dueDate as Date?, dueDate != Date.tomorrow {
+            return 60
+        } else {
+            return 44
+        }
+    }
+    
+    // MARK: - Delegate
+    
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let scheduleRowAction = UITableViewRowAction(style: .default, title: "Schedule", handler: { (action, indexpath) in
+            self.selectedAssignment = self.fetchedResultsController.object(at: indexPath)
+            self.performSegue(withIdentifier: "ScheduleTableView", sender: self)
+        })
+        scheduleRowAction.backgroundColor = .scheduleColor
+        
+        let deleteRowAction = UITableViewRowAction(style: .default, title: "Delete", handler: { (action, indexPath) in
+            let deletedAssignment = self.fetchedResultsController.object(at: indexPath)
+            
+            if self.fetchedResultsController.fetchedObjects?.count == 1 {
+                var frame = CGRect.zero
+                frame.size.height = 20
+                tableView.tableHeaderView = UIView(frame: frame)
+                
+//                UIView.animate(withDuration: 0.0, animations: {
+//                }, completion: { (bool) in
+//                    UIView.animate(withDuration: 0.2, delay: 0.0, options: [.curveEaseInOut], animations: {
+//                        tableView.tableHeaderView = UIView(frame:frame)
+//                    })
+//                })
+            }
+            
+            // Delete from core data
+            self.coreDataController.delete(deletedAssignment)
+            self.coreDataController.save()
+            
+            // Delete from cloud
+            self.cloudController.delete([deletedAssignment], inDatabase: .private) {
+                print("Deleted Class!")
+            }
+        })
+        deleteRowAction.backgroundColor = .deleteColor
+
+        return [deleteRowAction, scheduleRowAction]
     }
     
     // MARK: - Delegate
@@ -240,14 +317,25 @@ extension AssignmentTableViewController: NSFetchedResultsControllerDelegate {
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         switch type {
-        case .insert:
-            tableView.insertRows(at: [newIndexPath!], with: .automatic)
-        case .delete:
-            tableView.deleteRows(at: [indexPath!], with: .automatic)
         case .update:
             tableView.reloadRows(at: [indexPath!], with: .automatic)
+        case .insert:
+            tableView.insertRows(at: [newIndexPath!], with: .fade)
+        case .delete:
+            tableView.deleteRows(at: [indexPath!], with: .automatic)
         case .move:
             tableView.moveRow(at: indexPath!, to: newIndexPath!)
+        }
+    }
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
+        switch type {
+        case .insert:
+            self.tableView.insertSections([sectionIndex], with: .fade)
+        case .delete:
+            self.tableView.deleteSections([sectionIndex], with: .fade)
+        default:
+            break
         }
     }
     
@@ -290,16 +378,16 @@ extension AssignmentTableViewController {
         present(alertController, animated: true, completion: nil)
     }
     
-    func configureAddAssignmentView() {
-        addAssignmentView.layer.cornerRadius = 5
-        addAssignmentView.addDropShadow(color: .black, opacity: 0.4, radius: 5)
-    }
-    
-    func configureNavigationBar() {
-        // Get gradient
-        let blueGradient = UIImage(named: "blueGradient")
-        let imageView = UIImageView(image: blueGradient)
-        self.navigationItem.titleView = imageView
+    func updateHeaderView() {
+        if tableView.numberOfRows(inSection: 0) == 0 {
+            var frame = CGRect.zero
+            frame.size.height = 20
+            tableView.tableHeaderView = UIView(frame: frame)
+        } else {
+            var frame = CGRect.zero
+            frame.size.height = 20
+            tableView.tableHeaderView = UIView(frame: frame)
+        }
     }
 }
 
@@ -341,5 +429,128 @@ extension AssignmentTableViewController: AssignmentTableViewCellDelegate {
             print("Couldn't find associated assignment; look at AssignmentTableViewController: AssignmentTableViewCellDelegate")
             return true
         }
+    }
+}
+
+// MARK: - ScheduleTableViewControllerDelegate
+
+extension AssignmentTableViewController: ScheduleTableViewControllerDelegate {
+    func reloadAssignment(_ assignment: Assignment) {
+        if let indexPath = fetchedResultsController.indexPath(forObject: assignment) {
+            tableView.reloadRows(at: [indexPath], with: .automatic)
+        }
+        
+        DispatchQueue.main.async { self.coreDataController.save() }
+        
+        let databaseType: DatabaseType = `class`.isUserCreated ? .private : .shared
+        cloudController.save([assignment], inDatabase: databaseType, recordChanged: { (updatedRecord) in
+            assignment.update(withRecord: updatedRecord)
+        }) { (error) in
+            guard let error = error as? CKError else { return }
+            switch error.code {
+            case .requestRateLimited, .zoneBusy, .serviceUnavailable:
+                break
+            default:
+                DispatchQueue.main.async {
+                    self.alertUserOfFailure()
+                    self.coreDataController.save()
+                }
+            }
+        }
+    }
+}
+
+// MARK: - AddAssignmentView
+
+extension AssignmentTableViewController: UITextFieldDelegate, UITextDragDelegate {
+    
+    @IBAction func addAssignmentButtonPressed(_ sender: Any) {
+        addAssignmentButton.isHidden = true
+        UIView.animate(withDuration: 0.1, animations: {
+            self.addAssignmentView.backgroundColor = .white
+        })
+        
+        addAssignmentText.isHidden = true
+        addAssignmentTextField.isHidden = false
+        
+        addAssignmentTextField.becomeFirstResponder()
+        addDoneButton()
+    }
+    
+    @IBAction func addAssignmentButtonPressedDown(_ sender: Any) {
+        UIView.animate(withDuration: 0.1, animations: {
+            self.addAssignmentView.backgroundColor = UIColor.highlightColor
+        })
+    }
+    
+    @IBAction func addAssignmentButtonDraggedOutside(_ sender: Any) {
+        UIView.animate(withDuration: 0.1, animations: {
+            self.addAssignmentView.backgroundColor = UIColor.primaryColor
+        })
+    }
+    
+    @IBAction func addAssignmentButtonTouchCanceled(_ sender: Any) {
+        configureAddAssignmentView(duration: 0.1)
+    }
+    
+    @IBAction func addAssignmentButtonDraggedInside(_ sender: Any) {
+        UIView.animate(withDuration: 0.1, animations: {
+            self.addAssignmentView.backgroundColor = UIColor.highlightColor
+        })
+    }
+    
+    @IBAction func addAssignmentButtonDragExited(_ sender: Any) {
+        configureAddAssignmentView(duration: 0.1)
+    }
+    
+    func configureAddAssignmentView(duration: TimeInterval) {
+        addAssignmentView.layer.cornerRadius = 5
+        addAssignmentView.addDropShadow(color: .black, opacity: 0.15, radius: 4)
+        addAssignmentTextField.text = ""
+        
+        self.addAssignmentTextField.isHidden = true
+        self.addAssignmentText.isHidden = false
+        
+        UIView.animate(withDuration: duration, animations: {
+            self.addAssignmentView.backgroundColor = UIColor.primaryColor
+            
+            if self.navigationItem.rightBarButtonItems?.count ?? 0 > 1 {
+                self.navigationItem.rightBarButtonItem = nil
+            }
+        }, completion: { (bool) in
+            self.addAssignmentButton.isHidden = false
+        })
+    }
+    
+    func addDoneButton() {
+        self.navigationItem.setRightBarButtonItems([UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(AssignmentTableViewController.donePressed(sender:))), self.navigationItem.rightBarButtonItem!], animated: true)
+    }
+    
+    @objc func donePressed(sender: UIBarButtonItem) {
+        addAssignmentTextField.resignFirstResponder()
+    }
+    
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        if let text = addAssignmentTextField.text, text != "" {
+            saveAssignment(text: text)
+        }
+        
+        configureAddAssignmentView(duration: 0.2)
+        
+        return true
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        addAssignmentTextField.resignFirstResponder()
+        return true
+    }
+    
+    private func saveAssignment(text: String) {
+        // Create new assignment
+        let zoneID = `class`.ckRecord.recordID.zoneID
+        let newAssignment = Assignment(withText: text, managedContext: coreDataController.managedContext, owningClass: `class`, zoneID: zoneID, toDoZoneID: cloudController.zoneID)
+        addedAssignment(newAssignment)
+        
+        updateHeaderView()
     }
 }

@@ -27,6 +27,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }()
     
     var notificationDelegate: NotificationDelegate?
+    
+    
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         if let navigationController = window?.rootViewController as? UINavigationController,
@@ -53,8 +55,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let notification = CKNotification(fromRemoteNotificationDictionary: userInfo)
         
         var didReceiveData: Bool = false
-        
-        print("Received notification: \(notification.subscriptionID)")
         
         if notification.subscriptionID == "cloudkit-privateClass-changes" || notification.subscriptionID == "cloudkit-privateAssignment-changes" || notification.subscriptionID == "cloudkit-sharedDatabase-changes" || notification.subscriptionID == "cloudkit-privateToDo-changes" {
             notificationDelegate?.fetchChanges() { (didFetchRecords) in

@@ -18,6 +18,11 @@
 		23580D4B218E164100434DD9 /* ToDo+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23580D49218E164100434DD9 /* ToDo+CoreDataClass.swift */; };
 		23580D4C218E164100434DD9 /* ToDo+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23580D4A218E164100434DD9 /* ToDo+CoreDataProperties.swift */; };
 		23580D54218E286600434DD9 /* AssignmentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23580D53218E286600434DD9 /* AssignmentTableViewCell.swift */; };
+		235E0B86219550D9005D3B9C /* ScheduleTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235E0B85219550D9005D3B9C /* ScheduleTableViewController.swift */; };
+		235E0B8921955647005D3B9C /* Date+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235E0B8821955647005D3B9C /* Date+Helpers.swift */; };
+		235E0B8B2197DF44005D3B9C /* String+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235E0B8A2197DF44005D3B9C /* String+Helpers.swift */; };
+		235E0B8E2198AE06005D3B9C /* ClassTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235E0B8D2198AE05005D3B9C /* ClassTableViewCell.swift */; };
+		235E0B902199491F005D3B9C /* UILabel+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235E0B8F2199491F005D3B9C /* UILabel+Helpers.swift */; };
 		23CD109121803C530034FFA7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CD109021803C530034FFA7 /* AppDelegate.swift */; };
 		23CD109621803C530034FFA7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23CD109421803C530034FFA7 /* Main.storyboard */; };
 		23CD109921803C530034FFA7 /* MagnetHomeworkApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 23CD109721803C530034FFA7 /* MagnetHomeworkApp.xcdatamodeld */; };
@@ -32,8 +37,10 @@
 		23CD10B621814FE10034FFA7 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CD10B521814FE10034FFA7 /* CoreDataStack.swift */; };
 		23CD10BD2181A0660034FFA7 /* Class+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CD10B92181A0660034FFA7 /* Class+CoreDataClass.swift */; };
 		23CD10C52181A11F0034FFA7 /* Class+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CD10C42181A11F0034FFA7 /* Class+CoreDataProperties.swift */; };
-		23F4C9D321916EE300D00D05 /* AddAssignmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F4C9D221916EE300D00D05 /* AddAssignmentView.swift */; };
 		23F4C9D52191EA1300D00D05 /* UIView+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F4C9D42191EA1300D00D05 /* UIView+Helpers.swift */; };
+		23F4C9DA2192704400D00D05 /* UIColor+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F4C9D92192704400D00D05 /* UIColor+Helpers.swift */; };
+		23F4C9E0219283EA00D00D05 /* CAGradientLayer+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F4C9DF219283EA00D00D05 /* CAGradientLayer+Helpers.swift */; };
+		23F4C9E2219284A000D00D05 /* UINavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F4C9E1219284A000D00D05 /* UINavigationBar.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +55,11 @@
 		23580D49218E164100434DD9 /* ToDo+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ToDo+CoreDataClass.swift"; sourceTree = "<group>"; };
 		23580D4A218E164100434DD9 /* ToDo+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ToDo+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		23580D53218E286600434DD9 /* AssignmentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentTableViewCell.swift; sourceTree = "<group>"; };
+		235E0B85219550D9005D3B9C /* ScheduleTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleTableViewController.swift; sourceTree = "<group>"; };
+		235E0B8821955647005D3B9C /* Date+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Helpers.swift"; sourceTree = "<group>"; };
+		235E0B8A2197DF44005D3B9C /* String+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Helpers.swift"; sourceTree = "<group>"; };
+		235E0B8D2198AE05005D3B9C /* ClassTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassTableViewCell.swift; sourceTree = "<group>"; };
+		235E0B8F2199491F005D3B9C /* UILabel+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Helpers.swift"; sourceTree = "<group>"; };
 		23CD108D21803C530034FFA7 /* MagnetHomeworkApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MagnetHomeworkApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		23CD109021803C530034FFA7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		23CD109521803C530034FFA7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -65,8 +77,10 @@
 		23CD10B521814FE10034FFA7 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		23CD10B92181A0660034FFA7 /* Class+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Class+CoreDataClass.swift"; sourceTree = "<group>"; };
 		23CD10C42181A11F0034FFA7 /* Class+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Class+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		23F4C9D221916EE300D00D05 /* AddAssignmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAssignmentView.swift; sourceTree = "<group>"; };
 		23F4C9D42191EA1300D00D05 /* UIView+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Helpers.swift"; sourceTree = "<group>"; };
+		23F4C9D92192704400D00D05 /* UIColor+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Helpers.swift"; sourceTree = "<group>"; };
+		23F4C9DF219283EA00D00D05 /* CAGradientLayer+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CAGradientLayer+Helpers.swift"; sourceTree = "<group>"; };
+		23F4C9E1219284A000D00D05 /* UINavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationBar.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,9 +111,11 @@
 				23484C5E21854A1E007C5CCF /* ClassTableViewController.swift */,
 				23484C6021866927007C5CCF /* AddClassTableViewController.swift */,
 				23484C63218963E0007C5CCF /* AssignmentTableViewController.swift */,
-				23484C6521896B62007C5CCF /* AddAssignmentTableViewController.swift */,
-				23F4C9D42191EA1300D00D05 /* UIView+Helpers.swift */,
+				235E0B85219550D9005D3B9C /* ScheduleTableViewController.swift */,
+				23F4C9D821926CCC00D00D05 /* UIExtension */,
+				235E0B8721955626005D3B9C /* OtherExtensions */,
 				23580D4E218E281100434DD9 /* TableViewCells */,
+				235E0B8C2197EE2C005D3B9C /* Old */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -118,8 +134,26 @@
 			isa = PBXGroup;
 			children = (
 				23580D53218E286600434DD9 /* AssignmentTableViewCell.swift */,
+				235E0B8D2198AE05005D3B9C /* ClassTableViewCell.swift */,
 			);
 			path = TableViewCells;
+			sourceTree = "<group>";
+		};
+		235E0B8721955626005D3B9C /* OtherExtensions */ = {
+			isa = PBXGroup;
+			children = (
+				235E0B8821955647005D3B9C /* Date+Helpers.swift */,
+				235E0B8A2197DF44005D3B9C /* String+Helpers.swift */,
+			);
+			path = OtherExtensions;
+			sourceTree = "<group>";
+		};
+		235E0B8C2197EE2C005D3B9C /* Old */ = {
+			isa = PBXGroup;
+			children = (
+				23484C6521896B62007C5CCF /* AddAssignmentTableViewController.swift */,
+			);
+			path = Old;
 			sourceTree = "<group>";
 		};
 		23CD108421803C530034FFA7 = {
@@ -145,12 +179,11 @@
 				23CD10A521803CFD0034FFA7 /* MagnetHomeworkApp.entitlements */,
 				23CD109021803C530034FFA7 /* AppDelegate.swift */,
 				23CD109421803C530034FFA7 /* Main.storyboard */,
-				23F4C9D221916EE300D00D05 /* AddAssignmentView.swift */,
+				23CD109C21803C550034FFA7 /* LaunchScreen.storyboard */,
 				23484C6221866946007C5CCF /* View Controllers */,
 				23CD10C32181A0AA0034FFA7 /* Model */,
 				23484C5721822945007C5CCF /* Back-End */,
 				23CD109A21803C550034FFA7 /* Assets.xcassets */,
-				23CD109C21803C550034FFA7 /* LaunchScreen.storyboard */,
 				23CD109F21803C550034FFA7 /* Info.plist */,
 				23CD109721803C530034FFA7 /* MagnetHomeworkApp.xcdatamodeld */,
 			);
@@ -214,6 +247,18 @@
 				23580D4D218E164D00434DD9 /* ToDo */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		23F4C9D821926CCC00D00D05 /* UIExtension */ = {
+			isa = PBXGroup;
+			children = (
+				23F4C9D42191EA1300D00D05 /* UIView+Helpers.swift */,
+				23F4C9D92192704400D00D05 /* UIColor+Helpers.swift */,
+				23F4C9DF219283EA00D00D05 /* CAGradientLayer+Helpers.swift */,
+				23F4C9E1219284A000D00D05 /* UINavigationBar.swift */,
+				235E0B8F2199491F005D3B9C /* UILabel+Helpers.swift */,
+			);
+			path = UIExtension;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -297,13 +342,17 @@
 			files = (
 				23484C5F21854A1E007C5CCF /* ClassTableViewController.swift in Sources */,
 				23CD10AD2180413E0034FFA7 /* CloudUploadable.swift in Sources */,
+				235E0B8E2198AE06005D3B9C /* ClassTableViewCell.swift in Sources */,
 				23484C562182250E007C5CCF /* CKRecord+Helpers.swift in Sources */,
 				23580D4B218E164100434DD9 /* ToDo+CoreDataClass.swift in Sources */,
 				23484C5A21822CA6007C5CCF /* Assignment+CoreDataClass.swift in Sources */,
+				235E0B902199491F005D3B9C /* UILabel+Helpers.swift in Sources */,
 				23CD109921803C530034FFA7 /* MagnetHomeworkApp.xcdatamodeld in Sources */,
+				23F4C9E2219284A000D00D05 /* UINavigationBar.swift in Sources */,
 				23CD10B621814FE10034FFA7 /* CoreDataStack.swift in Sources */,
 				23F4C9D52191EA1300D00D05 /* UIView+Helpers.swift in Sources */,
 				23484C6121866927007C5CCF /* AddClassTableViewController.swift in Sources */,
+				235E0B8921955647005D3B9C /* Date+Helpers.swift in Sources */,
 				23484C64218963E0007C5CCF /* AssignmentTableViewController.swift in Sources */,
 				23CD10C52181A11F0034FFA7 /* Class+CoreDataProperties.swift in Sources */,
 				23580D54218E286600434DD9 /* AssignmentTableViewCell.swift in Sources */,
@@ -313,11 +362,14 @@
 				23580D4C218E164100434DD9 /* ToDo+CoreDataProperties.swift in Sources */,
 				23484C6621896B62007C5CCF /* AddAssignmentTableViewController.swift in Sources */,
 				23CD10AF21814F790034FFA7 /* CloudKitErrorHandler.swift in Sources */,
+				235E0B8B2197DF44005D3B9C /* String+Helpers.swift in Sources */,
+				23F4C9E0219283EA00D00D05 /* CAGradientLayer+Helpers.swift in Sources */,
 				23CD10AA21803E4D0034FFA7 /* CloudController.swift in Sources */,
+				23F4C9DA2192704400D00D05 /* UIColor+Helpers.swift in Sources */,
+				235E0B86219550D9005D3B9C /* ScheduleTableViewController.swift in Sources */,
 				23484C5B21822CA6007C5CCF /* Assignment+CoreDataProperties.swift in Sources */,
 				23484C5D21822CEE007C5CCF /* RecordType.swift in Sources */,
 				23CD10B421814FBE0034FFA7 /* CoreDataUploadable.swift in Sources */,
-				23F4C9D321916EE300D00D05 /* AddAssignmentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
