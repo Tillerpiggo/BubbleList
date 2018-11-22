@@ -31,12 +31,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        if let navigationController = window?.rootViewController as? UINavigationController,
+        application.applicationIconBadgeNumber = 0
+        
+        if let tabBarController = window?.rootViewController as? UITabBarController,
+            let navigationController = tabBarController.viewControllers?.first as? UINavigationController,
             let classTableViewController = navigationController.topViewController as? ClassTableViewController {
-            
             // Dependency inject the CoreData/CloudKit Objects
             classTableViewController.cloudController = cloudController
             classTableViewController.coreDataController = coreDataController
+            
+            tabBarController.tabBar.tintColor = .primaryColor
         }
         
         // Try to register for notifications

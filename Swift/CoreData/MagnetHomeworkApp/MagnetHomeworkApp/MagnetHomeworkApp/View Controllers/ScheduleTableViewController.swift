@@ -25,7 +25,7 @@ class ScheduleTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationController?.navigationBar.barTintColor = .navigationBarColor
+        navigationController?.navigationBar.barTintColor = .primaryColor
         
         dueDate = (assignment.dueDate as Date?)
         
@@ -83,7 +83,7 @@ class ScheduleTableViewController: UITableViewController {
     func setThisWeekdayText() {
         let weekday = Calendar.current.component(.weekday, from: Date())
         
-        if weekday >= 1 && weekday <= 5 {
+        if weekday >= 1 && weekday <= 4 {
             dueOnWeekdayLabel.text = "Due this Friday"
         } else {
             dueOnWeekdayLabel.text = "Due this coming Monday"
@@ -123,7 +123,7 @@ class ScheduleTableViewController: UITableViewController {
         case [0,0]:
             isDueDatePickerHidden = !isDueDatePickerHidden
             
-            dueDateLabel.textColor = isDueDatePickerHidden ? .black: .actionTextColor
+            dueDateLabel.textColor = isDueDatePickerHidden ? .textColor: .primaryColor
             
             tableView.beginUpdates()
             tableView.endUpdates()

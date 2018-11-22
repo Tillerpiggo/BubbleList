@@ -21,10 +21,14 @@ public class Assignment: NSManagedObject, CloudUploadable {
         }
         
         let calendar = Calendar(identifier: .gregorian)
-        let components = calendar.dateComponents([.day], from: Date().firstSecond, to: dueDate)
+        let components = calendar.dateComponents([.day], from: Date().firstSecond, to: dueDate.firstSecond)
         
         guard let daysBetween = components.day else {
             return "Unscheduled"
+        }
+        
+        guard dueDate.firstSecond > Date().firstSecond else {
+            return "Late"
         }
         
         if daysBetween < 0 {

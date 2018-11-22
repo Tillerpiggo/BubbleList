@@ -27,6 +27,8 @@ class AssignmentTableViewController: UITableViewController {
     
     var selectedAssignment: Assignment?
     
+    var showsCompleted: Bool = false
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
@@ -39,7 +41,8 @@ class AssignmentTableViewController: UITableViewController {
         fetchRequest.sortDescriptors = [sortBySectionNumber, sortByDueDate, sortByCreationDate]
         fetchRequest.fetchBatchSize = 20 // TODO: May need to adjust
         
-        let isInClassPredicate = NSPredicate(format: "owningClass == %@", self.`class`)
+        //let isInClassPredicate = NSPredicate(format: "owningClass == %@ && toDo.isCompleted == false", self.`class`)
+        let isInClassPredicate = NSPredicate(format: "owningClass == %@ && toDo.isCompleted == false", self.`class`)
         fetchRequest.predicate = isInClassPredicate
         
         let fetchedResultsController = NSFetchedResultsController (
@@ -59,6 +62,14 @@ class AssignmentTableViewController: UITableViewController {
         
         return fetchedResultsController
     }()
+    
+    func fetch() {
+        do {
+            try fetchedResultsController.performFetch()
+        } catch let error as NSError {
+            print("Fetching error: \(error), \(error.userInfo)")
+        }
+    }
     
     // MARK: - IBOutlets
     
@@ -98,10 +109,18 @@ class AssignmentTableViewController: UITableViewController {
         updateHeaderView()
         
         tableView.rowHeight = 44
-        tableView.estimatedRowHeight = 44
+        tableView.estimatedRowHeight = 60
+        tableView.backgroundColor = .backgroundColor
+        tableView.separatorColor = .separatorColor
 //        tableView.estimatedRowHeight = 0
 //        tableView.estimatedSectionFooterHeight = 0
 //        tableView.estimatedSectionHeaderHeight = 0
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        tableView.reloadData()
     }
 
     // MARK: - Navigation
@@ -114,6 +133,10 @@ class AssignmentTableViewController: UITableViewController {
         destinationViewController.assignment = selectedAssignment
         destinationViewController.coreDataController = coreDataController
         destinationViewController.delegate = self
+        
+        navigationController.navigationBar.tintColor = self.navigationController?.navigationBar.tintColor
+        navigationController.navigationBar.barTintColor = self.navigationController?.navigationBar.barTintColor
+        navigationController.navigationBar.titleTextAttributes = self.navigationController?.navigationBar.titleTextAttributes
     }
 }
 
@@ -140,8 +163,12 @@ extension AssignmentTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: "AssignmentCell", for: indexPath) as! AssignmentTableViewCell
+        return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard let cell = cell as? AssignmentTableViewCell else { return }
         
         // Get model object
         let assignment = fetchedResultsController.object(at: indexPath)
@@ -162,8 +189,6 @@ extension AssignmentTableViewController {
             cell.separatorView.isHidden = true
             cell.subviews.first?.removeDropShadow()
         }
-        
-        return cell
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -181,6 +206,10 @@ extension AssignmentTableViewController {
         }
     }
     
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        return nil
+    }
+    
     // MARK: - Delegate
     
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
@@ -188,7 +217,6 @@ extension AssignmentTableViewController {
             self.selectedAssignment = self.fetchedResultsController.object(at: indexPath)
             self.performSegue(withIdentifier: "ScheduleTableView", sender: self)
         })
-        scheduleRowAction.backgroundColor = .scheduleColor
         
         let deleteRowAction = UITableViewRowAction(style: .default, title: "Delete", handler: { (action, indexPath) in
             let deletedAssignment = self.fetchedResultsController.object(at: indexPath)
@@ -215,14 +243,16 @@ extension AssignmentTableViewController {
                 print("Deleted Class!")
             }
         })
-        deleteRowAction.backgroundColor = .deleteColor
-
-        return [deleteRowAction, scheduleRowAction]
+        deleteRowAction.backgroundColor = .destructiveColor
+        
+        return [deleteRowAction]
     }
     
     // MARK: - Delegate
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.selectedAssignment = self.fetchedResultsController.object(at: indexPath)
+        
         tableView.beginUpdates()
         tableView.deselectRow(at: indexPath, animated: true)
         tableView.endUpdates()
@@ -267,7 +297,7 @@ extension AssignmentTableViewController: AddAssignmentTableViewControllerDelegat
                     break
                 default:
                     DispatchQueue.main.async {
-                        self.alertUserOfFailure()
+                        //self.alertUserOfFailure()
                         self.coreDataController.save()
                     }
                 }
@@ -283,7 +313,7 @@ extension AssignmentTableViewController: AddAssignmentTableViewControllerDelegat
                     break
                 default:
                     DispatchQueue.main.async {
-                        self.alertUserOfFailure()
+                        //self.alertUserOfFailure()
                         self.coreDataController.save()
                     }
                 }
@@ -305,7 +335,7 @@ extension AssignmentTableViewController: AddAssignmentTableViewControllerDelegat
                     break
                 default:
                     DispatchQueue.main.async {
-                        self.alertUserOfFailure()
+                        //self.alertUserOfFailure()
                         self.coreDataController.save()
                     }
                 }
@@ -424,17 +454,24 @@ extension AssignmentTableViewController: AssignmentTableViewCellDelegate {
                 default:
                     print("ERROR: \(error.code)")
                     DispatchQueue.main.async {
-                        self.alertUserOfFailure()
+                        //self.alertUserOfFailure()
                         self.coreDataController.save()
                     }
                 }
             }
+            
+            delegate?.reloadClass(`class`)
             
             return toDo.isCompleted
         } else {
             print("Couldn't find associated assignment; look at AssignmentTableViewController: AssignmentTableViewCellDelegate")
             return true
         }
+    }
+    
+    func scheduleButtonPressed(assignment: Assignment) {
+        selectedAssignment = assignment
+        performSegue(withIdentifier: "ScheduleTableView", sender: self)
     }
 }
 
@@ -458,11 +495,13 @@ extension AssignmentTableViewController: ScheduleTableViewControllerDelegate {
                 break
             default:
                 DispatchQueue.main.async {
-                    self.alertUserOfFailure()
+                    //self.alertUserOfFailure()
                     self.coreDataController.save()
                 }
             }
         }
+        
+        delegate?.reloadClass(`class`)
     }
 }
 
@@ -473,7 +512,7 @@ extension AssignmentTableViewController: UITextFieldDelegate, UITextDragDelegate
     @IBAction func addAssignmentButtonPressed(_ sender: Any) {
         addAssignmentButton.isHidden = true
         UIView.animate(withDuration: 0.1, animations: {
-            self.addAssignmentView.backgroundColor = .white
+            self.addAssignmentView.backgroundColor = .backgroundColor
         })
         
         addAssignmentText.isHidden = true
@@ -491,7 +530,7 @@ extension AssignmentTableViewController: UITextFieldDelegate, UITextDragDelegate
     
     @IBAction func addAssignmentButtonDraggedOutside(_ sender: Any) {
         UIView.animate(withDuration: 0.1, animations: {
-            self.addAssignmentView.backgroundColor = UIColor.primaryColor
+            self.addAssignmentView.backgroundColor = UIColor.highlightColor
         })
     }
     
@@ -518,7 +557,7 @@ extension AssignmentTableViewController: UITextFieldDelegate, UITextDragDelegate
         self.addAssignmentText.isHidden = false
         
         UIView.animate(withDuration: duration, animations: {
-            self.addAssignmentView.backgroundColor = UIColor.primaryColor
+            self.addAssignmentView.backgroundColor = UIColor.highlightColor
             
             if self.navigationItem.rightBarButtonItems?.count ?? 0 > 1 {
                 self.navigationItem.rightBarButtonItem = nil

@@ -23,6 +23,7 @@ class ClassTableViewController: UITableViewController {
     var coreDataController: CoreDataController!
     
     var delegate: ClassTableViewControllerDelegate?
+    var expandedIndexPaths = [IndexPath]()
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -67,7 +68,9 @@ class ClassTableViewController: UITableViewController {
         registerAsNotificationDelegate()
         
         tableView.rowHeight = 100
-        tableView.estimatedRowHeight = 100
+        tableView.estimatedRowHeight = 120
+        tableView.backgroundColor = .backgroundColor
+        tableView.separatorColor = .separatorColor
 //        tableView.estimatedRowHeight = 0
 //        tableView.estimatedSectionFooterHeight = 0
 //        tableView.estimatedSectionHeaderHeight = 0
@@ -75,11 +78,6 @@ class ClassTableViewController: UITableViewController {
         
         configureNavigationBar()
         configureAddClassView(duration: 0.0)
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        //tableView.contentInsetAdjustmentBehavior = .automatic
-        tableView.isScrollEnabled = true
     }
     
     // MARK: - Navigation
@@ -312,14 +310,24 @@ extension ClassTableViewController {
     }
     
     func configureNavigationBar() {
-        // GRADIENT
-        let colors: [UIColor] = [.lightColor, .darkColor]
-        navigationController?.navigationBar.setGradientBackground(colors: colors)
+//        // GRADIENT
+//        let colors: [UIColor] = [UIColor(red: 0.92, green: 0.31, blue: 0.31, alpha: 1),
+//                                 UIColor(red: 0.97, green: 0.66, blue: 0.54, alpha: 1)]
+//        //navigationController?.navigationBar.setGradientBackground(colors: colors)
         
-        navigationController?.navigationBar.barTintColor = .navigationBarColor
+        navigationController?.navigationBar.barTintColor = .primaryColor
+        //navigationController?.navigationBar.barTintColor = .white
         
         // TINT COLOR
-        navigationController?.navigationBar.tintColor = .onDarkTextColor
+        navigationController?.navigationBar.tintColor = .navigationBarTintColor
+        //navigationController?.navigationBar.tintColor = .black
+        
+        //navigationController?.hidesBarsOnSwipe = true
+        //navigationController?.hidesBarsWhenKeyboardAppears = true
+        
+        // TITLE COLOR
+        let textAttributes: [NSAttributedString.Key: UIColor]  = [NSAttributedString.Key.foregroundColor: .navigationBarTintColor]
+        navigationController?.navigationBar.titleTextAttributes = textAttributes
     }
 }
 
@@ -348,13 +356,19 @@ extension ClassTableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ClassCell", for: indexPath) as! ClassTableViewCell
         
+        return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard let cell = cell as? ClassTableViewCell else { return }
+        
         // Get model object
         let `class` = fetchedResultsController.object(at: indexPath)
         
         // Configure cell with model
         cell.configure(withClass: `class`)
         
-        return cell
+        cell.delegate = self
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
@@ -378,6 +392,48 @@ extension ClassTableViewController {
                 print("Deleted Class!")
             }
         }
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let `class` = fetchedResultsController.object(at: indexPath)
+        let offset: CGFloat = 0
+        
+        if let previewAssignments = `class`.previewAssignments() {
+            var spaceForMoreAssignments: CGFloat
+            let spacePerLine: CGFloat = 18
+            spaceForMoreAssignments = CGFloat(previewAssignments.count - 1) * spacePerLine
+            let height = 111.5 + spaceForMoreAssignments + offset
+            
+            return height
+            if height > 120 { return height }
+            return 120
+        } else {
+            return 77
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let deleteRowAction = UITableViewRowAction(style: .default, title: "Delete", handler: { (action, indexPath) in
+            let deletedClass = self.fetchedResultsController.object(at: indexPath)
+            
+            if self.fetchedResultsController.fetchedObjects?.count == 1 {
+                var frame = CGRect.zero
+                frame.size.height = .leastNormalMagnitude
+                tableView.tableHeaderView = UIView(frame: frame)
+            }
+            
+            // Delete from core data
+            self.coreDataController.delete(deletedClass)
+            self.coreDataController.save()
+            
+            // Delete from cloud
+            self.cloudController.delete([deletedClass], inDatabase: .private) {
+                print("Deleted Class!")
+            }
+        })
+        deleteRowAction.backgroundColor = .destructiveColor
+        
+        return [deleteRowAction]
     }
     
     // MARK: - Delegate
@@ -428,8 +484,9 @@ extension ClassTableViewController: NotificationDelegate {
 
 extension ClassTableViewController: AssignmentTableViewControllerDelegate {
     func reloadClass(_ `class`: Class) {
-        if let classRow = fetchedResultsController.fetchedObjects?.index(where: { $0.ckRecord.recordID == `class`.ckRecord.recordID }) {
-            tableView.reloadRows(at: [IndexPath(row: classRow, section: 0)], with: .automatic)
+        if let indexPath = fetchedResultsController.indexPath(forObject: `class`) {
+            let cell = tableView.cellForRow(at: indexPath) as! ClassTableViewCell
+            cell.configure(withClass: `class`)
         }
     }
 }
@@ -454,7 +511,7 @@ extension ClassTableViewController: AddClassTableViewControllerDelegate {
                 break
             default:
                 DispatchQueue.main.async {
-                    self.alertUserOfFailure()
+                    //self.alertUserOfFailure()
                     self.coreDataController.save()
                 }
             }
@@ -468,7 +525,7 @@ extension ClassTableViewController: UITextFieldDelegate, UITextDragDelegate {
     @IBAction func addClassButtonPressed(_ sender: Any) {
         addClassButton.isHidden = true
         UIView.animate(withDuration: 0.1, animations: {
-            self.addClassView.backgroundColor = .white
+            self.addClassView.backgroundColor = .backgroundColor
         })
         
         addClassText.isHidden = true
@@ -486,7 +543,7 @@ extension ClassTableViewController: UITextFieldDelegate, UITextDragDelegate {
     
     @IBAction func addClassButtonDraggedOutside(_ sender: Any) {
         UIView.animate(withDuration: 0.1, animations: {
-            self.addClassView.backgroundColor = UIColor.primaryColor
+            self.addClassView.backgroundColor = UIColor.highlightColor
         })
     }
     
@@ -513,7 +570,7 @@ extension ClassTableViewController: UITextFieldDelegate, UITextDragDelegate {
         self.addClassText.isHidden = false
         
         UIView.animate(withDuration: duration, animations: {
-            self.addClassView.backgroundColor = UIColor.primaryColor
+            self.addClassView.backgroundColor = UIColor.highlightColor
             self.navigationItem.rightBarButtonItem = nil
         }, completion: { (bool) in
             self.addClassButton.isHidden = false
@@ -538,9 +595,9 @@ extension ClassTableViewController: UITextFieldDelegate, UITextDragDelegate {
         return true
     }
     
-    func textDraggableView(_ textDraggableView: UIView & UITextDraggable, dragSessionDidEnd session: UIDragSession, with operation: UIDropOperation) {
-        addClassTextField.resignFirstResponder()
-    }
+//    func textDraggableView(_ textDraggableView: UIView & UITextDraggable, dragSessionDidEnd session: UIDragSession, with operation: UIDropOperation) {
+//        addClassTextField.resignFirstResponder()
+//    }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         addClassTextField.resignFirstResponder()
@@ -551,5 +608,26 @@ extension ClassTableViewController: UITextFieldDelegate, UITextDragDelegate {
         // Create new assignment
         let newClass = Class(withName: name, managedContext: coreDataController.managedContext, zoneID: cloudController.zoneID)
         addedClass(newClass)
+    }
+}
+
+extension ClassTableViewController: ClassTableViewCellDelegate {
+    func expandedClass(_ class: Class) {
+        if let indexPath = fetchedResultsController.indexPath(forObject: `class`) {
+            expandedIndexPaths.append(indexPath)
+        }
+        
+        tableView.beginUpdates()
+        tableView.endUpdates()
+    }
+    
+    func collapsedClass(_ class: Class) {
+        guard let indexPath = fetchedResultsController.indexPath(forObject: `class`) else { return }
+        if let removedIndex = expandedIndexPaths.firstIndex(where: { $0 == indexPath }) {
+            expandedIndexPaths.remove(at: removedIndex)
+        }
+        
+        tableView.beginUpdates()
+        tableView.endUpdates()
     }
 }

@@ -29,18 +29,38 @@ public class Class: NSManagedObject, CloudUploadable {
             return comparisonResult == .orderedDescending
         }
         
-        if let filteredAssignmentArray = assignmentArray?.filter({ $0.dueDate != nil }), filteredAssignmentArray.count > 0 {
+        let completedAssignments = assignmentArray?.filter({ $0.toDo?.isCompleted ?? false == true })
+        
+        if let filteredAssignmentArray = completedAssignments?.filter({ $0.dueDate != nil }), filteredAssignmentArray.count > 0 {
             if let previewAssignment = filteredAssignmentArray.max(by: compareBlock) {
                 return previewAssignment
             } else {
                 return nil
             }
         } else {
-            if let previewAssignment = assignmentArray?.max(by: compareBlock) {
+            if let previewAssignment = completedAssignments?.max(by: compareBlock) {
                 return previewAssignment
             } else {
                 return nil
             }
+        }
+    }
+    
+    func previewAssignments() -> [Assignment]? {
+        let compareBlock: (Assignment, Assignment) -> Bool = {
+            return $0.dueDateSectionNumber > $1.dueDateSectionNumber
+        }
+        
+        let completedAssignments = assignmentArray?.filter({ $0.toDo?.isCompleted ?? false != true })
+        
+        if let mostImportantAssignment = completedAssignments?.max(by: compareBlock) {
+            let sectionName = mostImportantAssignment.dueDateSection
+            let assignmentsInSection = completedAssignments?.filter { $0.dueDateSection == sectionName }
+            
+            print("Assignments In Section: \(assignmentsInSection?.map({ $0.text }))\nClass Name: \(self.name)\n")
+            return assignmentsInSection?.sorted(by: compareBlock)
+        } else {
+            return nil
         }
     }
     

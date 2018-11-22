@@ -37,6 +37,7 @@
 		23CD10B621814FE10034FFA7 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CD10B521814FE10034FFA7 /* CoreDataStack.swift */; };
 		23CD10BD2181A0660034FFA7 /* Class+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CD10B92181A0660034FFA7 /* Class+CoreDataClass.swift */; };
 		23CD10C52181A11F0034FFA7 /* Class+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CD10C42181A11F0034FFA7 /* Class+CoreDataProperties.swift */; };
+		23CE667F219BCC0000B34042 /* ToDoTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CE667E219BCC0000B34042 /* ToDoTableViewController.swift */; };
 		23F4C9D52191EA1300D00D05 /* UIView+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F4C9D42191EA1300D00D05 /* UIView+Helpers.swift */; };
 		23F4C9DA2192704400D00D05 /* UIColor+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F4C9D92192704400D00D05 /* UIColor+Helpers.swift */; };
 		23F4C9E0219283EA00D00D05 /* CAGradientLayer+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F4C9DF219283EA00D00D05 /* CAGradientLayer+Helpers.swift */; };
@@ -77,6 +78,7 @@
 		23CD10B521814FE10034FFA7 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		23CD10B92181A0660034FFA7 /* Class+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Class+CoreDataClass.swift"; sourceTree = "<group>"; };
 		23CD10C42181A11F0034FFA7 /* Class+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Class+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		23CE667E219BCC0000B34042 /* ToDoTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoTableViewController.swift; sourceTree = "<group>"; };
 		23F4C9D42191EA1300D00D05 /* UIView+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Helpers.swift"; sourceTree = "<group>"; };
 		23F4C9D92192704400D00D05 /* UIColor+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Helpers.swift"; sourceTree = "<group>"; };
 		23F4C9DF219283EA00D00D05 /* CAGradientLayer+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CAGradientLayer+Helpers.swift"; sourceTree = "<group>"; };
@@ -109,13 +111,12 @@
 			isa = PBXGroup;
 			children = (
 				23484C5E21854A1E007C5CCF /* ClassTableViewController.swift */,
-				23484C6021866927007C5CCF /* AddClassTableViewController.swift */,
 				23484C63218963E0007C5CCF /* AssignmentTableViewController.swift */,
 				235E0B85219550D9005D3B9C /* ScheduleTableViewController.swift */,
+				23CE667E219BCC0000B34042 /* ToDoTableViewController.swift */,
 				23F4C9D821926CCC00D00D05 /* UIExtension */,
 				235E0B8721955626005D3B9C /* OtherExtensions */,
 				23580D4E218E281100434DD9 /* TableViewCells */,
-				235E0B8C2197EE2C005D3B9C /* Old */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -133,8 +134,8 @@
 		23580D4E218E281100434DD9 /* TableViewCells */ = {
 			isa = PBXGroup;
 			children = (
-				23580D53218E286600434DD9 /* AssignmentTableViewCell.swift */,
 				235E0B8D2198AE05005D3B9C /* ClassTableViewCell.swift */,
+				23580D53218E286600434DD9 /* AssignmentTableViewCell.swift */,
 			);
 			path = TableViewCells;
 			sourceTree = "<group>";
@@ -151,6 +152,7 @@
 		235E0B8C2197EE2C005D3B9C /* Old */ = {
 			isa = PBXGroup;
 			children = (
+				23484C6021866927007C5CCF /* AddClassTableViewController.swift */,
 				23484C6521896B62007C5CCF /* AddAssignmentTableViewController.swift */,
 			);
 			path = Old;
@@ -186,6 +188,7 @@
 				23CD109A21803C550034FFA7 /* Assets.xcassets */,
 				23CD109F21803C550034FFA7 /* Info.plist */,
 				23CD109721803C530034FFA7 /* MagnetHomeworkApp.xcdatamodeld */,
+				235E0B8C2197EE2C005D3B9C /* Old */,
 			);
 			path = MagnetHomeworkApp;
 			sourceTree = "<group>";
@@ -366,6 +369,7 @@
 				23F4C9E0219283EA00D00D05 /* CAGradientLayer+Helpers.swift in Sources */,
 				23CD10AA21803E4D0034FFA7 /* CloudController.swift in Sources */,
 				23F4C9DA2192704400D00D05 /* UIColor+Helpers.swift in Sources */,
+				23CE667F219BCC0000B34042 /* ToDoTableViewController.swift in Sources */,
 				235E0B86219550D9005D3B9C /* ScheduleTableViewController.swift in Sources */,
 				23484C5B21822CA6007C5CCF /* Assignment+CoreDataProperties.swift in Sources */,
 				23484C5D21822CEE007C5CCF /* RecordType.swift in Sources */,

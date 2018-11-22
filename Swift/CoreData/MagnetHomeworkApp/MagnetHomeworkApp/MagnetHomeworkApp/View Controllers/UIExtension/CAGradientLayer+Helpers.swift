@@ -18,8 +18,8 @@ extension CAGradientLayer {
             self.colors?.append(color.cgColor)
         }
         
-        startPoint = CGPoint(x: 0.2, y: 0.5)
-        endPoint = CGPoint(x: 0.8, y: 0.5)
+        startPoint = CGPoint(x: 0.0, y: 0.0)
+        endPoint = CGPoint(x: 1.0, y: 0.0)
     }
     
     func createGradientImage() -> UIImage? {

@@ -17,7 +17,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="llamaLaunchScreen" translatesAutoresizingMaskIntoConstraints="NO" id="agd-MG-5C0">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="llamaLaunchScreen2" translatesAutoresizingMaskIntoConstraints="NO" id="agd-MG-5C0">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
                         </subviews>
@@ -37,6 +37,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="llamaLaunchScreen" width="394" height="705"/>
+        <image name="llamaLaunchScreen2" width="394" height="705"/>
     </resources>
 </document>
