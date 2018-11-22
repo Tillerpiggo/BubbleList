@@ -395,21 +395,22 @@ extension ClassTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let `class` = fetchedResultsController.object(at: indexPath)
-        let offset: CGFloat = 0
+        return 80
         
-        if let previewAssignments = `class`.previewAssignments() {
-            var spaceForMoreAssignments: CGFloat
-            let spacePerLine: CGFloat = 18
-            spaceForMoreAssignments = CGFloat(previewAssignments.count - 1) * spacePerLine
-            let height = 111.5 + spaceForMoreAssignments + offset
-            
-            return height
-            if height > 120 { return height }
-            return 120
-        } else {
-            return 77
-        }
+//        let offset: CGFloat = 0
+//
+//        if let previewAssignments = `class`.previewAssignments() {
+//            var spaceForMoreAssignments: CGFloat
+//            let spacePerLine: CGFloat = 18
+//            spaceForMoreAssignments = CGFloat(previewAssignments.count - 1) * spacePerLine
+//            let height = 111.5 + spaceForMoreAssignments + offset
+//
+//            return height
+//            if height > 120 { return height }
+//            return 120
+//        } else {
+//            return 77
+//        }
     }
     
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {

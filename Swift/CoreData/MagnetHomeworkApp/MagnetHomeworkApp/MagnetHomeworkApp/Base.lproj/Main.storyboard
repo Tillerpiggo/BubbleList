@@ -98,66 +98,35 @@
                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="7" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xu3-Wm-yjt">
-                                            <rect key="frame" x="330" y="13" width="9" height="20.5"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="3 Due Tomorrow" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xu3-Wm-yjt">
+                                            <rect key="frame" x="225.5" y="10.5" width="113.5" height="20.5"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                             <color key="textColor" white="0.60623859489051091" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Due Tomorrow" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WH1-SE-0O2">
-                                            <rect key="frame" x="18" y="43.5" width="315" height="17"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="17" id="6Lw-Wh-CdM"/>
-                                            </constraints>
-                                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
-                                            <color key="textColor" red="0.95435314863286125" green="0.56362631596090462" blue="0.074475535544699101" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rMT-1v-gLd">
-                                            <rect key="frame" x="271" y="55.5" width="102" height="39"/>
-                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="102" id="4bH-Iw-iK8"/>
-                                                <constraint firstAttribute="height" constant="39" id="hf6-tJ-ffR"/>
-                                            </constraints>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Work On: Flashcards" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o4T-Wr-OpL">
+                                            <rect key="frame" x="18" y="35.5" width="315" height="17"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                            <state key="normal" title="Show More">
-                                                <color key="titleColor" red="0.47450980392156861" green="0.72156862745098038" blue="0.76078431372549016" alpha="1" colorSpace="calibratedRGB"/>
-                                            </state>
-                                            <connections>
-                                                <action selector="expandButtonPressed:" destination="V02-wg-EWV" eventType="touchUpInside" id="SSU-dn-VsI"/>
-                                            </connections>
-                                        </button>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Assignment" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o4T-Wr-OpL">
-                                            <rect key="frame" x="18" y="66.5" width="76" height="17"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="o4T-Wr-OpL" firstAttribute="leading" secondItem="s0a-4u-MG9" secondAttribute="leadingMargin" constant="2" id="3fP-fI-GYF"/>
-                                        <constraint firstAttribute="bottom" secondItem="rMT-1v-gLd" secondAttribute="bottom" id="C16-TY-7N9"/>
-                                        <constraint firstAttribute="trailing" secondItem="rMT-1v-gLd" secondAttribute="trailing" constant="-32" id="C2q-CO-s7H"/>
                                         <constraint firstItem="Xu3-Wm-yjt" firstAttribute="height" secondItem="FOe-Jv-Kjs" secondAttribute="height" id="JTf-tL-Yl8"/>
-                                        <constraint firstItem="WH1-SE-0O2" firstAttribute="leading" secondItem="s0a-4u-MG9" secondAttribute="leadingMargin" constant="2" id="KcS-yJ-x33"/>
                                         <constraint firstItem="FOe-Jv-Kjs" firstAttribute="top" secondItem="s0a-4u-MG9" secondAttribute="topMargin" constant="4" id="Koh-Af-nqx"/>
-                                        <constraint firstItem="o4T-Wr-OpL" firstAttribute="top" secondItem="WH1-SE-0O2" secondAttribute="bottom" constant="6" id="LD0-M2-S3A"/>
-                                        <constraint firstItem="Xu3-Wm-yjt" firstAttribute="top" secondItem="s0a-4u-MG9" secondAttribute="top" constant="13" id="LYn-K5-h5d"/>
-                                        <constraint firstItem="rMT-1v-gLd" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="o4T-Wr-OpL" secondAttribute="trailing" constant="8" symbolic="YES" id="Mt7-EW-kIB"/>
-                                        <constraint firstItem="WH1-SE-0O2" firstAttribute="trailing" secondItem="s0a-4u-MG9" secondAttribute="trailingMargin" id="SLK-aT-8WB"/>
+                                        <constraint firstItem="Xu3-Wm-yjt" firstAttribute="top" secondItem="s0a-4u-MG9" secondAttribute="top" constant="10.5" id="LYn-K5-h5d"/>
+                                        <constraint firstItem="o4T-Wr-OpL" firstAttribute="top" secondItem="FOe-Jv-Kjs" secondAttribute="bottom" id="Oxk-oC-SSr"/>
                                         <constraint firstItem="FOe-Jv-Kjs" firstAttribute="leading" secondItem="s0a-4u-MG9" secondAttribute="leadingMargin" constant="2" id="bNm-Dx-coO"/>
-                                        <constraint firstItem="WH1-SE-0O2" firstAttribute="top" secondItem="FOe-Jv-Kjs" secondAttribute="bottom" constant="8" id="dZy-IO-xny"/>
+                                        <constraint firstItem="o4T-Wr-OpL" firstAttribute="trailing" secondItem="s0a-4u-MG9" secondAttribute="trailingMargin" id="co0-jh-5kM"/>
                                         <constraint firstAttribute="trailing" secondItem="Xu3-Wm-yjt" secondAttribute="trailing" constant="2" id="iV4-Ov-BSN"/>
                                         <constraint firstItem="FOe-Jv-Kjs" firstAttribute="trailing" secondItem="s0a-4u-MG9" secondAttribute="trailingMargin" constant="2" id="raC-Wm-qiq"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="expandButton" destination="rMT-1v-gLd" id="l3J-KV-dub"/>
+                                    <outlet property="duePreview" destination="Xu3-Wm-yjt" id="vdR-ME-VJG"/>
                                     <outlet property="nameLabel" destination="FOe-Jv-Kjs" id="9G8-GO-K5O"/>
-                                    <outlet property="numberOfAssignmentsLabel" destination="Xu3-Wm-yjt" id="Nus-uG-elv"/>
                                     <outlet property="previewAssignmentLabel" destination="o4T-Wr-OpL" id="pej-Xe-vH8"/>
-                                    <outlet property="previewAssignmentSectionLabel" destination="WH1-SE-0O2" id="yBf-fz-e3D"/>
                                     <segue destination="ggM-QS-hVL" kind="show" identifier="AssignmentTableView" id="O8m-dX-oS2"/>
                                 </connections>
                             </tableViewCell>
