@@ -42,7 +42,7 @@ class AssignmentTableViewController: UITableViewController {
         fetchRequest.fetchBatchSize = 20 // TODO: May need to adjust
         
         //let isInClassPredicate = NSPredicate(format: "owningClass == %@ && toDo.isCompleted == false", self.`class`)
-        let isInClassPredicate = NSPredicate(format: "owningClass == %@ && toDo.isCompleted == false", self.`class`)
+        let isInClassPredicate = NSPredicate(format: "owningClass == %@", self.`class`)
         fetchRequest.predicate = isInClassPredicate
         
         let fetchedResultsController = NSFetchedResultsController (
@@ -108,8 +108,8 @@ class AssignmentTableViewController: UITableViewController {
         configureAddAssignmentView(duration: 0)
         updateHeaderView()
         
-        tableView.rowHeight = 44
-        tableView.estimatedRowHeight = 60
+//        tableView.rowHeight = 44
+//        tableView.estimatedRowHeight = 60
         tableView.backgroundColor = .backgroundColor
         tableView.separatorColor = .separatorColor
 //        tableView.estimatedRowHeight = 0
@@ -120,7 +120,7 @@ class AssignmentTableViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        tableView.reloadData()
+        //tableView.reloadData()
     }
 
     // MARK: - Navigation
@@ -164,6 +164,7 @@ extension AssignmentTableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "AssignmentCell", for: indexPath) as! AssignmentTableViewCell
+        
         return cell
     }
     
@@ -177,7 +178,7 @@ extension AssignmentTableViewController {
         cell.configure(withAssignment: assignment)
         cell.delegate = self
         //cell.separatorView.isHidden = indexPath.row == tableView.numberOfRows(inSection: indexPath.section) - 1
-        cell.separatorView.isHidden = true
+        cell.separatorView.isHidden = true //To remove separator view
         if tableView.numberOfRows(inSection: indexPath.section) == 1 {
             //cell.addDropShadow(color: .black, opacity: 0.07, radius: 5, yOffset: -10)
         } else if indexPath.row == tableView.numberOfRows(inSection: indexPath.section) - 1 {
@@ -186,7 +187,7 @@ extension AssignmentTableViewController {
         } else if indexPath.row == 0 {
             //cell.addDropShadow(color: .black, opacity: 0.07, radius: 5, yOffset: -10)
         } else {
-            cell.separatorView.isHidden = true
+            cell.separatorView.isHidden = true //To remove separator view
             cell.subviews.first?.removeDropShadow()
         }
     }
@@ -206,8 +207,12 @@ extension AssignmentTableViewController {
         }
     }
     
-    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        return nil
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if self.tableView(tableView, titleForHeaderInSection: section) != "Completed" {
+            return nil
+        } else {
+            return nil
+        }
     }
     
     // MARK: - Delegate
@@ -443,6 +448,13 @@ extension AssignmentTableViewController: AssignmentTableViewCellDelegate {
         if let assignment = fetchedResultsController.fetchedObjects?.first(where: { $0 == assignment }), let toDo = assignment.toDo {
             toDo.isCompleted = !toDo.isCompleted
             toDo.ckRecord["isCompleted"] = toDo.isCompleted as CKRecordValue?
+            
+            if toDo.isCompleted {
+                assignment.dueDateSectionNumber = 5
+                assignment.dueDateSection = "Completed"
+            } else {
+                assignment.updateDueDateSection()
+            }
             
             cloudController.save([toDo], inDatabase: .private, recordChanged: { (updatedRecord) in
                 assignment.toDo?.update(withRecord: updatedRecord)

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2310CF4321A8877E00A995FB /* AssignmentHeaderFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2310CF4221A8877E00A995FB /* AssignmentHeaderFooterView.swift */; };
 		23484C562182250E007C5CCF /* CKRecord+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23484C552182250E007C5CCF /* CKRecord+Helpers.swift */; };
 		23484C5A21822CA6007C5CCF /* Assignment+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23484C5821822CA6007C5CCF /* Assignment+CoreDataClass.swift */; };
 		23484C5B21822CA6007C5CCF /* Assignment+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23484C5921822CA6007C5CCF /* Assignment+CoreDataProperties.swift */; };
@@ -45,6 +46,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2310CF4221A8877E00A995FB /* AssignmentHeaderFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentHeaderFooterView.swift; sourceTree = "<group>"; };
 		23484C552182250E007C5CCF /* CKRecord+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKRecord+Helpers.swift"; sourceTree = "<group>"; };
 		23484C5821822CA6007C5CCF /* Assignment+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Assignment+CoreDataClass.swift"; sourceTree = "<group>"; };
 		23484C5921822CA6007C5CCF /* Assignment+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Assignment+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -114,9 +116,9 @@
 				23484C63218963E0007C5CCF /* AssignmentTableViewController.swift */,
 				235E0B85219550D9005D3B9C /* ScheduleTableViewController.swift */,
 				23CE667E219BCC0000B34042 /* ToDoTableViewController.swift */,
+				23580D4E218E281100434DD9 /* TableViewCells */,
 				23F4C9D821926CCC00D00D05 /* UIExtension */,
 				235E0B8721955626005D3B9C /* OtherExtensions */,
-				23580D4E218E281100434DD9 /* TableViewCells */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -136,6 +138,7 @@
 			children = (
 				235E0B8D2198AE05005D3B9C /* ClassTableViewCell.swift */,
 				23580D53218E286600434DD9 /* AssignmentTableViewCell.swift */,
+				2310CF4221A8877E00A995FB /* AssignmentHeaderFooterView.swift */,
 			);
 			path = TableViewCells;
 			sourceTree = "<group>";
@@ -362,6 +365,7 @@
 				23CD10B121814F9B0034FFA7 /* CoreDataController.swift in Sources */,
 				23CD109121803C530034FFA7 /* AppDelegate.swift in Sources */,
 				23CD10BD2181A0660034FFA7 /* Class+CoreDataClass.swift in Sources */,
+				2310CF4321A8877E00A995FB /* AssignmentHeaderFooterView.swift in Sources */,
 				23580D4C218E164100434DD9 /* ToDo+CoreDataProperties.swift in Sources */,
 				23484C6621896B62007C5CCF /* AddAssignmentTableViewController.swift in Sources */,
 				23CD10AF21814F790034FFA7 /* CloudKitErrorHandler.swift in Sources */,

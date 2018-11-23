@@ -20,6 +20,10 @@ public class Assignment: NSManagedObject, CloudUploadable {
             return "Unscheduled"
         }
         
+        guard toDo?.isCompleted == false else {
+            return "Completed"
+        }
+        
         let calendar = Calendar(identifier: .gregorian)
         let components = calendar.dateComponents([.day], from: Date().firstSecond, to: dueDate.firstSecond)
         
@@ -62,6 +66,7 @@ public class Assignment: NSManagedObject, CloudUploadable {
         case "Due This Week": return 3
         case "Due This Monday": return 3 
         case "Due Later": return 4
+        case "Completed": return 5
         default: return -1
         }
     }

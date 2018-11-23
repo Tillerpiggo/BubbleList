@@ -67,8 +67,8 @@ class ClassTableViewController: UITableViewController {
         updateWithCloud()
         registerAsNotificationDelegate()
         
-        tableView.rowHeight = 100
-        tableView.estimatedRowHeight = 120
+        tableView.rowHeight = 82
+        tableView.estimatedRowHeight = 82
         tableView.backgroundColor = .backgroundColor
         tableView.separatorColor = .separatorColor
 //        tableView.estimatedRowHeight = 0
@@ -394,24 +394,9 @@ extension ClassTableViewController {
         }
     }
     
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 80
-        
-//        let offset: CGFloat = 0
-//
-//        if let previewAssignments = `class`.previewAssignments() {
-//            var spaceForMoreAssignments: CGFloat
-//            let spacePerLine: CGFloat = 18
-//            spaceForMoreAssignments = CGFloat(previewAssignments.count - 1) * spacePerLine
-//            let height = 111.5 + spaceForMoreAssignments + offset
-//
-//            return height
-//            if height > 120 { return height }
-//            return 120
-//        } else {
-//            return 77
-//        }
-    }
+//    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        return 82
+//    }
     
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let deleteRowAction = UITableViewRowAction(style: .default, title: "Delete", handler: { (action, indexPath) in

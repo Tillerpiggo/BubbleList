@@ -63,14 +63,14 @@ class Theme {
                           highlightColor: UIColor(red: 0.07, green: 0.34, blue: 0.53, alpha: 1),
                           destructiveColor:  UIColor(red: 246/255, green: 76/255, blue: 76/255, alpha: 1),
                           backgroundColor: .white,
-                          separatorColor: UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1),
+                          separatorColor: UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 1),
                           nothingDueColor: UIColor(red: 0.02, green: 0.72, blue: 0.43, alpha: 1),
                           lateColor: UIColor(red: 242/255, green: 48/255, blue: 48/255, alpha: 1),
                           unscheduledColor: UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 1),
                           dueTomorrowColor: UIColor(red: 0.92, green: 0.72, blue: 0.37, alpha: 1),
                           dueThisWeekColor: UIColor(red: 0.42, green: 0.7, blue: 1, alpha: 1),
                           dueLaterColor: UIColor(red: 144/255, green: 116/255, blue: 254/255, alpha: 1.0),
-                          textColor: UIColor(red: 0.05, green: 0.05, blue: 0.05, alpha: 1),
+                          textColor: UIColor(red: 0.1, green: 0.1, blue: 0.1, alpha: 1),
                           secondaryTextColor: UIColor(red: 0.7, green: 0.7, blue: 0.7, alpha: 1))
 //        let unscheduledColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 1)
 //
