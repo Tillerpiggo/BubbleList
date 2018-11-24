@@ -92,7 +92,8 @@ class AssignmentTableViewCell: UITableViewCell {
         isCompletedImageView.image = isCompletedImage
         
         assignmentTextLabel.text = assignment.text
-        assignmentTextLabel.textColor = assignment.toDo?.isCompleted ?? false ? .lightGray : .textColor
+        assignmentTextLabel.textColor = isCompleted ? .lightGray : .textColor
+        dueDateTextLabel.textColor = isCompleted ? UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1.0) : .secondaryTextColor
         if let dueDate = assignment.dueDate as Date?, dueDate != Date.tomorrow {
             let dueDateString = dueDate.dateString
             dueDateTextLabel.text = "Due \(dueDateString)"

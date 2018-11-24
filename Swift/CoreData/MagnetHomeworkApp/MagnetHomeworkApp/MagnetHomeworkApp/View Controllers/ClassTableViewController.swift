@@ -320,8 +320,6 @@ extension ClassTableViewController {
         // TINT COLOR
         navigationController?.navigationBar.tintColor = .navigationBarTintColor
         
-        navigationController?.hidesBarsOnSwipe = true
-        
         // TITLE COLOR
         let textAttributes: [NSAttributedString.Key: UIColor]  = [NSAttributedString.Key.foregroundColor: .navigationBarTintColor]
         navigationController?.navigationBar.titleTextAttributes = textAttributes
