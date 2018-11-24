@@ -156,7 +156,7 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="grouped" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="sUR-Sn-ytF">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" red="0.92144840955734253" green="0.90874444359766715" blue="0.90820679235795554" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="separatorColor" white="0.88780223540145986" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <view key="tableFooterView" contentMode="scaleToFill" id="90k-h2-o9C">
                             <rect key="frame" x="0.0" y="138.5" width="375" height="62"/>
@@ -303,7 +303,6 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="assignmentTextLabel" destination="gkx-i4-VlT" id="cID-94-BAe"/>
-                                    <outlet property="contentView" destination="9qw-Eh-9CY" id="ZTW-Pk-fTw"/>
                                     <outlet property="dueDateTextLabel" destination="JW6-cr-Sok" id="fFI-xg-vJj"/>
                                     <outlet property="isCompletedImageView" destination="Hvm-jw-u0v" id="vqr-Rv-NwZ"/>
                                     <outlet property="scheduleButton" destination="WTc-0L-8mB" id="oiE-Rb-8lr"/>

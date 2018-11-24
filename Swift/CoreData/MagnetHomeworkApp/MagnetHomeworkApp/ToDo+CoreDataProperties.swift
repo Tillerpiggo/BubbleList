@@ -20,4 +20,5 @@ extension ToDo {
     @NSManaged public var isCompleted: Bool
     @NSManaged public var assignment: Assignment?
     @NSManaged public var encodedSystemFields: Data?
+    @NSManaged public var completionDate: NSDate?
 }

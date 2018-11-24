@@ -29,6 +29,10 @@ class AssignmentTableViewController: UITableViewController {
     
     var showsCompleted: Bool = false
     
+    var isCompletedHidden: Bool = true
+    
+    var hiddenSections: [Int] = []
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
@@ -38,7 +42,8 @@ class AssignmentTableViewController: UITableViewController {
         let sortBySectionNumber = NSSortDescriptor(key: #keyPath(Assignment.dueDateSectionNumber), ascending: true)
         let sortByDueDate = NSSortDescriptor(key: #keyPath(Assignment.dueDate), ascending: true)
         let sortByCreationDate = NSSortDescriptor(key: #keyPath(Assignment.creationDate), ascending: true)
-        fetchRequest.sortDescriptors = [sortBySectionNumber, sortByDueDate, sortByCreationDate]
+        let sortByCompletionDate = NSSortDescriptor(key: #keyPath(Assignment.toDo.completionDate), ascending: true)
+        fetchRequest.sortDescriptors = [sortBySectionNumber, sortByCompletionDate, sortByDueDate, sortByCreationDate]
         fetchRequest.fetchBatchSize = 20 // TODO: May need to adjust
         
         //let isInClassPredicate = NSPredicate(format: "owningClass == %@ && toDo.isCompleted == false", self.`class`)
@@ -112,9 +117,8 @@ class AssignmentTableViewController: UITableViewController {
 //        tableView.estimatedRowHeight = 60
         tableView.backgroundColor = .backgroundColor
         tableView.separatorColor = .separatorColor
-//        tableView.estimatedRowHeight = 0
-//        tableView.estimatedSectionFooterHeight = 0
-//        tableView.estimatedSectionHeaderHeight = 0
+        
+        tableView.register(UINib(nibName: "AssignmentHeaderFooterView", bundle: nil), forHeaderFooterViewReuseIdentifier: "AssignmentHeaderFooterView")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -177,7 +181,6 @@ extension AssignmentTableViewController {
         // Configure cell
         cell.configure(withAssignment: assignment)
         cell.delegate = self
-        //cell.separatorView.isHidden = indexPath.row == tableView.numberOfRows(inSection: indexPath.section) - 1
         cell.separatorView.isHidden = true //To remove separator view
         if tableView.numberOfRows(inSection: indexPath.section) == 1 {
             //cell.addDropShadow(color: .black, opacity: 0.07, radius: 5, yOffset: -10)
@@ -193,12 +196,20 @@ extension AssignmentTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        let sectionInfo = fetchedResultsController.sections?[section]
-        return sectionInfo?.name
+        guard let sectionInfo = fetchedResultsController.sections?[section] else {
+            return ""
+        }
+        
+        let numberOfRows = tableView.numberOfRows(inSection: section)
+        return "\(sectionInfo.name) (\(numberOfRows))"
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let assignment = fetchedResultsController.object(at: indexPath)
+        
+        if hiddenSections.contains(indexPath.section) {
+            return 0
+        }
 
         if let dueDate = assignment.dueDate as Date?, dueDate != Date.tomorrow {
             return 60
@@ -208,11 +219,29 @@ extension AssignmentTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if self.tableView(tableView, titleForHeaderInSection: section) != "Completed" {
-            return nil
-        } else {
+        guard let title = self.tableView(tableView, titleForHeaderInSection: section), title.contains("Completed") else {
             return nil
         }
+        
+        let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: "AssignmentHeaderFooterView") as! AssignmentHeaderFooterView
+        headerView.delegate = self
+        headerView.section = section
+        
+        if title.contains("Completed") && isCompletedHidden {
+            headerView.isExpanded = false
+            headerView.updateShowHideButton()
+            isCompletedHidden = true
+            hiddenSections.append(section)
+            
+            tableView.beginUpdates()
+            tableView.endUpdates()
+        }
+        
+        return headerView
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 60
     }
     
     // MARK: - Delegate
@@ -372,8 +401,18 @@ extension AssignmentTableViewController: NSFetchedResultsControllerDelegate {
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
         switch type {
         case .insert:
+            for (index, hiddenSection) in hiddenSections.enumerated() where hiddenSection > sectionIndex {
+                hiddenSections[index] += 1
+                let section = tableView.headerView(forSection: hiddenSection) as! AssignmentHeaderFooterView
+                section.section? += 1
+            }
             self.tableView.insertSections([sectionIndex], with: .fade)
         case .delete:
+            for (index, hiddenSection) in hiddenSections.enumerated() where hiddenSection > sectionIndex {
+                hiddenSections[index] -= 1
+                let section = tableView.headerView(forSection: hiddenSection) as! AssignmentHeaderFooterView
+                section.section? -= 1
+            }
             self.tableView.deleteSections([sectionIndex], with: .fade)
         default:
             break
@@ -447,6 +486,7 @@ extension AssignmentTableViewController: AssignmentTableViewCellDelegate {
     func buttonPressed(assignment: Assignment) -> Bool {
         if let assignment = fetchedResultsController.fetchedObjects?.first(where: { $0 == assignment }), let toDo = assignment.toDo {
             toDo.isCompleted = !toDo.isCompleted
+            toDo.completionDate = NSDate()
             toDo.ckRecord["isCompleted"] = toDo.isCompleted as CKRecordValue?
             
             if toDo.isCompleted {
@@ -455,6 +495,37 @@ extension AssignmentTableViewController: AssignmentTableViewCellDelegate {
             } else {
                 assignment.updateDueDateSection()
             }
+            
+            tableView.beginUpdates()
+            
+            var indexPath: IndexPath
+            if let fetchedIndexPath = fetchedResultsController.indexPath(forObject: assignment) {
+                indexPath = fetchedIndexPath
+            } else if var index = fetchedResultsController.fetchedObjects?.firstIndex(where: { $0.ckRecord.recordID == assignment.ckRecord.recordID }) {
+                print("WTF")
+                
+                var row: Int = 0
+                var indexSection: Int = 0
+                for section in 0..<tableView.numberOfSections {
+                    let numberOfRows = tableView.numberOfRows(inSection: section)
+                    
+                    if index - numberOfRows > 0 {
+                        index -= numberOfRows
+                    } else {
+                        indexSection = section
+                        break
+                    }
+                }
+                
+                row = index
+                
+                indexPath = IndexPath(row: row, section: indexSection)
+                
+            } else {
+                indexPath = IndexPath(row: 0, section: 0)
+            }
+            tableView.reloadRows(at: [indexPath], with: .automatic)
+            tableView.endUpdates()
             
             cloudController.save([toDo], inDatabase: .private, recordChanged: { (updatedRecord) in
                 assignment.toDo?.update(withRecord: updatedRecord)
@@ -471,6 +542,8 @@ extension AssignmentTableViewController: AssignmentTableViewCellDelegate {
                     }
                 }
             }
+            
+            coreDataController.save()
             
             delegate?.reloadClass(`class`)
             
@@ -609,5 +682,23 @@ extension AssignmentTableViewController: UITextFieldDelegate, UITextDragDelegate
         addedAssignment(newAssignment)
         
         updateHeaderView()
+    }
+}
+
+
+extension AssignmentTableViewController: AssignmentHeaderFooterCellDelegate {
+    func showHideButtonPressed(isExpanded: Bool, forSection section: Int) {
+        if !isExpanded {
+            hiddenSections.append(section)
+        } else {
+            hiddenSections.removeAll(where: { $0 == section })
+        }
+        
+        if self.tableView(tableView, titleForHeaderInSection: section)?.contains("Completed") ?? false {
+            isCompletedHidden = !isCompletedHidden
+        }
+        
+        tableView.beginUpdates()
+        tableView.endUpdates()
     }
 }

@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		2310CF4321A8877E00A995FB /* AssignmentHeaderFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2310CF4221A8877E00A995FB /* AssignmentHeaderFooterView.swift */; };
+		2310CF4721A920AE00A995FB /* AssignmentHeaderFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2310CF4621A920AE00A995FB /* AssignmentHeaderFooterView.xib */; };
+		2310CF4921A9F6C400A995FB /* UIApplication+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2310CF4821A9F6C400A995FB /* UIApplication+Helpers.swift */; };
 		23484C562182250E007C5CCF /* CKRecord+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23484C552182250E007C5CCF /* CKRecord+Helpers.swift */; };
 		23484C5A21822CA6007C5CCF /* Assignment+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23484C5821822CA6007C5CCF /* Assignment+CoreDataClass.swift */; };
 		23484C5B21822CA6007C5CCF /* Assignment+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23484C5921822CA6007C5CCF /* Assignment+CoreDataProperties.swift */; };
@@ -47,6 +49,8 @@
 
 /* Begin PBXFileReference section */
 		2310CF4221A8877E00A995FB /* AssignmentHeaderFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentHeaderFooterView.swift; sourceTree = "<group>"; };
+		2310CF4621A920AE00A995FB /* AssignmentHeaderFooterView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AssignmentHeaderFooterView.xib; sourceTree = "<group>"; };
+		2310CF4821A9F6C400A995FB /* UIApplication+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Helpers.swift"; sourceTree = "<group>"; };
 		23484C552182250E007C5CCF /* CKRecord+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKRecord+Helpers.swift"; sourceTree = "<group>"; };
 		23484C5821822CA6007C5CCF /* Assignment+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Assignment+CoreDataClass.swift"; sourceTree = "<group>"; };
 		23484C5921822CA6007C5CCF /* Assignment+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Assignment+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -184,6 +188,7 @@
 				23CD10A521803CFD0034FFA7 /* MagnetHomeworkApp.entitlements */,
 				23CD109021803C530034FFA7 /* AppDelegate.swift */,
 				23CD109421803C530034FFA7 /* Main.storyboard */,
+				2310CF4621A920AE00A995FB /* AssignmentHeaderFooterView.xib */,
 				23CD109C21803C550034FFA7 /* LaunchScreen.storyboard */,
 				23484C6221866946007C5CCF /* View Controllers */,
 				23CD10C32181A0AA0034FFA7 /* Model */,
@@ -263,6 +268,7 @@
 				23F4C9DF219283EA00D00D05 /* CAGradientLayer+Helpers.swift */,
 				23F4C9E1219284A000D00D05 /* UINavigationBar.swift */,
 				235E0B8F2199491F005D3B9C /* UILabel+Helpers.swift */,
+				2310CF4821A9F6C400A995FB /* UIApplication+Helpers.swift */,
 			);
 			path = UIExtension;
 			sourceTree = "<group>";
@@ -336,6 +342,7 @@
 				23CD109E21803C550034FFA7 /* LaunchScreen.storyboard in Resources */,
 				23CD109B21803C550034FFA7 /* Assets.xcassets in Resources */,
 				23CD109621803C530034FFA7 /* Main.storyboard in Resources */,
+				2310CF4721A920AE00A995FB /* AssignmentHeaderFooterView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -346,6 +353,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2310CF4921A9F6C400A995FB /* UIApplication+Helpers.swift in Sources */,
 				23484C5F21854A1E007C5CCF /* ClassTableViewController.swift in Sources */,
 				23CD10AD2180413E0034FFA7 /* CloudUploadable.swift in Sources */,
 				235E0B8E2198AE06005D3B9C /* ClassTableViewCell.swift in Sources */,

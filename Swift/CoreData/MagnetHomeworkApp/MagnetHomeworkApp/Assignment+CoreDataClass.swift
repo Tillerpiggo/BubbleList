@@ -16,12 +16,12 @@ public class Assignment: NSManagedObject, CloudUploadable {
     var ckRecord: CKRecord = CKRecord(recordType: "Assignment")
     
     func calculateDueDateSection() -> String {
-        guard let dueDate = dueDate as Date? else {
-            return "Unscheduled"
+        guard toDo?.isCompleted ?? false == false else {
+            return "Completed"
         }
         
-        guard toDo?.isCompleted == false else {
-            return "Completed"
+        guard let dueDate = dueDate as Date? else {
+            return "Unscheduled"
         }
         
         let calendar = Calendar(identifier: .gregorian)
@@ -47,8 +47,8 @@ public class Assignment: NSManagedObject, CloudUploadable {
             } else {
                 return "Due Later"
             }
-        } else if Date().weekday == 0 || Date().weekday >= 6 {
-            if daysBetween > 0 && daysBetween <= 3 {
+        } else if Date().weekday >= 5 {
+            if daysBetween > 0 && daysBetween <= 2 {
                 return "Due This Monday"
             } else {
                 return "Due Later"
