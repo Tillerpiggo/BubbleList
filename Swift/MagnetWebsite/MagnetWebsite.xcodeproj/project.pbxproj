@@ -1,0 +1,363 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2340E203211271B400F83681 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2340E202211271B400F83681 /* AppDelegate.swift */; };
+		2340E208211271B400F83681 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2340E206211271B400F83681 /* Main.storyboard */; };
+		2340E20A211271B600F83681 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2340E209211271B600F83681 /* Assets.xcassets */; };
+		2340E20D211271B600F83681 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2340E20B211271B600F83681 /* LaunchScreen.storyboard */; };
+		2340E2152112730500F83681 /* MagnetProject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2340E2142112730500F83681 /* MagnetProject.swift */; };
+		2340E2172112733800F83681 /* Magneto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2340E2162112733800F83681 /* Magneto.swift */; };
+		2340E2192112735E00F83681 /* Award.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2340E2182112735E00F83681 /* Award.swift */; };
+		2340E21B2112748C00F83681 /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2340E21A2112748C00F83681 /* Contact.swift */; };
+		2340E21D211276AC00F83681 /* Mentor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2340E21C211276AC00F83681 /* Mentor.swift */; };
+		2340E21F2112782900F83681 /* ContactTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2340E21E2112782900F83681 /* ContactTableViewController.swift */; };
+		2340E221211279BF00F83681 /* ContactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2340E220211279BF00F83681 /* ContactTableViewCell.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		2340E1FF211271B400F83681 /* MagnetWebsite.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MagnetWebsite.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2340E202211271B400F83681 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		2340E207211271B400F83681 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		2340E209211271B600F83681 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		2340E20C211271B600F83681 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		2340E20E211271B600F83681 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2340E2142112730500F83681 /* MagnetProject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagnetProject.swift; sourceTree = "<group>"; };
+		2340E2162112733800F83681 /* Magneto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Magneto.swift; sourceTree = "<group>"; };
+		2340E2182112735E00F83681 /* Award.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Award.swift; sourceTree = "<group>"; };
+		2340E21A2112748C00F83681 /* Contact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
+		2340E21C211276AC00F83681 /* Mentor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mentor.swift; sourceTree = "<group>"; };
+		2340E21E2112782900F83681 /* ContactTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactTableViewController.swift; sourceTree = "<group>"; };
+		2340E220211279BF00F83681 /* ContactTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactTableViewCell.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2340E1FC211271B400F83681 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2340E1F6211271B400F83681 = {
+			isa = PBXGroup;
+			children = (
+				2340E201211271B400F83681 /* MagnetWebsite */,
+				2340E200211271B400F83681 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		2340E200211271B400F83681 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2340E1FF211271B400F83681 /* MagnetWebsite.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2340E201211271B400F83681 /* MagnetWebsite */ = {
+			isa = PBXGroup;
+			children = (
+				2340E202211271B400F83681 /* AppDelegate.swift */,
+				2340E206211271B400F83681 /* Main.storyboard */,
+				2340E220211279BF00F83681 /* ContactTableViewCell.swift */,
+				2340E21E2112782900F83681 /* ContactTableViewController.swift */,
+				2340E2142112730500F83681 /* MagnetProject.swift */,
+				2340E2182112735E00F83681 /* Award.swift */,
+				2340E2162112733800F83681 /* Magneto.swift */,
+				2340E21A2112748C00F83681 /* Contact.swift */,
+				2340E21C211276AC00F83681 /* Mentor.swift */,
+				2340E209211271B600F83681 /* Assets.xcassets */,
+				2340E20B211271B600F83681 /* LaunchScreen.storyboard */,
+				2340E20E211271B600F83681 /* Info.plist */,
+			);
+			path = MagnetWebsite;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		2340E1FE211271B400F83681 /* MagnetWebsite */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2340E211211271B600F83681 /* Build configuration list for PBXNativeTarget "MagnetWebsite" */;
+			buildPhases = (
+				2340E1FB211271B400F83681 /* Sources */,
+				2340E1FC211271B400F83681 /* Frameworks */,
+				2340E1FD211271B400F83681 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MagnetWebsite;
+			productName = MagnetWebsite;
+			productReference = 2340E1FF211271B400F83681 /* MagnetWebsite.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2340E1F7211271B400F83681 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0940;
+				LastUpgradeCheck = 0940;
+				ORGANIZATIONNAME = Beaglepig;
+				TargetAttributes = {
+					2340E1FE211271B400F83681 = {
+						CreatedOnToolsVersion = 9.4.1;
+					};
+				};
+			};
+			buildConfigurationList = 2340E1FA211271B400F83681 /* Build configuration list for PBXProject "MagnetWebsite" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 2340E1F6211271B400F83681;
+			productRefGroup = 2340E200211271B400F83681 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				2340E1FE211271B400F83681 /* MagnetWebsite */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		2340E1FD211271B400F83681 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2340E20D211271B600F83681 /* LaunchScreen.storyboard in Resources */,
+				2340E20A211271B600F83681 /* Assets.xcassets in Resources */,
+				2340E208211271B400F83681 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2340E1FB211271B400F83681 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2340E21D211276AC00F83681 /* Mentor.swift in Sources */,
+				2340E21B2112748C00F83681 /* Contact.swift in Sources */,
+				2340E203211271B400F83681 /* AppDelegate.swift in Sources */,
+				2340E2152112730500F83681 /* MagnetProject.swift in Sources */,
+				2340E221211279BF00F83681 /* ContactTableViewCell.swift in Sources */,
+				2340E21F2112782900F83681 /* ContactTableViewController.swift in Sources */,
+				2340E2192112735E00F83681 /* Award.swift in Sources */,
+				2340E2172112733800F83681 /* Magneto.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		2340E206211271B400F83681 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2340E207211271B400F83681 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		2340E20B211271B600F83681 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2340E20C211271B600F83681 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		2340E20F211271B600F83681 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		2340E210211271B600F83681 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		2340E212211271B600F83681 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = UBS5J9L934;
+				INFOPLIST_FILE = MagnetWebsite/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.beaglepig.MagnetWebsite;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		2340E213211271B600F83681 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = UBS5J9L934;
+				INFOPLIST_FILE = MagnetWebsite/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.beaglepig.MagnetWebsite;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2340E1FA211271B400F83681 /* Build configuration list for PBXProject "MagnetWebsite" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2340E20F211271B600F83681 /* Debug */,
+				2340E210211271B600F83681 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2340E211211271B600F83681 /* Build configuration list for PBXNativeTarget "MagnetWebsite" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2340E212211271B600F83681 /* Debug */,
+				2340E213211271B600F83681 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 2340E1F7211271B400F83681 /* Project object */;
+}
