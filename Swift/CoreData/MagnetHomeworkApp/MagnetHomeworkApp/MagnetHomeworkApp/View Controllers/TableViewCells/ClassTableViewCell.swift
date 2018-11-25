@@ -21,6 +21,8 @@ class ClassTableViewCell: UITableViewCell {
     @IBOutlet weak var nameLabel: UILabel!
     //@IBOutlet weak var previewAssignmentLabel: UILabel!
     @IBOutlet weak var duePreview: UILabel!
+    @IBOutlet weak var completedImageView: UIImageView!
+    
     
     var accessoryButton: UIButton?
     var delegate: ClassTableViewCellDelegate?
@@ -32,11 +34,12 @@ class ClassTableViewCell: UITableViewCell {
         accessoryButton = subviews.compactMap { $0 as? UIButton }.first
         
         //contentView.backgroundColor = .backgroundColor
+        completedImageView.isHidden = true
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        accessoryButton?.frame.origin.y = 15
+        accessoryButton?.frame.origin.y += 1
         accessoryButton?.frame.origin.x += 0
         
         let animation = CATransition()
@@ -63,12 +66,16 @@ class ClassTableViewCell: UITableViewCell {
                 duePreviewSection = "Due in a While"
             }
             
+            print("DUEPREVIEWSECTION: \(duePreviewSection)")
+            
             var string: String
             if duePreviewSection != "Due Tomorrow" && duePreviewSection != "Late" {
                 string = "\(numberOfAssignments)"
             } else {
                 string = "\(numberOfAssignments) \(duePreviewSection ?? "")"
             }
+        
+            completedImageView.isHidden = true
             
             let attributedText = NSMutableAttributedString(string: string)
             print("AttributedText: \(attributedText.string)")
@@ -105,6 +112,7 @@ class ClassTableViewCell: UITableViewCell {
 //            }
         } else {
             //previewAssignmentLabel.isHidden = true
+            //completedImageView.isHidden = false
             
             let attributedText = NSMutableAttributedString(string: "Nothing Due")
             attributedText.addAttribute(.foregroundColor, value: UIColor.nothingDueColor, range: NSRange(location: 0, length: attributedText.string.count))

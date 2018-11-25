@@ -31,7 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        UIApplication.shared.statusBarView?.backgroundColor = .primaryColor
+        //UIApplication.shared.statusBarView?.backgroundColor = .primaryColor
         
         application.applicationIconBadgeNumber = 0
         

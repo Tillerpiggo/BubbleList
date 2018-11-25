@@ -393,29 +393,29 @@ extension ClassTableViewController {
 //        return 82
 //    }
     
-    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let deleteRowAction = UITableViewRowAction(style: .default, title: "Delete", handler: { (action, indexPath) in
-            let deletedClass = self.fetchedResultsController.object(at: indexPath)
-            
-            if self.fetchedResultsController.fetchedObjects?.count == 1 {
-                var frame = CGRect.zero
-                frame.size.height = .leastNormalMagnitude
-                tableView.tableHeaderView = UIView(frame: frame)
-            }
-            
-            // Delete from core data
-            self.coreDataController.delete(deletedClass)
-            self.coreDataController.save()
-            
-            // Delete from cloud
-            self.cloudController.delete([deletedClass], inDatabase: .private) {
-                print("Deleted Class!")
-            }
-        })
-        deleteRowAction.backgroundColor = .destructiveColor
-        
-        return [deleteRowAction]
-    }
+//    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+//        let deleteRowAction = UITableViewRowAction(style: .default, title: "Delete", handler: { (action, indexPath) in
+//            let deletedClass = self.fetchedResultsController.object(at: indexPath)
+//            
+//            if self.fetchedResultsController.fetchedObjects?.count == 1 {
+//                var frame = CGRect.zero
+//                frame.size.height = .leastNormalMagnitude
+//                tableView.tableHeaderView = UIView(frame: frame)
+//            }
+//            
+//            // Delete from core data
+//            self.coreDataController.delete(deletedClass)
+//            self.coreDataController.save()
+//            
+//            // Delete from cloud
+//            self.cloudController.delete([deletedClass], inDatabase: .private) {
+//                print("Deleted Class!")
+//            }
+//        })
+//        deleteRowAction.backgroundColor = .destructiveColor
+//        
+//        return [deleteRowAction]
+//    }
     
     // MARK: - Delegate
     

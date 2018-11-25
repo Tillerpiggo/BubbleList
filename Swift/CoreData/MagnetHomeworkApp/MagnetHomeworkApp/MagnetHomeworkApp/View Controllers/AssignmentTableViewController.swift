@@ -223,7 +223,7 @@ extension AssignmentTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let title = self.tableView(tableView, titleForHeaderInSection: section), title.contains("Completed") else {
+        guard let title = self.tableView(tableView, titleForHeaderInSection: section) else {
             return nil
         }
         
@@ -580,7 +580,7 @@ extension AssignmentTableViewController: AssignmentTableViewCellDelegate {
 // MARK: - ScheduleTableViewControllerDelegate
 
 extension AssignmentTableViewController: ScheduleTableViewControllerDelegate {
-    func reloadAssignment(_ assignment: Assignment) {
+    func reloadAssignment(withDueDate dueDate: Date?, _ assignment: Assignment) {
         if let indexPath = fetchedResultsController.indexPath(forObject: assignment) {
             tableView.reloadRows(at: [indexPath], with: .automatic)
         }

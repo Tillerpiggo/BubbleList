@@ -11,7 +11,7 @@ import CloudKit
 import CoreData
 
 protocol ScheduleTableViewControllerDelegate {
-    func reloadAssignment(_ assignment: Assignment)
+    func reloadAssignment(withDueDate dueDate: Date?, _ assignment: Assignment)
 }
 
 class ScheduleTableViewController: UITableViewController {
@@ -71,7 +71,7 @@ class ScheduleTableViewController: UITableViewController {
         assignment.ckRecord["dueDate"] = dueDate as CKRecordValue?
         coreDataController.save()
         
-        delegate?.reloadAssignment(assignment)
+        delegate?.reloadAssignment(withDueDate: dueDate, assignment)
         
         self.dismiss(animated: true)
     }
