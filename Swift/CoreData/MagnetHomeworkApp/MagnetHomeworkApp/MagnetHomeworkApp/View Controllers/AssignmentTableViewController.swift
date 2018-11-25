@@ -125,6 +125,7 @@ class AssignmentTableViewController: UITableViewController {
         super.viewWillAppear(animated)
         
         //tableView.reloadData()
+        print("HiddenSections: \(hiddenSections)")
     }
 
     // MARK: - Navigation
@@ -232,6 +233,8 @@ extension AssignmentTableViewController {
             headerView.updateShowHideButton()
             isCompletedHidden = true
             hiddenSections.append(section)
+            print("HiddenSections: \(hiddenSections)")
+            
             
             tableView.beginUpdates()
             tableView.endUpdates()
@@ -401,17 +404,19 @@ extension AssignmentTableViewController: NSFetchedResultsControllerDelegate {
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
         switch type {
         case .insert:
-            for (index, hiddenSection) in hiddenSections.enumerated() where hiddenSection > sectionIndex {
+            for (index, hiddenSection) in hiddenSections.enumerated() where hiddenSection >= sectionIndex {
                 hiddenSections[index] += 1
-                let section = tableView.headerView(forSection: hiddenSection) as! AssignmentHeaderFooterView
-                section.section? += 1
+                if let section = tableView.headerView(forSection: hiddenSection) as? AssignmentHeaderFooterView {
+                    section.section? += 1
+                }
             }
             self.tableView.insertSections([sectionIndex], with: .fade)
         case .delete:
-            for (index, hiddenSection) in hiddenSections.enumerated() where hiddenSection > sectionIndex {
+            for (index, hiddenSection) in hiddenSections.enumerated() where hiddenSection >= sectionIndex {
                 hiddenSections[index] -= 1
-                let section = tableView.headerView(forSection: hiddenSection) as! AssignmentHeaderFooterView
-                section.section? -= 1
+                if let section = tableView.headerView(forSection: hiddenSection) as? AssignmentHeaderFooterView {
+                    section.section? -= 1
+                }
             }
             self.tableView.deleteSections([sectionIndex], with: .fade)
         default:
@@ -524,7 +529,7 @@ extension AssignmentTableViewController: AssignmentTableViewCellDelegate {
             } else {
                 indexPath = IndexPath(row: 0, section: 0)
             }
-            tableView.reloadRows(at: [indexPath], with: .automatic)
+            //tableView.reloadRows(at: [indexPath], with: .automatic)
             tableView.endUpdates()
             
             cloudController.save([toDo], inDatabase: .private, recordChanged: { (updatedRecord) in
@@ -688,10 +693,12 @@ extension AssignmentTableViewController: UITextFieldDelegate, UITextDragDelegate
 
 extension AssignmentTableViewController: AssignmentHeaderFooterCellDelegate {
     func showHideButtonPressed(isExpanded: Bool, forSection section: Int) {
-        if !isExpanded {
+        if !isExpanded && !hiddenSections.contains(section) {
             hiddenSections.append(section)
+            print("HiddenSections: \(hiddenSections)")
         } else {
             hiddenSections.removeAll(where: { $0 == section })
+            print("HiddenSections: \(hiddenSections)")
         }
         
         if self.tableView(tableView, titleForHeaderInSection: section)?.contains("Completed") ?? false {

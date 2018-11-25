@@ -100,7 +100,6 @@ class AssignmentTableViewCell: UITableViewCell {
             dueDateTextLabel.isHidden = false
         } else {
             dueDateTextLabel.isHidden = true
-            print("DUE DATE TEXT LABEL SET TO HIDDEN")
         }
         
         self.assignment = assignment
