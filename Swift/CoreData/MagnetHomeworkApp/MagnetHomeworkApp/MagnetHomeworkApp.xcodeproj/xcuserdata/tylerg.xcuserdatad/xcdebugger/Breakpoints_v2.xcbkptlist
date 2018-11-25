@@ -74,7 +74,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
-            timestampString = "564805091.701858"
+            timestampString = "564816901.245445"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "164"
@@ -90,7 +90,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
-            timestampString = "564805091.702234"
+            timestampString = "564816901.2458889"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "159"
@@ -106,7 +106,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
-            timestampString = "564805091.702492"
+            timestampString = "564816901.245965"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "156"
@@ -122,7 +122,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
-            timestampString = "564805091.702741"
+            timestampString = "564816901.246027"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "157"
@@ -138,7 +138,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
-            timestampString = "564805091.7029901"
+            timestampString = "564816901.246091"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "160"
@@ -154,7 +154,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
-            timestampString = "564805091.703248"
+            timestampString = "564816901.246152"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "165"
@@ -170,11 +170,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
-            timestampString = "564805091.703494"
+            timestampString = "564816901.246213"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "290"
-            endingLineNumber = "290"
+            startingLineNumber = "294"
+            endingLineNumber = "294"
             landmarkName = "tableView(_:didSelectRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -186,7 +186,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/ClassTableViewController.swift"
-            timestampString = "564805091.7037489"
+            timestampString = "564816901.246266"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "469"
@@ -266,7 +266,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/ClassTableViewController.swift"
-            timestampString = "564805091.703832"
+            timestampString = "564816901.246491"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "178"
@@ -282,7 +282,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/ClassTableViewController.swift"
-            timestampString = "564805091.703869"
+            timestampString = "564816901.246537"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "200"
@@ -298,7 +298,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/ClassTableViewController.swift"
-            timestampString = "564805091.703904"
+            timestampString = "564816901.24659"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "240"
@@ -314,7 +314,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/ClassTableViewController.swift"
-            timestampString = "564805091.703938"
+            timestampString = "564816901.2466249"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "239"
@@ -378,7 +378,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/AppDelegate.swift"
-            timestampString = "564805091.704003"
+            timestampString = "564812030.422923"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "61"
@@ -490,7 +490,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/ClassTableViewController.swift"
-            timestampString = "564805091.7040941"
+            timestampString = "564816901.246773"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "280"
@@ -538,7 +538,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/ClassTableViewController.swift"
-            timestampString = "564805091.704128"
+            timestampString = "564816901.246812"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "283"
@@ -586,7 +586,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/ClassTableViewController.swift"
-            timestampString = "564805091.704163"
+            timestampString = "564816901.246855"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "458"
@@ -634,7 +634,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/AppDelegate.swift"
-            timestampString = "564805091.704195"
+            timestampString = "564812030.4231189"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "66"
@@ -682,7 +682,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/AppDelegate.swift"
-            timestampString = "564805091.704228"
+            timestampString = "564812030.423153"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "81"
@@ -794,7 +794,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/ClassTableViewController.swift"
-            timestampString = "564805091.704299"
+            timestampString = "564816901.246945"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "486"
@@ -842,7 +842,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
-            timestampString = "564805091.704335"
+            timestampString = "564816901.246982"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "132"
@@ -874,7 +874,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/ClassTableViewController.swift"
-            timestampString = "564805091.7046109"
+            timestampString = "564816901.247054"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "221"
@@ -890,7 +890,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/ClassTableViewController.swift"
-            timestampString = "564805091.704649"
+            timestampString = "564816901.247105"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "219"
@@ -938,7 +938,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/ClassTableViewController.swift"
-            timestampString = "564805091.704684"
+            timestampString = "564816901.247153"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "216"
@@ -986,7 +986,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/ClassTableViewController.swift"
-            timestampString = "564805091.704718"
+            timestampString = "564816901.247203"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "224"
@@ -1002,7 +1002,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/ClassTableViewController.swift"
-            timestampString = "564805091.704751"
+            timestampString = "564816901.2472481"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "227"
@@ -1018,7 +1018,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/ClassTableViewController.swift"
-            timestampString = "564805091.704782"
+            timestampString = "564816901.247296"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "157"
@@ -1034,7 +1034,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/ClassTableViewController.swift"
-            timestampString = "564805091.704814"
+            timestampString = "564816901.247332"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "159"
@@ -1050,7 +1050,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/ClassTableViewController.swift"
-            timestampString = "564805091.704845"
+            timestampString = "564816901.247365"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "155"
@@ -1066,7 +1066,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/ClassTableViewController.swift"
-            timestampString = "564805091.704878"
+            timestampString = "564816901.247401"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "210"
@@ -1114,11 +1114,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
-            timestampString = "564805091.70491"
+            timestampString = "564816901.247442"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "305"
-            endingLineNumber = "305"
+            startingLineNumber = "309"
+            endingLineNumber = "309"
             landmarkName = "addedAssignment(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1178,7 +1178,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
-            timestampString = "564805091.705187"
+            timestampString = "564816901.247555"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "22"
@@ -1271,11 +1271,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
-            timestampString = "564805091.705443"
+            timestampString = "564816901.247619"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "658"
-            endingLineNumber = "658"
+            startingLineNumber = "666"
+            endingLineNumber = "666"
             landmarkName = "configureAddAssignmentView(duration:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1287,11 +1287,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
-            timestampString = "564805091.705714"
+            timestampString = "564816901.2476701"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "672"
-            endingLineNumber = "672"
+            startingLineNumber = "680"
+            endingLineNumber = "680"
             landmarkName = "textFieldShouldEndEditing(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1319,11 +1319,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
-            timestampString = "564805091.706018"
+            timestampString = "564816901.247779"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "604"
-            endingLineNumber = "604"
+            startingLineNumber = "612"
+            endingLineNumber = "612"
             landmarkName = "addAssignmentButtonPressed(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1335,7 +1335,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/ScheduleTableViewController.swift"
-            timestampString = "564804319.692982"
+            timestampString = "564813198.595317"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "131"
@@ -1351,7 +1351,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/ScheduleTableViewController.swift"
-            timestampString = "564804319.693023"
+            timestampString = "564813198.595356"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "134"
@@ -1367,7 +1367,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/ScheduleTableViewController.swift"
-            timestampString = "564804319.6930569"
+            timestampString = "564813198.59539"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "124"
@@ -1383,7 +1383,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/ScheduleTableViewController.swift"
-            timestampString = "564804319.693089"
+            timestampString = "564813198.595423"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "139"
@@ -1399,7 +1399,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/ScheduleTableViewController.swift"
-            timestampString = "564804319.693121"
+            timestampString = "564813198.595456"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "142"
@@ -1415,23 +1415,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
-            timestampString = "564805091.706331"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "393"
-            endingLineNumber = "393"
-            landmarkName = "controller(_:didChange:at:for:newIndexPath:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
-            timestampString = "564805091.706581"
+            timestampString = "564816901.24788"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "398"
@@ -1447,11 +1431,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
-            timestampString = "564805091.706828"
+            timestampString = "564816901.247941"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "397"
-            endingLineNumber = "397"
+            startingLineNumber = "403"
+            endingLineNumber = "403"
             landmarkName = "controller(_:didChange:at:for:newIndexPath:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1463,11 +1447,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
-            timestampString = "564805091.707085"
+            timestampString = "564816901.248"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "399"
-            endingLineNumber = "399"
+            startingLineNumber = "402"
+            endingLineNumber = "402"
             landmarkName = "controller(_:didChange:at:for:newIndexPath:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1479,11 +1463,27 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
-            timestampString = "564805091.70733"
+            timestampString = "564816901.248057"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "401"
-            endingLineNumber = "401"
+            startingLineNumber = "404"
+            endingLineNumber = "404"
+            landmarkName = "controller(_:didChange:at:for:newIndexPath:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
+            timestampString = "564816901.248114"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "406"
+            endingLineNumber = "406"
             landmarkName = "controller(_:didChange:at:for:newIndexPath:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1495,7 +1495,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/TableViewCells/AssignmentTableViewCell.swift"
-            timestampString = "564805091.707579"
+            timestampString = "564816901.24818"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "102"
@@ -1511,7 +1511,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/TableViewCells/AssignmentTableViewCell.swift"
-            timestampString = "564805091.707618"
+            timestampString = "564816901.2483799"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "99"
@@ -1527,7 +1527,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/TableViewCells/AssignmentTableViewCell.swift"
-            timestampString = "564805091.707651"
+            timestampString = "564816901.2484241"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "95"
@@ -1543,7 +1543,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/TableViewCells/AssignmentTableViewCell.swift"
-            timestampString = "564805091.707684"
+            timestampString = "564816901.248463"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "97"
@@ -1559,7 +1559,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/ScheduleTableViewController.swift"
-            timestampString = "564804319.694536"
+            timestampString = "564813198.597017"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "75"
@@ -1575,7 +1575,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/ScheduleTableViewController.swift"
-            timestampString = "564804319.694568"
+            timestampString = "564813198.59705"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "53"
@@ -1591,7 +1591,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/ScheduleTableViewController.swift"
-            timestampString = "564804319.6946"
+            timestampString = "564813198.597082"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "72"
@@ -1607,11 +1607,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
-            timestampString = "564805091.7077481"
+            timestampString = "564816901.248533"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "573"
-            endingLineNumber = "573"
+            startingLineNumber = "581"
+            endingLineNumber = "581"
             landmarkName = "reloadAssignment(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1639,7 +1639,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/ScheduleTableViewController.swift"
-            timestampString = "564804319.6949019"
+            timestampString = "564813198.597407"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "95"
@@ -1655,7 +1655,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/ScheduleTableViewController.swift"
-            timestampString = "564804319.694939"
+            timestampString = "564813198.597446"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "101"
@@ -1671,7 +1671,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/ScheduleTableViewController.swift"
-            timestampString = "564804319.694973"
+            timestampString = "564813198.597479"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "102"
@@ -1687,7 +1687,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/ScheduleTableViewController.swift"
-            timestampString = "564804319.695006"
+            timestampString = "564813198.597512"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "99"
@@ -1703,11 +1703,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
-            timestampString = "564805091.708055"
+            timestampString = "564816901.2486399"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "422"
-            endingLineNumber = "422"
+            startingLineNumber = "429"
+            endingLineNumber = "429"
             landmarkName = "controller(_:didChange:atSectionIndex:for:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1719,11 +1719,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
-            timestampString = "564805091.7083189"
+            timestampString = "564816901.2486939"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "575"
-            endingLineNumber = "575"
+            startingLineNumber = "583"
+            endingLineNumber = "583"
             landmarkName = "reloadAssignment(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1735,11 +1735,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
-            timestampString = "564805091.708569"
+            timestampString = "564816901.248754"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "574"
-            endingLineNumber = "574"
+            startingLineNumber = "582"
+            endingLineNumber = "582"
             landmarkName = "reloadAssignment(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1767,7 +1767,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
-            timestampString = "564805091.70883"
+            timestampString = "564816901.248817"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "171"
@@ -1783,7 +1783,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/ClassTableViewController.swift"
-            timestampString = "564805091.709075"
+            timestampString = "564816901.24887"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "443"
@@ -1799,11 +1799,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
-            timestampString = "564805091.709113"
+            timestampString = "564816901.2489049"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "595"
-            endingLineNumber = "595"
+            startingLineNumber = "603"
+            endingLineNumber = "603"
             landmarkName = "reloadAssignment(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1815,7 +1815,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/ClassTableViewController.swift"
-            timestampString = "564805091.709363"
+            timestampString = "564816901.248981"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "584"
@@ -1831,7 +1831,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/ClassTableViewController.swift"
-            timestampString = "564805091.709399"
+            timestampString = "564816901.249029"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "515"
@@ -1847,7 +1847,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/AppDelegate.swift"
-            timestampString = "564805091.709432"
+            timestampString = "564812030.428965"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "42"
@@ -1863,7 +1863,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
-            timestampString = "564805091.709464"
+            timestampString = "564816901.249074"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "138"
@@ -1943,7 +1943,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/ClassTableViewController.swift"
-            timestampString = "564805091.709729"
+            timestampString = "564816901.2491471"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "358"
@@ -1975,7 +1975,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/TableViewCells/AssignmentTableViewCell.swift"
-            timestampString = "564805091.709778"
+            timestampString = "564816901.249193"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "55"
@@ -1991,11 +1991,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
-            timestampString = "564805091.709813"
+            timestampString = "564816901.249234"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "697"
-            endingLineNumber = "697"
+            startingLineNumber = "705"
+            endingLineNumber = "705"
             landmarkName = "showHideButtonPressed(isExpanded:forSection:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -2007,11 +2007,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
-            timestampString = "564805091.710066"
+            timestampString = "564816901.249285"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "700"
-            endingLineNumber = "700"
+            startingLineNumber = "708"
+            endingLineNumber = "708"
             landmarkName = "showHideButtonPressed(isExpanded:forSection:)"
             landmarkType = "7">
             <Locations>
@@ -2055,11 +2055,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
-            timestampString = "564805091.710333"
+            timestampString = "564816901.2493351"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "227"
-            endingLineNumber = "227"
+            startingLineNumber = "230"
+            endingLineNumber = "230"
             landmarkName = "tableView(_:viewForHeaderInSection:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -2071,7 +2071,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/TableViewCells/AssignmentHeaderFooterView.swift"
-            timestampString = "564805091.710593"
+            timestampString = "564816901.249388"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "50"
@@ -2087,7 +2087,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/TableViewCells/AssignmentHeaderFooterView.swift"
-            timestampString = "564805091.710631"
+            timestampString = "564816901.249548"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "51"
@@ -2103,7 +2103,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/TableViewCells/AssignmentHeaderFooterView.swift"
-            timestampString = "564805091.710662"
+            timestampString = "564816901.249585"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "49"
@@ -2119,123 +2119,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
-            timestampString = "564805091.710692"
+            timestampString = "564816901.249626"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "702"
-            endingLineNumber = "702"
-            landmarkName = "showHideButtonPressed(isExpanded:forSection:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
-            timestampString = "564805091.710937"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "410"
-            endingLineNumber = "410"
-            landmarkName = "controller(_:didChange:atSectionIndex:for:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
-            timestampString = "564805091.711176"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "510"
-            endingLineNumber = "510"
-            landmarkName = "buttonPressed(assignment:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
-            timestampString = "564805091.7114249"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "530"
-            endingLineNumber = "530"
-            landmarkName = "buttonPressed(assignment:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
-            timestampString = "564805091.71167"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "413"
-            endingLineNumber = "413"
-            landmarkName = "controller(_:didChange:atSectionIndex:for:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
-            timestampString = "564805091.7119091"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "421"
-            endingLineNumber = "421"
-            landmarkName = "controller(_:didChange:atSectionIndex:for:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
-            timestampString = "564805091.712147"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "418"
-            endingLineNumber = "418"
-            landmarkName = "controller(_:didChange:atSectionIndex:for:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
-            timestampString = "564805091.712387"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "696"
-            endingLineNumber = "696"
+            startingLineNumber = "710"
+            endingLineNumber = "710"
             landmarkName = "showHideButtonPressed(isExpanded:forSection:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -2247,7 +2135,103 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
-            timestampString = "564805091.712628"
+            timestampString = "564816901.249686"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "416"
+            endingLineNumber = "416"
+            landmarkName = "controller(_:didChange:atSectionIndex:for:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
+            timestampString = "564816901.249736"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "518"
+            endingLineNumber = "518"
+            landmarkName = "buttonPressed(assignment:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
+            timestampString = "564816901.249786"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "538"
+            endingLineNumber = "538"
+            landmarkName = "buttonPressed(assignment:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
+            timestampString = "564816901.249845"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "419"
+            endingLineNumber = "419"
+            landmarkName = "controller(_:didChange:atSectionIndex:for:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
+            timestampString = "564816901.249896"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "428"
+            endingLineNumber = "428"
+            landmarkName = "controller(_:didChange:atSectionIndex:for:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
+            timestampString = "564816901.249997"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "425"
+            endingLineNumber = "425"
+            landmarkName = "controller(_:didChange:atSectionIndex:for:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
+            timestampString = "564816901.250065"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "704"
@@ -2263,11 +2247,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
-            timestampString = "564805091.712922"
+            timestampString = "564816901.250157"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "705"
-            endingLineNumber = "705"
+            startingLineNumber = "712"
+            endingLineNumber = "712"
             landmarkName = "showHideButtonPressed(isExpanded:forSection:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -2279,7 +2263,23 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
-            timestampString = "564805091.713172"
+            timestampString = "564816901.250214"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "713"
+            endingLineNumber = "713"
+            landmarkName = "showHideButtonPressed(isExpanded:forSection:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
+            timestampString = "564816901.2502609"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "201"
@@ -2295,7 +2295,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
-            timestampString = "564805091.713428"
+            timestampString = "564816901.250314"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "204"
@@ -2311,7 +2311,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
-            timestampString = "564805091.713654"
+            timestampString = "564816901.25036"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "200"
@@ -2327,13 +2327,154 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
-            timestampString = "564805091.713877"
+            timestampString = "564816901.250407"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "235"
-            endingLineNumber = "235"
+            startingLineNumber = "240"
+            endingLineNumber = "240"
             landmarkName = "tableView(_:viewForHeaderInSection:)"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
+            timestampString = "564816901.250451"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "243"
+            endingLineNumber = "243"
+            landmarkName = "tableView(_:viewForHeaderInSection:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
+            timestampString = "564816901.250492"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "716"
+            endingLineNumber = "716"
+            landmarkName = "showHideButtonPressed(isExpanded:forSection:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
+            timestampString = "564816901.250532"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "297"
+            endingLineNumber = "297"
+            landmarkName = "tableView(_:didSelectRowAt:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
+            timestampString = "564816901.250573"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "392"
+            endingLineNumber = "392"
+            landmarkName = "controllerWillChangeContent(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
+            timestampString = "564816901.250614"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "405"
+            endingLineNumber = "405"
+            landmarkName = "controller(_:didChange:at:for:newIndexPath:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
+            timestampString = "564816901.250653"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "437"
+            endingLineNumber = "437"
+            landmarkName = "controllerDidChangeContent(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MagnetHomeworkApp/View Controllers/AssignmentTableViewController.swift"
+            timestampString = "564816901.250699"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "435"
+            endingLineNumber = "435"
+            landmarkName = "controllerDidChangeContent(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.SymbolicBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            symbolName = "UIViewAlertForUnsatisfiableConstraints"
+            moduleName = "">
+            <Actions>
+               <BreakpointActionProxy
+                  ActionExtensionID = "Xcode.BreakpointAction.DebuggerCommand">
+                  <ActionContent
+                     consoleCommand = "expr -l objc++ -0 -- [[UIWindow keyWindow] _autolayoutTrace]">
+                  </ActionContent>
+               </BreakpointActionProxy>
+            </Actions>
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "UIViewAlertForUnsatisfiableConstraints"
+                  moduleName = "UIKitCore"
+                  usesParentBreakpointCondition = "Yes"
+                  offsetFromSymbolStart = "0">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

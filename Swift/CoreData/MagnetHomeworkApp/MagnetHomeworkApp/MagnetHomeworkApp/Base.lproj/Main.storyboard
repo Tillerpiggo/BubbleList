@@ -158,7 +158,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.92144840955734253" green="0.90874444359766715" blue="0.90820679235795554" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="separatorColor" white="0.88780223540145986" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <view key="tableFooterView" contentMode="scaleToFill" id="90k-h2-o9C">
+                        <view key="tableFooterView" contentMode="scaleToFill" misplaced="YES" id="90k-h2-o9C">
                             <rect key="frame" x="0.0" y="138.5" width="375" height="62"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
@@ -291,7 +291,7 @@
                                         <constraint firstItem="Gzg-BO-3bg" firstAttribute="top" secondItem="9qw-Eh-9CY" secondAttribute="topMargin" constant="-12" id="XKU-9O-J4b"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="Gzg-BO-3bg" secondAttribute="bottom" constant="-10" id="XWI-E1-Fa0"/>
                                         <constraint firstItem="Gzg-BO-3bg" firstAttribute="leading" secondItem="9qw-Eh-9CY" secondAttribute="leadingMargin" constant="-16" id="ZVo-ex-wsi"/>
-                                        <constraint firstItem="fxA-uR-cER" firstAttribute="top" secondItem="9qw-Eh-9CY" secondAttribute="top" id="gWF-Mt-OUN"/>
+                                        <constraint firstItem="fxA-uR-cER" firstAttribute="top" secondItem="9qw-Eh-9CY" secondAttribute="top" priority="999" id="gWF-Mt-OUN"/>
                                         <constraint firstAttribute="trailing" secondItem="fxA-uR-cER" secondAttribute="trailing" id="lwJ-MN-Rmy"/>
                                         <constraint firstAttribute="trailing" secondItem="JW6-cr-Sok" secondAttribute="trailing" constant="16" id="olW-i3-H0G"/>
                                         <constraint firstItem="JW6-cr-Sok" firstAttribute="leading" secondItem="Gzg-BO-3bg" secondAttribute="trailing" constant="4" id="qER-P3-ceD"/>

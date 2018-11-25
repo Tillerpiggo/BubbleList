@@ -211,8 +211,11 @@ extension AssignmentTableViewController {
         if hiddenSections.contains(indexPath.section) {
             return 0
         }
-
-        if let dueDate = assignment.dueDate as Date?, dueDate != Date.tomorrow {
+        
+        let title = self.tableView(tableView, titleForHeaderInSection: indexPath.section)
+        let sectionIsCompleted = title?.contains("Completed") ?? false
+        
+        if let dueDate = assignment.dueDate as Date?, dueDate != Date.tomorrow, !sectionIsCompleted {
             return 60
         } else {
             return 44
@@ -227,17 +230,18 @@ extension AssignmentTableViewController {
         let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: "AssignmentHeaderFooterView") as! AssignmentHeaderFooterView
         headerView.delegate = self
         headerView.section = section
+        //headerView.translatesAutoresizingMaskIntoConstraints = false
         
         if title.contains("Completed") && isCompletedHidden {
             headerView.isExpanded = false
             headerView.updateShowHideButton()
             isCompletedHidden = true
-            hiddenSections.append(section)
+            if !hiddenSections.contains(section) { hiddenSections.append(section) }
             print("HiddenSections: \(hiddenSections)")
             
             
-            tableView.beginUpdates()
-            tableView.endUpdates()
+            //tableView.beginUpdates()
+            //tableView.endUpdates()
         }
         
         return headerView
@@ -386,6 +390,7 @@ extension AssignmentTableViewController: AddAssignmentTableViewControllerDelegat
 extension AssignmentTableViewController: NSFetchedResultsControllerDelegate {
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.beginUpdates()
+        print("BEGAN UPDATES")
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
@@ -406,6 +411,7 @@ extension AssignmentTableViewController: NSFetchedResultsControllerDelegate {
         case .insert:
             for (index, hiddenSection) in hiddenSections.enumerated() where hiddenSection >= sectionIndex {
                 hiddenSections[index] += 1
+                print("HiddenSections: \(hiddenSections)")
                 if let section = tableView.headerView(forSection: hiddenSection) as? AssignmentHeaderFooterView {
                     section.section? += 1
                 }
@@ -414,6 +420,7 @@ extension AssignmentTableViewController: NSFetchedResultsControllerDelegate {
         case .delete:
             for (index, hiddenSection) in hiddenSections.enumerated() where hiddenSection >= sectionIndex {
                 hiddenSections[index] -= 1
+                print("HiddenSections: \(hiddenSections)")
                 if let section = tableView.headerView(forSection: hiddenSection) as? AssignmentHeaderFooterView {
                     section.section? -= 1
                 }
@@ -426,6 +433,7 @@ extension AssignmentTableViewController: NSFetchedResultsControllerDelegate {
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.endUpdates()
+        print("ENDED UPDATES")
     }
 }
 
@@ -501,7 +509,7 @@ extension AssignmentTableViewController: AssignmentTableViewCellDelegate {
                 assignment.updateDueDateSection()
             }
             
-            tableView.beginUpdates()
+            //tableView.beginUpdates()
             
             var indexPath: IndexPath
             if let fetchedIndexPath = fetchedResultsController.indexPath(forObject: assignment) {
@@ -530,7 +538,7 @@ extension AssignmentTableViewController: AssignmentTableViewCellDelegate {
                 indexPath = IndexPath(row: 0, section: 0)
             }
             //tableView.reloadRows(at: [indexPath], with: .automatic)
-            tableView.endUpdates()
+            //tableView.endUpdates()
             
             cloudController.save([toDo], inDatabase: .private, recordChanged: { (updatedRecord) in
                 assignment.toDo?.update(withRecord: updatedRecord)

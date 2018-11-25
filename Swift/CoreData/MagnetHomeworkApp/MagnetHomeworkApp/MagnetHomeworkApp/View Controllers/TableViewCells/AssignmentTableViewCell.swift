@@ -94,7 +94,7 @@ class AssignmentTableViewCell: UITableViewCell {
         assignmentTextLabel.text = assignment.text
         assignmentTextLabel.textColor = isCompleted ? .lightGray : .textColor
         dueDateTextLabel.textColor = isCompleted ? UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1.0) : .secondaryTextColor
-        if let dueDate = assignment.dueDate as Date?, dueDate != Date.tomorrow {
+        if let dueDate = assignment.dueDate as Date?, dueDate != Date.tomorrow, assignment.dueDateSection  != "Completed" {
             let dueDateString = dueDate.dateString
             dueDateTextLabel.text = "Due \(dueDateString)"
             dueDateTextLabel.isHidden = false
