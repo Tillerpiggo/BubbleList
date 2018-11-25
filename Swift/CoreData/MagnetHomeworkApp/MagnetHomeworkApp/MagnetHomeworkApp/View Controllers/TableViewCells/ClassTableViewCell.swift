@@ -19,7 +19,7 @@ class ClassTableViewCell: UITableViewCell {
     // MARK: - IBOutlets
     
     @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var previewAssignmentLabel: UILabel!
+    //@IBOutlet weak var previewAssignmentLabel: UILabel!
     @IBOutlet weak var duePreview: UILabel!
     
     var accessoryButton: UIButton?
@@ -31,7 +31,7 @@ class ClassTableViewCell: UITableViewCell {
         super.awakeFromNib()
         accessoryButton = subviews.compactMap { $0 as? UIButton }.first
         
-        contentView.backgroundColor = .backgroundColor
+        //contentView.backgroundColor = .backgroundColor
     }
     
     override func layoutSubviews() {
@@ -44,8 +44,8 @@ class ClassTableViewCell: UITableViewCell {
         animation.type = .fade
         animation.duration = 0.25
         
-        previewAssignmentLabel.layer.add(animation, forKey: "kCATransitionFade")
-        previewAssignmentLabel.textColor = .secondaryTextColor
+        //previewAssignmentLabel.layer.add(animation, forKey: "kCATransitionFade")
+        //previewAssignmentLabel.textColor = .secondaryTextColor
     }
     
     func configure(withClass `class`: Class) {
@@ -55,15 +55,22 @@ class ClassTableViewCell: UITableViewCell {
         nameLabel.textColor = .textColor
         
         if let previewAssignments = `class`.previewAssignments() {
-            previewAssignmentLabel.isHidden = false
+            //previewAssignmentLabel.isHidden = false
             var duePreviewSection = previewAssignments.first?.dueDateSection
             let numberOfAssignments = previewAssignments.count
-            previewAssignmentLabel.textColor = .secondaryTextColor
+            //previewAssignmentLabel.textColor = .secondaryTextColor
             if previewAssignments.first?.dueDateSection == "Due Later" {
                 duePreviewSection = "Due in a While"
             }
             
-            let attributedText = NSMutableAttributedString(string: "\(numberOfAssignments) \(duePreviewSection ?? "Nothing Due")")
+            var string: String
+            if duePreviewSection != "Due Tomorrow" && duePreviewSection != "Late" {
+                string = "\(numberOfAssignments)"
+            } else {
+                string = "\(numberOfAssignments) \(duePreviewSection ?? "")"
+            }
+            
+            let attributedText = NSMutableAttributedString(string: string)
             print("AttributedText: \(attributedText.string)")
             var sectionColor: UIColor
             switch previewAssignments.first?.dueDateSectionNumber {
@@ -80,7 +87,7 @@ class ClassTableViewCell: UITableViewCell {
             attributedText.addAttribute(.foregroundColor, value: sectionColor, range: NSRange(location: 0, length: attributedText.string.count))
             
             duePreview.attributedText = attributedText
-            previewAssignmentLabel.text = previewAssignments.first?.text ?? "Relaxing"
+            //previewAssignmentLabel.text = previewAssignments.first?.text ?? "Relaxing"
             
 //            switch previewAssignments.first?.dueDateSectionNumber {
 //            case 0:
@@ -97,7 +104,7 @@ class ClassTableViewCell: UITableViewCell {
 //                previewAssignmentSectionLabel.textColor = .unscheduledColor
 //            }
         } else {
-            previewAssignmentLabel.isHidden = true
+            //previewAssignmentLabel.isHidden = true
             
             let attributedText = NSMutableAttributedString(string: "Nothing Due")
             attributedText.addAttribute(.foregroundColor, value: UIColor.nothingDueColor, range: NSRange(location: 0, length: attributedText.string.count))

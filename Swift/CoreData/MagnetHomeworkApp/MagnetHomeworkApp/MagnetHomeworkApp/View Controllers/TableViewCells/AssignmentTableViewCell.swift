@@ -68,7 +68,7 @@ class AssignmentTableViewCell: UITableViewCell {
         scheduleButton.image = UIImage(named: scheduleButtonImageName)?.withRenderingMode(.alwaysTemplate)
         scheduleButton.tintColor = .highlightColor
         
-        contentView.backgroundColor = .backgroundColor
+        //contentView.backgroundColor = .backgroundColor
         
         isCompletedImageView.tintColor = .highlightColor
     }

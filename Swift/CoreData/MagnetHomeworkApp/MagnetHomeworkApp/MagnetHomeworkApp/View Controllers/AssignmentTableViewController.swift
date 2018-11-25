@@ -402,7 +402,11 @@ extension AssignmentTableViewController: NSFetchedResultsControllerDelegate {
         case .delete:
             tableView.deleteRows(at: [indexPath!], with: .automatic)
         case .move:
-            tableView.moveRow(at: indexPath!, to: newIndexPath!)
+            if tableView.numberOfRows(inSection: indexPath!.section) <= 1 {
+                tableView.reloadRows(at: [indexPath!], with: .automatic)
+            } else {
+                tableView.moveRow(at: indexPath!, to: newIndexPath!)
+            }
         }
     }
     
@@ -511,32 +515,32 @@ extension AssignmentTableViewController: AssignmentTableViewCellDelegate {
             
             //tableView.beginUpdates()
             
-            var indexPath: IndexPath
-            if let fetchedIndexPath = fetchedResultsController.indexPath(forObject: assignment) {
-                indexPath = fetchedIndexPath
-            } else if var index = fetchedResultsController.fetchedObjects?.firstIndex(where: { $0.ckRecord.recordID == assignment.ckRecord.recordID }) {
-                print("WTF")
-                
-                var row: Int = 0
-                var indexSection: Int = 0
-                for section in 0..<tableView.numberOfSections {
-                    let numberOfRows = tableView.numberOfRows(inSection: section)
-                    
-                    if index - numberOfRows > 0 {
-                        index -= numberOfRows
-                    } else {
-                        indexSection = section
-                        break
-                    }
-                }
-                
-                row = index
-                
-                indexPath = IndexPath(row: row, section: indexSection)
-                
-            } else {
-                indexPath = IndexPath(row: 0, section: 0)
-            }
+//            var indexPath: IndexPath
+//            if let fetchedIndexPath = fetchedResultsController.indexPath(forObject: assignment) {
+//                indexPath = fetchedIndexPath
+//            } else if var index = fetchedResultsController.fetchedObjects?.firstIndex(where: { $0.ckRecord.recordID == assignment.ckRecord.recordID }) {
+//                print("WTF")
+//
+//                var row: Int = 0
+//                var indexSection: Int = 0
+//                for section in 0..<tableView.numberOfSections {
+//                    let numberOfRows = tableView.numberOfRows(inSection: section)
+//
+//                    if index - numberOfRows > 0 {
+//                        index -= numberOfRows
+//                    } else {
+//                        indexSection = section
+//                        break
+//                    }
+//                }
+//
+//                row = index
+//
+//                indexPath = IndexPath(row: row, section: indexSection)
+//
+//            } else {
+//                indexPath = IndexPath(row: 0, section: 0)
+//            }
             //tableView.reloadRows(at: [indexPath], with: .automatic)
             //tableView.endUpdates()
             
