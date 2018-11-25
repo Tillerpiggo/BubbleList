@@ -17,15 +17,15 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="separatorColor" white="0.88603612193225945" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <view key="tableFooterView" contentMode="scaleToFill" misplaced="YES" id="PAD-1e-kcD">
+                        <view key="tableFooterView" contentMode="scaleToFill" id="PAD-1e-kcD">
                             <rect key="frame" x="0.0" y="123" width="375" height="72"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cru-qO-0Dm">
-                                    <rect key="frame" x="16" y="16" width="343" height="30"/>
+                                    <rect key="frame" x="16" y="16" width="343" height="40"/>
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g7K-8X-h0Z">
-                                            <rect key="frame" x="0.0" y="0.0" width="343" height="30"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="343" height="40"/>
                                             <connections>
                                                 <action selector="addClassButtonDragExited:" destination="god-KQ-5OP" eventType="touchDragExit" id="bc3-GI-s02"/>
                                                 <action selector="addClassButtonDraggedInside:" destination="god-KQ-5OP" eventType="touchDragInside" id="ar0-fk-c52"/>
@@ -36,17 +36,17 @@
                                             </connections>
                                         </button>
                                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Class Name..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Bn5-DG-LpY">
-                                            <rect key="frame" x="16" y="0.0" width="319" height="30"/>
+                                            <rect key="frame" x="16" y="0.0" width="319" height="40"/>
                                             <nil key="textColor"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <textInputTraits key="textInputTraits" autocapitalizationType="words" keyboardAppearance="alert" returnKeyType="done"/>
+                                            <textInputTraits key="textInputTraits" autocapitalizationType="words" returnKeyType="done"/>
                                             <connections>
                                                 <outlet property="delegate" destination="god-KQ-5OP" id="xew-rr-w2h"/>
                                                 <outlet property="textDragDelegate" destination="god-KQ-5OP" id="Pmo-Dz-zGZ"/>
                                             </connections>
                                         </textField>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add Class" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rrg-zn-XCS">
-                                            <rect key="frame" x="130.5" y="4.5" width="82" height="21"/>
+                                            <rect key="frame" x="130.5" y="9.5" width="82" height="21"/>
                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <nil key="highlightedColor"/>
@@ -158,7 +158,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.92144840955734253" green="0.90874444359766715" blue="0.90820679235795554" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="separatorColor" white="0.88780223540145986" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <view key="tableFooterView" contentMode="scaleToFill" misplaced="YES" id="90k-h2-o9C">
+                        <view key="tableFooterView" contentMode="scaleToFill" id="90k-h2-o9C">
                             <rect key="frame" x="0.0" y="138.5" width="375" height="62"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
@@ -189,7 +189,7 @@
                                             <rect key="frame" x="16" y="0.0" width="311" height="44"/>
                                             <nil key="textColor"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences" keyboardAppearance="alert" returnKeyType="done"/>
+                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
                                             <connections>
                                                 <outlet property="delegate" destination="ggM-QS-hVL" id="An5-jJ-bEr"/>
                                                 <outlet property="textDragDelegate" destination="ggM-QS-hVL" id="7ZB-WQ-cxP"/>

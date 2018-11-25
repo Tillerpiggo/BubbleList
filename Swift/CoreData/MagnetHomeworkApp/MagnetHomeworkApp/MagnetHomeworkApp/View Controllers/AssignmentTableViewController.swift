@@ -248,7 +248,7 @@ extension AssignmentTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 60
+        return 44
     }
     
     // MARK: - Delegate
@@ -425,7 +425,7 @@ extension AssignmentTableViewController: NSFetchedResultsControllerDelegate {
                     section.section? -= 1
                 }
             }
-            self.tableView.deleteSections([sectionIndex], with: .fade)
+            tableView.deleteSections([sectionIndex], with: .fade)
         default:
             break
         }
