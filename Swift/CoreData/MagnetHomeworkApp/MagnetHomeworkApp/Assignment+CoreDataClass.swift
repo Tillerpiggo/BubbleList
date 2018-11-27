@@ -67,7 +67,9 @@ public class Assignment: NSManagedObject, CloudUploadable {
         case "Due This Monday": return 3 
         case "Due Later": return 4
         case "Completed": return 5
-        default: return -1
+        default:
+            print("DUE DATE SECTION NUMBER NOT FOUND")
+            return -1
         }
     }
     

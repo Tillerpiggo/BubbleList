@@ -8,83 +8,86 @@
 
 import UIKit
 
-class AddObjectTableViewController: UITableViewController {
+protocol AddsObject {
+    // Maybe use this?
+}
 
+class AddObjectTableViewController: UIViewController, UITextFieldDelegate, UITextDragDelegate {
+    
+    // MARK: - IBOutlets
+    
+    @IBOutlet weak var addObjectView: UIView!
+    @IBOutlet weak var textField: UITextField!
+    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var addLabel: UILabel!
+    @IBOutlet weak var addButton: UIButton!
+    
+    var doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(AssignmentTableViewController.donePressed(sender:)))
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        // Setup the add object view thingy
     }
-
-    // MARK: - Table view data source
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
+    
+    
+    
+    // MARK: - Functions
+    
+    func configureAddObjectView() {
+        addObjectView.layer.cornerRadius = 5
+        addObjectView.addDropShadow(color: .black, opacity: 0.15, radius: 4)
     }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+    
+    func setAddObjectViewNotEditing(withAnimationDuration duration: TimeInterval) {
+        textField.text = ""
+        
+        textField.isHidden = true
+        addLabel.isHidden = false
+        
+        UIView.animate(withDuration: duration, animations: {
+            self.addObjectView.backgroundColor = UIColor.highlightColor
+            
+            if self.doneButtonVisible() {
+                self.removeDoneButton()
+            }
+        }, completion: { (bool) in
+            self.addButton.isHidden = false
+        })
     }
-
-    /*
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
-        return cell
+    
+    func doneButtonVisible() -> Bool {
+        return self.navigationItem.rightBarButtonItems?.count ?? 0 > 1
     }
-    */
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
+    
+    func removeDoneButton() {
+        self.navigationItem.rightBarButtonItem = nil
+    }
+    
+    func addDoneButton() {
+        self.navigationItem.setRightBarButtonItems([doneButton, self.navigationItem.rightBarButtonItem!], animated: true)
+    }
+    
+    @objc func donePressed(sender: UIBarButtonItem) {
+        textField.resignFirstResponder()
+    }
+    
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        if let text = textField.text, text != "" {
+            saveObject(text: text)
+        }
+        
+        setAddObjectViewNotEditing(withAnimationDuration: 0.2)
+        
         return true
     }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
         return true
     }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    
+    func saveObject(text: String) {
+        // Must be implemented by subclass
     }
-    */
-
 }

@@ -55,15 +55,15 @@ class Theme {
     }
     
     static var _default: Theme {
-        return red
+        return basic
     }
     
     static var basic: Theme {
-        let theme = Theme(primaryColor: UIColor(red: 0.18, green: 0.18, blue: 0.18, alpha: 1),
-                          highlightColor: UIColor(red: 0.07, green: 0.34, blue: 0.53, alpha: 1),
+        let theme = Theme(primaryColor: UIColor(red: 0.22, green: 0.22, blue: 0.22, alpha: 1),
+                          highlightColor: UIColor(red: 0.36, green: 0.67, blue: 0.96, alpha: 1),
                           destructiveColor:  UIColor(red: 246/255, green: 76/255, blue: 76/255, alpha: 1),
-                          backgroundColor: UIColor(red: 0.97, green: 0.97, blue: 0.97, alpha: 1),
-                          separatorColor: UIColor(red: 0.97, green: 0.97, blue: 0.97, alpha: 1),
+                          backgroundColor: UIColor(red: 0.94, green: 0.94, blue: 0.94, alpha: 1),
+                          separatorColor: UIColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1),
                           nothingDueColor: UIColor(red: 0.02, green: 0.72, blue: 0.43, alpha: 1),
                           lateColor: UIColor(red: 242/255, green: 48/255, blue: 48/255, alpha: 1),
                           unscheduledColor: UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 1),
@@ -92,7 +92,7 @@ class Theme {
     }
     
     static var red: Theme {
-        let theme = Theme(primaryColor: UIColor(red: 0.98, green: 0.3, blue: 0.38, alpha: 1),
+        let theme = Theme(primaryColor: UIColor(red: 0.98, green: 0.4, blue: 0.38, alpha: 1),
                           highlightColor: UIColor(red: 0.95, green: 0.4, blue: 0.45, alpha: 1))
         
         return theme

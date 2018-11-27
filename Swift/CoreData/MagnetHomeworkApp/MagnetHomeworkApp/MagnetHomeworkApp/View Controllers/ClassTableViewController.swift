@@ -67,8 +67,10 @@ class ClassTableViewController: UITableViewController {
         updateWithCloud()
         registerAsNotificationDelegate()
         
-        tableView.rowHeight = 60
-        tableView.estimatedRowHeight = 60
+        let rowHeight: CGFloat = 60
+        
+        tableView.rowHeight = rowHeight
+        tableView.estimatedRowHeight = rowHeight
         tableView.backgroundColor = .backgroundColor
         tableView.separatorColor = .separatorColor
 //        tableView.estimatedRowHeight = 0

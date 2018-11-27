@@ -17,7 +17,7 @@ class AssignmentTableViewCell: UITableViewCell {
     
     let completedCircleImageName = "completedCircleTemplate"
     let incompletedCircleImageName = "incompletedCircle2"
-    let scheduleButtonImageName = "calendarIconTemplate"
+    let scheduleButtonImageName = "newCalendarGlyph4"
     
     // MARK: - Properties
     var delegate: AssignmentTableViewCellDelegate?

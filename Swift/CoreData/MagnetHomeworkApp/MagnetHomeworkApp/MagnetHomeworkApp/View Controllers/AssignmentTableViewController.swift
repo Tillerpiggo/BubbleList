@@ -202,7 +202,7 @@ extension AssignmentTableViewController {
         }
         
         let numberOfRows = tableView.numberOfRows(inSection: section)
-        return "\(sectionInfo.name) (\(numberOfRows))"
+        return "\(sectionInfo.name)"//" (\(numberOfRows))"
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -223,6 +223,8 @@ extension AssignmentTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        return nil
+        
         guard let title = self.tableView(tableView, titleForHeaderInSection: section) else {
             return nil
         }
@@ -248,7 +250,11 @@ extension AssignmentTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 44
+        return 32
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 0
     }
     
     // MARK: - Delegate
@@ -399,12 +405,23 @@ extension AssignmentTableViewController: NSFetchedResultsControllerDelegate {
             tableView.reloadRows(at: [indexPath!], with: .automatic)
         case .insert:
             tableView.insertRows(at: [newIndexPath!], with: .fade)
+            tableView.scrollToRow(at: newIndexPath!, at: .none, animated: true)
+            //DispatchQueue.main.async { self.reloadHeader(forSection: newIndexPath!.section) }
         case .delete:
             tableView.deleteRows(at: [indexPath!], with: .automatic)
+            //DispatchQueue.main.async { self.reloadHeader(forSection: indexPath!.section) }
         case .move:
-            if tableView.numberOfRows(inSection: indexPath!.section) <= 1 {
+            print("Current Section has \(tableView.numberOfRows(inSection: indexPath!.section)) rows")
+            print("New Section has \(tableView.numberOfRows(inSection: newIndexPath!.section)) rows")
+            
+            if tableView.numberOfSections == 1 && tableView.numberOfRows(inSection: 0) == 1 && self.tableView(tableView, titleForHeaderInSection: indexPath!.section) != "Completed" {
+                break
+            }
+            
+            if tableView.numberOfRows(inSection: indexPath!.section) <= 1 || tableView.numberOfRows(inSection: newIndexPath!.section) <= 1 {
                 tableView.reloadRows(at: [indexPath!], with: .automatic)
             } else {
+                //tableView.reloadRows(at: [indexPath!], with: .automatic)
                 tableView.moveRow(at: indexPath!, to: newIndexPath!)
             }
         }
@@ -412,15 +429,6 @@ extension AssignmentTableViewController: NSFetchedResultsControllerDelegate {
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
         switch type {
-        case .insert:
-            for (index, hiddenSection) in hiddenSections.enumerated() where hiddenSection >= sectionIndex {
-                hiddenSections[index] += 1
-                print("HiddenSections: \(hiddenSections)")
-                if let section = tableView.headerView(forSection: hiddenSection) as? AssignmentHeaderFooterView {
-                    section.section? += 1
-                }
-            }
-            self.tableView.insertSections([sectionIndex], with: .fade)
         case .delete:
             for (index, hiddenSection) in hiddenSections.enumerated() where hiddenSection >= sectionIndex {
                 hiddenSections[index] -= 1
@@ -430,6 +438,18 @@ extension AssignmentTableViewController: NSFetchedResultsControllerDelegate {
                 }
             }
             tableView.deleteSections([sectionIndex], with: .fade)
+        case .insert:
+            for (index, hiddenSection) in hiddenSections.enumerated() where hiddenSection >= sectionIndex {
+                hiddenSections[index] += 1
+                print("HiddenSections: \(hiddenSections)")
+                if let section = tableView.headerView(forSection: hiddenSection) as? AssignmentHeaderFooterView {
+                    section.section? += 1
+                }
+            }
+            
+            self.tableView.insertSections([sectionIndex], with: .fade)
+            
+           
         default:
             break
         }
@@ -486,6 +506,11 @@ extension AssignmentTableViewController {
             tableView.tableHeaderView = UIView(frame: frame)
         }
     }
+    
+    func reloadHeader(forSection section: Int) {
+        let header = tableView.headerView(forSection: section)
+        header?.textLabel?.text = self.tableView(tableView, titleForHeaderInSection: section)?.uppercased()
+    }
 }
 
 // MARK: - ClassTableViewControllerDelegate
@@ -512,6 +537,8 @@ extension AssignmentTableViewController: AssignmentTableViewCellDelegate {
             } else {
                 assignment.updateDueDateSection()
             }
+            
+            
             
             //tableView.beginUpdates()
             
@@ -698,7 +725,7 @@ extension AssignmentTableViewController: UITextFieldDelegate, UITextDragDelegate
         let newAssignment = Assignment(withText: text, managedContext: coreDataController.managedContext, owningClass: `class`, zoneID: zoneID, toDoZoneID: cloudController.zoneID)
         addedAssignment(newAssignment)
         
-        updateHeaderView()
+        //updateHeaderView()
     }
 }
 
@@ -708,6 +735,8 @@ extension AssignmentTableViewController: AssignmentHeaderFooterCellDelegate {
         if !isExpanded && !hiddenSections.contains(section) {
             hiddenSections.append(section)
             print("HiddenSections: \(hiddenSections)")
+        } else if !isExpanded && hiddenSections.contains(section) {
+            // Do nothing
         } else {
             hiddenSections.removeAll(where: { $0 == section })
             print("HiddenSections: \(hiddenSections)")
