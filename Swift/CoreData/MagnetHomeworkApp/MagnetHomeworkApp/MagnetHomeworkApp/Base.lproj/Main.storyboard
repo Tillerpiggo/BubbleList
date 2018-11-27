@@ -433,6 +433,15 @@
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nFr-Wj-cvw">
                                                 <rect key="frame" x="0.0" y="0.0" width="311" height="44"/>
+                                                <connections>
+                                                    <action selector="addButtonDragExited:" destination="s1C-SR-XSO" eventType="touchDragExit" id="oU0-n6-mVJ"/>
+                                                    <action selector="addButtonDraggedInside:" destination="s1C-SR-XSO" eventType="touchDragInside" id="iwU-8w-Z8D"/>
+                                                    <action selector="addButtonDraggedOutside:" destination="s1C-SR-XSO" eventType="touchDragOutside" id="mIl-ow-3CX"/>
+                                                    <action selector="addButtonPressed:" destination="s1C-SR-XSO" eventType="touchUpInside" id="eQG-87-acY"/>
+                                                    <action selector="addButtonPressedDown:" destination="s1C-SR-XSO" eventType="touchDown" id="9N6-VO-eDG"/>
+                                                    <action selector="addButtonPressedDown:" destination="s1C-SR-XSO" eventType="touchUpInside" id="9PV-ZL-bKL"/>
+                                                    <action selector="addButtonTouchCanceled:" destination="s1C-SR-XSO" eventType="touchCancel" id="g8n-Ny-xNI"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

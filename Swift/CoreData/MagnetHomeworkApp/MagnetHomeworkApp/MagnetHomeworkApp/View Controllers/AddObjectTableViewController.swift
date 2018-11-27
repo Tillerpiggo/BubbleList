@@ -22,7 +22,11 @@ class AddObjectTableViewController: UIViewController, UITextFieldDelegate, UITex
     @IBOutlet weak var addLabel: UILabel!
     @IBOutlet weak var addButton: UIButton!
     
+    // MARK: - Variables
+    
     var doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(AssignmentTableViewController.donePressed(sender:)))
+    
+    // MARK: - ViewDidLoad
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,7 +34,47 @@ class AddObjectTableViewController: UIViewController, UITextFieldDelegate, UITex
         // Setup the add object view thingy
     }
     
+    // MARK: - IBActions
     
+    @IBAction func addButtonPressed(_ sender: Any) {
+        addButton.isHidden = true
+        UIView.animate(withDuration: 0.1, animations: {
+            self.addObjectView.backgroundColor = .backgroundColor
+        })
+        
+        addLabel.isHidden = true
+        textField.isHidden = false
+        
+        textField.becomeFirstResponder()
+        addDoneButton()
+    }
+    
+    
+    @IBAction func addButtonPressedDown(_ sender: Any) {
+        UIView.animate(withDuration: 0.1, animations: {
+            self.addObjectView.backgroundColor = UIColor.highlightColor
+        })
+    }
+    
+    @IBAction func addButtonDraggedOutside(_ sender: Any) {
+        UIView.animate(withDuration: 0.1, animations: {
+            self.addObjectView.backgroundColor = .backgroundColor
+        })
+    }
+    
+    @IBAction func addButtonTouchCanceled(_ sender: Any) {
+        setAddObjectViewNotEditing(withAnimationDuration: 0.2)
+    }
+    
+    @IBAction func addButtonDraggedInside(_ sender: Any) {
+        UIView.animate(withDuration: 0.1, animations: {
+            self.addObjectView.backgroundColor = .backgroundColor
+        })
+    }
+    
+    @IBAction func addButtonDragExited(_ sender: Any) {
+        setAddObjectViewNotEditing(withAnimationDuration: 0.2)
+    }
     
     // MARK: - Functions
     
