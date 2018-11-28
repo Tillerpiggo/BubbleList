@@ -79,9 +79,9 @@ class AddObjectTableViewController: UIViewController, UITextFieldDelegate, UITex
     // MARK: - Functions
     
     func configureAddObjectView() {
-        addObjectView.layer.cornerRadius = 5
-        addObjectView.addDropShadow(color: .black, opacity: 0.15, radius: 4)
-        addObjectView.isHidden = false
+        //addObjectView.layer.cornerRadius = 5
+        //addObjectView.addDropShadow(color: .black, opacity: 0.15, radius: 4)
+        //addObjectView.isHidden = false
     }
     
     func setAddObjectViewNotEditing(withAnimationDuration duration: TimeInterval) {

@@ -11,8 +11,6 @@ import CoreData
 
 class ToDoTableViewController: AddObjectTableViewController {
     
-    
-    
     var coreDataController: CoreDataController!
     
     lazy var fetchedResultsController: NSFetchedResultsController<Assignment> = {
@@ -66,6 +64,9 @@ class ToDoTableViewController: AddObjectTableViewController {
     }
 
     override func viewDidLoad() {
+        // Set all IBOutlets
+        
+        
         super.viewDidLoad()
     }
 

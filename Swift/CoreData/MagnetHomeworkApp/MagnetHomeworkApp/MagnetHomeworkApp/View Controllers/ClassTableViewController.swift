@@ -320,11 +320,12 @@ extension ClassTableViewController {
         navigationController?.navigationBar.barTintColor = .primaryColor
         
         // TINT COLOR
-        navigationController?.navigationBar.tintColor = .navigationBarTintColor
+        navigationController?.navigationBar.tintColor = .highlightColor
         
         // TITLE COLOR
-        let textAttributes: [NSAttributedString.Key: UIColor]  = [NSAttributedString.Key.foregroundColor: .navigationBarTintColor]
+        let textAttributes: [NSAttributedString.Key: UIColor]  = [NSAttributedString.Key.foregroundColor: .black]
         navigationController?.navigationBar.titleTextAttributes = textAttributes
+        navigationController?.navigationBar.largeTitleTextAttributes = textAttributes
     }
 }
 

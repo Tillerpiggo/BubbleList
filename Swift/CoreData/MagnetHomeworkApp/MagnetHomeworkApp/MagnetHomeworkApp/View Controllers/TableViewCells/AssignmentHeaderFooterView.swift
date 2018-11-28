@@ -16,6 +16,10 @@ class AssignmentHeaderFooterView: UITableViewHeaderFooterView {
     
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var showHideButton: UIButton!
+    @IBOutlet weak var showHideLabel: UILabel!
+    @IBOutlet weak var backgroundColorView: UIView!
+    
+    
     
     
     var delegate: AssignmentHeaderFooterCellDelegate?
@@ -29,7 +33,10 @@ class AssignmentHeaderFooterView: UITableViewHeaderFooterView {
         animation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
         animation.type = .fade
         animation.duration = 0.1
-        showHideButton.titleLabel?.layer.add(animation, forKey: "kCATransitionFade")
+        showHideLabel?.layer.add(animation, forKey: "kCATransitionFade")
+        titleLabel.textColor = .textColor
+        backgroundColorView.backgroundColor = .backgroundColor
+        
         
         updateShowHideButton()
     }
@@ -46,9 +53,9 @@ class AssignmentHeaderFooterView: UITableViewHeaderFooterView {
     
     func updateShowHideButton() {
         if isExpanded {
-            showHideButton.setTitle("Hide", for: .normal)
+            showHideLabel.text = "Hide"
         } else {
-            showHideButton.setTitle("Show", for: .normal)
+            showHideLabel.text = "Expand"
         }
     }
 }

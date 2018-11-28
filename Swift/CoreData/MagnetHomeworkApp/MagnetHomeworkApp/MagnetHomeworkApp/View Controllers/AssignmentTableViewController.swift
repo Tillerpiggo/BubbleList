@@ -197,11 +197,15 @@ extension AssignmentTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return ""
+    }
+    
+    func titleForHeader(inSection section: Int) -> String {
         guard let sectionInfo = fetchedResultsController.sections?[section] else {
             return ""
         }
         
-        let numberOfRows = tableView.numberOfRows(inSection: section)
+        //let numberOfRows = tableView.numberOfRows(inSection: section)
         return "\(sectionInfo.name)"//" (\(numberOfRows))"
     }
     
@@ -223,11 +227,8 @@ extension AssignmentTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        return nil
         
-        guard let title = self.tableView(tableView, titleForHeaderInSection: section) else {
-            return nil
-        }
+        let title = titleForHeader(inSection: section)
         
         let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: "AssignmentHeaderFooterView") as! AssignmentHeaderFooterView
         headerView.delegate = self
@@ -250,7 +251,7 @@ extension AssignmentTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 32
+        return 48
     }
     
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
@@ -405,7 +406,7 @@ extension AssignmentTableViewController: NSFetchedResultsControllerDelegate {
             tableView.reloadRows(at: [indexPath!], with: .automatic)
         case .insert:
             tableView.insertRows(at: [newIndexPath!], with: .fade)
-            tableView.scrollToRow(at: newIndexPath!, at: .none, animated: true)
+            //tableView.scrollToRow(at: newIndexPath!, at: .none, animated: true)
             //DispatchQueue.main.async { self.reloadHeader(forSection: newIndexPath!.section) }
         case .delete:
             tableView.deleteRows(at: [indexPath!], with: .automatic)
@@ -413,6 +414,9 @@ extension AssignmentTableViewController: NSFetchedResultsControllerDelegate {
         case .move:
             print("Current Section has \(tableView.numberOfRows(inSection: indexPath!.section)) rows")
             print("New Section has \(tableView.numberOfRows(inSection: newIndexPath!.section)) rows")
+            
+            tableView.moveRow(at: indexPath!, to: newIndexPath!)
+            break
             
             if tableView.numberOfSections == 1 && tableView.numberOfRows(inSection: 0) == 1 && self.tableView(tableView, titleForHeaderInSection: indexPath!.section) != "Completed" {
                 break
