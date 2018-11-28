@@ -16,9 +16,9 @@ public class Assignment: NSManagedObject, CloudUploadable {
     var ckRecord: CKRecord = CKRecord(recordType: "Assignment")
     
     func calculateDueDateSection() -> String {
-        guard toDo?.isCompleted ?? false == false else {
-            return "Completed"
-        }
+//        guard toDo?.isCompleted ?? false == false else {
+//            return "Completed"
+//        }
         
         guard let dueDate = dueDate as Date? else {
             return "Unscheduled"
@@ -89,6 +89,7 @@ public class Assignment: NSManagedObject, CloudUploadable {
         self.dateLastModified = NSDate()
         self.owningClass = owningClass
         self.dueDate = nil
+        self.isCompleted = false
         updateDueDateSection()
         
         // Create CKRecord
@@ -118,6 +119,7 @@ public class Assignment: NSManagedObject, CloudUploadable {
         self.encodedSystemFields = record.encoded()
         self.owningClass = owningClass
         self.dueDate = record["dueDate"] as NSDate?
+        self.isCompleted = false
         updateDueDateSection()
         // Remember to set ToDo while retrieving from the Cloud
         

@@ -17,7 +17,7 @@ class AssignmentTableViewCell: UITableViewCell {
     
     let completedCircleImageName = "completedCircleTemplate"
     let incompletedCircleImageName = "incompletedCircle2"
-    let scheduleButtonImageName = "newCalendarGlyph4"
+    let scheduleButtonImageName = "thiccCalendarGlyph"
     
     // MARK: - Properties
     var delegate: AssignmentTableViewCellDelegate?
@@ -66,7 +66,7 @@ class AssignmentTableViewCell: UITableViewCell {
         animation.duration = 1.0
         
         scheduleButton.image = UIImage(named: scheduleButtonImageName)?.withRenderingMode(.alwaysTemplate)
-        scheduleButton.tintColor = .highlightColor
+        scheduleButton.tintColor = .primaryColor
         
         //contentView.backgroundColor = .backgroundColor
         

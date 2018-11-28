@@ -25,19 +25,23 @@ class ScheduleTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationController?.navigationBar.barTintColor = .primaryColor
-        
         dueDate = (assignment.dueDate as Date?)
         
         dueDatePicker.date = dueDate ?? Date.tomorrow
         
         setDueDateLabelText()
         setThisWeekdayText()
+        
+        navigationController?.configureNavigationBar()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setCheckmarks()
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
     
     // MARK: - IBOutlets

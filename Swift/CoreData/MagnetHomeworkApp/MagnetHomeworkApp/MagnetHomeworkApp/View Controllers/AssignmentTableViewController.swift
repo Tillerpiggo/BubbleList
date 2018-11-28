@@ -47,7 +47,7 @@ class AssignmentTableViewController: UITableViewController {
         fetchRequest.fetchBatchSize = 20 // TODO: May need to adjust
         
         //let isInClassPredicate = NSPredicate(format: "owningClass == %@ && toDo.isCompleted == false", self.`class`)
-        let isInClassPredicate = NSPredicate(format: "owningClass == %@", self.`class`)
+        let isInClassPredicate = NSPredicate(format: "owningClass == %@ && isCompleted == false", self.`class`)
         fetchRequest.predicate = isInClassPredicate
         
         let fetchedResultsController = NSFetchedResultsController (
@@ -197,7 +197,7 @@ extension AssignmentTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return ""
+        return titleForHeader(inSection: section)
     }
     
     func titleForHeader(inSection section: Int) -> String {
@@ -206,7 +206,7 @@ extension AssignmentTableViewController {
         }
         
         //let numberOfRows = tableView.numberOfRows(inSection: section)
-        return "\(sectionInfo.name)"//" (\(numberOfRows))"
+        return "\(sectionInfo.name)".uppercased()//" (\(numberOfRows))"
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -227,12 +227,14 @@ extension AssignmentTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        //return nil
         
         let title = titleForHeader(inSection: section)
         
         let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: "AssignmentHeaderFooterView") as! AssignmentHeaderFooterView
         headerView.delegate = self
         headerView.section = section
+        headerView.titleLabel.text = titleForHeader(inSection: section)
         //headerView.translatesAutoresizingMaskIntoConstraints = false
         
         if title.contains("Completed") && isCompletedHidden {
@@ -251,7 +253,7 @@ extension AssignmentTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 48
+        return 34
     }
     
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
@@ -271,7 +273,7 @@ extension AssignmentTableViewController {
             
             if self.fetchedResultsController.fetchedObjects?.count == 1 {
                 var frame = CGRect.zero
-                frame.size.height = 20
+                frame.size.height = 0
                 tableView.tableHeaderView = UIView(frame: frame)
                 
 //                UIView.animate(withDuration: 0.0, animations: {
@@ -405,11 +407,11 @@ extension AssignmentTableViewController: NSFetchedResultsControllerDelegate {
         case .update:
             tableView.reloadRows(at: [indexPath!], with: .automatic)
         case .insert:
-            tableView.insertRows(at: [newIndexPath!], with: .fade)
+            tableView.insertRows(at: [newIndexPath!], with: .top)
             //tableView.scrollToRow(at: newIndexPath!, at: .none, animated: true)
             //DispatchQueue.main.async { self.reloadHeader(forSection: newIndexPath!.section) }
         case .delete:
-            tableView.deleteRows(at: [indexPath!], with: .automatic)
+            tableView.deleteRows(at: [indexPath!], with: .fade)
             //DispatchQueue.main.async { self.reloadHeader(forSection: indexPath!.section) }
         case .move:
             print("Current Section has \(tableView.numberOfRows(inSection: indexPath!.section)) rows")
@@ -502,11 +504,11 @@ extension AssignmentTableViewController {
     func updateHeaderView() {
         if tableView.numberOfRows(inSection: 0) == 0 {
             var frame = CGRect.zero
-            frame.size.height = 20
+            frame.size.height = 0
             tableView.tableHeaderView = UIView(frame: frame)
         } else {
             var frame = CGRect.zero
-            frame.size.height = 20
+            frame.size.height = 0
             tableView.tableHeaderView = UIView(frame: frame)
         }
     }
@@ -532,6 +534,8 @@ extension AssignmentTableViewController: AssignmentTableViewCellDelegate {
     func buttonPressed(assignment: Assignment) -> Bool {
         if let assignment = fetchedResultsController.fetchedObjects?.first(where: { $0 == assignment }), let toDo = assignment.toDo {
             toDo.isCompleted = !toDo.isCompleted
+            assignment.isCompleted = toDo.isCompleted
+            
             toDo.completionDate = NSDate()
             toDo.ckRecord["isCompleted"] = toDo.isCompleted as CKRecordValue?
             

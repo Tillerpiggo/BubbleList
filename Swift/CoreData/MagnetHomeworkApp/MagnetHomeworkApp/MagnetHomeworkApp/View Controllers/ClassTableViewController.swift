@@ -78,7 +78,7 @@ class ClassTableViewController: UITableViewController {
 //        tableView.estimatedSectionHeaderHeight = 0
         //tableView.contentInsetAdjustmentBehavior = .automatic
         
-        configureNavigationBar()
+        navigationController?.configureNavigationBar()
         configureAddClassView(duration: 0.0)
     }
     
@@ -217,11 +217,12 @@ extension ClassTableViewController {
                     
                     if let `class` = self.fetchedResultsController.fetchedObjects?.first(where: { record["classRecordName"] as? String == $0.ckRecord.recordID.recordName }), let assignments = `class`.assignmentArray {
                         
-                        print("NUMBER OF ASSIGNMENTS: \(assignments.count)")
+                        //print("NUMBER OF ASSIGNMENTS: \(assignments.count)")
                         if let assignment = assignments.first(where: { $0.ckRecord.recordID.recordName == record["assignmentRecordName"] as? String }) {
                             if let toDo = assignment.toDo {
                                 toDo.update(withRecord: record)
-                                print("IS COMPLETED: \(toDo.isCompleted)")
+                                assignment.isCompleted = toDo.isCompleted
+                                //print("IS COMPLETED: \(toDo.isCompleted)")
                             } else {
                                 assignment.toDo = ToDo(fromRecord: record, managedContext: self.coreDataController.managedContext)
                             }
@@ -311,22 +312,22 @@ extension ClassTableViewController {
         present(alertController, animated:  true, completion: nil)
     }
     
-    func configureNavigationBar() {
-//        // GRADIENT
-//        let colors: [UIColor] = [UIColor(red: 0.92, green: 0.31, blue: 0.31, alpha: 1),
-//                                 UIColor(red: 0.97, green: 0.66, blue: 0.54, alpha: 1)]
-//        //navigationController?.navigationBar.setGradientBackground(colors: colors)
-        
-        navigationController?.navigationBar.barTintColor = .primaryColor
-        
-        // TINT COLOR
-        navigationController?.navigationBar.tintColor = .highlightColor
-        
-        // TITLE COLOR
-        let textAttributes: [NSAttributedString.Key: UIColor]  = [NSAttributedString.Key.foregroundColor: .black]
-        navigationController?.navigationBar.titleTextAttributes = textAttributes
-        navigationController?.navigationBar.largeTitleTextAttributes = textAttributes
-    }
+//    func configureNavigationBar() {
+////        // GRADIENT
+////        let colors: [UIColor] = [UIColor(red: 0.92, green: 0.31, blue: 0.31, alpha: 1),
+////                                 UIColor(red: 0.97, green: 0.66, blue: 0.54, alpha: 1)]
+////        //navigationController?.navigationBar.setGradientBackground(colors: colors)
+//
+//        navigationController?.navigationBar.barTintColor = .navigationBarTintColor
+//
+//        // TINT COLOR
+//        navigationController?.navigationBar.tintColor = .tintColor
+//
+//        // TITLE COLOR
+//        let textAttributes: [NSAttributedString.Key: UIColor]  = [NSAttributedString.Key.foregroundColor: .titleColor]
+//        navigationController?.navigationBar.titleTextAttributes = textAttributes
+//        navigationController?.navigationBar.largeTitleTextAttributes = textAttributes
+//    }
 }
 
 // MARK: - TableView Data Source / Delegate
@@ -509,7 +510,7 @@ extension ClassTableViewController: UITextFieldDelegate, UITextDragDelegate {
     @IBAction func addClassButtonPressed(_ sender: Any) {
         addClassButton.isHidden = true
         UIView.animate(withDuration: 0.1, animations: {
-            self.addClassView.backgroundColor = .backgroundColor
+            self.addClassView.backgroundColor = .white
         })
         
         addClassText.isHidden = true

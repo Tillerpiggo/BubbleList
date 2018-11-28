@@ -42,7 +42,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             classTableViewController.cloudController = cloudController
             classTableViewController.coreDataController = coreDataController
             
-            tabBarController.tabBar.tintColor = .primaryColor
+            tabBarController.tabBar.tintColor = .tintColor
         }
         
         // Try to register for notifications

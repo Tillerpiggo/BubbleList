@@ -34,9 +34,15 @@ class AssignmentHeaderFooterView: UITableViewHeaderFooterView {
         animation.type = .fade
         animation.duration = 0.1
         showHideLabel?.layer.add(animation, forKey: "kCATransitionFade")
-        titleLabel.textColor = .textColor
-        backgroundColorView.backgroundColor = .backgroundColor
+        titleLabel.textColor = .white
         
+        let blurEffect = UIBlurEffect(style: .light)
+        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView.frame = bounds
+        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        addSubview(blurEffectView)
+        
+        backgroundColorView.backgroundColor = .backgroundColor
         
         updateShowHideButton()
     }

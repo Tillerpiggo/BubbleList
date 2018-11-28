@@ -26,4 +26,5 @@ extension Assignment {
     @NSManaged public var dueDate: NSDate?
     @NSManaged public var dueDateSectionNumber: Int
     @NSManaged public var dueDateSection: String?
+    @NSManaged public var isCompleted: Bool
 }
