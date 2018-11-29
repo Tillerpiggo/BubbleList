@@ -10,6 +10,7 @@
 import Foundation
 import CoreData
 import CloudKit
+import UIKit
 
 
 public class Assignment: NSManagedObject, CloudUploadable {

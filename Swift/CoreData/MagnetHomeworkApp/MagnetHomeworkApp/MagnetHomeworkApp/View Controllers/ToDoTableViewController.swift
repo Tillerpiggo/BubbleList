@@ -142,10 +142,10 @@ class ToDoTableViewController: AddObjectTableViewController {
 //        let colors: [UIColor] = [.lightColor, .darkColor]
 //        navigationController?.navigationBar.setGradientBackground(colors: colors)
         
-        navigationController?.navigationBar.barTintColor = .primaryColor
+        navigationController?.navigationBar.barTintColor = .navigationBarTintColor
         
         // TINT COLOR
-        navigationController?.navigationBar.tintColor = .primaryColor
+        navigationController?.navigationBar.tintColor = .tintColor
         
         // TITLE COLOR
         let textAttributes: [NSAttributedString.Key: UIColor]  = [NSAttributedString.Key.foregroundColor: .textColor]

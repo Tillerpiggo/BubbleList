@@ -10,6 +10,8 @@
 		2310CF4321A8877E00A995FB /* AssignmentHeaderFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2310CF4221A8877E00A995FB /* AssignmentHeaderFooterView.swift */; };
 		2310CF4721A920AE00A995FB /* AssignmentHeaderFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2310CF4621A920AE00A995FB /* AssignmentHeaderFooterView.xib */; };
 		2310CF4921A9F6C400A995FB /* UIApplication+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2310CF4821A9F6C400A995FB /* UIApplication+Helpers.swift */; };
+		2324191221AF83E10014916F /* AddObjectView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2324191121AF83E10014916F /* AddObjectView.xib */; };
+		2324191421AF843B0014916F /* AddObjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2324191321AF843B0014916F /* AddObjectView.swift */; };
 		23332B0321AB1DD600111882 /* AddObjectTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23332B0221AB1DD600111882 /* AddObjectTableViewController.swift */; };
 		23484C562182250E007C5CCF /* CKRecord+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23484C552182250E007C5CCF /* CKRecord+Helpers.swift */; };
 		23484C5A21822CA6007C5CCF /* Assignment+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23484C5821822CA6007C5CCF /* Assignment+CoreDataClass.swift */; };
@@ -53,6 +55,8 @@
 		2310CF4221A8877E00A995FB /* AssignmentHeaderFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentHeaderFooterView.swift; sourceTree = "<group>"; };
 		2310CF4621A920AE00A995FB /* AssignmentHeaderFooterView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AssignmentHeaderFooterView.xib; sourceTree = "<group>"; };
 		2310CF4821A9F6C400A995FB /* UIApplication+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Helpers.swift"; sourceTree = "<group>"; };
+		2324191121AF83E10014916F /* AddObjectView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddObjectView.xib; sourceTree = "<group>"; };
+		2324191321AF843B0014916F /* AddObjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddObjectView.swift; sourceTree = "<group>"; };
 		23332B0221AB1DD600111882 /* AddObjectTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddObjectTableViewController.swift; sourceTree = "<group>"; };
 		23484C552182250E007C5CCF /* CKRecord+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKRecord+Helpers.swift"; sourceTree = "<group>"; };
 		23484C5821822CA6007C5CCF /* Assignment+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Assignment+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -125,6 +129,7 @@
 				23484C63218963E0007C5CCF /* AssignmentTableViewController.swift */,
 				235E0B85219550D9005D3B9C /* ScheduleTableViewController.swift */,
 				23CE667E219BCC0000B34042 /* ToDoTableViewController.swift */,
+				235BEAC721AF82F800ED4DD4 /* Views */,
 				23580D4E218E281100434DD9 /* TableViewCells */,
 				23F4C9D821926CCC00D00D05 /* UIExtension */,
 				235E0B8721955626005D3B9C /* OtherExtensions */,
@@ -147,9 +152,17 @@
 			children = (
 				235E0B8D2198AE05005D3B9C /* ClassTableViewCell.swift */,
 				23580D53218E286600434DD9 /* AssignmentTableViewCell.swift */,
-				2310CF4221A8877E00A995FB /* AssignmentHeaderFooterView.swift */,
 			);
 			path = TableViewCells;
+			sourceTree = "<group>";
+		};
+		235BEAC721AF82F800ED4DD4 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2310CF4221A8877E00A995FB /* AssignmentHeaderFooterView.swift */,
+				2324191321AF843B0014916F /* AddObjectView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		235E0B8721955626005D3B9C /* OtherExtensions */ = {
@@ -193,6 +206,7 @@
 				23CD10A521803CFD0034FFA7 /* MagnetHomeworkApp.entitlements */,
 				23CD109021803C530034FFA7 /* AppDelegate.swift */,
 				23CD109421803C530034FFA7 /* Main.storyboard */,
+				2324191121AF83E10014916F /* AddObjectView.xib */,
 				2310CF4621A920AE00A995FB /* AssignmentHeaderFooterView.xib */,
 				23CD109C21803C550034FFA7 /* LaunchScreen.storyboard */,
 				23484C6221866946007C5CCF /* View Controllers */,
@@ -268,8 +282,8 @@
 		23F4C9D821926CCC00D00D05 /* UIExtension */ = {
 			isa = PBXGroup;
 			children = (
-				23F4C9D42191EA1300D00D05 /* UIView+Helpers.swift */,
 				23F4C9D92192704400D00D05 /* UIColor+Helpers.swift */,
+				23F4C9D42191EA1300D00D05 /* UIView+Helpers.swift */,
 				23F4C9DF219283EA00D00D05 /* CAGradientLayer+Helpers.swift */,
 				23F4C9E1219284A000D00D05 /* UINavigationBar.swift */,
 				235E0B8F2199491F005D3B9C /* UILabel+Helpers.swift */,
@@ -345,6 +359,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2324191221AF83E10014916F /* AddObjectView.xib in Resources */,
 				23CD109E21803C550034FFA7 /* LaunchScreen.storyboard in Resources */,
 				23CD109B21803C550034FFA7 /* Assets.xcassets in Resources */,
 				23CD109621803C530034FFA7 /* Main.storyboard in Resources */,
@@ -376,6 +391,7 @@
 				23484C6121866927007C5CCF /* AddClassTableViewController.swift in Sources */,
 				235E0B8921955647005D3B9C /* Date+Helpers.swift in Sources */,
 				23484C64218963E0007C5CCF /* AssignmentTableViewController.swift in Sources */,
+				2324191421AF843B0014916F /* AddObjectView.swift in Sources */,
 				23CD10C52181A11F0034FFA7 /* Class+CoreDataProperties.swift in Sources */,
 				23580D54218E286600434DD9 /* AssignmentTableViewCell.swift in Sources */,
 				23CD10B121814F9B0034FFA7 /* CoreDataController.swift in Sources */,

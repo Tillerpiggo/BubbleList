@@ -34,6 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         //UIApplication.shared.statusBarView?.backgroundColor = .primaryColor
         
         application.applicationIconBadgeNumber = 0
+        application.statusBarStyle = .lightContent // change based on theme
         
         if let tabBarController = window?.rootViewController as? UITabBarController,
             let navigationController = tabBarController.viewControllers?.first as? UINavigationController,

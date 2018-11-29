@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="AddObjectView">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L3d-w1-TgT">
+                    <rect key="frame" x="0.0" y="591" width="375" height="76"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nJI-uY-wwh" userLabel="Add Object View">
+                            <rect key="frame" x="32" y="16" width="311" height="44"/>
+                            <subviews>
+                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="e.g. English" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ykc-jB-PL0">
+                                    <rect key="frame" x="16" y="11.5" width="279" height="21"/>
+                                    <nil key="textColor"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <textInputTraits key="textInputTraits"/>
+                                </textField>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add Object" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nU7-cG-w92">
+                                    <rect key="frame" x="105" y="10.5" width="101.5" height="23"/>
+                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="19"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VGu-QJ-V73">
+                                    <rect key="frame" x="0.0" y="0.0" width="311" height="44"/>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="trailing" secondItem="Ykc-jB-PL0" secondAttribute="trailing" constant="16" id="7AM-Ae-0hj"/>
+                                <constraint firstAttribute="bottom" secondItem="VGu-QJ-V73" secondAttribute="bottom" id="EFL-Wt-tZt"/>
+                                <constraint firstAttribute="trailing" secondItem="VGu-QJ-V73" secondAttribute="trailing" id="HqJ-W7-55N"/>
+                                <constraint firstItem="VGu-QJ-V73" firstAttribute="leading" secondItem="nJI-uY-wwh" secondAttribute="leading" id="Ljr-60-WgW"/>
+                                <constraint firstItem="Ykc-jB-PL0" firstAttribute="centerY" secondItem="nJI-uY-wwh" secondAttribute="centerY" id="b8X-7K-ppN"/>
+                                <constraint firstItem="nU7-cG-w92" firstAttribute="centerY" secondItem="nJI-uY-wwh" secondAttribute="centerY" id="cBf-fB-ehg"/>
+                                <constraint firstItem="nU7-cG-w92" firstAttribute="centerX" secondItem="nJI-uY-wwh" secondAttribute="centerX" id="f79-XP-4bS"/>
+                                <constraint firstItem="VGu-QJ-V73" firstAttribute="top" secondItem="nJI-uY-wwh" secondAttribute="top" id="iHR-DA-Opp"/>
+                                <constraint firstItem="Ykc-jB-PL0" firstAttribute="leading" secondItem="nJI-uY-wwh" secondAttribute="leading" constant="16" id="vNl-cE-CdJ"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="nJI-uY-wwh" secondAttribute="bottom" constant="16" id="YVq-FZ-h4j"/>
+                        <constraint firstAttribute="trailing" secondItem="nJI-uY-wwh" secondAttribute="trailing" constant="32" id="bAL-Zc-Cdd"/>
+                        <constraint firstAttribute="height" constant="76" id="bdc-bw-tgj"/>
+                        <constraint firstItem="nJI-uY-wwh" firstAttribute="leading" secondItem="L3d-w1-TgT" secondAttribute="leading" constant="32" id="dzH-ua-TdT"/>
+                        <constraint firstItem="nJI-uY-wwh" firstAttribute="top" secondItem="L3d-w1-TgT" secondAttribute="top" constant="16" id="n1h-hx-v6s"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <constraints>
+                <constraint firstItem="L3d-w1-TgT" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="Mgk-Xg-n3T"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="L3d-w1-TgT" secondAttribute="trailing" id="Syl-le-DYl"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="L3d-w1-TgT" secondAttribute="bottom" id="oiY-tu-77h"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="addButton" destination="VGu-QJ-V73" id="ErW-rD-uDr"/>
+                <outlet property="textField" destination="Ykc-jB-PL0" id="3rY-Hi-OQd"/>
+                <outlet property="textLabel" destination="nU7-cG-w92" id="0Yr-tQ-HCq"/>
+                <outlet property="view" destination="nJI-uY-wwh" id="GxP-9V-iL9"/>
+            </connections>
+            <point key="canvasLocation" x="53.600000000000001" y="23.838080959520241"/>
+        </view>
+    </objects>
+</document>

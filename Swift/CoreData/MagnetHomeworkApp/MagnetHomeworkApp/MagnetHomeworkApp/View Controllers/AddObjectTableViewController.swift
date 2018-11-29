@@ -8,19 +8,18 @@
 
 import UIKit
 
-protocol AddsObject {
+protocol AddObjectButton {
     // Maybe use this?
 }
 
-class AddObjectTableViewController: UIViewController, UITextFieldDelegate, UITextDragDelegate {
+class AddObjectTableViewController: UIViewController, UITextFieldDelegate, UITextDragDelegate, AddObjectButton {
     
     // MARK: - IBOutlets
     
-    @IBOutlet weak var addObjectView: UIView!
-    @IBOutlet weak var textField: UITextField!
-    @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var addLabel: UILabel!
-    @IBOutlet weak var addButton: UIButton!
+    var addObjectView: UIView = UIView()
+    var textField: UITextField = UITextField()
+    var addLabel: UILabel = UILabel()
+    var addButton: UIButton = UIButton()
     
     // MARK: - Variables
     
@@ -76,12 +75,10 @@ class AddObjectTableViewController: UIViewController, UITextFieldDelegate, UITex
         setAddObjectViewNotEditing(withAnimationDuration: 0.2)
     }
     
-    // MARK: - Functions
-    
     func configureAddObjectView() {
-        //addObjectView.layer.cornerRadius = 5
-        //addObjectView.addDropShadow(color: .black, opacity: 0.15, radius: 4)
-        //addObjectView.isHidden = false
+        addObjectView.layer.cornerRadius = 5
+        addObjectView.addDropShadow(color: .black, opacity: 0.15, radius: 4)
+        addObjectView.isHidden = false
     }
     
     func setAddObjectViewNotEditing(withAnimationDuration duration: TimeInterval) {

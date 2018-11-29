@@ -31,8 +31,8 @@ class ClassTableViewController: UITableViewController {
     
     lazy var fetchedResultsController: NSFetchedResultsController<Class> = {
         let fetchRequest: NSFetchRequest<Class> = Class.fetchRequest()
-        let sortByDateLastModified = NSSortDescriptor(key: #keyPath(Class.creationDate), ascending: true)
-        fetchRequest.sortDescriptors = [sortByDateLastModified]
+        let sortByCreationDate = NSSortDescriptor(key: #keyPath(Class.creationDate), ascending: true)
+        fetchRequest.sortDescriptors = [sortByCreationDate]
         
         let fetchedResultsController = NSFetchedResultsController (
             fetchRequest: fetchRequest,

@@ -234,7 +234,10 @@ extension AssignmentTableViewController {
         let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: "AssignmentHeaderFooterView") as! AssignmentHeaderFooterView
         headerView.delegate = self
         headerView.section = section
-        headerView.titleLabel.text = titleForHeader(inSection: section)
+        
+        headerView.titleLabel.text = title
+        //headerView.backgroundColorView.backgroundColor = UIColor.color(fromSection: title)
+        headerView.titleLabel.textColor = UIColor.color(fromSection: title)
         //headerView.translatesAutoresizingMaskIntoConstraints = false
         
         if title.contains("Completed") && isCompletedHidden {
