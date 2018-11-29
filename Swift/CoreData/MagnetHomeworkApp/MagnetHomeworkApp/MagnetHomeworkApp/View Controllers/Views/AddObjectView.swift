@@ -28,6 +28,32 @@ class AddObjectView: UIView {
         configure()
     }
     
+    @IBAction func addButtonPressed(_ sender: Any) {
+        setToSelected(withDuration: 0.1)
+    }
+    
+    @IBAction func addButtonPressedDown(_ sender: Any) {
+        UIView.animate(withDuration: 0.1, animations: {
+            self.view.backgroundColor = .highlightColor
+        })
+    }
+    
+    @IBAction func addButtonDraggedOutside(_ sender: Any) {
+        UIView.animate(withDuration: 0.1, animations: {
+            self.view.backgroundColor = .backgroundColor
+        })
+    }
+    
+    @IBAction func addButtonDraggedInside(_ sender: Any) {
+        UIView.animate(withDuration: 0.1, animations: {
+            self.view.backgroundColor = .backgroundColor
+        })
+    }
+    
+    @IBAction func addButtonDragExited(_ sender: Any) {
+        setToNormal(withDuration: 0.2)
+    }
+    
     func configure() {
         view.layer.cornerRadius = 5
         view.addDropShadow(color: .black, opacity: 0.15, radius: 4)
@@ -47,5 +73,19 @@ class AddObjectView: UIView {
         })
         
         delegate?.viewSetToNormal()
+    }
+    
+    func setToSelected(withDuration duration: TimeInterval) {
+        addButton.isHidden = true
+        textLabel.isHidden = true
+        
+        textField.isHidden = false
+        textField.becomeFirstResponder()
+        
+        UIView.animate(withDuration: duration, animations: {
+            self.view.backgroundColor = .white // TODO: Make a color for this
+        })
+        
+        delegate?.viewSetToSelected()
     }
 }

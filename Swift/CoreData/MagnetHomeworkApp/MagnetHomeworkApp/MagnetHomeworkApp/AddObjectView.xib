@@ -35,6 +35,13 @@
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VGu-QJ-V73">
                                     <rect key="frame" x="0.0" y="0.0" width="311" height="44"/>
+                                    <connections>
+                                        <action selector="addButtonDragExited:" destination="iN0-l3-epB" eventType="touchDragExit" id="ZwI-7F-tGO"/>
+                                        <action selector="addButtonDraggedInside:" destination="iN0-l3-epB" eventType="touchDragInside" id="fua-Jj-eHa"/>
+                                        <action selector="addButtonDraggedOutside:" destination="iN0-l3-epB" eventType="touchDragOutside" id="4Us-Ve-hvE"/>
+                                        <action selector="addButtonPressed:" destination="iN0-l3-epB" eventType="primaryActionTriggered" id="MVM-Fp-c2r"/>
+                                        <action selector="addButtonPressedDown:" destination="iN0-l3-epB" eventType="touchDown" id="dhS-Wj-KDr"/>
+                                    </connections>
                                 </button>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

@@ -14,16 +14,10 @@ protocol AddObjectButton {
 
 class AddObjectTableViewController: UIViewController, UITextFieldDelegate, UITextDragDelegate, AddObjectButton {
     
-    // MARK: - IBOutlets
-    
-    var addObjectView: UIView = UIView()
-    var textField: UITextField = UITextField()
-    var addLabel: UILabel = UILabel()
-    var addButton: UIButton = UIButton()
-    
     // MARK: - Variables
     
     var doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(AssignmentTableViewController.donePressed(sender:)))
+    var addObjectView = NSBundle.mainBundle()
     
     // MARK: - ViewDidLoad
     
@@ -35,45 +29,7 @@ class AddObjectTableViewController: UIViewController, UITextFieldDelegate, UITex
     
     // MARK: - IBActions
     
-    @IBAction func addButtonPressed(_ sender: Any) {
-        addButton.isHidden = true
-        UIView.animate(withDuration: 0.1, animations: {
-            self.addObjectView.backgroundColor = .backgroundColor
-        })
-        
-        addLabel.isHidden = true
-        textField.isHidden = false
-        
-        textField.becomeFirstResponder()
-        addDoneButton()
-    }
-    
-    
-    @IBAction func addButtonPressedDown(_ sender: Any) {
-        UIView.animate(withDuration: 0.1, animations: {
-            self.addObjectView.backgroundColor = UIColor.highlightColor
-        })
-    }
-    
-    @IBAction func addButtonDraggedOutside(_ sender: Any) {
-        UIView.animate(withDuration: 0.1, animations: {
-            self.addObjectView.backgroundColor = .backgroundColor
-        })
-    }
-    
-    @IBAction func addButtonTouchCanceled(_ sender: Any) {
-        setAddObjectViewNotEditing(withAnimationDuration: 0.2)
-    }
-    
-    @IBAction func addButtonDraggedInside(_ sender: Any) {
-        UIView.animate(withDuration: 0.1, animations: {
-            self.addObjectView.backgroundColor = .backgroundColor
-        })
-    }
-    
-    @IBAction func addButtonDragExited(_ sender: Any) {
-        setAddObjectViewNotEditing(withAnimationDuration: 0.2)
-    }
+
     
     func configureAddObjectView() {
         addObjectView.layer.cornerRadius = 5
