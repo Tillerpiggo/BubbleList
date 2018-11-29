@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class ToDoTableViewController: AddObjectTableViewController {
+class ToDoTableViewController: AddObjectViewController {
     
     var coreDataController: CoreDataController!
     
@@ -21,7 +21,7 @@ class ToDoTableViewController: AddObjectTableViewController {
         fetchRequest.sortDescriptors = [sortBySectionNumber, sortByDueDate, sortByCreationDate]
         fetchRequest.fetchBatchSize = 20 // TODO: May need to adjust
         
-        let isInSectionPredicate = NSPredicate(format: "dueDate <= %@", Date.tomorrow as CVarArg)
+        let isInSectionPredicate = NSPredicate(format: "dueDate >= %@", Date.tomorrow as CVarArg)
         fetchRequest.predicate = isInSectionPredicate
         
         let fetchedResultsController = NSFetchedResultsController (
@@ -64,22 +64,25 @@ class ToDoTableViewController: AddObjectTableViewController {
     }
 
     override func viewDidLoad() {
-        // Set all IBOutlets
-        
-        
         super.viewDidLoad()
     }
 
     // MARK: - Table view data source
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
+        guard let sections = fetchedResultsController.sections else {
+            return 0
+        }
+        
+        return sections.count
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+        guard let sectionInfo = fetchedResultsController.sections?[section] else {
+            return 0
+        }
+        
+        return sectionInfo.numberOfObjects
     }
 
     /*
@@ -152,4 +155,8 @@ class ToDoTableViewController: AddObjectTableViewController {
         navigationController?.navigationBar.titleTextAttributes = textAttributes
     }
 
+}
+
+extension ToDoTableViewController: UITableViewDelegate, UITableViewDataSource {
+    
 }

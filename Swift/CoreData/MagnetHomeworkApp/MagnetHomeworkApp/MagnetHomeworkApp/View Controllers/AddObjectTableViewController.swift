@@ -8,50 +8,28 @@
 
 import UIKit
 
-protocol AddObjectButton {
-    // Maybe use this?
-}
-
-class AddObjectTableViewController: UIViewController, UITextFieldDelegate, UITextDragDelegate, AddObjectButton {
+class AddObjectViewController: UIViewController, AddObjectViewDelegate, UITextFieldDelegate, UITextDragDelegate {
     
     // MARK: - Variables
     
     var doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(AssignmentTableViewController.donePressed(sender:)))
-    var addObjectView = NSBundle.mainBundle()
+    var addObjectView = Bundle.main.loadNibNamed("AddObjectView", owner: self, options: nil)?.first as! AddObjectView
     
     // MARK: - ViewDidLoad
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        configureAddObjectView()
+        configureAddObjectViewTextField()
     }
     
     // MARK: - IBActions
     
 
     
-    func configureAddObjectView() {
-        addObjectView.layer.cornerRadius = 5
-        addObjectView.addDropShadow(color: .black, opacity: 0.15, radius: 4)
-        addObjectView.isHidden = false
-    }
-    
-    func setAddObjectViewNotEditing(withAnimationDuration duration: TimeInterval) {
-        textField.text = ""
-        
-        textField.isHidden = true
-        addLabel.isHidden = false
-        
-        UIView.animate(withDuration: duration, animations: {
-            self.addObjectView.backgroundColor = UIColor.highlightColor
-            
-            if self.doneButtonVisible() {
-                self.removeDoneButton()
-            }
-        }, completion: { (bool) in
-            self.addButton.isHidden = false
-        })
+    func configureAddObjectViewTextField() {
+        addObjectView.textField.delegate = self
+        addObjectView.textField.textDragDelegate = self
     }
     
     func doneButtonVisible() -> Bool {
@@ -59,15 +37,15 @@ class AddObjectTableViewController: UIViewController, UITextFieldDelegate, UITex
     }
     
     func removeDoneButton() {
-        self.navigationItem.rightBarButtonItem = nil
+        self.navigationItem.rightBarButtonItem = nil // subclass should implement
     }
     
     func addDoneButton() {
-        self.navigationItem.setRightBarButtonItems([doneButton, self.navigationItem.rightBarButtonItem!], animated: true)
+        self.navigationItem.setRightBarButtonItems([doneButton, self.navigationItem.rightBarButtonItem!], animated: true) // subclass should implement
     }
     
     @objc func donePressed(sender: UIBarButtonItem) {
-        textField.resignFirstResponder()
+        addObjectView.textField.resignFirstResponder()
     }
     
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
@@ -75,7 +53,7 @@ class AddObjectTableViewController: UIViewController, UITextFieldDelegate, UITex
             saveObject(text: text)
         }
         
-        setAddObjectViewNotEditing(withAnimationDuration: 0.2)
+        addObjectView.setToNormal(withDuration: 0.2)
         
         return true
     }
@@ -87,5 +65,20 @@ class AddObjectTableViewController: UIViewController, UITextFieldDelegate, UITex
     
     func saveObject(text: String) {
         // Must be implemented by subclass
+    }
+    
+    // MARK: - AddObjectViewDelegate
+    
+    func viewSetToNormal() {
+        let text = addObjectView.textField.text ?? ""
+        if !text.isEmpty {
+            saveObject(text: text)
+        }
+        
+        removeDoneButton()
+    }
+    
+    func viewSetToSelected() {
+        addDoneButton()
     }
 }
