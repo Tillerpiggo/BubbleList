@@ -35,6 +35,7 @@ class ClassTableViewCell: UITableViewCell {
         
         //contentView.backgroundColor = .backgroundColor
         completedImageView.isHidden = true
+        contentView.backgroundColor = .contentColor
     }
     
     override func layoutSubviews() {

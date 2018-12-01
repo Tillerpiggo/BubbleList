@@ -55,6 +55,7 @@ class AssignmentTableViewCell: UITableViewCell {
         super.awakeFromNib()
         
         isCompletedImageView.tintColor = .highlightColor
+        contentView.backgroundColor = .contentColor
     }
     
     override func layoutSubviews() {

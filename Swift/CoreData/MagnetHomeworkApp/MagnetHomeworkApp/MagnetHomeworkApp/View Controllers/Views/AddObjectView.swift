@@ -15,20 +15,23 @@ protocol AddObjectViewDelegate {
 
 class AddObjectView: UIView {
     
-    var delegate: AddObjectViewDelegate?
-    
-    @IBOutlet weak var view: UIView!
     @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var textLabel: UILabel!
+    @IBOutlet weak var view: UIView!
     @IBOutlet weak var addButton: UIButton!
+    
+    
+    var delegate: AddObjectViewDelegate?
     
     override func awakeFromNib() {
         super.awakeFromNib()
         
+        textLabel.textColor = .white
         configure()
     }
     
     @IBAction func addButtonPressed(_ sender: Any) {
+        print("Add Button Pressed")
         setToSelected(withDuration: 0.1)
     }
     
@@ -58,6 +61,8 @@ class AddObjectView: UIView {
         view.layer.cornerRadius = 5
         view.addDropShadow(color: .black, opacity: 0.15, radius: 4)
         view.isHidden = false
+        textField.isHidden = true
+        view.backgroundColor = .primaryColor
     }
     
     func setToNormal(withDuration duration: TimeInterval) {

@@ -41,7 +41,7 @@ class ScheduleTableViewController: UITableViewController {
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
+        return .default
     }
     
     // MARK: - IBOutlets

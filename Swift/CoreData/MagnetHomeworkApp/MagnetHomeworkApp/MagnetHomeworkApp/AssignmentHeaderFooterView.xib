@@ -71,7 +71,7 @@
                 <outlet property="showHideLabel" destination="dNb-bA-2pM" id="OhT-I4-BNg"/>
                 <outlet property="titleLabel" destination="A5r-TG-mN4" id="amD-ps-3So"/>
             </connections>
-            <point key="canvasLocation" x="60" y="48.125937031484263"/>
+            <point key="canvasLocation" x="23" y="61"/>
         </view>
     </objects>
 </document>

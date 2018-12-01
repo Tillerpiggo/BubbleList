@@ -12,7 +12,7 @@ class AddObjectViewController: UIViewController, AddObjectViewDelegate, UITextFi
     
     // MARK: - Variables
     
-    var doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(AssignmentTableViewController.donePressed(sender:)))
+    var doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(AddObjectViewController.donePressed(sender:)))
     var addObjectView = Bundle.main.loadNibNamed("AddObjectView", owner: self, options: nil)?.first as! AddObjectView
     
     // MARK: - ViewDidLoad
@@ -20,14 +20,35 @@ class AddObjectViewController: UIViewController, AddObjectViewDelegate, UITextFi
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        configureAddObjectViewTextField()
+        configureAddObjectView()
     }
     
-    // MARK: - IBActions
     
-
-    
-    func configureAddObjectViewTextField() {
+    func configureAddObjectView() {
+        
+        view.addSubview(addObjectView)
+        view.bringSubviewToFront(addObjectView)
+        
+        for view in Bundle.main.loadNibNamed("AddObjectView", owner: self, options: nil)! {
+            if let view = view as? UIView {
+                addObjectView.addSubview(view)
+            }
+        }
+        
+        // Add Object View
+        
+        addObjectView.translatesAutoresizingMaskIntoConstraints = false
+        
+        let views: [String: Any] = ["view": addObjectView]
+        
+        let horizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[view]-0-|", metrics: nil, views: views)
+        let verticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:[view]-(20)-|", metrics: nil, views: views)
+        
+        view.addConstraints(horizontalConstraints)
+        view.addConstraints(verticalConstraints)
+        
+        // Text Field
+        
         addObjectView.textField.delegate = self
         addObjectView.textField.textDragDelegate = self
     }

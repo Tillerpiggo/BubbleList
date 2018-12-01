@@ -14,7 +14,9 @@ protocol AssignmentTableViewControllerDelegate {
     func reloadClass(_ `class`: Class)
 }
 
-class AssignmentTableViewController: UITableViewController {
+class AssignmentViewController: AddObjectViewController {
+    
+    @IBOutlet weak var tableView: UITableView!
     
     // MARK: - Properties
     
@@ -34,7 +36,7 @@ class AssignmentTableViewController: UITableViewController {
     var hiddenSections: [Int] = []
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
+        return .default
     }
     
     lazy var fetchedResultsController: NSFetchedResultsController<Assignment> = {
@@ -76,13 +78,13 @@ class AssignmentTableViewController: UITableViewController {
         }
     }
     
-    // MARK: - IBOutlets
-    
-    @IBOutlet weak var addAssignmentView: UIView!
-    @IBOutlet weak var addAssignmentContainerView: UIView!
-    @IBOutlet weak var addAssignmentButton: UIButton!
-    @IBOutlet weak var addAssignmentTextField: UITextField!
-    @IBOutlet weak var addAssignmentText: UILabel!
+//    // MARK: - IBOutlets
+//
+//    @IBOutlet weak var addAssignmentView: UIView!
+//    @IBOutlet weak var addAssignmentContainerView: UIView!
+//    @IBOutlet weak var addAssignmentButton: UIButton!
+//    @IBOutlet weak var addAssignmentTextField: UITextField!
+//    @IBOutlet weak var addAssignmentText: UILabel!
     
     // MARK: - IBActions
     
@@ -109,14 +111,18 @@ class AssignmentTableViewController: UITableViewController {
     // MARK: - Initializer
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        configureAddAssignmentView(duration: 0)
         updateHeaderView()
         
 //        tableView.rowHeight = 44
 //        tableView.estimatedRowHeight = 60
-        tableView.backgroundColor = .backgroundColor
+        
+        navigationController?.configureNavigationBar()
+        
+        tableView.dataSource = self
+        tableView.delegate = self
+        
         tableView.separatorColor = .separatorColor
+        tableView.backgroundColor = .backgroundColor
         
         tableView.register(UINib(nibName: "AssignmentHeaderFooterView", bundle: nil), forHeaderFooterViewReuseIdentifier: "AssignmentHeaderFooterView")
     }
@@ -126,6 +132,23 @@ class AssignmentTableViewController: UITableViewController {
         
         //tableView.reloadData()
         print("HiddenSections: \(hiddenSections)")
+    }
+    
+    override func addDoneButton() {
+        self.navigationItem.setRightBarButtonItems([UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(AssignmentViewController.donePressed(sender:))), self.navigationItem.rightBarButtonItem!], animated: true)
+    }
+    
+    override func removeDoneButton() {
+        self.navigationItem.setRightBarButton(navigationItem.rightBarButtonItems?.last, animated: true)
+    }
+    
+    override func saveObject(text: String) {
+        // Create new assignment
+        let zoneID = `class`.ckRecord.recordID.zoneID
+        let newAssignment = Assignment(withText: text, managedContext: coreDataController.managedContext, owningClass: `class`, zoneID: zoneID, toDoZoneID: cloudController.zoneID)
+        addedAssignment(newAssignment)
+        
+        //updateHeaderView()
     }
 
     // MARK: - Navigation
@@ -147,11 +170,11 @@ class AssignmentTableViewController: UITableViewController {
 
 // MARK: - Table View Data Source / Delegate
 
-extension AssignmentTableViewController {
+extension AssignmentViewController: UITableViewDataSource, UITableViewDelegate {
     
     // MARK: - Data Source
     
-    override func numberOfSections(in tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         guard let sections = fetchedResultsController.sections else {
             return 0
         }
@@ -159,7 +182,7 @@ extension AssignmentTableViewController {
         return sections.count // TODO: optimize to just get number of sections without having to load them
     }
     
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let sectionInfo = fetchedResultsController.sections?[section] else {
             return 0
         }
@@ -167,13 +190,13 @@ extension AssignmentTableViewController {
         return sectionInfo.numberOfObjects
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "AssignmentCell", for: indexPath) as! AssignmentTableViewCell
         
         return cell
     }
     
-    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         guard let cell = cell as? AssignmentTableViewCell else { return }
         
         // Get model object
@@ -196,7 +219,7 @@ extension AssignmentTableViewController {
         }
     }
     
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return titleForHeader(inSection: section)
     }
     
@@ -209,7 +232,7 @@ extension AssignmentTableViewController {
         return "\(sectionInfo.name)".uppercased()//" (\(numberOfRows))"
     }
     
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let assignment = fetchedResultsController.object(at: indexPath)
         
         if hiddenSections.contains(indexPath.section) {
@@ -226,7 +249,7 @@ extension AssignmentTableViewController {
         }
     }
     
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         //return nil
         
         let title = titleForHeader(inSection: section)
@@ -255,17 +278,17 @@ extension AssignmentTableViewController {
         return headerView
     }
     
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 34
     }
     
-    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 0
     }
     
     // MARK: - Delegate
     
-    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let scheduleRowAction = UITableViewRowAction(style: .default, title: "Schedule", handler: { (action, indexpath) in
             self.selectedAssignment = self.fetchedResultsController.object(at: indexPath)
             self.performSegue(withIdentifier: "ScheduleTableView", sender: self)
@@ -303,7 +326,7 @@ extension AssignmentTableViewController {
     
     // MARK: - Delegate
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.selectedAssignment = self.fetchedResultsController.object(at: indexPath)
         
         tableView.beginUpdates()
@@ -314,7 +337,7 @@ extension AssignmentTableViewController {
 
 // MARK: - Add Assignment Delegate
 
-extension AssignmentTableViewController: AddAssignmentTableViewControllerDelegate {
+extension AssignmentViewController: AddAssignmentTableViewControllerDelegate {
     func addedAssignment(_ assignment: Assignment) {
         print("Assignment added by AssignmentTableViewController (from user input)")
         
@@ -399,7 +422,7 @@ extension AssignmentTableViewController: AddAssignmentTableViewControllerDelegat
 
 // MARK: - NSFetchedResultsControllerDelegate
 
-extension AssignmentTableViewController: NSFetchedResultsControllerDelegate {
+extension AssignmentViewController: NSFetchedResultsControllerDelegate {
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.beginUpdates()
         print("BEGAN UPDATES")
@@ -472,7 +495,7 @@ extension AssignmentTableViewController: NSFetchedResultsControllerDelegate {
 
 // MARK: - UICloudSharingControllerDelegate
 
-extension AssignmentTableViewController: UICloudSharingControllerDelegate {
+extension AssignmentViewController: UICloudSharingControllerDelegate {
     func cloudSharingController(_ csc: UICloudSharingController, failedToSaveShareWithError error: Error) {
         // TODO: Show the user that the operation failed, handle the error
         print("Cloud sharing error: \(error)")
@@ -495,7 +518,7 @@ extension AssignmentTableViewController: UICloudSharingControllerDelegate {
 
 // MARK: - Helper Methods
 
-extension AssignmentTableViewController {
+extension AssignmentViewController {
     func alertUserOfFailure() {
         let alertController = UIAlertController(title: "Something went wrong!", message: "Check you connection and make sure you have the proper permissions to perform the desired action.", preferredStyle: .alert)
         let okAction = UIAlertAction(title: "Ok", style: .default)
@@ -524,7 +547,7 @@ extension AssignmentTableViewController {
 
 // MARK: - ClassTableViewControllerDelegate
 
-extension AssignmentTableViewController: ClassTableViewControllerDelegate {
+extension AssignmentViewController: ClassTableViewControllerDelegate {
     func classDeleted() {
         self.navigationController?.popViewController(animated: true)
         self.dismiss(animated: true, completion: nil)
@@ -533,7 +556,7 @@ extension AssignmentTableViewController: ClassTableViewControllerDelegate {
 
 // MARK: - AssignmentTableViewCellDelegate
 
-extension AssignmentTableViewController: AssignmentTableViewCellDelegate {
+extension AssignmentViewController: AssignmentTableViewCellDelegate {
     func buttonPressed(assignment: Assignment) -> Bool {
         if let assignment = fetchedResultsController.fetchedObjects?.first(where: { $0 == assignment }), let toDo = assignment.toDo {
             toDo.isCompleted = !toDo.isCompleted
@@ -617,7 +640,7 @@ extension AssignmentTableViewController: AssignmentTableViewCellDelegate {
 
 // MARK: - ScheduleTableViewControllerDelegate
 
-extension AssignmentTableViewController: ScheduleTableViewControllerDelegate {
+extension AssignmentViewController: ScheduleTableViewControllerDelegate {
     func reloadAssignment(withDueDate dueDate: Date?, _ assignment: Assignment) {
         if let indexPath = fetchedResultsController.indexPath(forObject: assignment) {
             tableView.reloadRows(at: [indexPath], with: .automatic)
@@ -645,103 +668,7 @@ extension AssignmentTableViewController: ScheduleTableViewControllerDelegate {
     }
 }
 
-// MARK: - AddAssignmentView
-
-extension AssignmentTableViewController: UITextFieldDelegate, UITextDragDelegate {
-    
-    @IBAction func addAssignmentButtonPressed(_ sender: Any) {
-        addAssignmentButton.isHidden = true
-        UIView.animate(withDuration: 0.1, animations: {
-            self.addAssignmentView.backgroundColor = .backgroundColor
-        })
-        
-        addAssignmentText.isHidden = true
-        addAssignmentTextField.isHidden = false
-        
-        addAssignmentTextField.becomeFirstResponder()
-        addDoneButton()
-    }
-    
-    @IBAction func addAssignmentButtonPressedDown(_ sender: Any) {
-        UIView.animate(withDuration: 0.1, animations: {
-            self.addAssignmentView.backgroundColor = UIColor.highlightColor
-        })
-    }
-    
-    @IBAction func addAssignmentButtonDraggedOutside(_ sender: Any) {
-        UIView.animate(withDuration: 0.1, animations: {
-            self.addAssignmentView.backgroundColor = UIColor.highlightColor
-        })
-    }
-    
-    @IBAction func addAssignmentButtonTouchCanceled(_ sender: Any) {
-        configureAddAssignmentView(duration: 0.1)
-    }
-    
-    @IBAction func addAssignmentButtonDraggedInside(_ sender: Any) {
-        UIView.animate(withDuration: 0.1, animations: {
-            self.addAssignmentView.backgroundColor = UIColor.highlightColor
-        })
-    }
-    
-    @IBAction func addAssignmentButtonDragExited(_ sender: Any) {
-        configureAddAssignmentView(duration: 0.1)
-    }
-    
-    func configureAddAssignmentView(duration: TimeInterval) {
-        addAssignmentView.layer.cornerRadius = 5
-        addAssignmentView.addDropShadow(color: .black, opacity: 0.15, radius: 4)
-        addAssignmentTextField.text = ""
-        
-        self.addAssignmentTextField.isHidden = true
-        self.addAssignmentText.isHidden = false
-        
-        UIView.animate(withDuration: duration, animations: {
-            self.addAssignmentView.backgroundColor = UIColor.highlightColor
-            
-            if self.navigationItem.rightBarButtonItems?.count ?? 0 > 1 {
-                self.navigationItem.rightBarButtonItem = nil
-            }
-        }, completion: { (bool) in
-            self.addAssignmentButton.isHidden = false
-        })
-    }
-    
-    func addDoneButton() {
-        self.navigationItem.setRightBarButtonItems([UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(AssignmentTableViewController.donePressed(sender:))), self.navigationItem.rightBarButtonItem!], animated: true)
-    }
-    
-    @objc func donePressed(sender: UIBarButtonItem) {
-        addAssignmentTextField.resignFirstResponder()
-    }
-    
-    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        if let text = addAssignmentTextField.text, text != "" {
-            saveAssignment(text: text)
-        }
-        
-        configureAddAssignmentView(duration: 0.2)
-        
-        return true
-    }
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        addAssignmentTextField.resignFirstResponder()
-        return true
-    }
-    
-    private func saveAssignment(text: String) {
-        // Create new assignment
-        let zoneID = `class`.ckRecord.recordID.zoneID
-        let newAssignment = Assignment(withText: text, managedContext: coreDataController.managedContext, owningClass: `class`, zoneID: zoneID, toDoZoneID: cloudController.zoneID)
-        addedAssignment(newAssignment)
-        
-        //updateHeaderView()
-    }
-}
-
-
-extension AssignmentTableViewController: AssignmentHeaderFooterCellDelegate {
+extension AssignmentViewController: AssignmentHeaderFooterCellDelegate {
     func showHideButtonPressed(isExpanded: Bool, forSection section: Int) {
         if !isExpanded && !hiddenSections.contains(section) {
             hiddenSections.append(section)

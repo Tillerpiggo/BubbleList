@@ -26,7 +26,7 @@ class ClassTableViewController: UITableViewController {
     var expandedIndexPaths = [IndexPath]()
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
+        return .default
     }
     
     lazy var fetchedResultsController: NSFetchedResultsController<Class> = {
@@ -91,7 +91,7 @@ class ClassTableViewController: UITableViewController {
             destinationViewController.delegate = self
             destinationViewController.coreDataController = coreDataController
             destinationViewController.cloudController = cloudController
-        } else if let destinationViewController = segue.destination as? AssignmentTableViewController, segue.identifier == "AssignmentTableView" {
+        } else if let destinationViewController = segue.destination as? AssignmentViewController, segue.identifier == "AssignmentTableView" {
             // (didSelectRowAtIndexPath is actually called after prepare(for:)
             guard let indexPathForSelectedRow = tableView.indexPathForSelectedRow else { return }
             

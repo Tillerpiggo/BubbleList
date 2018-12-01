@@ -11,6 +11,7 @@ import UIKit
 class Theme {
     var primaryColor: UIColor
     var highlightColor: UIColor
+    var contentColor: UIColor
     var destructiveColor: UIColor
     var backgroundColor: UIColor
     var separatorColor: UIColor
@@ -29,6 +30,7 @@ class Theme {
     
     init(primaryColor: UIColor,
          highlightColor: UIColor? = nil,
+         contentColor: UIColor = basic.contentColor,
          destructiveColor: UIColor = basic.destructiveColor,
          backgroundColor: UIColor = basic.backgroundColor,
          separatorColor: UIColor = basic.separatorColor,
@@ -46,6 +48,7 @@ class Theme {
          sectionColor: UIColor = basic.sectionColor) {
         self.primaryColor = primaryColor
         self.highlightColor = highlightColor ?? primaryColor
+        self.contentColor = contentColor ?? backgroundColor
         self.destructiveColor = destructiveColor
         self.backgroundColor = backgroundColor
         self.separatorColor = separatorColor
@@ -64,12 +67,13 @@ class Theme {
     }
     
     static var _default: Theme {
-        return forestGreen
+        return llama
     }
     
     static var basic: Theme {
-        let theme = Theme(primaryColor: UIColor(red: 0.95, green: 0.37, blue: 0.47, alpha: 1), //UIColor(red: 0.93, green: 0.43, blue: 0.46, alpha: 1),
-                          highlightColor: UIColor(red: 0.95, green: 0.37, blue: 0.47, alpha: 1), //UIColor(red: 0.93, green: 0.43, blue: 0.46, alpha: 1),
+        let theme = Theme(primaryColor: UIColor(red: 0.86, green: 0.39, blue: 0.39, alpha: 1),
+                          highlightColor: .white,
+                          contentColor: .white,//UIColor(red: 0.93, green: 0.43, blue: 0.46, alpha: 1),, //UIColor(red: 0.93, green: 0.43, blue: 0.46, alpha: 1),
                           destructiveColor:  UIColor(red: 246/255, green: 76/255, blue: 76/255, alpha: 1),
                           backgroundColor: UIColor(red: 0.94, green: 0.94, blue: 0.94, alpha: 1),
                           separatorColor: UIColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1),
@@ -79,10 +83,9 @@ class Theme {
                           dueTomorrowColor: UIColor(red: 0.95, green: 0.59, blue: 0.26, alpha: 1),
                           dueThisWeekColor: UIColor(red: 0.42, green: 0.7, blue: 0.91, alpha: 1), // UIColor(red: 0.23, green: 0.63, blue: 0.92, alpha: 1)
                           dueLaterColor: UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0),
-                          textColor: UIColor(red: 0.25, green: 0.25, blue: 0.25, alpha: 1),
+                          textColor: UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1),
                           secondaryTextColor: UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.3),
                           navigationBarTintColor: UIColor(red: 0.96, green: 0.96, blue: 0.96, alpha: 1),
-                          tintColor: UIColor(red: 0.91, green: 0.22, blue: 0.35, alpha: 1),
                           titleColor: .black,
                           sectionColor: UIColor(red: 0.96, green: 0.96, blue: 0.96, alpha: 1))
 //        let unscheduledColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 1)
@@ -106,6 +109,7 @@ class Theme {
     
     static var experimental: Theme {
         let theme = Theme(primaryColor: basic.primaryColor,
+                          highlightColor: .white,
                           lateColor: UIColor(red: 0.8, green: 0.28, blue: 0.28, alpha: 1),
                           unscheduledColor: UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1),
                           dueTomorrowColor: UIColor(red: 0.95, green: 0.59, blue: 0.26, alpha: 1),
@@ -135,6 +139,16 @@ class Theme {
                           dueLaterColor: UIColor(red: 144/255, green: 116/255, blue: 254/255, alpha: 1.0),
                           textColor: UIColor(red: 0.15, green: 0.15, blue: 0.15, alpha: 1),
                           secondaryTextColor: UIColor(red: 0.7, green: 0.7, blue: 0.7, alpha: 1))
+        
+        return theme
+    }
+    
+    static var llama: Theme {
+        let theme = Theme(primaryColor: UIColor(red: 0.15, green: 0.55, blue: 0.83, alpha: 1),
+                          highlightColor: .white,
+                          navigationBarTintColor: UIColor(red: 0.15, green: 0.55, blue: 0.83, alpha: 1),
+                          titleColor: .white)
+        theme.tintColor = .white
         
         return theme
     }
@@ -199,6 +213,7 @@ extension UIColor {
     
     static var primaryColor: UIColor { return theme.primaryColor }
     static var highlightColor: UIColor { return theme.highlightColor }
+    static var contentColor: UIColor { return theme.contentColor }
     static var destructiveColor: UIColor { return theme.destructiveColor }
     static var backgroundColor: UIColor { return theme.backgroundColor }
     static var separatorColor: UIColor { return theme.separatorColor }
