@@ -13,31 +13,24 @@ class AddObjectViewController: UIViewController, AddObjectViewDelegate, UITextFi
     // MARK: - Variables
     
     var doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(AddObjectViewController.donePressed(sender:)))
-    var addObjectView = Bundle.main.loadNibNamed("AddObjectView", owner: self, options: nil)?.first as! AddObjectView
+    var addObjectView: AddObjectView = Bundle.main.loadNibNamed("AddObjectView", owner: self, options: nil)?.first as! AddObjectView
     
     // MARK: - ViewDidLoad
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         configureAddObjectView()
     }
     
     
     func configureAddObjectView() {
         
-        view.addSubview(addObjectView)
-        view.bringSubviewToFront(addObjectView)
-        
-        for view in Bundle.main.loadNibNamed("AddObjectView", owner: self, options: nil)! {
-            if let view = view as? UIView {
-                addObjectView.addSubview(view)
-            }
-        }
+        self.view.addSubview(addObjectView)
         
         // Add Object View
         
         addObjectView.translatesAutoresizingMaskIntoConstraints = false
+        print(addObjectView.addButton)
         
         let views: [String: Any] = ["view": addObjectView]
         
@@ -101,5 +94,14 @@ class AddObjectViewController: UIViewController, AddObjectViewDelegate, UITextFi
     
     func viewSetToSelected() {
         addDoneButton()
+    }
+    
+    @IBAction func addButtonPressed(_ sender: Any) {
+        print("Add Button Pressed")
+        addObjectView.setToSelected(withDuration: 0.1)
+    }
+    
+    deinit {
+        print("DEINIT")
     }
 }

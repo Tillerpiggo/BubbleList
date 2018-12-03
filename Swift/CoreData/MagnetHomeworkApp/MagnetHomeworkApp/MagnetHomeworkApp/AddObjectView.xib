@@ -39,9 +39,9 @@
                                         <action selector="addButtonDragExited:" destination="iN0-l3-epB" eventType="touchDragExit" id="ZwI-7F-tGO"/>
                                         <action selector="addButtonDraggedInside:" destination="iN0-l3-epB" eventType="touchDragInside" id="fua-Jj-eHa"/>
                                         <action selector="addButtonDraggedOutside:" destination="iN0-l3-epB" eventType="touchDragOutside" id="4Us-Ve-hvE"/>
+                                        <action selector="addButtonPressed:" destination="-1" eventType="touchDown" id="HhF-rB-q2U"/>
                                         <action selector="addButtonPressed:" destination="iN0-l3-epB" eventType="primaryActionTriggered" id="MVM-Fp-c2r"/>
                                         <action selector="addButtonPressedDown:" destination="iN0-l3-epB" eventType="touchDown" id="dhS-Wj-KDr"/>
-                                        <action selector="buttonPressed:" destination="-1" eventType="touchUpInside" id="q0B-0t-uMF"/>
                                     </connections>
                                 </button>
                             </subviews>

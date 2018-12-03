@@ -27,6 +27,7 @@ class Theme {
     var tintColor: UIColor = .white
     var titleColor: UIColor = .white
     var sectionColor: UIColor = .white
+    var tabBarTintColor: UIColor = .white
     
     init(primaryColor: UIColor,
          highlightColor: UIColor? = nil,
@@ -48,7 +49,7 @@ class Theme {
          sectionColor: UIColor = basic.sectionColor) {
         self.primaryColor = primaryColor
         self.highlightColor = highlightColor ?? primaryColor
-        self.contentColor = contentColor ?? backgroundColor
+        self.contentColor = contentColor
         self.destructiveColor = destructiveColor
         self.backgroundColor = backgroundColor
         self.separatorColor = separatorColor
@@ -63,30 +64,43 @@ class Theme {
         self.navigationBarTintColor = navigationBarTintColor
         self.tintColor = tintColor ?? primaryColor
         self.titleColor = titleColor
-        self.sectionColor = sectionColor ?? backgroundColor
+        self.sectionColor = sectionColor
     }
     
     static var _default: Theme {
-        return llama
+        return good
+    }
+    
+    static var good: Theme {
+        let theme = Theme(primaryColor: UIColor(red: 0.97, green: 0.33, blue: 0.33, alpha: 1),
+                          contentColor: .white,
+                          backgroundColor: UIColor(red: 0.96, green: 0.96, blue: 0.96, alpha: 1),
+                          navigationBarTintColor: UIColor(red: 1, green: 0.19, blue: 0.19, alpha: 1))
+        
+        theme.tintColor = .white
+        theme.textColor = .black
+        theme.tabBarTintColor = .white
+        
+        return theme
     }
     
     static var basic: Theme {
-        let theme = Theme(primaryColor: UIColor(red: 0.86, green: 0.39, blue: 0.39, alpha: 1),
+        let theme = Theme(primaryColor: UIColor(red: 0.92, green: 0.73, blue: 0.05, alpha: 1),
                           highlightColor: .white,
                           contentColor: .white,//UIColor(red: 0.93, green: 0.43, blue: 0.46, alpha: 1),, //UIColor(red: 0.93, green: 0.43, blue: 0.46, alpha: 1),
                           destructiveColor:  UIColor(red: 246/255, green: 76/255, blue: 76/255, alpha: 1),
-                          backgroundColor: UIColor(red: 0.94, green: 0.94, blue: 0.94, alpha: 1),
-                          separatorColor: UIColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1),
+                          backgroundColor: .white,
+                          separatorColor: UIColor(red: 0.95, green: 0.95, blue: 0.95, alpha: 1),
                           nothingDueColor: UIColor(red: 0.02, green: 0.72, blue: 0.43, alpha: 1),
                           lateColor: UIColor(red: 0.8, green: 0.28, blue: 0.28, alpha: 1),
                           unscheduledColor: UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1),
                           dueTomorrowColor: UIColor(red: 0.95, green: 0.59, blue: 0.26, alpha: 1),
                           dueThisWeekColor: UIColor(red: 0.42, green: 0.7, blue: 0.91, alpha: 1), // UIColor(red: 0.23, green: 0.63, blue: 0.92, alpha: 1)
                           dueLaterColor: UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0),
-                          textColor: UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1),
+                          textColor: UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1),
                           secondaryTextColor: UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.3),
-                          navigationBarTintColor: UIColor(red: 0.96, green: 0.96, blue: 0.96, alpha: 1),
-                          titleColor: .black,
+                          navigationBarTintColor: UIColor(red: 0.08, green: 0.08, blue: 0.08, alpha: 1),
+                          titleColor: .white,
                           sectionColor: UIColor(red: 0.96, green: 0.96, blue: 0.96, alpha: 1))
 //        let unscheduledColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 1)
 //
@@ -119,8 +133,14 @@ class Theme {
         return theme
     }
     
-    static var forestGreen: Theme {
-        let theme = Theme(primaryColor: UIColor(red: 0.8, green: 0.28, blue: 0.28, alpha: 1))
+    static var darkBlue: Theme {
+        let theme = Theme(primaryColor: UIColor(red: 0.36, green: 0.67, blue: 0.96, alpha: 1),
+                          backgroundColor: UIColor(red: 0.7, green: 0.7, blue: 0.7, alpha: 1),
+                          navigationBarTintColor: UIColor(red: 0.1, green: 0.1, blue: 0.1, alpha: 1),
+                          titleColor: .white)
+        
+        theme.tintColor = .white
+        theme.contentColor = UIColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1)
         
         return theme
     }
@@ -144,11 +164,26 @@ class Theme {
     }
     
     static var llama: Theme {
-        let theme = Theme(primaryColor: UIColor(red: 0.15, green: 0.55, blue: 0.83, alpha: 1),
-                          highlightColor: .white,
-                          navigationBarTintColor: UIColor(red: 0.15, green: 0.55, blue: 0.83, alpha: 1),
-                          titleColor: .white)
+        let theme = Theme(primaryColor: UIColor(red: 0.13, green: 0.6, blue: 0.86, alpha: 1),
+                          contentColor: .white,
+                          backgroundColor: .white,
+                          navigationBarTintColor: UIColor(red: 0.36, green: 0.32, blue: 0.25, alpha: 1),
+                          sectionColor: UIColor(red: 0.97, green: 0.92, blue: 0.84, alpha: 1))
         theme.tintColor = .white
+        theme.tabBarTintColor = theme.backgroundColor
+        theme.separatorColor = UIColor(red: 0.92, green: 0.89, blue: 0.86, alpha: 1)
+
+        return theme
+    }
+    
+    static var iOS: Theme {
+        let theme = Theme(primaryColor: UIColor(red: 0/255, green: 122/255, blue: 255/255, alpha: 1),
+                          navigationBarTintColor: .white)
+        theme.tintColor = theme.primaryColor
+        theme.backgroundColor = .white
+        theme.textColor = .black
+        theme.separatorColor = UIColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1)
+        theme.titleColor = .black
         
         return theme
     }
@@ -161,8 +196,12 @@ class Theme {
     }
     
     static var red: Theme {
-        let theme = Theme(primaryColor: UIColor(red: 0.98, green: 0.4, blue: 0.38, alpha: 1),
-                          highlightColor: UIColor(red: 0.95, green: 0.4, blue: 0.45, alpha: 1))
+        let theme = Theme(primaryColor: UIColor(red: 0.83, green: 0.27, blue: 0.24, alpha: 1))
+        theme.textColor = .black
+        theme.separatorColor = UIColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1)
+        theme.titleColor = .white
+        theme.navigationBarTintColor = UIColor(red: 0.83, green: 0.27, blue: 0.24, alpha: 1)
+        theme.tintColor = .white
         
         return theme
     }
@@ -229,6 +268,7 @@ extension UIColor {
     static var tintColor: UIColor { return theme.tintColor }
     static var titleColor: UIColor { return theme.titleColor }
     static var sectionColor: UIColor { return theme.sectionColor }
+    static var tabBarTintColor: UIColor { return theme.tabBarTintColor }
     
     static func color(fromSection section: String) -> UIColor {
         let allCapsSection = section.uppercased()
@@ -249,123 +289,4 @@ extension UIColor {
             return .primaryColor
         }
     }
-    
-//    static var nothingDueColor: UIColor {
-//        //return UIColor(red: 112/255, green: 204/255, blue: 116/255, alpha: 1.0) // low saturation
-//        return UIColor(red: 0.02, green: 0.72, blue: 0.43, alpha: 1)
-//    }
-//
-//    static var lateColor: UIColor {
-//        //return UIColor(red: 243/255, green: 93/255, blue: 93/255, alpha: 1.0) // low saturation
-//        return UIColor(red: 242/255, green: 48/255, blue: 48/255, alpha: 1.0)
-//    }
-//
-//    static var unscheduledColor: UIColor {
-//        return UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 1.0)
-//    }
-//
-//    static var dueLaterColor: UIColor {
-//        //return UIColor(red: 144/255, green: 116/255, blue: 254/255, alpha: 1.0) // low saturation
-//        return UIColor(red: 112/255, green: 77/255, blue: 255/255, alpha: 1.0)
-//    }
-//
-//    static var dueTomorrowColor: UIColor {
-//        //return UIColor(red: 234/255, green: 189/255, blue: 103/255, alpha: 1.0) low saturation
-//        return UIColor(red: 0.92, green: 0.72, blue: 0.37, alpha: 1)
-//    }
-//
-//    static var dueThisWeekColor: UIColor {
-//        //return UIColor(red: 116/255, green: 188/255, blue: 254/255, alpha: 1.0) low saturation
-//        return UIColor(red: 0.42, green: 0.7, blue: 1, alpha: 1)
-//    }
-//
-//    static var navigationBarColor: UIColor {
-//        //return UIColor(red: 0.95, green: 0.3, blue: 0.41, alpha: 1)
-//        //return UIColor(red: 0.97, green: 0.27, blue: 0.27, alpha: 1) // red
-//        return UIColor(red: 0.8, green: 0.19, blue: 0.3, alpha: 1)
-//        return UIColor(red: 0.85, green: 0.27, blue: 0.37, alpha: 1)
-//        return UIColor(red: 0.83, green: 0.15, blue: 0.28, alpha: 1) //
-//        //return UIColor(red: 0.82, green: 0.24, blue: 0.34, alpha: 1)
-//        //return UIColor(red: 0.26, green: 0.78, blue: 1, alpha: 1)
-//
-//        let colorValue: CGFloat = 0.95
-//        return UIColor(red: colorValue, green: colorValue, blue: colorValue, alpha: 1.0)
-//    }
-//
-//    static var tabBarColor: UIColor {
-//        //return UIColor(red: 0.95, green: 0.3, blue: 0.41, alpha: 1)
-//        //return UIColor(red: 0.98, green: 0.38, blue: 0.38, alpha: 1) // red
-//        //return UIColor(red: 0.8, green: 0.19, blue: 0.3, alpha: 1)
-//        return UIColor(red: 0.85, green: 0.27, blue: 0.37, alpha: 1) //
-//    }
-//
-//    static var navigationBarColor2: UIColor {
-//        return UIColor(red: 0.06, green: 0.53, blue: 0.93, alpha: 1)
-//    }
-//
-//    static var navigationBarTintColor: UIColor {
-//        //return UIColor(red: 0.87, green: 0.06, blue: 0.31, alpha: 1)
-//
-//        let colorValue: CGFloat = 1.0
-//        return UIColor(red: colorValue, green: colorValue, blue: colorValue, alpha: 1.0)
-//
-//        //return UIColor(red: 25/255, green: 105/255, blue: 196/255, alpha: 1.0)
-//    }
-//
-//    static var accentColor: UIColor {
-//        //return UIColor(hue: 227/255, saturation: 80/100, brightness: 96/100, alpha: 1.0)
-//        return UIColor(red: 11/255, green: 93/255, blue: 217/255, alpha: 1.0)
-//        //return UIColor(red: 49/255, green: 129/255, blue: 247/255, alpha: 1.0)// Milder color
-//    }
-//
-//    static var primaryColor: UIColor {
-//        //return UIColor(red: 0.95, green: 0.3, blue: 0.41, alpha: 1)
-//        //return UIColor(red: 0.98, green: 0.38, blue: 0.38, alpha: 1) // red
-//
-//        return UIColor(red: 0.85, green: 0.27, blue: 0.37, alpha: 1)
-//        return .navigationBarColor //
-//        return UIColor(red: 0.84, green: 0.08, blue: 0.22, alpha: 1)
-//        return UIColor(red: 0.93, green: 0.11, blue: 0.25, alpha: 1)
-//        //return UIColor(red: 0/255, green: 102/255, blue: 255/255, alpha: 1.0) // Last used color (correct one)
-//        let colorValue: CGFloat = 0.4
-//        return UIColor(red: colorValue, green: colorValue, blue: colorValue, alpha: 1.0)
-//    }
-//
-//    static var highlightColor: UIColor {
-//        let colorValue: CGFloat = 0.7
-//        return UIColor(red: colorValue, green: colorValue, blue: colorValue, alpha: 1.0)
-//    }
-//
-//    static var scheduleColor: UIColor {
-//        return UIColor(red: 67/255, green: 200/255, blue: 222/255, alpha: 1.0)
-//    }
-//
-//    static var actionTextColor: UIColor {
-//        return UIColor(red: 121/255, green: 184/255, blue: 194/255, alpha: 1.0)
-//    }
-//
-//    static var deleteColor: UIColor {
-//        return UIColor(red: 246/255, green: 76/255, blue: 76/255, alpha: 1.0)
-//    }
-//
-//    static var lightColor: UIColor {
-//        return UIColor(red: 0/255, green: 163/255, blue: 255/255, alpha: 1.0)
-//    }
-//
-//    static var darkColor: UIColor {
-//        return UIColor(red: 22/255, green: 84/255, blue: 223/255, alpha: 1.0)
-//    }
-//
-//    static var onDarkTextColor: UIColor {
-//        return UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-//    }
-//
-//    static var textColor: UIColor {
-//        let grayscaleValue: CGFloat = 0.1
-//        return UIColor(red: grayscaleValue, green: grayscaleValue, blue: grayscaleValue, alpha: 1.0)
-//    }
-//
-//    static var lightTextColor: UIColor {
-//        return UIColor(red: 0.7, green: 0.7, blue: 0.7, alpha: 1.0)
-//    }
 }

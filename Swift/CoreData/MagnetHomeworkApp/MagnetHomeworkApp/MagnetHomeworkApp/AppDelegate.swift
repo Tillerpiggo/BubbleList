@@ -28,13 +28,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     var notificationDelegate: NotificationDelegate?
     
-    
+    var classTableViewControllerReference: ClassTableViewController?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         //UIApplication.shared.statusBarView?.backgroundColor = .primaryColor
         
         application.applicationIconBadgeNumber = 0
-        application.statusBarStyle = .default // change based on theme
         
         if let tabBarController = window?.rootViewController as? UITabBarController,
             let navigationController = tabBarController.viewControllers?.first as? UINavigationController,
@@ -43,7 +42,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             classTableViewController.cloudController = cloudController
             classTableViewController.coreDataController = coreDataController
             
-            tabBarController.tabBar.tintColor = .tintColor
+            tabBarController.tabBar.tintColor = .primaryColor
+            tabBarController.tabBar.barTintColor = .tabBarTintColor
+            tabBarController.tabBar.addDropShadow(color: .black, opacity: 0.2, radius: 2)
+            
+            classTableViewControllerReference = classTableViewController
         }
         
         // Try to register for notifications

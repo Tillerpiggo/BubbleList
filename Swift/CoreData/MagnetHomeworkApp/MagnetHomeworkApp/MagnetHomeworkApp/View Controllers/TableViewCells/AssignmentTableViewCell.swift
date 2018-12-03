@@ -17,7 +17,7 @@ class AssignmentTableViewCell: UITableViewCell {
     
     let completedCircleImageName = "completedCircleTemplate"
     let incompletedCircleImageName = "incompletedCircle2"
-    let scheduleButtonImageName = "thiccCalendarGlyph"
+    let scheduleButtonImageName = "calendarTemplate-1"
     
     // MARK: - Properties
     var delegate: AssignmentTableViewCellDelegate?
@@ -34,7 +34,7 @@ class AssignmentTableViewCell: UITableViewCell {
     @IBAction func buttonPressed(_ sender: Any) {
         let isCompleted = delegate?.buttonPressed(assignment: assignment!)
         let isCompletedImage = isCompleted ?? false ? UIImage(named: completedCircleImageName)?.withRenderingMode(.alwaysTemplate) : UIImage(named: incompletedCircleImageName)
-        isCompletedImageView.tintColor = .highlightColor
+        isCompletedImageView.tintColor = .primaryColor
         
         let duration: TimeInterval = 0.1
         
@@ -54,8 +54,9 @@ class AssignmentTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        isCompletedImageView.tintColor = .highlightColor
+        isCompletedImageView.tintColor = .primaryColor
         contentView.backgroundColor = .contentColor
+        backgroundColor = .contentColor
     }
     
     override func layoutSubviews() {
@@ -71,7 +72,7 @@ class AssignmentTableViewCell: UITableViewCell {
         
         //contentView.backgroundColor = .backgroundColor
         
-        isCompletedImageView.tintColor = .highlightColor
+        isCompletedImageView.tintColor = .primaryColor
     }
     
     @IBAction func scheduleButtonPressed(_ sender: Any) {
@@ -89,7 +90,7 @@ class AssignmentTableViewCell: UITableViewCell {
     func configure(withAssignment assignment: Assignment) {
         let isCompleted = assignment.toDo?.isCompleted ?? false
         let isCompletedImage = isCompleted ? UIImage(named: completedCircleImageName) : UIImage(named: incompletedCircleImageName)
-        isCompletedImageView.tintColor = .highlightColor
+        isCompletedImageView.tintColor = .primaryColor
         isCompletedImageView.image = isCompletedImage
         
         assignmentTextLabel.text = assignment.text

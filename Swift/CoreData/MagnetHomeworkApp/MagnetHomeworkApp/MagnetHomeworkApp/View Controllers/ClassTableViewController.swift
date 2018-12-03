@@ -25,10 +25,6 @@ class ClassTableViewController: UITableViewController {
     var delegate: ClassTableViewControllerDelegate?
     var expandedIndexPaths = [IndexPath]()
     
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .default
-    }
-    
     lazy var fetchedResultsController: NSFetchedResultsController<Class> = {
         let fetchRequest: NSFetchRequest<Class> = Class.fetchRequest()
         let sortByCreationDate = NSSortDescriptor(key: #keyPath(Class.creationDate), ascending: true)
@@ -73,6 +69,7 @@ class ClassTableViewController: UITableViewController {
         tableView.estimatedRowHeight = rowHeight
         tableView.backgroundColor = .backgroundColor
         tableView.separatorColor = .separatorColor
+        
 //        tableView.estimatedRowHeight = 0
 //        tableView.estimatedSectionFooterHeight = 0
 //        tableView.estimatedSectionHeaderHeight = 0
@@ -82,10 +79,18 @@ class ClassTableViewController: UITableViewController {
         configureAddClassView(duration: 0.0)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        //navigationController?.setNavigationBarHidden(false, animated: animated)
+        super.viewWillAppear(animated)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        //navigationController?.setNavigationBarHidden(false, animated: animated)
+        super.viewWillDisappear(animated)
+    }
+    
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        tableView.isScrollEnabled = true
-        
         // Add Assignment
         if let destinationViewController = segue.destination.children.first as? AddClassTableViewController, segue.identifier == "AddClass" {
             destinationViewController.delegate = self
@@ -106,7 +111,7 @@ class ClassTableViewController: UITableViewController {
             // Set self as delegate to reload rows when necessary (a assignment is added)
             destinationViewController.delegate = self
             
-            // Set th title
+            // Set the title
             destinationViewController.navigationItem.title = selectedClass.name
             
             delegate = destinationViewController
@@ -424,9 +429,7 @@ extension ClassTableViewController {
     // MARK: - Delegate
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.beginUpdates()
         tableView.deselectRow(at: indexPath, animated: true)
-        tableView.endUpdates()
     }
 }
 
@@ -510,7 +513,7 @@ extension ClassTableViewController: UITextFieldDelegate, UITextDragDelegate {
     @IBAction func addClassButtonPressed(_ sender: Any) {
         addClassButton.isHidden = true
         UIView.animate(withDuration: 0.1, animations: {
-            self.addClassView.backgroundColor = .white
+            self.addClassView.backgroundColor = .backgroundColor
         })
         
         addClassText.isHidden = true
@@ -522,13 +525,13 @@ extension ClassTableViewController: UITextFieldDelegate, UITextDragDelegate {
     
     @IBAction func addClassButtonPressedDown(_ sender: Any) {
         UIView.animate(withDuration: 0.1, animations: {
-            self.addClassView.backgroundColor = UIColor.highlightColor
+            self.addClassView.backgroundColor = UIColor.backgroundColor
         })
     }
     
     @IBAction func addClassButtonDraggedOutside(_ sender: Any) {
         UIView.animate(withDuration: 0.1, animations: {
-            self.addClassView.backgroundColor = UIColor.highlightColor
+            self.addClassView.backgroundColor = UIColor.backgroundColor
         })
     }
     
@@ -538,7 +541,7 @@ extension ClassTableViewController: UITextFieldDelegate, UITextDragDelegate {
     
     @IBAction func addClassButtonDraggedInside(_ sender: Any) {
         UIView.animate(withDuration: 0.1, animations: {
-            self.addClassView.backgroundColor = UIColor.highlightColor
+            self.addClassView.backgroundColor = UIColor.backgroundColor
         })
     }
     
@@ -555,7 +558,7 @@ extension ClassTableViewController: UITextFieldDelegate, UITextDragDelegate {
         self.addClassText.isHidden = false
         
         UIView.animate(withDuration: duration, animations: {
-            self.addClassView.backgroundColor = UIColor.highlightColor
+            self.addClassView.backgroundColor = UIColor.primaryColor
             self.navigationItem.rightBarButtonItem = nil
         }, completion: { (bool) in
             self.addClassButton.isHidden = false

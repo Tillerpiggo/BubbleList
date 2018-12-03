@@ -28,6 +28,8 @@ class AddObjectView: UIView {
         
         textLabel.textColor = .white
         configure()
+        
+        print("AWOKEN")
     }
     
     @IBAction func addButtonPressed(_ sender: Any) {

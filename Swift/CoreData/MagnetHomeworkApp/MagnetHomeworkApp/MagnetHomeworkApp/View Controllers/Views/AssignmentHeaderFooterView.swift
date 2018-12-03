@@ -36,7 +36,6 @@ class AssignmentHeaderFooterView: UITableViewHeaderFooterView {
         showHideLabel?.layer.add(animation, forKey: "kCATransitionFade")
         titleLabel.textColor = .white
         
-        backgroundColorView.backgroundColor = UIColor.primaryColor.withAlphaComponent(1.0)
         backgroundColorView.backgroundColor = .sectionColor
         
         updateShowHideButton()

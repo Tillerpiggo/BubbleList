@@ -22,6 +22,7 @@ class ClassTableViewCell: UITableViewCell {
     //@IBOutlet weak var previewAssignmentLabel: UILabel!
     @IBOutlet weak var duePreview: UILabel!
     @IBOutlet weak var completedImageView: UIImageView!
+    @IBOutlet weak var numberOfAssignmentsImageView: UIImageView!
     
     
     var accessoryButton: UIButton?
@@ -33,9 +34,9 @@ class ClassTableViewCell: UITableViewCell {
         super.awakeFromNib()
         accessoryButton = subviews.compactMap { $0 as? UIButton }.first
         
-        //contentView.backgroundColor = .backgroundColor
         completedImageView.isHidden = true
         contentView.backgroundColor = .contentColor
+        backgroundColor = .contentColor
     }
     
     override func layoutSubviews() {
@@ -62,12 +63,24 @@ class ClassTableViewCell: UITableViewCell {
             //previewAssignmentLabel.isHidden = false
             var duePreviewSection = previewAssignments.first?.dueDateSection
             let numberOfAssignments = previewAssignments.count
-            //previewAssignmentLabel.textColor = .secondaryTextColor
+            
+//            switch numberOfAssignments {
+//            case 0:
+//                numberOfAssignmentsImageView.image = UIImage(named: "allDoneIcon")!
+//            case 1:
+//                numberOfAssignmentsImageView.image = UIImage(named: "oneAssignmentIcon")!
+//            case 2:
+//                numberOfAssignmentsImageView.image = UIImage(named: "twoAssignmentsIcon")!
+//            case 3:
+//                numberOfAssignmentsImageView.image = UIImage(named: "threeAssignmentsIcon")!
+//            default:
+//                numberOfAssignmentsImageView.image = UIImage(named: "fourAssignmentsIcon")!
+//            }
+            
+            
             if previewAssignments.first?.dueDateSection == "Due Later" {
                 duePreviewSection = "Due in a While"
             }
-            
-            print("DUEPREVIEWSECTION: \(duePreviewSection)")
             
             var string: String
             if duePreviewSection != "Due Tomorrow" && duePreviewSection != "Late" {
@@ -93,7 +106,9 @@ class ClassTableViewCell: UITableViewCell {
             }
             
             attributedText.addAttribute(.foregroundColor, value: sectionColor, range: NSRange(location: 0, length: attributedText.string.count))
-            
+//            duePreview.backgroundColor = sectionColor
+//            duePreview.frame = CGRect(x: 0, y: 0, width: duePreview.frame.width + 12, height: duePreview.frame.height + 12)
+//            duePreview.layer.cornerRadius = 0
             duePreview.attributedText = attributedText
             //previewAssignmentLabel.text = previewAssignments.first?.text ?? "Relaxing"
             
@@ -114,9 +129,15 @@ class ClassTableViewCell: UITableViewCell {
         } else {
             //previewAssignmentLabel.isHidden = true
             //completedImageView.isHidden = false
+            //numberOfAssignmentsImageView.image = UIImage(named: "allDoneIcon")!
+            
+//            duePreview.backgroundColor = .nothingDueColor
+//            duePreview.frame = duePreview.frame.insetBy(dx: -8, dy: -4)
+//            duePreview.layer.masksToBounds = true
             
             let attributedText = NSMutableAttributedString(string: "Nothing Due")
             attributedText.addAttribute(.foregroundColor, value: UIColor.nothingDueColor, range: NSRange(location: 0, length: attributedText.string.count))
+            
             duePreview.attributedText = attributedText
         }
     }
