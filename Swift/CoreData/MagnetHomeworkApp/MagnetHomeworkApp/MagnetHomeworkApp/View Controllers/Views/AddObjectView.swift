@@ -19,6 +19,7 @@ class AddObjectView: UIView {
     @IBOutlet weak var textLabel: UILabel!
     @IBOutlet weak var view: UIView!
     @IBOutlet weak var addButton: UIButton!
+    @IBOutlet weak var contentView: UIView!
     
     
     var delegate: AddObjectViewDelegate?
@@ -30,6 +31,16 @@ class AddObjectView: UIView {
         configure()
         
         print("AWOKEN")
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        commonInit()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        commonInit()
     }
     
     @IBAction func addButtonPressed(_ sender: Any) {
@@ -94,5 +105,12 @@ class AddObjectView: UIView {
         })
         
         delegate?.viewSetToSelected()
+    }
+    
+    func commonInit() {
+//        Bundle.main.loadNibNamed("AddObjectView", owner: self, options: nil)
+//        addSubview(contentView)
+//        contentView.frame = self.bounds
+//        contentView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
     }
 }

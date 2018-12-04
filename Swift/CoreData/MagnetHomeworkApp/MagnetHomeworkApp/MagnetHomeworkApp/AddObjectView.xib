@@ -9,7 +9,12 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AddObjectViewController" customModule="MagnetHomeworkApp" customModuleProvider="target"/>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AddObjectView" customModule="MagnetHomeworkApp" customModuleProvider="target">
+            <connections>
+                <outlet property="contentView" destination="L3d-w1-TgT" id="apR-vu-Usk"/>
+                <outlet property="view" destination="nJI-uY-wwh" id="zRM-u9-3mA"/>
+            </connections>
+        </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="AddObjectView" customModule="MagnetHomeworkApp" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
@@ -36,12 +41,11 @@
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VGu-QJ-V73">
                                     <rect key="frame" x="0.0" y="0.0" width="343" height="40"/>
                                     <connections>
-                                        <action selector="addButtonDragExited:" destination="iN0-l3-epB" eventType="touchDragExit" id="ZwI-7F-tGO"/>
-                                        <action selector="addButtonDraggedInside:" destination="iN0-l3-epB" eventType="touchDragInside" id="fua-Jj-eHa"/>
-                                        <action selector="addButtonDraggedOutside:" destination="iN0-l3-epB" eventType="touchDragOutside" id="4Us-Ve-hvE"/>
-                                        <action selector="addButtonPressed:" destination="-1" eventType="touchDown" id="HhF-rB-q2U"/>
-                                        <action selector="addButtonPressed:" destination="iN0-l3-epB" eventType="primaryActionTriggered" id="MVM-Fp-c2r"/>
-                                        <action selector="addButtonPressedDown:" destination="iN0-l3-epB" eventType="touchDown" id="dhS-Wj-KDr"/>
+                                        <action selector="addButtonDragExited:" destination="-1" eventType="touchDragExit" id="00J-Km-mKv"/>
+                                        <action selector="addButtonDraggedInside:" destination="-1" eventType="touchDragInside" id="723-9p-cYN"/>
+                                        <action selector="addButtonDraggedOutside:" destination="-1" eventType="touchDragOutside" id="a6T-XD-qcc"/>
+                                        <action selector="addButtonPressed:" destination="-1" eventType="primaryActionTriggered" id="LRw-Sx-a7z"/>
+                                        <action selector="addButtonPressedDown:" destination="-1" eventType="touchDown" id="0Go-F1-Bhc"/>
                                     </connections>
                                 </button>
                             </subviews>
@@ -76,10 +80,9 @@
             </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
-                <outlet property="addButton" destination="VGu-QJ-V73" id="1U5-jB-TPS"/>
-                <outlet property="textField" destination="Ykc-jB-PL0" id="cXh-Za-v3b"/>
-                <outlet property="textLabel" destination="nU7-cG-w92" id="Gnn-0u-385"/>
-                <outlet property="view" destination="nJI-uY-wwh" id="uAY-cB-dZa"/>
+                <outlet property="addButton" destination="VGu-QJ-V73" id="1ib-OY-Os4"/>
+                <outlet property="textField" destination="Ykc-jB-PL0" id="n91-hh-zhm"/>
+                <outlet property="textLabel" destination="nU7-cG-w92" id="j4G-Dl-LAP"/>
             </connections>
             <point key="canvasLocation" x="53.600000000000001" y="23.838080959520241"/>
         </view>

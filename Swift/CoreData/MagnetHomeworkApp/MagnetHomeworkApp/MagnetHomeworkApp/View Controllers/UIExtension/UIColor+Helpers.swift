@@ -75,7 +75,7 @@ class Theme {
         let theme = Theme(primaryColor: UIColor(red: 0.97, green: 0.33, blue: 0.33, alpha: 1),
                           contentColor: .white,
                           backgroundColor: UIColor(red: 0.96, green: 0.96, blue: 0.96, alpha: 1),
-                          navigationBarTintColor: UIColor(red: 1, green: 0.19, blue: 0.19, alpha: 1))
+                          navigationBarTintColor: UIColor(red: 1, green: 0.3, blue: 0.3, alpha: 1))
         
         theme.tintColor = .white
         theme.textColor = .black
