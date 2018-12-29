@@ -21,6 +21,7 @@
 		23484C6121866927007C5CCF /* AddClassTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23484C6021866927007C5CCF /* AddClassTableViewController.swift */; };
 		23484C64218963E0007C5CCF /* AssignmentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23484C63218963E0007C5CCF /* AssignmentViewController.swift */; };
 		23484C6621896B62007C5CCF /* AddAssignmentTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23484C6521896B62007C5CCF /* AddAssignmentTableViewController.swift */; };
+		234B7E6021C77B5F008D195F /* UIImage+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234B7E5F21C77B5F008D195F /* UIImage+Helpers.swift */; };
 		23580D4B218E164100434DD9 /* ToDo+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23580D49218E164100434DD9 /* ToDo+CoreDataClass.swift */; };
 		23580D4C218E164100434DD9 /* ToDo+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23580D4A218E164100434DD9 /* ToDo+CoreDataProperties.swift */; };
 		23580D54218E286600434DD9 /* AssignmentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23580D53218E286600434DD9 /* AssignmentTableViewCell.swift */; };
@@ -66,6 +67,7 @@
 		23484C6021866927007C5CCF /* AddClassTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddClassTableViewController.swift; sourceTree = "<group>"; };
 		23484C63218963E0007C5CCF /* AssignmentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentViewController.swift; sourceTree = "<group>"; };
 		23484C6521896B62007C5CCF /* AddAssignmentTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAssignmentTableViewController.swift; sourceTree = "<group>"; };
+		234B7E5F21C77B5F008D195F /* UIImage+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Helpers.swift"; sourceTree = "<group>"; };
 		23580D49218E164100434DD9 /* ToDo+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ToDo+CoreDataClass.swift"; sourceTree = "<group>"; };
 		23580D4A218E164100434DD9 /* ToDo+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ToDo+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		23580D53218E286600434DD9 /* AssignmentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentTableViewCell.swift; sourceTree = "<group>"; };
@@ -289,6 +291,7 @@
 				235E0B8F2199491F005D3B9C /* UILabel+Helpers.swift */,
 				2310CF4821A9F6C400A995FB /* UIApplication+Helpers.swift */,
 				235BEAC521AE455600ED4DD4 /* UINavigationBar+Helpers.swift */,
+				234B7E5F21C77B5F008D195F /* UIImage+Helpers.swift */,
 			);
 			path = UIExtension;
 			sourceTree = "<group>";
@@ -392,6 +395,7 @@
 				235E0B8921955647005D3B9C /* Date+Helpers.swift in Sources */,
 				23484C64218963E0007C5CCF /* AssignmentViewController.swift in Sources */,
 				2324191421AF843B0014916F /* AddObjectView.swift in Sources */,
+				234B7E6021C77B5F008D195F /* UIImage+Helpers.swift in Sources */,
 				23CD10C52181A11F0034FFA7 /* Class+CoreDataProperties.swift in Sources */,
 				23580D54218E286600434DD9 /* AssignmentTableViewCell.swift in Sources */,
 				23CD10B121814F9B0034FFA7 /* CoreDataController.swift in Sources */,

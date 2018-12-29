@@ -135,11 +135,11 @@ class AssignmentViewController: AddObjectViewController {
     }
     
     override func addDoneButton() {
-        self.navigationItem.setRightBarButtonItems([UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(AssignmentViewController.donePressed(sender:))), self.navigationItem.rightBarButtonItem!], animated: true)
+        self.navigationItem.setRightBarButtonItems([doneButton], animated: true)
     }
     
     override func removeDoneButton() {
-        self.navigationItem.setRightBarButton(navigationItem.rightBarButtonItems?.last, animated: true)
+        self.navigationItem.setRightBarButton(nil, animated: true)
     }
     
     override func saveObject(text: String) {
@@ -206,17 +206,16 @@ extension AssignmentViewController: UITableViewDataSource, UITableViewDelegate {
         cell.configure(withAssignment: assignment)
         cell.delegate = self
         cell.separatorView.isHidden = true //To remove separator view
-        if tableView.numberOfRows(inSection: indexPath.section) == 1 {
-            //cell.addDropShadow(color: .black, opacity: 0.07, radius: 5, yOffset: -10)
-        } else if indexPath.row == tableView.numberOfRows(inSection: indexPath.section) - 1 {
-            //cell.separatorView.isHidden = true
-            //cell.addDropShadow(color: .black, opacity: 0.07, radius: 3, yOffset: 12)
-        } else if indexPath.row == 0 {
-            //cell.addDropShadow(color: .black, opacity: 0.07, radius: 5, yOffset: -10)
-        } else {
-            cell.separatorView.isHidden = true //To remove separator view
-            cell.subviews.first?.removeDropShadow()
-        }
+//        if tableView.numberOfRows(inSection: indexPath.section) == 1 {
+//        } else if indexPath.row == tableView.numberOfRows(inSection: indexPath.section) - 1 {
+//        } else if indexPath.row == 0 {
+//        } else {
+//            cell.separatorView.isHidden = true //To remove separator view
+//        }
+        
+        let selectedBackgroundView = UIView()
+        selectedBackgroundView.backgroundColor = UIColor.highlightColor
+        cell.selectedBackgroundView = selectedBackgroundView
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -288,41 +287,66 @@ extension AssignmentViewController: UITableViewDataSource, UITableViewDelegate {
     
     // MARK: - Delegate
     
-    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let scheduleRowAction = UITableViewRowAction(style: .default, title: "Schedule", handler: { (action, indexpath) in
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let completeAction = UIContextualAction(style: .normal, title: "Complete", handler: { action, indexPath, completionHandler in
+            self.perform(Selector("AssignmentViewController.buttonPressed(assignment:)"))
+            
+            completionHandler(true)
+        })
+        
+        completeAction.backgroundColor = .nothingDueColor
+        completeAction.image = UIImage(named: "greenCheckmark")!.resized(to: CGSize(width: 32, height: 32))
+        
+        return UISwipeActionsConfiguration(actions: [completeAction])
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let scheduleAction = UIContextualAction(style: .normal, title: "Schedule", handler: { _, _, completionHandler in
             self.selectedAssignment = self.fetchedResultsController.object(at: indexPath)
             self.performSegue(withIdentifier: "ScheduleTableView", sender: self)
         })
         
-        let deleteRowAction = UITableViewRowAction(style: .default, title: "Delete", handler: { (action, indexPath) in
-            let deletedAssignment = self.fetchedResultsController.object(at: indexPath)
-            
-            if self.fetchedResultsController.fetchedObjects?.count == 1 {
-                var frame = CGRect.zero
-                frame.size.height = 0
-                tableView.tableHeaderView = UIView(frame: frame)
-                
-//                UIView.animate(withDuration: 0.0, animations: {
-//                }, completion: { (bool) in
-//                    UIView.animate(withDuration: 0.2, delay: 0.0, options: [.curveEaseInOut], animations: {
-//                        tableView.tableHeaderView = UIView(frame:frame)
-//                    })
-//                })
-            }
-            
-            // Delete from core data
-            self.coreDataController.delete(deletedAssignment)
-            self.coreDataController.save()
-            
-            // Delete from cloud
-            self.cloudController.delete([deletedAssignment], inDatabase: .private) {
-                print("Deleted Class!")
-            }
-        })
-        deleteRowAction.backgroundColor = .destructiveColor
+        scheduleAction.image = UIImage(named: "thiccCalendarGlyph")!.resized(to: CGSize(width: 32, height: 32))
+        scheduleAction.backgroundColor = UIColor(hue: 50, saturation: 70, brightness: 80, alpha: 1.0)
         
-        return [deleteRowAction]
+        return UISwipeActionsConfiguration(actions: [scheduleAction])
     }
+    
+//    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+//        let scheduleRowAction = UITableViewRowAction(style: .default, title: "Schedule", handler: { (action, indexpath) in
+//            self.selectedAssignment = self.fetchedResultsController.object(at: indexPath)
+//            self.performSegue(withIdentifier: "ScheduleTableView", sender: self)
+//        })
+//
+//        let deleteRowAction = UITableViewRowAction(style: .default, title: "Delete", handler: { (action, indexPath) in
+//            let deletedAssignment = self.fetchedResultsController.object(at: indexPath)
+//
+//            if self.fetchedResultsController.fetchedObjects?.count == 1 {
+//                var frame = CGRect.zero
+//                frame.size.height = 0
+//                tableView.tableHeaderView = UIView(frame: frame)
+//
+////                UIView.animate(withDuration: 0.0, animations: {
+////                }, completion: { (bool) in
+////                    UIView.animate(withDuration: 0.2, delay: 0.0, options: [.curveEaseInOut], animations: {
+////                        tableView.tableHeaderView = UIView(frame:frame)
+////                    })
+////                })
+//            }
+//            
+//            // Delete from core data
+//            self.coreDataController.delete(deletedAssignment)
+//            self.coreDataController.save()
+//
+//            // Delete from cloud
+//            self.cloudController.delete([deletedAssignment], inDatabase: .private) {
+//                print("Deleted Class!")
+//            }
+//        })
+//        deleteRowAction.backgroundColor = .destructiveColor
+//
+//        return [deleteRowAction]
+//    }
     
     // MARK: - Delegate
     
@@ -557,7 +581,7 @@ extension AssignmentViewController: ClassTableViewControllerDelegate {
 // MARK: - AssignmentTableViewCellDelegate
 
 extension AssignmentViewController: AssignmentTableViewCellDelegate {
-    func buttonPressed(assignment: Assignment) -> Bool {
+    @objc func buttonPressed(assignment: Assignment) -> Bool {
         if let assignment = fetchedResultsController.fetchedObjects?.first(where: { $0 == assignment }), let toDo = assignment.toDo {
             toDo.isCompleted = !toDo.isCompleted
             assignment.isCompleted = toDo.isCompleted

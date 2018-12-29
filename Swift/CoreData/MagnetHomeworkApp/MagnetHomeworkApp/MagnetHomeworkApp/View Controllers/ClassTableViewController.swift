@@ -63,12 +63,13 @@ class ClassTableViewController: UITableViewController {
         updateWithCloud()
         registerAsNotificationDelegate()
         
-        let rowHeight: CGFloat = 60
+        let rowHeight: CGFloat = 68
         
         tableView.rowHeight = rowHeight
         tableView.estimatedRowHeight = rowHeight
         tableView.backgroundColor = .backgroundColor
         tableView.separatorColor = .separatorColor
+        //tableView.separatorInset = UIEdgeInsets.zero
         
 //        tableView.estimatedRowHeight = 0
 //        tableView.estimatedSectionFooterHeight = 0
@@ -372,6 +373,10 @@ extension ClassTableViewController {
         // Configure cell with model
         cell.configure(withClass: `class`)
         
+        let selectedBackgroundView = UIView()
+        selectedBackgroundView.backgroundColor = UIColor.highlightColor
+        cell.selectedBackgroundView = selectedBackgroundView
+        
         cell.delegate = self
     }
     
@@ -514,6 +519,7 @@ extension ClassTableViewController: UITextFieldDelegate, UITextDragDelegate {
         addClassButton.isHidden = true
         UIView.animate(withDuration: 0.1, animations: {
             self.addClassView.backgroundColor = .backgroundColor
+            self.addClassText.textColor = .backgroundColor
         })
         
         addClassText.isHidden = true
@@ -526,12 +532,14 @@ extension ClassTableViewController: UITextFieldDelegate, UITextDragDelegate {
     @IBAction func addClassButtonPressedDown(_ sender: Any) {
         UIView.animate(withDuration: 0.1, animations: {
             self.addClassView.backgroundColor = UIColor.backgroundColor
+            self.addClassText.textColor = .backgroundColor
         })
     }
     
     @IBAction func addClassButtonDraggedOutside(_ sender: Any) {
         UIView.animate(withDuration: 0.1, animations: {
             self.addClassView.backgroundColor = UIColor.backgroundColor
+            self.addClassText.textColor = .backgroundColor
         })
     }
     
@@ -542,6 +550,7 @@ extension ClassTableViewController: UITextFieldDelegate, UITextDragDelegate {
     @IBAction func addClassButtonDraggedInside(_ sender: Any) {
         UIView.animate(withDuration: 0.1, animations: {
             self.addClassView.backgroundColor = UIColor.backgroundColor
+            self.addClassText.textColor = .backgroundColor
         })
     }
     
@@ -550,15 +559,16 @@ extension ClassTableViewController: UITextFieldDelegate, UITextDragDelegate {
     }
     
     func configureAddClassView(duration: TimeInterval) {
-        addClassView.layer.cornerRadius = 5
-        addClassView.addDropShadow(color: .black, opacity: 0.15, radius: 4)
+        addClassView.layer.cornerRadius = 15
+        //addClassView.addDropShadow(color: .black, opacity: 0.1, radius: 3)
         addClassTextField.text = ""
+        addClassText.textColor = .white
         
         self.addClassTextField.isHidden = true
         self.addClassText.isHidden = false
         
         UIView.animate(withDuration: duration, animations: {
-            self.addClassView.backgroundColor = UIColor.primaryColor
+            self.addClassView.backgroundColor = .primaryColor
             self.navigationItem.rightBarButtonItem = nil
         }, completion: { (bool) in
             self.addClassButton.isHidden = false

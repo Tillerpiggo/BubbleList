@@ -43,8 +43,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             classTableViewController.coreDataController = coreDataController
             
             tabBarController.tabBar.tintColor = .primaryColor
-            tabBarController.tabBar.barTintColor = .tabBarTintColor
-            tabBarController.tabBar.addDropShadow(color: .black, opacity: 0.2, radius: 2)
+//            tabBarController.tabBar.barTintColor = .tabBarTintColor
+            //tabBarController.tabBar.addDropShadow(color: .black, opacity: 0.2, radius: 2)
             
             classTableViewControllerReference = classTableViewController
         }

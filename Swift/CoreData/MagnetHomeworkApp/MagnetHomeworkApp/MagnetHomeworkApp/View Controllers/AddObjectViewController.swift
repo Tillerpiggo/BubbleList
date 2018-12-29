@@ -12,9 +12,9 @@ class AddObjectViewController: UIViewController, AddObjectViewDelegate, UITextFi
     
     // MARK: - Variables
     
+    @IBOutlet weak var addObjectView: AddObjectView!
+    
     var doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(AddObjectViewController.donePressed(sender:)))
-    
-    
     
     // MARK: - ViewDidLoad
     
@@ -25,25 +25,44 @@ class AddObjectViewController: UIViewController, AddObjectViewDelegate, UITextFi
     
     
     func configureAddObjectView() {
-        addObjectView.commonInit()
-        
-        self.view.addSubview(addObjectView)
-        
+        //addObjectView.commonInit()
+        addObjectView.configure()
+        addObjectView.delegate = self
+
+        //self.view.addSubview(addObjectView)
+
         // Add Object View
-        
+
         addObjectView.translatesAutoresizingMaskIntoConstraints = false
-        print(addObjectView.addButton)
+
+        let views: [String: Any] = ["addObjectView": addObjectView, "contentView": addObjectView.contentView, "view": addObjectView.view, "label": addObjectView.textLabel]
+
+        let horizontalAddObjectViewConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[addObjectView]-0-|", metrics: nil, views: views)
+        //let verticalAddObjectViewConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:[addObjectView]-40-|", metrics: nil, views: views)
+
+        let horizontalLabelConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|-32-[label]-32-|", metrics: nil, views: views)
+        let verticalLabelConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[label]-0-|", metrics: nil, views: views)
+
+        let horizontalContentViewConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[contentView]-0-|", metrics: nil, views: views)
+        let verticalContentViewConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[contentView]-0-|", metrics: nil, views: views)
+
+        let horizontalViewConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[view]-16-|", metrics: nil, views: views)
+        let verticalViewConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|-16-[view]-16-|", metrics: nil, views: views)
         
-        let views: [String: Any] = ["view": addObjectView]
-        
-        let horizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[view]-0-|", metrics: nil, views: views)
-        let verticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:[view]-(20)-|", metrics: nil, views: views)
-        
-        view.addConstraints(horizontalConstraints)
-        view.addConstraints(verticalConstraints)
+        view.addConstraints(horizontalAddObjectViewConstraints)
+        //view.addConstraints(verticalAddObjectViewConstraints)
+
+        addObjectView.addConstraints(horizontalLabelConstraints)
+        addObjectView.addConstraints(verticalLabelConstraints)
+//
+        addObjectView.addConstraints(horizontalContentViewConstraints)
+        addObjectView.addConstraints(verticalContentViewConstraints)
+
+        addObjectView.addConstraints(horizontalViewConstraints)
+        addObjectView.addConstraints(verticalViewConstraints)
         
         // Text Field
-        
+
         addObjectView.textField.delegate = self
         addObjectView.textField.textDragDelegate = self
     }
@@ -57,7 +76,7 @@ class AddObjectViewController: UIViewController, AddObjectViewDelegate, UITextFi
     }
     
     func addDoneButton() {
-        self.navigationItem.setRightBarButtonItems([doneButton, self.navigationItem.rightBarButtonItem!], animated: true) // subclass should implement
+        self.navigationItem.setRightBarButtonItems([doneButton], animated: true) // subclass should implement
     }
     
     @objc func donePressed(sender: UIBarButtonItem) {

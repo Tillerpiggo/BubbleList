@@ -23,7 +23,7 @@ class ClassTableViewCell: UITableViewCell {
     @IBOutlet weak var duePreview: UILabel!
     @IBOutlet weak var completedImageView: UIImageView!
     @IBOutlet weak var numberOfAssignmentsImageView: UIImageView!
-    
+    @IBOutlet weak var numberOfAssignmentsLabel: UILabel!
     
     var accessoryButton: UIButton?
     var delegate: ClassTableViewCellDelegate?
@@ -84,9 +84,15 @@ class ClassTableViewCell: UITableViewCell {
             
             var string: String
             if duePreviewSection != "Due Tomorrow" && duePreviewSection != "Late" {
-                string = "\(numberOfAssignments)"
+                string = "\(previewAssignments.count) Unscheduled"
             } else {
                 string = "\(numberOfAssignments) \(duePreviewSection ?? "")"
+            }
+            
+            let totalAssignments = `class`.assignmentArray?.filter({ $0.isCompleted == false }).count ?? 0
+            numberOfAssignmentsLabel.text = "\(totalAssignments)"
+            if totalAssignments == 0 {
+                numberOfAssignmentsLabel.text = ""
             }
         
             completedImageView.isHidden = true
