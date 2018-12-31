@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class ToDoTableViewController: AddObjectViewController {
+class ToDoTableViewController: AssignmentViewController {
     
     var coreDataController: CoreDataController!
     

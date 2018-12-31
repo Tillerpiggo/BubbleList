@@ -39,17 +39,24 @@ class AssignmentViewController: AddObjectViewController {
         return .default
     }
     
-    lazy var fetchedResultsController: NSFetchedResultsController<Assignment> = {
-        let fetchRequest: NSFetchRequest<Assignment> = Assignment.fetchRequest()
+    let sortDescriptors: [NSSortDescriptor] = {
         let sortBySectionNumber = NSSortDescriptor(key: #keyPath(Assignment.dueDateSectionNumber), ascending: true)
         let sortByDueDate = NSSortDescriptor(key: #keyPath(Assignment.dueDate), ascending: true)
         let sortByCreationDate = NSSortDescriptor(key: #keyPath(Assignment.creationDate), ascending: true)
         let sortByCompletionDate = NSSortDescriptor(key: #keyPath(Assignment.toDo.completionDate), ascending: false)
-        fetchRequest.sortDescriptors = [sortBySectionNumber, sortByCompletionDate, sortByDueDate, sortByCreationDate]
+        
+        return [sortBySectionNumber, sortByCompletionDate, sortByDueDate, sortByCreationDate]
+    }()
+    
+    lazy var predicate = NSPredicate(format: "owningClass == %@ && isCompleted == false", self.`class`)
+    
+    lazy var fetchedResultsController: NSFetchedResultsController<Assignment> = {
+        let fetchRequest: NSFetchRequest<Assignment> = Assignment.fetchRequest()
+        fetchRequest.sortDescriptors = sortDescriptors
         fetchRequest.fetchBatchSize = 20 // TODO: May need to adjust
         
         //let isInClassPredicate = NSPredicate(format: "owningClass == %@ && toDo.isCompleted == false", self.`class`)
-        let isInClassPredicate = NSPredicate(format: "owningClass == %@ && isCompleted == false", self.`class`)
+        let isInClassPredicate = predicate
         fetchRequest.predicate = isInClassPredicate
         
         let fetchedResultsController = NSFetchedResultsController (
