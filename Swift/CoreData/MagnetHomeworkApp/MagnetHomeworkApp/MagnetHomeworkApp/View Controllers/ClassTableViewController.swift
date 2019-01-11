@@ -15,7 +15,7 @@ protocol ClassTableViewControllerDelegate {
     var `class`: Class! { get set }
 }
 
-class ClassTableViewController: UITableViewController {
+class ClassTableViewController: UITableViewController, DataCarrier {
     
     // MARK: - Properties
     

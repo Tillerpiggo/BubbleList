@@ -12,6 +12,7 @@
 		2310CF4921A9F6C400A995FB /* UIApplication+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2310CF4821A9F6C400A995FB /* UIApplication+Helpers.swift */; };
 		2324191221AF83E10014916F /* AddObjectView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2324191121AF83E10014916F /* AddObjectView.xib */; };
 		2324191421AF843B0014916F /* AddObjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2324191321AF843B0014916F /* AddObjectView.swift */; };
+		2329382221E3280F00E5FC69 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2329382121E3280F00E5FC69 /* TabBarController.swift */; };
 		23332B0321AB1DD600111882 /* AddObjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23332B0221AB1DD600111882 /* AddObjectViewController.swift */; };
 		23484C562182250E007C5CCF /* CKRecord+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23484C552182250E007C5CCF /* CKRecord+Helpers.swift */; };
 		23484C5A21822CA6007C5CCF /* Assignment+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23484C5821822CA6007C5CCF /* Assignment+CoreDataClass.swift */; };
@@ -58,6 +59,7 @@
 		2310CF4821A9F6C400A995FB /* UIApplication+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Helpers.swift"; sourceTree = "<group>"; };
 		2324191121AF83E10014916F /* AddObjectView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddObjectView.xib; sourceTree = "<group>"; };
 		2324191321AF843B0014916F /* AddObjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddObjectView.swift; sourceTree = "<group>"; };
+		2329382121E3280F00E5FC69 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		23332B0221AB1DD600111882 /* AddObjectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddObjectViewController.swift; sourceTree = "<group>"; };
 		23484C552182250E007C5CCF /* CKRecord+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKRecord+Helpers.swift"; sourceTree = "<group>"; };
 		23484C5821822CA6007C5CCF /* Assignment+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Assignment+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -126,6 +128,7 @@
 		23484C6221866946007C5CCF /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				2329382121E3280F00E5FC69 /* TabBarController.swift */,
 				23332B0221AB1DD600111882 /* AddObjectViewController.swift */,
 				23484C5E21854A1E007C5CCF /* ClassTableViewController.swift */,
 				23484C63218963E0007C5CCF /* AssignmentViewController.swift */,
@@ -406,6 +409,7 @@
 				23484C6621896B62007C5CCF /* AddAssignmentTableViewController.swift in Sources */,
 				23CD10AF21814F790034FFA7 /* CloudKitErrorHandler.swift in Sources */,
 				235E0B8B2197DF44005D3B9C /* String+Helpers.swift in Sources */,
+				2329382221E3280F00E5FC69 /* TabBarController.swift in Sources */,
 				23F4C9E0219283EA00D00D05 /* CAGradientLayer+Helpers.swift in Sources */,
 				23CD10AA21803E4D0034FFA7 /* CloudController.swift in Sources */,
 				23F4C9DA2192704400D00D05 /* UIColor+Helpers.swift in Sources */,

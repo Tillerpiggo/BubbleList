@@ -14,6 +14,12 @@ protocol AssignmentTableViewControllerDelegate {
     func reloadClass(_ `class`: Class)
 }
 
+protocol CoreDataTableViewController: UITableViewDelegate, UITableViewDataSource {
+    var predicate: NSPredicate { get }
+    var sortDescriptors: [NSSortDescriptor] { get }
+    
+}
+
 class AssignmentViewController: AddObjectViewController {
     
     @IBOutlet weak var tableView: UITableView!
@@ -39,7 +45,7 @@ class AssignmentViewController: AddObjectViewController {
         return .default
     }
     
-    let sortDescriptors: [NSSortDescriptor] = {
+    var sortDescriptors: [NSSortDescriptor] = {
         let sortBySectionNumber = NSSortDescriptor(key: #keyPath(Assignment.dueDateSectionNumber), ascending: true)
         let sortByDueDate = NSSortDescriptor(key: #keyPath(Assignment.dueDate), ascending: true)
         let sortByCreationDate = NSSortDescriptor(key: #keyPath(Assignment.creationDate), ascending: true)
@@ -48,7 +54,9 @@ class AssignmentViewController: AddObjectViewController {
         return [sortBySectionNumber, sortByCompletionDate, sortByDueDate, sortByCreationDate]
     }()
     
-    lazy var predicate = NSPredicate(format: "owningClass == %@ && isCompleted == false", self.`class`)
+    func predicate() -> NSPredicate {
+        return NSPredicate(format: "owningClass == %@ && isCompleted == false", self.`class`)
+    }
     
     lazy var fetchedResultsController: NSFetchedResultsController<Assignment> = {
         let fetchRequest: NSFetchRequest<Assignment> = Assignment.fetchRequest()
@@ -56,7 +64,7 @@ class AssignmentViewController: AddObjectViewController {
         fetchRequest.fetchBatchSize = 20 // TODO: May need to adjust
         
         //let isInClassPredicate = NSPredicate(format: "owningClass == %@ && toDo.isCompleted == false", self.`class`)
-        let isInClassPredicate = predicate
+        let isInClassPredicate = predicate()
         fetchRequest.predicate = isInClassPredicate
         
         let fetchedResultsController = NSFetchedResultsController (

@@ -14,6 +14,11 @@ protocol NotificationDelegate {
     func fetchChanges(completion: @escaping (Bool) -> Void)
 }
 
+protocol DataCarrier {
+    var cloudController: CloudController! { get set }
+    var coreDataController: CoreDataController! { get set }
+}
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
 
@@ -37,7 +42,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         if let tabBarController = window?.rootViewController as? UITabBarController,
             let navigationController = tabBarController.viewControllers?.first as? UINavigationController,
-            let classTableViewController = navigationController.topViewController as? ClassTableViewController {
+            let classTableViewController = navigationController.topViewController as? ClassTableViewController,
+            let toDoNavigationController = tabBarController.viewControllers?.last as? UINavigationController,
+            let toDoTableViewController = toDoNavigationController.topViewController as? ToDoTableViewController {
+            
+            toDoTableViewController.cloudController = cloudController
+            toDoTableViewController.coreDataController = coreDataController
+            
             // Dependency inject the CoreData/CloudKit Objects
             classTableViewController.cloudController = cloudController
             classTableViewController.coreDataController = coreDataController

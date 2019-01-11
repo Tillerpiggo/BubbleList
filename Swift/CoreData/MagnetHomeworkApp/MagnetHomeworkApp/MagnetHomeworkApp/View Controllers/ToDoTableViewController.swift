@@ -11,36 +11,37 @@ import CoreData
 
 class ToDoTableViewController: AssignmentViewController {
     
-    var coreDataController: CoreDataController!
+    //var coreDataController: CoreDataController!
     
-    lazy var fetchedResultsController: NSFetchedResultsController<Assignment> = {
-        let fetchRequest: NSFetchRequest<Assignment> = Assignment.fetchRequest()
-        let sortBySectionNumber = NSSortDescriptor(key: #keyPath(Assignment.dueDateSectionNumber), ascending: true)
-        let sortByDueDate = NSSortDescriptor(key: #keyPath(Assignment.dueDate), ascending: true)
-        let sortByCreationDate = NSSortDescriptor(key: #keyPath(Assignment.creationDate), ascending: true)
-        fetchRequest.sortDescriptors = [sortBySectionNumber, sortByDueDate, sortByCreationDate]
-        fetchRequest.fetchBatchSize = 20 // TODO: May need to adjust
-        
-        let isInSectionPredicate = NSPredicate(format: "dueDate >= %@", Date.tomorrow as CVarArg)
-        fetchRequest.predicate = isInSectionPredicate
-        
-        let fetchedResultsController = NSFetchedResultsController (
-            fetchRequest: fetchRequest,
-            managedObjectContext: coreDataController.managedContext,
-            sectionNameKeyPath: #keyPath(Assignment.dueDateSection),
-            cacheName: "ToDo" // May have to change...
-        )
-        
-        //fetchedResultsController.delegate = self
-        
-        do {
-            try fetchedResultsController.performFetch()
-        } catch let error as NSError {
-            print("Fetching error: \(error), \(error.userInfo)")
-        }
-        
-        return fetchedResultsController
-    }()
+    override func predicate() -> NSPredicate {
+        return NSPredicate(format: "dueDate >= %@", Date.tomorrow as CVarArg)
+    }
+    
+//    lazy var fetchedResultsController: NSFetchedResultsController<Assignment> = {
+//        let fetchRequest: NSFetchRequest<Assignment> = Assignment.fetchRequest()
+//
+//        fetchRequest.fetchBatchSize = 20 // TODO: May need to adjust
+//
+//        let isInSectionPredicate = predicate
+//        fetchRequest.predicate = isInSectionPredicate
+//
+//        let fetchedResultsController = NSFetchedResultsController (
+//            fetchRequest: fetchRequest,
+//            managedObjectContext: coreDataController.managedContext,
+//            sectionNameKeyPath: #keyPath(Assignment.dueDateSection),
+//            cacheName: "ToDo" // May have to change...
+//        )
+//
+//        //fetchedResultsController.delegate = self
+//
+//        do {
+//            try fetchedResultsController.performFetch()
+//        } catch let error as NSError {
+//            print("Fetching error: \(error), \(error.userInfo)")
+//        }
+//
+//        return fetchedResultsController
+//    }()
     
     func refreshFetchedResultsController(withSection section: String) {
         let isInSectionPredicate: NSPredicate
@@ -69,21 +70,21 @@ class ToDoTableViewController: AssignmentViewController {
 
     // MARK: - Table view data source
 
-    func numberOfSections(in tableView: UITableView) -> Int {
-        guard let sections = fetchedResultsController.sections else {
-            return 0
-        }
-        
-        return sections.count
-    }
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let sectionInfo = fetchedResultsController.sections?[section] else {
-            return 0
-        }
-        
-        return sectionInfo.numberOfObjects
-    }
+//    func numberOfSections(in tableView: UITableView) -> Int {
+//        guard let sections = fetchedResultsController.sections else {
+//            return 0
+//        }
+//
+//        return sections.count
+//    }
+//
+//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        guard let sectionInfo = fetchedResultsController.sections?[section] else {
+//            return 0
+//        }
+//
+//        return sectionInfo.numberOfObjects
+//    }
 
     /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
