@@ -25,8 +25,8 @@ class ToDoTableViewController: AddObjectViewController {
     var hiddenSections: [Int] = []
     
     func predicate() -> NSPredicate {
-        return NSPredicate(value: true)
-        return NSPredicate(format: "dueDate >= %@", Date.tomorrow as CVarArg)
+        //return NSPredicate(value: true)
+        return NSPredicate(format: "dueDate == %@", Date.tomorrow as CVarArg)
     }
     
     func cacheName() -> String {
@@ -101,6 +101,21 @@ class ToDoTableViewController: AddObjectViewController {
         self.navigationController?.configureNavigationBar()
         
         tableView.register(UINib(nibName: "AssignmentHeaderFooterView", bundle: nil), forHeaderFooterViewReuseIdentifier: "AssignmentHeaderFooterView")
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let navigationController = segue.destination as? UINavigationController,
+            let destinationViewController = navigationController.topViewController as? ScheduleTableViewController,
+            let selectedAssignment = self.selectedAssignment,
+            segue.identifier == "ScheduleTableView" else { return }
+        
+        destinationViewController.assignment = selectedAssignment
+        destinationViewController.coreDataController = coreDataController
+        destinationViewController.delegate = self
+        
+        navigationController.navigationBar.tintColor = self.navigationController?.navigationBar.tintColor
+        navigationController.navigationBar.barTintColor = self.navigationController?.navigationBar.barTintColor
+        navigationController.navigationBar.titleTextAttributes = self.navigationController?.navigationBar.titleTextAttributes
     }
     
     func configureNavigationBar() {
@@ -417,6 +432,34 @@ extension ToDoTableViewController: AssignmentHeaderFooterCellDelegate {
         
         tableView.beginUpdates()
         tableView.endUpdates()
+    }
+}
+
+extension ToDoTableViewController: ScheduleTableViewControllerDelegate {
+    func reloadAssignment(withDueDate dueDate: Date?, _ assignment: Assignment) {
+        if let indexPath = fetchedResultsController.indexPath(forObject: assignment) {
+            tableView.reloadRows(at: [indexPath], with: .automatic)
+        }
+        
+        DispatchQueue.main.async { self.coreDataController.save() }
+        
+        let databaseType: DatabaseType = assignment.owningClass?.isUserCreated ?? true ? .private : .shared
+        cloudController.save([assignment], inDatabase: databaseType, recordChanged: { (updatedRecord) in
+            assignment.update(withRecord: updatedRecord)
+        }) { (error) in
+            guard let error = error as? CKError else { return }
+            switch error.code {
+            case .requestRateLimited, .zoneBusy, .serviceUnavailable:
+                break
+            default:
+                DispatchQueue.main.async {
+                    //self.alertUserOfFailure()
+                    self.coreDataController.save()
+                }
+            }
+        }
+        
+        //delegate?.reloadClass(`class`)
     }
 }
 

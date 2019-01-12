@@ -63,7 +63,7 @@ class ClassTableViewController: UITableViewController, DataCarrier {
         updateWithCloud()
         registerAsNotificationDelegate()
         
-        let rowHeight: CGFloat = 68
+        let rowHeight: CGFloat = 60
         
         tableView.rowHeight = rowHeight
         tableView.estimatedRowHeight = rowHeight
