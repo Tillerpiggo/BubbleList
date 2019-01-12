@@ -15,8 +15,6 @@ class TabBarController: UITabBarController {
     
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) {
         if let viewController = viewController as? ToDoTableViewController {
-            viewController.class = Class(withName: "ToDo", managedContext: coreDataController.managedContext, zoneID: cloudController.zoneID)
-            
             viewController.cloudController = cloudController
             viewController.coreDataController = coreDataController
         }
