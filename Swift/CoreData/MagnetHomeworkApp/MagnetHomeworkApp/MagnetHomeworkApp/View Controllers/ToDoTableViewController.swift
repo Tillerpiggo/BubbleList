@@ -277,15 +277,40 @@ extension ToDoTableViewController: UITableViewDelegate, UITableViewDataSource {
 //        return UISwipeActionsConfiguration(actions: [scheduleAction])
 //    }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            let assignment = fetchedResultsController.object(at: indexPath)
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let scheduleRowAction = UITableViewRowAction(style: .default, title: "Schedule", handler: { (action, indexpath) in
+            self.selectedAssignment = self.fetchedResultsController.object(at: indexPath)
+            self.performSegue(withIdentifier: "ScheduleTableView", sender: self)
+        })
+        
+        let deleteRowAction = UITableViewRowAction(style: .default, title: "Delete", handler: { (action, indexPath) in
+            let deletedAssignment = self.fetchedResultsController.object(at: indexPath)
             
+            if self.fetchedResultsController.fetchedObjects?.count == 1 {
+                var frame = CGRect.zero
+                frame.size.height = 0
+                tableView.tableHeaderView = UIView(frame: frame)
+                
+                //                UIView.animate(withDuration: 0.0, animations: {
+                //                }, completion: { (bool) in
+                //                    UIView.animate(withDuration: 0.2, delay: 0.0, options: [.curveEaseInOut], animations: {
+                //                        tableView.tableHeaderView = UIView(frame:frame)
+                //                    })
+                //                })
+            }
             
-            let database: DatabaseType = assignment.owningClass?.isUserCreated ?? true ? .private : .shared
-            cloudController.delete([assignment], inDatabase: database)
-            coreDataController.delete(assignment)
-        }
+            // Delete from core data
+            self.coreDataController.delete(deletedAssignment)
+            self.coreDataController.save()
+            
+            // Delete from cloud
+            self.cloudController.delete([deletedAssignment], inDatabase: .private) {
+                print("Deleted Class!")
+            }
+        })
+        deleteRowAction.backgroundColor = .destructiveColor
+        
+        return [deleteRowAction]
     }
     
     // MARK: - Delegate

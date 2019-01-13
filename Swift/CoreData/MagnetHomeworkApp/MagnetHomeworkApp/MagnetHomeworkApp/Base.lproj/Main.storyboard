@@ -308,7 +308,13 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Vrg-og-GeK"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Title" largeTitleDisplayMode="never" id="L2B-Yb-UH7"/>
+                    <navigationItem key="navigationItem" title="Title" largeTitleDisplayMode="never" id="L2B-Yb-UH7">
+                        <barButtonItem key="rightBarButtonItem" systemItem="action" id="or8-bw-4G1">
+                            <connections>
+                                <action selector="shareButtonTapped:" destination="eNZ-y8-W4L" id="4qZ-gj-zAm"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="addObjectView" destination="cIf-v4-PxE" id="vo5-dA-VWq"/>
                         <outlet property="tableView" destination="ZOf-MY-E1F" id="zqb-qo-NZQ"/>
