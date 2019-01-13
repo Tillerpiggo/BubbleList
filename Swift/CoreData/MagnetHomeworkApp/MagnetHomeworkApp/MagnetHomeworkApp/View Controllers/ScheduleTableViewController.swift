@@ -32,6 +32,11 @@ class ScheduleTableViewController: UITableViewController {
         setDueDateLabelText()
         setThisWeekdayText()
         
+        
+        let gray = UIColor(red: 0.95, green: 0.95, blue: 0.95, alpha: 1.0)
+        tableView.backgroundColor = gray
+        tableView.separatorColor = UIColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1.0)
+        
         navigationController?.configureNavigationBar()
     }
     

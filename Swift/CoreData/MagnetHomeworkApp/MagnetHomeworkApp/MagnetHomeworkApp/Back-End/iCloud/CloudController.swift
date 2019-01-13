@@ -204,7 +204,7 @@ class CloudController {
         operationQueue.addOperation(operation)
     }
     
-    func delete(_ cloudUploadables: [CloudUploadable], inDatabase databaseType: DatabaseType, completion: @escaping () -> Void) {
+    func delete(_ cloudUploadables: [CloudUploadable], inDatabase databaseType: DatabaseType, completion: @escaping () -> Void = { }) {
         // Create and configure operation
         let operation = CKModifyRecordsOperation()
         

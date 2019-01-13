@@ -252,29 +252,40 @@ extension ToDoTableViewController: UITableViewDelegate, UITableViewDataSource {
     
     // MARK: - Delegate
     
-    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let completeAction = UIContextualAction(style: .normal, title: "Complete", handler: { action, indexPath, completionHandler in
-            self.perform(Selector("AssignmentViewController.buttonPressed(assignment:)"))
-            
-            completionHandler(true)
-        })
-        
-        completeAction.backgroundColor = .nothingDueColor
-        completeAction.image = UIImage(named: "greenCheckmark")!.resized(to: CGSize(width: 32, height: 32))
-        
-        return UISwipeActionsConfiguration(actions: [completeAction])
-    }
+//    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+//        let completeAction = UIContextualAction(style: .normal, title: "Complete", handler: { action, indexPath, completionHandler in
+//            self.perform(Selector("AssignmentViewController.buttonPressed(assignment:)"))
+//
+//            completionHandler(true)
+//        })
+//
+//        completeAction.backgroundColor = .nothingDueColor
+//        completeAction.image = UIImage(named: "greenCheckmark")!.resized(to: CGSize(width: 32, height: 32))
+//
+//        return UISwipeActionsConfiguration(actions: [completeAction])
+//    }
     
-    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let scheduleAction = UIContextualAction(style: .normal, title: "Schedule", handler: { _, _, completionHandler in
-            self.selectedAssignment = self.fetchedResultsController.object(at: indexPath)
-            self.performSegue(withIdentifier: "ScheduleTableView", sender: self)
-        })
-        
-        scheduleAction.image = UIImage(named: "thiccCalendarGlyph")!.resized(to: CGSize(width: 32, height: 32))
-        scheduleAction.backgroundColor = UIColor(hue: 50, saturation: 70, brightness: 80, alpha: 1.0)
-        
-        return UISwipeActionsConfiguration(actions: [scheduleAction])
+//    func tableView(_ tableView: UITableView, trailingSwipeAc tionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+//        let scheduleAction = UIContextualAction(style: .normal, title: "Schedule", handler: { _, _, completionHandler in
+//            self.selectedAssignment = self.fetchedResultsController.object(at: indexPath)
+//            self.performSegue(withIdentifier: "ScheduleTableView", sender: self)
+//        })
+//
+//        scheduleAction.image = UIImage(named: "thiccCalendarGlyph")!.resized(to: CGSize(width: 32, height: 32))
+//        scheduleAction.backgroundColor = UIColor(hue: 50, saturation: 70, brightness: 80, alpha: 1.0)
+//
+//        return UISwipeActionsConfiguration(actions: [scheduleAction])
+//    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let assignment = fetchedResultsController.object(at: indexPath)
+            
+            
+            let database: DatabaseType = assignment.owningClass?.isUserCreated ?? true ? .private : .shared
+            cloudController.delete([assignment], inDatabase: database)
+            coreDataController.delete(assignment)
+        }
     }
     
     // MARK: - Delegate
