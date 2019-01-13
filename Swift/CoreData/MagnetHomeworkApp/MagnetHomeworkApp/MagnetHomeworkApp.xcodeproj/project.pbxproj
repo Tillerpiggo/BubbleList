@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2310CF4321A8877E00A995FB /* AssignmentHeaderFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2310CF4221A8877E00A995FB /* AssignmentHeaderFooterView.swift */; };
-		2310CF4721A920AE00A995FB /* AssignmentHeaderFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2310CF4621A920AE00A995FB /* AssignmentHeaderFooterView.xib */; };
+		2310CF4721A920AE00A995FB /* AssignmentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2310CF4621A920AE00A995FB /* AssignmentCell.xib */; };
 		2310CF4921A9F6C400A995FB /* UIApplication+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2310CF4821A9F6C400A995FB /* UIApplication+Helpers.swift */; };
 		2324191221AF83E10014916F /* AddObjectView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2324191121AF83E10014916F /* AddObjectView.xib */; };
 		2324191421AF843B0014916F /* AddObjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2324191321AF843B0014916F /* AddObjectView.swift */; };
@@ -55,7 +55,7 @@
 
 /* Begin PBXFileReference section */
 		2310CF4221A8877E00A995FB /* AssignmentHeaderFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentHeaderFooterView.swift; sourceTree = "<group>"; };
-		2310CF4621A920AE00A995FB /* AssignmentHeaderFooterView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AssignmentHeaderFooterView.xib; sourceTree = "<group>"; };
+		2310CF4621A920AE00A995FB /* AssignmentCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AssignmentCell.xib; sourceTree = "<group>"; };
 		2310CF4821A9F6C400A995FB /* UIApplication+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Helpers.swift"; sourceTree = "<group>"; };
 		2324191121AF83E10014916F /* AddObjectView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddObjectView.xib; sourceTree = "<group>"; };
 		2324191321AF843B0014916F /* AddObjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddObjectView.swift; sourceTree = "<group>"; };
@@ -134,8 +134,6 @@
 				23484C63218963E0007C5CCF /* AssignmentViewController.swift */,
 				235E0B85219550D9005D3B9C /* ScheduleTableViewController.swift */,
 				23CE667E219BCC0000B34042 /* ToDoTableViewController.swift */,
-				235BEAC721AF82F800ED4DD4 /* Views */,
-				23580D4E218E281100434DD9 /* TableViewCells */,
 				23F4C9D821926CCC00D00D05 /* UIExtension */,
 				235E0B8721955626005D3B9C /* OtherExtensions */,
 			);
@@ -188,6 +186,27 @@
 			path = Old;
 			sourceTree = "<group>";
 		};
+		237AF8CA21EAEA9300A9D462 /* Nibs */ = {
+			isa = PBXGroup;
+			children = (
+				2324191121AF83E10014916F /* AddObjectView.xib */,
+				2310CF4621A920AE00A995FB /* AssignmentCell.xib */,
+			);
+			path = Nibs;
+			sourceTree = "<group>";
+		};
+		23AF675321EAEC80003029D2 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				23CD109421803C530034FFA7 /* Main.storyboard */,
+				23CD109C21803C550034FFA7 /* LaunchScreen.storyboard */,
+				237AF8CA21EAEA9300A9D462 /* Nibs */,
+				235BEAC721AF82F800ED4DD4 /* Views */,
+				23580D4E218E281100434DD9 /* TableViewCells */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		23CD108421803C530034FFA7 = {
 			isa = PBXGroup;
 			children = (
@@ -210,10 +229,7 @@
 			children = (
 				23CD10A521803CFD0034FFA7 /* MagnetHomeworkApp.entitlements */,
 				23CD109021803C530034FFA7 /* AppDelegate.swift */,
-				23CD109421803C530034FFA7 /* Main.storyboard */,
-				2324191121AF83E10014916F /* AddObjectView.xib */,
-				2310CF4621A920AE00A995FB /* AssignmentHeaderFooterView.xib */,
-				23CD109C21803C550034FFA7 /* LaunchScreen.storyboard */,
+				23AF675321EAEC80003029D2 /* View */,
 				23484C6221866946007C5CCF /* View Controllers */,
 				23CD10C32181A0AA0034FFA7 /* Model */,
 				23484C5721822945007C5CCF /* Back-End */,
@@ -369,7 +385,7 @@
 				23CD109E21803C550034FFA7 /* LaunchScreen.storyboard in Resources */,
 				23CD109B21803C550034FFA7 /* Assets.xcassets in Resources */,
 				23CD109621803C530034FFA7 /* Main.storyboard in Resources */,
-				2310CF4721A920AE00A995FB /* AssignmentHeaderFooterView.xib in Resources */,
+				2310CF4721A920AE00A995FB /* AssignmentCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
