@@ -18,12 +18,12 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="separatorColor" white="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <view key="tableFooterView" contentMode="scaleToFill" id="PAD-1e-kcD">
+                        <view key="tableFooterView" contentMode="scaleToFill" misplaced="YES" id="PAD-1e-kcD">
                             <rect key="frame" x="0.0" y="108" width="375" height="72"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cru-qO-0Dm">
-                                    <rect key="frame" x="72" y="26" width="231" height="30"/>
+                                    <rect key="frame" x="72" y="-38" width="231" height="30"/>
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g7K-8X-h0Z">
                                             <rect key="frame" x="0.0" y="0.0" width="231" height="30"/>
@@ -197,94 +197,13 @@
                                     </constraints>
                                 </view>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="AssignmentCell" rowHeight="65" id="2vr-zL-fON" customClass="AssignmentTableViewCell" customModule="MagnetHomeworkApp" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="AssignmentCell" rowHeight="65" id="2vr-zL-fON">
                                         <rect key="frame" x="0.0" y="28" width="375" height="65"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="2vr-zL-fON" id="u33-HZ-s4P">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="64.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HJc-Hc-fej">
-                                                    <rect key="frame" x="15" y="64" width="360" height="0.5"/>
-                                                    <color key="backgroundColor" white="0.89937842150000002" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="0.5" id="PTJ-b5-nYf"/>
-                                                    </constraints>
-                                                </view>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="darkGrayIncompletedCircle" translatesAutoresizingMaskIntoConstraints="NO" id="irh-fr-JTP">
-                                                    <rect key="frame" x="15" y="20.5" width="24" height="24"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" relation="lessThanOrEqual" constant="24" id="VCY-9a-Y1I"/>
-                                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="18" id="aeT-6v-zi6"/>
-                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="24" id="uj6-PW-SBD"/>
-                                                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="24" id="vOR-Cc-FQ7"/>
-                                                    </constraints>
-                                                </imageView>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="30S-Ii-PdI">
-                                                    <rect key="frame" x="-1" y="-1" width="50" height="65"/>
-                                                    <connections>
-                                                        <action selector="buttonPressed:" destination="2vr-zL-fON" eventType="touchUpInside" id="eMR-Q8-zYN"/>
-                                                    </connections>
-                                                </button>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4yG-P2-mFU">
-                                                    <rect key="frame" x="319" y="0.0" width="56" height="64"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="56" id="Be9-Xb-Jxn"/>
-                                                    </constraints>
-                                                    <connections>
-                                                        <action selector="scheduleButtonPressed:" destination="2vr-zL-fON" eventType="touchUpInside" id="yvx-F0-z8K"/>
-                                                    </connections>
-                                                </button>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZZY-np-nYh">
-                                                    <rect key="frame" x="51" y="15" width="272" height="19.5"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <color key="textColor" white="0.42033531019999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Due Tomorrow" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ycd-8n-bqr">
-                                                    <rect key="frame" x="51" y="34.5" width="308" height="14.5"/>
-                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="12"/>
-                                                    <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="thiccCalendarGlyph" translatesAutoresizingMaskIntoConstraints="NO" id="RSq-k8-aP0">
-                                                    <rect key="frame" x="331" y="20.5" width="28" height="24"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="28" id="0Vu-vE-wNF"/>
-                                                        <constraint firstAttribute="height" constant="24" id="kcL-4P-IEL"/>
-                                                    </constraints>
-                                                </imageView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="RSq-k8-aP0" secondAttribute="trailing" constant="16" id="1go-6c-1wj"/>
-                                                <constraint firstItem="RSq-k8-aP0" firstAttribute="centerY" secondItem="u33-HZ-s4P" secondAttribute="centerY" id="58K-5Y-xNN"/>
-                                                <constraint firstItem="30S-Ii-PdI" firstAttribute="leading" secondItem="u33-HZ-s4P" secondAttribute="leadingMargin" constant="-16" id="GRV-lK-ZEV"/>
-                                                <constraint firstAttribute="trailing" secondItem="ycd-8n-bqr" secondAttribute="trailing" constant="16" id="HoV-fc-m2q"/>
-                                                <constraint firstItem="ZZY-np-nYh" firstAttribute="top" secondItem="u33-HZ-s4P" secondAttribute="topMargin" constant="4" id="ToD-yb-Xd3"/>
-                                                <constraint firstItem="ZZY-np-nYh" firstAttribute="leading" secondItem="irh-fr-JTP" secondAttribute="trailing" constant="12" id="VY1-XX-K1t"/>
-                                                <constraint firstItem="ycd-8n-bqr" firstAttribute="leading" secondItem="irh-fr-JTP" secondAttribute="trailing" constant="12" id="Ver-XL-BwB"/>
-                                                <constraint firstItem="irh-fr-JTP" firstAttribute="leading" secondItem="u33-HZ-s4P" secondAttribute="leadingMargin" id="VkR-po-7E9"/>
-                                                <constraint firstAttribute="bottom" secondItem="HJc-Hc-fej" secondAttribute="bottom" id="XhG-cP-iBR"/>
-                                                <constraint firstItem="HJc-Hc-fej" firstAttribute="top" secondItem="4yG-P2-mFU" secondAttribute="bottom" id="gHk-jY-vA8"/>
-                                                <constraint firstAttribute="trailing" secondItem="HJc-Hc-fej" secondAttribute="trailing" id="izz-vS-y6M"/>
-                                                <constraint firstItem="ycd-8n-bqr" firstAttribute="top" secondItem="ZZY-np-nYh" secondAttribute="bottom" id="lLG-aw-CQO"/>
-                                                <constraint firstItem="irh-fr-JTP" firstAttribute="centerY" secondItem="u33-HZ-s4P" secondAttribute="centerY" id="pgn-r1-xNM"/>
-                                                <constraint firstItem="30S-Ii-PdI" firstAttribute="centerX" secondItem="irh-fr-JTP" secondAttribute="centerX" constant="-3" id="qIm-3Y-OLF"/>
-                                                <constraint firstAttribute="trailing" secondItem="4yG-P2-mFU" secondAttribute="trailing" id="sk8-bk-4wl"/>
-                                                <constraint firstItem="30S-Ii-PdI" firstAttribute="top" secondItem="u33-HZ-s4P" secondAttribute="topMargin" constant="-12" id="ska-u1-BfO"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="30S-Ii-PdI" secondAttribute="bottom" constant="-10" id="v9n-za-H1t"/>
-                                                <constraint firstItem="4yG-P2-mFU" firstAttribute="top" secondItem="u33-HZ-s4P" secondAttribute="top" priority="999" id="vF5-hN-Kcj"/>
-                                                <constraint firstItem="RSq-k8-aP0" firstAttribute="leading" secondItem="ZZY-np-nYh" secondAttribute="trailing" constant="8" id="yIv-FN-YDr"/>
-                                                <constraint firstItem="HJc-Hc-fej" firstAttribute="leading" secondItem="u33-HZ-s4P" secondAttribute="leading" constant="15" id="zkD-6R-sd6"/>
-                                            </constraints>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <outlet property="assignmentTextLabel" destination="ZZY-np-nYh" id="3va-DC-nUC"/>
-                                            <outlet property="dueDateTextLabel" destination="ycd-8n-bqr" id="yjL-Vd-3WM"/>
-                                            <outlet property="isCompletedImageView" destination="irh-fr-JTP" id="rIa-eK-SX8"/>
-                                            <outlet property="scheduleButton" destination="RSq-k8-aP0" id="ihy-CY-SAt"/>
-                                            <outlet property="separatorView" destination="HJc-Hc-fej" id="5OT-K6-JqB"/>
-                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
@@ -368,9 +287,6 @@
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2TR-zZ-eYN">
                                                     <rect key="frame" x="0.0" y="0.0" width="48" height="63.5"/>
-                                                    <connections>
-                                                        <action selector="buttonPressed:" destination="cTy-Is-MEI" eventType="touchUpInside" id="gYh-DM-kQ9"/>
-                                                    </connections>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Due Tomorrow" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z0a-AY-9M5">
                                                     <rect key="frame" x="51" y="35" width="85" height="15"/>
@@ -397,9 +313,6 @@
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="56" id="2d6-Eu-SGo"/>
                                                     </constraints>
-                                                    <connections>
-                                                        <action selector="scheduleButtonPressed:" destination="cTy-Is-MEI" eventType="touchUpInside" id="WzY-Yg-5le"/>
-                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <constraints>
@@ -427,13 +340,6 @@
                                                 <constraint firstItem="2TR-zZ-eYN" firstAttribute="centerX" secondItem="XV3-jf-xmF" secondAttribute="centerX" constant="-3" id="ysJ-rM-9In"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <outlet property="assignmentTextLabel" destination="1j6-j6-qjW" id="z4h-3k-AoE"/>
-                                            <outlet property="dueDateTextLabel" destination="z0a-AY-9M5" id="kEg-1I-I52"/>
-                                            <outlet property="isCompletedImageView" destination="XV3-jf-xmF" id="nh1-HX-sTO"/>
-                                            <outlet property="scheduleButton" destination="phl-NX-HlA" id="oDR-rf-h3Q"/>
-                                            <outlet property="separatorView" destination="nS2-ZS-ge7" id="I9c-Qg-orR"/>
-                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
@@ -764,6 +670,6 @@
         <image name="toDoListIcon4" width="52" height="52"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="xbD-7V-9Dd"/>
+        <segue reference="kGv-ar-Mfg"/>
     </inferredMetricsTieBreakers>
 </document>

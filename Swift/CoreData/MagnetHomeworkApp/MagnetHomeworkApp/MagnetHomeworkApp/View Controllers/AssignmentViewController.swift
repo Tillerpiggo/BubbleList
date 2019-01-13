@@ -92,6 +92,9 @@ class AssignmentViewController: ToDoTableViewController {
         tableView.backgroundColor = .backgroundColor
         
         tableView.register(UINib(nibName: "AssignmentHeaderFooterView", bundle: nil), forHeaderFooterViewReuseIdentifier: "AssignmentHeaderFooterView")
+        
+        let assignmentCellNib = UINib(nibName: "AssignmentCell", bundle: nil)
+        tableView.register(assignmentCellNib, forCellReuseIdentifier: "AssignmentCell")
     }
     
     override func viewWillAppear(_ animated: Bool) {
