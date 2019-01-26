@@ -81,7 +81,6 @@ class AddObjectView: UIView {
         textField.isHidden = true
         view.backgroundColor = .primaryColor
         textLabel.textColor = .white
-
     }
     
     func highlight() {

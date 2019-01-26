@@ -25,6 +25,7 @@ class AssignmentViewController: ToDoTableViewController {
     // MARK: - Properties
     
     var `class`: Class!
+
     
     var delegate: AssignmentTableViewControllerDelegate?
     
@@ -73,28 +74,6 @@ class AssignmentViewController: ToDoTableViewController {
         sharingController.delegate = self
         
         present(sharingController, animated: true, completion: nil)
-    }
-    
-    // MARK: - Initializer
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        updateHeaderView()
-        
-//        tableView.rowHeight = 44
-//        tableView.estimatedRowHeight = 60
-        
-        navigationController?.configureNavigationBar()
-        
-        tableView.dataSource = self
-        tableView.delegate = self
-        
-        tableView.separatorColor = .separatorColor
-        tableView.backgroundColor = .backgroundColor
-        
-        tableView.register(UINib(nibName: "AssignmentHeaderFooterView", bundle: nil), forHeaderFooterViewReuseIdentifier: "AssignmentHeaderFooterView")
-        
-        let assignmentCellNib = UINib(nibName: "AssignmentCell", bundle: nil)
-        tableView.register(assignmentCellNib, forCellReuseIdentifier: "AssignmentCell")
     }
     
     override func viewWillAppear(_ animated: Bool) {

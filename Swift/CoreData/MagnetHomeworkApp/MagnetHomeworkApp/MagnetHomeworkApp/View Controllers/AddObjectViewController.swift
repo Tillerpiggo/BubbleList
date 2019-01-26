@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AddObjectViewController: UIViewController, AddObjectViewDelegate, UITextFieldDelegate, UITextDragDelegate {
+class AddObjectViewController: UIViewController, AddObjectViewDelegate, UITextFieldDelegate, UITextDragDelegate, UIScrollViewDelegate {
     
     // MARK: - Variables
     
@@ -97,6 +97,12 @@ class AddObjectViewController: UIViewController, AddObjectViewDelegate, UITextFi
         textField.resignFirstResponder()
         return true
     }
+    
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        addObjectView.textField.resignFirstResponder()
+    }
+    
+    
     
     func saveObject(text: String) {
         // Must be implemented by subclass

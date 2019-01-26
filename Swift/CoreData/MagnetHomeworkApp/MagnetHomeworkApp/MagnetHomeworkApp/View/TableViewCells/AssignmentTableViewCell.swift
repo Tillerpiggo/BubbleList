@@ -11,9 +11,10 @@ import UIKit
 protocol AssignmentTableViewCellDelegate {
     func buttonPressed(assignment: Assignment) -> Bool
     func scheduleButtonPressed(assignment: Assignment)
+    func textChanged(assignment: Assignment)
 }
 
-class AssignmentTableViewCell: UITableViewCell {
+class AssignmentTableViewCell: UITableViewCell, UITextFieldDelegate, UITextDragDelegate {
     
     let completedCircleImageName = "completedCircleTemplate"
     let incompletedCircleImageName = "incompletedCircle2"
@@ -23,12 +24,14 @@ class AssignmentTableViewCell: UITableViewCell {
     var delegate: AssignmentTableViewCellDelegate?
     var assignment: Assignment?
     
+    var originalText: String?
+    
     // MARK: - IBOutlets
     @IBOutlet weak var isCompletedImageView: UIImageView!
-    @IBOutlet weak var assignmentTextLabel: UILabel!
     @IBOutlet weak var dueDateTextLabel: UILabel!
     @IBOutlet weak var separatorView: UIView!
     @IBOutlet weak var scheduleButton: UIImageView!
+    @IBOutlet weak var assignmentTextField: UITextField!
     
     // MARK: - IBActions
     @IBAction func buttonPressed(_ sender: Any) {
@@ -39,7 +42,7 @@ class AssignmentTableViewCell: UITableViewCell {
         let duration: TimeInterval = 0.1
         
         self.isCompletedImageView.image = isCompletedImage
-        transition(with: assignmentTextLabel, duration: duration, animations: { self.assignmentTextLabel.textColor = isCompleted ?? false ? .lightGray : .textColor })
+        transition(with: assignmentTextField, duration: duration, animations: { self.assignmentTextField.textColor = isCompleted ?? false ? .lightGray : .textColor })
         transition(with: dueDateTextLabel, duration: duration, animations: { self.dueDateTextLabel.textColor = isCompleted ?? false ? UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1.0) : .secondaryTextColor })
     }
     
@@ -57,6 +60,8 @@ class AssignmentTableViewCell: UITableViewCell {
         isCompletedImageView.tintColor = .primaryColor
         contentView.backgroundColor = .contentColor
         backgroundColor = .contentColor
+        self.assignmentTextField.delegate = self
+        self.assignmentTextField.textDragDelegate = self
     }
     
     override func layoutSubviews() {
@@ -87,14 +92,48 @@ class AssignmentTableViewCell: UITableViewCell {
         })
     }
     
+    @IBAction func textFieldChanged(_ sender: UITextField) {
+        print(sender.text ?? "")
+        
+        guard textNotEmpty(sender.text ?? "") else {
+            return
+        }
+    }
+    
+    func textFieldDidBeginEditing(_ sender: UITextField) {
+        originalText = sender.text!
+    }
+    
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        
+        if !textNotEmpty(textField.text ?? "") {
+            textField.text = originalText
+        } else {
+            assignment?.text = textField.text
+        }
+        
+        delegate?.textChanged(assignment: assignment!)
+        return true
+    }
+    
+    func textNotEmpty(_ text: String) -> Bool {
+        let isTextNotEmpty = (text != "" && !text.isEmpty)
+        print(isTextNotEmpty)
+        return isTextNotEmpty
+    }
+    
+    
+    
     func configure(withAssignment assignment: Assignment) {
         let isCompleted = assignment.toDo?.isCompleted ?? false
         let isCompletedImage = isCompleted ? UIImage(named: completedCircleImageName) : UIImage(named: incompletedCircleImageName)
         isCompletedImageView.tintColor = .primaryColor
         isCompletedImageView.image = isCompletedImage
         
-        assignmentTextLabel.text = assignment.text
-        assignmentTextLabel.textColor = isCompleted ? .lightGray : .textColor
+        assignmentTextField.text = assignment.text
+        assignmentTextField.textColor = isCompleted ? .lightGray : .textColor
         dueDateTextLabel.textColor = isCompleted ? UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1.0) : .secondaryTextColor
         if let dueDate = assignment.dueDate as Date?, dueDate != Date.tomorrow, assignment.dueDateSection  != "Completed" {
             let dueDateString = dueDate.dateString

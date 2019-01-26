@@ -13,7 +13,7 @@ import UserNotifications
 protocol NotificationDelegate {
     func fetchChanges(completion: @escaping (Bool) -> Void)
 }
-
+ 
 protocol DataCarrier {
     var cloudController: CloudController! { get set }
     var coreDataController: CoreDataController! { get set }

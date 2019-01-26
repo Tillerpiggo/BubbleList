@@ -33,6 +33,8 @@ class ToDoTableViewController: AddObjectViewController {
         return "ToDo"
     }
     
+    var assignmentDoneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(ToDoTableViewController.donePressed(sender:)))
+    
     var sortDescriptors: [NSSortDescriptor] = {
         let sortBySectionNumber = NSSortDescriptor(key: #keyPath(Assignment.dueDateSectionNumber), ascending: true)
         let sortByDueDate = NSSortDescriptor(key: #keyPath(Assignment.dueDate), ascending: true)
@@ -101,6 +103,9 @@ class ToDoTableViewController: AddObjectViewController {
         self.navigationController?.configureNavigationBar()
         
         tableView.register(UINib(nibName: "AssignmentHeaderFooterView", bundle: nil), forHeaderFooterViewReuseIdentifier: "AssignmentHeaderFooterView")
+        
+        let assignmentCellNib = UINib(nibName: "AssignmentCell", bundle: nil)
+        tableView.register(assignmentCellNib, forCellReuseIdentifier: "AssignmentCell")
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -132,6 +137,8 @@ class ToDoTableViewController: AddObjectViewController {
         let textAttributes: [NSAttributedString.Key: UIColor]  = [NSAttributedString.Key.foregroundColor: .textColor]
         navigationController?.navigationBar.titleTextAttributes = textAttributes
     }
+    
+    
 
 }
 
@@ -156,7 +163,7 @@ extension ToDoTableViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoAssignmentCell", for: indexPath) as! AssignmentTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "AssignmentCell", for: indexPath) as! AssignmentTableViewCell
         
         return cell
     }
@@ -445,6 +452,10 @@ extension ToDoTableViewController: AssignmentTableViewCellDelegate {
     func scheduleButtonPressed(assignment: Assignment) {
         selectedAssignment = assignment
         performSegue(withIdentifier: "ScheduleTableView", sender: self)
+    }
+    
+    func textChanged(assignment: Assignment) {
+        coreDataController.save()
     }
 }
 
