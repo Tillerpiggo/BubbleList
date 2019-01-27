@@ -108,6 +108,11 @@ class ToDoTableViewController: AddObjectViewController {
         tableView.register(assignmentCellNib, forCellReuseIdentifier: "AssignmentCell")
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let navigationController = segue.destination as? UINavigationController,
             let destinationViewController = navigationController.topViewController as? ScheduleTableViewController,

@@ -28,6 +28,7 @@ class AddObjectViewController: UIViewController, AddObjectViewDelegate, UITextFi
         //addObjectView.commonInit()
         addObjectView.configure()
         addObjectView.delegate = self
+        addObjectView.textLabel.text = "Add Assignment"
 
         //self.view.addSubview(addObjectView)
 
