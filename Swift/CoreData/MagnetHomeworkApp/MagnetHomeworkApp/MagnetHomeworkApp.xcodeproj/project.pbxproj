@@ -32,6 +32,9 @@
 		235E0B8B2197DF44005D3B9C /* String+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235E0B8A2197DF44005D3B9C /* String+Helpers.swift */; };
 		235E0B8E2198AE06005D3B9C /* ClassTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235E0B8D2198AE05005D3B9C /* ClassTableViewCell.swift */; };
 		235E0B902199491F005D3B9C /* UILabel+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235E0B8F2199491F005D3B9C /* UILabel+Helpers.swift */; };
+		238D15B92208CB6D00178183 /* ConnectionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 238D15B82208CB6D00178183 /* ConnectionView.xib */; };
+		238D15BB2208D78600178183 /* ConnectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238D15BA2208D78600178183 /* ConnectionView.swift */; };
+		238D15BD2208D8D000178183 /* ConnectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238D15BC2208D8D000178183 /* ConnectionViewController.swift */; };
 		23AF675521EAFB6C003029D2 /* AssignmentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23AF675421EAFB6C003029D2 /* AssignmentCell.xib */; };
 		23CD109121803C530034FFA7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CD109021803C530034FFA7 /* AppDelegate.swift */; };
 		23CD109621803C530034FFA7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23CD109421803C530034FFA7 /* Main.storyboard */; };
@@ -52,6 +55,7 @@
 		23F4C9DA2192704400D00D05 /* UIColor+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F4C9D92192704400D00D05 /* UIColor+Helpers.swift */; };
 		23F4C9E0219283EA00D00D05 /* CAGradientLayer+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F4C9DF219283EA00D00D05 /* CAGradientLayer+Helpers.swift */; };
 		23F4C9E2219284A000D00D05 /* UINavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F4C9E1219284A000D00D05 /* UINavigationBar.swift */; };
+		2CB8A5F8F4BF603894EBD072 /* Pods_MagnetHomeworkApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47631C1B3FB7247D82D75AD8 /* Pods_MagnetHomeworkApp.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -80,6 +84,9 @@
 		235E0B8A2197DF44005D3B9C /* String+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Helpers.swift"; sourceTree = "<group>"; };
 		235E0B8D2198AE05005D3B9C /* ClassTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassTableViewCell.swift; sourceTree = "<group>"; };
 		235E0B8F2199491F005D3B9C /* UILabel+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Helpers.swift"; sourceTree = "<group>"; };
+		238D15B82208CB6D00178183 /* ConnectionView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConnectionView.xib; sourceTree = "<group>"; };
+		238D15BA2208D78600178183 /* ConnectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionView.swift; sourceTree = "<group>"; };
+		238D15BC2208D8D000178183 /* ConnectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionViewController.swift; sourceTree = "<group>"; };
 		23AF675421EAFB6C003029D2 /* AssignmentCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AssignmentCell.xib; sourceTree = "<group>"; };
 		23CD108D21803C530034FFA7 /* MagnetHomeworkApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MagnetHomeworkApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		23CD109021803C530034FFA7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -103,6 +110,9 @@
 		23F4C9D92192704400D00D05 /* UIColor+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Helpers.swift"; sourceTree = "<group>"; };
 		23F4C9DF219283EA00D00D05 /* CAGradientLayer+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CAGradientLayer+Helpers.swift"; sourceTree = "<group>"; };
 		23F4C9E1219284A000D00D05 /* UINavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationBar.swift; sourceTree = "<group>"; };
+		47631C1B3FB7247D82D75AD8 /* Pods_MagnetHomeworkApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MagnetHomeworkApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6F8C0E46BE62C846CCD8A97 /* Pods-MagnetHomeworkApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MagnetHomeworkApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-MagnetHomeworkApp/Pods-MagnetHomeworkApp.release.xcconfig"; sourceTree = "<group>"; };
+		FB5CFD4B1D8C85CD5DDC2DEE /* Pods-MagnetHomeworkApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MagnetHomeworkApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MagnetHomeworkApp/Pods-MagnetHomeworkApp.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +121,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				23CD10A821803D010034FFA7 /* CloudKit.framework in Frameworks */,
+				2CB8A5F8F4BF603894EBD072 /* Pods_MagnetHomeworkApp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -131,6 +142,7 @@
 			isa = PBXGroup;
 			children = (
 				2329382121E3280F00E5FC69 /* TabBarController.swift */,
+				238D15BC2208D8D000178183 /* ConnectionViewController.swift */,
 				23332B0221AB1DD600111882 /* AddObjectViewController.swift */,
 				23484C5E21854A1E007C5CCF /* ClassTableViewController.swift */,
 				23484C63218963E0007C5CCF /* AssignmentViewController.swift */,
@@ -166,6 +178,7 @@
 			children = (
 				2324191321AF843B0014916F /* AddObjectView.swift */,
 				2310CF4221A8877E00A995FB /* AssignmentHeaderFooterView.swift */,
+				238D15BA2208D78600178183 /* ConnectionView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -194,6 +207,7 @@
 				2324191121AF83E10014916F /* AddObjectView.xib */,
 				2310CF4621A920AE00A995FB /* AssignmentHeaderFooterView.xib */,
 				23AF675421EAFB6C003029D2 /* AssignmentCell.xib */,
+				238D15B82208CB6D00178183 /* ConnectionView.xib */,
 			);
 			path = Nibs;
 			sourceTree = "<group>";
@@ -216,6 +230,7 @@
 				23CD108F21803C530034FFA7 /* MagnetHomeworkApp */,
 				23CD108E21803C530034FFA7 /* Products */,
 				23CD10A621803D010034FFA7 /* Frameworks */,
+				43C8295611337C2752EEDF8E /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -248,6 +263,7 @@
 			isa = PBXGroup;
 			children = (
 				23CD10A721803D010034FFA7 /* CloudKit.framework */,
+				47631C1B3FB7247D82D75AD8 /* Pods_MagnetHomeworkApp.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -318,6 +334,15 @@
 			path = UIExtension;
 			sourceTree = "<group>";
 		};
+		43C8295611337C2752EEDF8E /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				FB5CFD4B1D8C85CD5DDC2DEE /* Pods-MagnetHomeworkApp.debug.xcconfig */,
+				A6F8C0E46BE62C846CCD8A97 /* Pods-MagnetHomeworkApp.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -325,9 +350,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 23CD10A221803C550034FFA7 /* Build configuration list for PBXNativeTarget "MagnetHomeworkApp" */;
 			buildPhases = (
+				2FE084B49EF770234FD88C88 /* [CP] Check Pods Manifest.lock */,
 				23CD108921803C530034FFA7 /* Sources */,
 				23CD108A21803C530034FFA7 /* Frameworks */,
 				23CD108B21803C530034FFA7 /* Resources */,
+				AA20D5A4569958C04FFF7039 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -386,6 +413,7 @@
 			files = (
 				2324191221AF83E10014916F /* AddObjectView.xib in Resources */,
 				23CD109E21803C550034FFA7 /* LaunchScreen.storyboard in Resources */,
+				238D15B92208CB6D00178183 /* ConnectionView.xib in Resources */,
 				23AF675521EAFB6C003029D2 /* AssignmentCell.xib in Resources */,
 				23CD109B21803C550034FFA7 /* Assets.xcassets in Resources */,
 				23CD109621803C530034FFA7 /* Main.storyboard in Resources */,
@@ -394,6 +422,55 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		2FE084B49EF770234FD88C88 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-MagnetHomeworkApp-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		AA20D5A4569958C04FFF7039 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-MagnetHomeworkApp/Pods-MagnetHomeworkApp-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MagnetHomeworkApp/Pods-MagnetHomeworkApp-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		23CD108921803C530034FFA7 /* Sources */ = {
@@ -432,11 +509,13 @@
 				2329382221E3280F00E5FC69 /* TabBarController.swift in Sources */,
 				23F4C9E0219283EA00D00D05 /* CAGradientLayer+Helpers.swift in Sources */,
 				23CD10AA21803E4D0034FFA7 /* CloudController.swift in Sources */,
+				238D15BD2208D8D000178183 /* ConnectionViewController.swift in Sources */,
 				23F4C9DA2192704400D00D05 /* UIColor+Helpers.swift in Sources */,
 				23CE667F219BCC0000B34042 /* ToDoTableViewController.swift in Sources */,
 				235E0B86219550D9005D3B9C /* ScheduleTableViewController.swift in Sources */,
 				23484C5B21822CA6007C5CCF /* Assignment+CoreDataProperties.swift in Sources */,
 				23484C5D21822CEE007C5CCF /* RecordType.swift in Sources */,
+				238D15BB2208D78600178183 /* ConnectionView.swift in Sources */,
 				23CD10B421814FBE0034FFA7 /* CoreDataUploadable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -581,6 +660,7 @@
 		};
 		23CD10A321803C550034FFA7 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FB5CFD4B1D8C85CD5DDC2DEE /* Pods-MagnetHomeworkApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = MagnetHomeworkApp/MagnetHomeworkApp.entitlements;
@@ -601,6 +681,7 @@
 		};
 		23CD10A421803C550034FFA7 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A6F8C0E46BE62C846CCD8A97 /* Pods-MagnetHomeworkApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = MagnetHomeworkApp/MagnetHomeworkApp.entitlements;

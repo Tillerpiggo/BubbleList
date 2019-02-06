@@ -1,0 +1,6 @@
+framework module Pods_MagnetHomeworkApp {
+  umbrella header "Pods-MagnetHomeworkApp-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -25,7 +25,7 @@ class AssignmentViewController: ToDoTableViewController {
     // MARK: - Properties
     
     var `class`: Class!
-
+    
     
     var delegate: AssignmentTableViewControllerDelegate?
     
@@ -36,6 +36,10 @@ class AssignmentViewController: ToDoTableViewController {
     
     override func predicate() -> NSPredicate {
         return NSPredicate(format: "owningClass == %@ && isCompleted == false", self.`class`)
+    }
+    
+    override func cacheName() -> String {
+        return `class`.ckRecord.recordID.recordName
     }
     
     func fetch() {

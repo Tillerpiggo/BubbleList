@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AddObjectViewController: UIViewController, AddObjectViewDelegate, UITextFieldDelegate, UITextDragDelegate, UIScrollViewDelegate {
+class AddObjectViewController: ConnectionViewController, AddObjectViewDelegate, UITextFieldDelegate, UITextDragDelegate, UIScrollViewDelegate {
     
     // MARK: - Variables
     
@@ -55,7 +55,7 @@ class AddObjectViewController: UIViewController, AddObjectViewDelegate, UITextFi
 
         addObjectView.addConstraints(horizontalLabelConstraints)
         addObjectView.addConstraints(verticalLabelConstraints)
-//
+
         addObjectView.addConstraints(horizontalContentViewConstraints)
         addObjectView.addConstraints(verticalContentViewConstraints)
 
