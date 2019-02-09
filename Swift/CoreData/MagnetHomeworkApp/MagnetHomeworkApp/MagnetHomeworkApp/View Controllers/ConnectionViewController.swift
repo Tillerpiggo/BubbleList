@@ -39,7 +39,7 @@ class ConnectionViewController: UIViewController {
         
         // Define constraints
         let horizontalConnectionViewConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[connectionView]-0-|", metrics: nil, views: views)
-        //let verticalConnectionViewConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:[connectionView]-60-|", metrics: nil, views: views)
+        let verticalConnectionViewConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[connectionView]-0-|", metrics: nil, views: views)
         let connectionViewHeightConstraint = NSLayoutConstraint(item: connectionView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1.0, constant: 36)
         
         let horizontalTextLabelConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[textLabel]-16-[learnMoreButton]", metrics: nil, views: views)
@@ -56,7 +56,7 @@ class ConnectionViewController: UIViewController {
         
         // Add constraints
         view.addConstraints(horizontalConnectionViewConstraints)
-        //view.addConstraints(verticalConnectionViewConstraints) // Defined in storyboard instead
+        view.addConstraints(verticalConnectionViewConstraints) // Defined in storyboard instead
         view.addConstraint(connectionViewHeightConstraint)
         
         connectionView.addConstraints(horizontalTextLabelConstraints)

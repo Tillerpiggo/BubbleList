@@ -209,13 +209,6 @@
                                     <constraint firstAttribute="height" constant="72" id="tmz-wm-6d8"/>
                                 </constraints>
                             </view>
-                            <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sZQ-lU-BpX">
-                                <rect key="frame" x="67" y="237" width="240" height="128"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                <connections>
-                                    <segue destination="GhD-he-2TY" kind="embed" id="jbY-IJ-mTG"/>
-                                </connections>
-                            </containerView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="svh-LB-nVR" customClass="ConnectionView" customModule="MagnetHomeworkApp" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="518" width="375" height="36"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -223,9 +216,19 @@
                                     <constraint firstAttribute="height" constant="36" id="AML-ta-2RN"/>
                                 </constraints>
                             </view>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sZQ-lU-BpX">
+                                <rect key="frame" x="0.0" y="518" width="375" height="36"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="36" id="4ZB-v7-O9c"/>
+                                </constraints>
+                                <connections>
+                                    <segue destination="GhD-he-2TY" kind="embed" id="jbY-IJ-mTG"/>
+                                </connections>
+                            </containerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="Vrg-og-GeK" firstAttribute="trailing" secondItem="sZQ-lU-BpX" secondAttribute="trailing" id="5ih-Ky-5SF"/>
                             <constraint firstItem="Vrg-og-GeK" firstAttribute="bottom" secondItem="cIf-v4-PxE" secondAttribute="bottom" id="Dhl-9b-J6D"/>
                             <constraint firstItem="ZOf-MY-E1F" firstAttribute="top" secondItem="Vrg-og-GeK" secondAttribute="top" id="FNh-1a-Upb"/>
                             <constraint firstItem="Vrg-og-GeK" firstAttribute="trailing" secondItem="ZOf-MY-E1F" secondAttribute="trailing" id="G5c-yx-lMz"/>
@@ -237,6 +240,8 @@
                             <constraint firstItem="cIf-v4-PxE" firstAttribute="leading" secondItem="Vrg-og-GeK" secondAttribute="leading" id="k8L-aW-ZgT"/>
                             <constraint firstItem="ZOf-MY-E1F" firstAttribute="leading" secondItem="Vrg-og-GeK" secondAttribute="leading" id="sqp-iS-sZD"/>
                             <constraint firstItem="svh-LB-nVR" firstAttribute="bottom" secondItem="Vrg-og-GeK" secondAttribute="bottom" id="tGn-l6-8xt"/>
+                            <constraint firstItem="Vrg-og-GeK" firstAttribute="bottom" secondItem="sZQ-lU-BpX" secondAttribute="bottom" id="uxb-Qm-O7d"/>
+                            <constraint firstItem="sZQ-lU-BpX" firstAttribute="leading" secondItem="Vrg-og-GeK" secondAttribute="leading" id="vKz-ty-CbF"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Vrg-og-GeK"/>
                     </view>
@@ -636,13 +641,14 @@
             <objects>
                 <viewController id="GhD-he-2TY" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="L9Y-Gf-Uv6">
-                        <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="36"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ono-fw-sxi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="1243" y="1355"/>
         </scene>
     </scenes>
     <resources>
