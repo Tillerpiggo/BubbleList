@@ -209,11 +209,11 @@
                                     <constraint firstAttribute="height" constant="72" id="tmz-wm-6d8"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="svh-LB-nVR" customClass="ConnectionView" customModule="MagnetHomeworkApp" customModuleProvider="target">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wyZ-Lt-Krq" customClass="ConnectionView" customModule="MagnetHomeworkApp" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="518" width="375" height="36"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="36" id="AML-ta-2RN"/>
+                                    <constraint firstAttribute="height" constant="36" id="tOT-XI-FP1"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -222,14 +222,13 @@
                             <constraint firstItem="Vrg-og-GeK" firstAttribute="bottom" secondItem="cIf-v4-PxE" secondAttribute="bottom" id="Dhl-9b-J6D"/>
                             <constraint firstItem="ZOf-MY-E1F" firstAttribute="top" secondItem="Vrg-og-GeK" secondAttribute="top" id="FNh-1a-Upb"/>
                             <constraint firstItem="Vrg-og-GeK" firstAttribute="trailing" secondItem="ZOf-MY-E1F" secondAttribute="trailing" id="G5c-yx-lMz"/>
-                            <constraint firstItem="svh-LB-nVR" firstAttribute="leading" secondItem="Vrg-og-GeK" secondAttribute="leading" id="KEA-77-x0t"/>
                             <constraint firstItem="Vrg-og-GeK" firstAttribute="bottom" secondItem="ZOf-MY-E1F" secondAttribute="bottom" id="Pqy-j7-Fvf"/>
                             <constraint firstItem="cIf-v4-PxE" firstAttribute="trailing" secondItem="Vrg-og-GeK" secondAttribute="trailing" id="Rgi-b8-Sf8"/>
-                            <constraint firstItem="svh-LB-nVR" firstAttribute="trailing" secondItem="Vrg-og-GeK" secondAttribute="trailing" id="blc-gU-a2s"/>
-                            <constraint firstItem="svh-LB-nVR" firstAttribute="centerX" secondItem="uvh-AU-h1R" secondAttribute="centerX" id="iGA-6P-YAl"/>
+                            <constraint firstItem="Vrg-og-GeK" firstAttribute="bottom" secondItem="wyZ-Lt-Krq" secondAttribute="bottom" id="WVl-0h-xjf"/>
                             <constraint firstItem="cIf-v4-PxE" firstAttribute="leading" secondItem="Vrg-og-GeK" secondAttribute="leading" id="k8L-aW-ZgT"/>
+                            <constraint firstItem="wyZ-Lt-Krq" firstAttribute="trailing" secondItem="Vrg-og-GeK" secondAttribute="trailing" id="qHz-Ko-yfo"/>
+                            <constraint firstItem="wyZ-Lt-Krq" firstAttribute="leading" secondItem="Vrg-og-GeK" secondAttribute="leading" id="rha-LV-mEY"/>
                             <constraint firstItem="ZOf-MY-E1F" firstAttribute="leading" secondItem="Vrg-og-GeK" secondAttribute="leading" id="sqp-iS-sZD"/>
-                            <constraint firstItem="svh-LB-nVR" firstAttribute="bottom" secondItem="Vrg-og-GeK" secondAttribute="bottom" id="tGn-l6-8xt"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Vrg-og-GeK"/>
                     </view>
@@ -242,7 +241,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="addObjectView" destination="cIf-v4-PxE" id="vo5-dA-VWq"/>
-                        <outlet property="connectionView" destination="svh-LB-nVR" id="bKE-CF-flf"/>
+                        <outlet property="connectionView" destination="wyZ-Lt-Krq" id="lTs-oh-zlG"/>
                         <outlet property="tableView" destination="ZOf-MY-E1F" id="zqb-qo-NZQ"/>
                         <segue destination="JL5-cX-GN7" kind="presentation" identifier="ScheduleTableView" id="xbD-7V-9Dd"/>
                     </connections>
@@ -285,14 +284,24 @@
                                     <constraint firstAttribute="height" constant="72" id="2he-bh-d3e"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Cd-QC-O6n" customClass="ConnectionView" customModule="MagnetHomeworkApp" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="518" width="375" height="36"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="36" id="NJA-XG-sK1"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="9Cd-QC-O6n" firstAttribute="leading" secondItem="BOY-em-jh3" secondAttribute="leading" id="835-FD-TXy"/>
                             <constraint firstItem="qRB-fC-I2c" firstAttribute="bottom" secondItem="BOY-em-jh3" secondAttribute="bottom" id="9gS-UJ-1j8"/>
                             <constraint firstItem="qRB-fC-I2c" firstAttribute="leading" secondItem="BOY-em-jh3" secondAttribute="leading" id="RiU-e0-Cb8"/>
+                            <constraint firstItem="BOY-em-jh3" firstAttribute="bottom" secondItem="9Cd-QC-O6n" secondAttribute="bottom" id="Te4-sR-kua"/>
                             <constraint firstItem="0ZV-43-SaM" firstAttribute="leading" secondItem="BOY-em-jh3" secondAttribute="leading" id="UPo-jP-efK"/>
                             <constraint firstItem="BOY-em-jh3" firstAttribute="trailing" secondItem="0ZV-43-SaM" secondAttribute="trailing" id="ZuX-qA-8O2"/>
                             <constraint firstItem="BOY-em-jh3" firstAttribute="bottom" secondItem="0ZV-43-SaM" secondAttribute="bottom" id="bra-X8-MD8"/>
+                            <constraint firstItem="9Cd-QC-O6n" firstAttribute="trailing" secondItem="BOY-em-jh3" secondAttribute="trailing" id="e16-nJ-gvx"/>
                             <constraint firstItem="qRB-fC-I2c" firstAttribute="top" secondItem="BOY-em-jh3" secondAttribute="top" id="h7d-u7-sEo"/>
                             <constraint firstAttribute="trailing" secondItem="qRB-fC-I2c" secondAttribute="trailing" id="rhE-k2-w9o"/>
                         </constraints>
@@ -301,6 +310,7 @@
                     <navigationItem key="navigationItem" title="To-Do" id="ubA-V3-1zO"/>
                     <connections>
                         <outlet property="addObjectView" destination="0ZV-43-SaM" id="Ojg-vX-V4k"/>
+                        <outlet property="connectionView" destination="9Cd-QC-O6n" id="M4t-Ow-IBa"/>
                         <outlet property="tableView" destination="qRB-fC-I2c" id="yo4-3H-rUS"/>
                         <segue destination="JL5-cX-GN7" kind="presentation" identifier="ScheduleTableView" id="kGv-ar-Mfg"/>
                     </connections>

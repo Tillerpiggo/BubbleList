@@ -631,11 +631,11 @@ extension ClassTableViewController: ClassTableViewCellDelegate {
 }
 
 extension ClassTableViewController {
-    func didConnect() {
+    func didConnect(animated: Bool) {
         // TODO: Change to connectionViewController, make it pop up and down
     }
     
-    func didDisconnect() {
+    func didDisconnect(animated: Bool) {
         // TODO: Change
     }
 }

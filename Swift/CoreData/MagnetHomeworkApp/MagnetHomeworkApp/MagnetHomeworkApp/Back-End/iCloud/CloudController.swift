@@ -16,9 +16,9 @@ enum DatabaseType: String {
 
 // An object that allows you to save and fetch data from the Cloud
 
-protocol ConnectionDelegate {
-    func didConnect()
-    func didDisconnect()
+protocol ConnectionDelegate: class {
+    func didConnect(animated: Bool)
+    func didDisconnect(animated: Bool)
 }
 
 class CloudController {
@@ -32,7 +32,7 @@ class CloudController {
     
     var isOperationInProgress: Bool = false
     
-    var delegate: ConnectionDelegate?
+    weak var delegate: ConnectionDelegate?
     var reachability: Reachability = Reachability()! // initialize a reachability object
     
     var createdCustomZone: Bool {
@@ -721,11 +721,11 @@ class CloudController {
                 print("Reachable via Cell")
             }
             
-            delegate?.didConnect()
+            self.delegate?.didConnect(animated: true)
         }
         reachability.whenUnreachable = { _ in
             print("Not reachable")
-            delegate?.didDisconnect()
+            self.delegate?.didDisconnect(animated: true)
         }
         
         do {

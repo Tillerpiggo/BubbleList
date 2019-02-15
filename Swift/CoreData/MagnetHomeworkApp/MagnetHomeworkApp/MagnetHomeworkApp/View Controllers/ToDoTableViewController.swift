@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 import CloudKit
 
-class ToDoTableViewController: AddObjectViewController {
+class ToDoTableViewController: AddObjectViewController, DataCarrier {
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -111,6 +111,7 @@ class ToDoTableViewController: AddObjectViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tableView.reloadData()
+        setup() // Connect the CloudController to didConnect() and didDisconnect() updates
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -512,6 +513,16 @@ extension ToDoTableViewController: ScheduleTableViewControllerDelegate {
         }
         
         //delegate?.reloadClass(`class`)
+    }
+}
+
+extension ToDoTableViewController {
+    func didDisconnect(animated: Bool = true) {
+        self.connectionView.show(animated: animated)
+    }
+    
+    func didConnect(animated: Bool = true) {
+        self.connectionView.dismiss(animated: animated)
     }
 }
 

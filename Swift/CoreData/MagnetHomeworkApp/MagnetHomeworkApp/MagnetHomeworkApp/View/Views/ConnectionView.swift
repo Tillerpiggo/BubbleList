@@ -48,18 +48,31 @@ class ConnectionView: UIView {
         dismiss()
     }
     
-    func dismiss() {
+    func dismiss(animated: Bool = true) {
         // do any necessary visual changes to dismiss the view
+        
+        let durationFactor: TimeInterval = animated ? 1 : 0
         
         let transform = CGAffineTransform(translationX: 0, y: 36)
         
-        UIView.animate(withDuration: 0.3, animations: {
-            self.setTransform(to: transform)
+        // Crossfade text from "You're offline" to say "Connected!"
+        UIView.transition(with: textLabel, duration: 0.2 * durationFactor, options: [.transitionCrossDissolve], animations: {
+            self.textLabel.text = "Connected!"
+        }, completion: { (bool) in
+            UIView.animate(withDuration: 0.3 * durationFactor, delay: 0.4 * durationFactor, animations: {
+                self.setTransform(to: transform)
+            })
         })
     }
     
-    func show() {
-        setTransform(to: CGAffineTransform.identity)
+    func show(animated: Bool = true) {
+        self.textLabel.text = "You're offline."
+        
+        let durationFactor: TimeInterval = animated ? 1 : 0
+        
+        UIView.animate(withDuration: 0.3 * durationFactor, animations: {
+            self.setTransform(to: CGAffineTransform.identity)
+        })
     }
     
     func setTransform(to transform: CGAffineTransform) {
@@ -77,6 +90,7 @@ class ConnectionView: UIView {
         self.translatesAutoresizingMaskIntoConstraints = false
         
         //setConstraints()
+        dismiss(animated: false)
     }
     
     func setConstraints() {

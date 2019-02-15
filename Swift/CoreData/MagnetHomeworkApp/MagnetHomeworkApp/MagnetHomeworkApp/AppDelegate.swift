@@ -9,6 +9,7 @@
 import UIKit
 import CloudKit
 import UserNotifications
+import Reachability
 
 protocol NotificationDelegate {
     func fetchChanges(completion: @escaping (Bool) -> Void)
@@ -20,8 +21,14 @@ protocol DataCarrier: ConnectionDelegate {
 }
 
 extension DataCarrier {
-    init() {
+    func setup() {
         self.cloudController.delegate = self
+        
+        if cloudController.reachability.connection == .none {
+            didDisconnect(animated: false)
+        } else {
+            didConnect(animated: false)
+        }
     }
 }
 
