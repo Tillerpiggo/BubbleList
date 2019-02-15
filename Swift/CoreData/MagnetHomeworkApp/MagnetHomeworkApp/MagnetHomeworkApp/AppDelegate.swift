@@ -14,9 +14,15 @@ protocol NotificationDelegate {
     func fetchChanges(completion: @escaping (Bool) -> Void)
 }
  
-protocol DataCarrier {
+protocol DataCarrier: ConnectionDelegate {
     var cloudController: CloudController! { get set }
     var coreDataController: CoreDataController! { get set }
+}
+
+extension DataCarrier {
+    init() {
+        self.cloudController.delegate = self
+    }
 }
 
 @UIApplicationMain

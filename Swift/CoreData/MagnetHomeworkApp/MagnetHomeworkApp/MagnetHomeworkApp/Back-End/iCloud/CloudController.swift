@@ -7,6 +7,7 @@
 
 import Foundation
 import CloudKit
+import Reachability
 
 enum DatabaseType: String {
     case `private` = "private"
@@ -14,6 +15,11 @@ enum DatabaseType: String {
 }
 
 // An object that allows you to save and fetch data from the Cloud
+
+protocol ConnectionDelegate {
+    func didConnect()
+    func didDisconnect()
+}
 
 class CloudController {
     
@@ -25,6 +31,9 @@ class CloudController {
     let operationQueue = OperationQueue.main
     
     var isOperationInProgress: Bool = false
+    
+    var delegate: ConnectionDelegate?
+    var reachability: Reachability = Reachability()! // initialize a reachability object
     
     var createdCustomZone: Bool {
         get {
@@ -672,6 +681,7 @@ class CloudController {
         subscribedToChanges = true
         
         createCustomZone(inDatabase: .private)
+        setupReachability()
     }
     
     // MARK: - For testing
@@ -698,5 +708,30 @@ class CloudController {
         }
         
         subscribedToChanges = false
+    }
+    
+    // Setup the reachability functions and make it send signals to the delegate
+    
+    func setupReachability() {
+        reachability.whenReachable = { reachability in
+            if reachability.connection == .wifi {
+                print("Reachable via WiFi")
+                
+            } else {
+                print("Reachable via Cell")
+            }
+            
+            delegate?.didConnect()
+        }
+        reachability.whenUnreachable = { _ in
+            print("Not reachable")
+            delegate?.didDisconnect()
+        }
+        
+        do {
+            try reachability.startNotifier()
+        } catch {
+            print("Unable to start notifier")
+        }
     }
 }

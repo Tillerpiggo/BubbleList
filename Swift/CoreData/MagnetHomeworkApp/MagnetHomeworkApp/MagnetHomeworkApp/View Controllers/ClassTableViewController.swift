@@ -629,3 +629,13 @@ extension ClassTableViewController: ClassTableViewCellDelegate {
         tableView.endUpdates()
     }
 }
+
+extension ClassTableViewController {
+    func didConnect() {
+        // TODO: Change to connectionViewController, make it pop up and down
+    }
+    
+    func didDisconnect() {
+        // TODO: Change
+    }
+}
