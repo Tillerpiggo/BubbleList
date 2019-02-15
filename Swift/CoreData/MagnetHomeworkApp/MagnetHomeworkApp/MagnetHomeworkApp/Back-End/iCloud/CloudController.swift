@@ -23,6 +23,8 @@ protocol ConnectionDelegate: class {
 
 class CloudController {
     
+    var isConnectionViewDismissed: Bool = false
+    
     var privateDatabase = CKContainer.default().privateCloudDatabase
     var sharedDatabase = CKContainer.default().sharedCloudDatabase
     

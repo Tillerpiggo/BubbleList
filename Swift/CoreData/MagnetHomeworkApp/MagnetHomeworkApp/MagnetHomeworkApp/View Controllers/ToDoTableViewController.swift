@@ -10,12 +10,9 @@ import UIKit
 import CoreData
 import CloudKit
 
-class ToDoTableViewController: AddObjectViewController, DataCarrier {
+class ToDoTableViewController: AddObjectViewController {
     
     @IBOutlet weak var tableView: UITableView!
-    
-    var cloudController: CloudController!
-    var coreDataController: CoreDataController!
     
     var selectedAssignment: Assignment?
     
@@ -513,16 +510,6 @@ extension ToDoTableViewController: ScheduleTableViewControllerDelegate {
         }
         
         //delegate?.reloadClass(`class`)
-    }
-}
-
-extension ToDoTableViewController {
-    func didDisconnect(animated: Bool = true) {
-        self.connectionView.show(animated: animated)
-    }
-    
-    func didConnect(animated: Bool = true) {
-        self.connectionView.dismiss(animated: animated)
     }
 }
 

@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol ConnectionViewDelegate {
+    func dismissed()
+}
+
 class ConnectionView: UIView {
 
     /*
@@ -23,6 +27,9 @@ class ConnectionView: UIView {
     @IBOutlet weak var learnMoreButton: UIButton!
     @IBOutlet weak var backgroundView: UIView!
     @IBOutlet weak var cancelButton: UIButton!
+    
+    var isDismissed: Bool = false
+    var delegate: ConnectionViewDelegate?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -45,24 +52,33 @@ class ConnectionView: UIView {
     }
     
     @IBAction func dismissed(_ sender: Any) { // "X" button was pressed and the connection view should be dismissed
-        dismiss()
+        dismiss(connected: false)
+        delegate?.dismissed()
     }
     
-    func dismiss(animated: Bool = true) {
+    func dismiss(animated: Bool = true, connected: Bool) {
         // do any necessary visual changes to dismiss the view
         
         let durationFactor: TimeInterval = animated ? 1 : 0
         
         let transform = CGAffineTransform(translationX: 0, y: 36)
         
-        // Crossfade text from "You're offline" to say "Connected!"
-        UIView.transition(with: textLabel, duration: 0.2 * durationFactor, options: [.transitionCrossDissolve], animations: {
-            self.textLabel.text = "Connected!"
-        }, completion: { (bool) in
+        let animateDismiss: (Bool) -> Void = { (bool) in
             UIView.animate(withDuration: 0.3 * durationFactor, delay: 0.4 * durationFactor, animations: {
                 self.setTransform(to: transform)
             })
-        })
+        }
+        
+        // Crossfade text from "You're offline" to say "Connected!"
+        if connected {
+            UIView.transition(with: textLabel, duration: 0.2 * durationFactor, options: [.transitionCrossDissolve], animations: {
+                self.textLabel.text = "Connected!"
+            }, completion: animateDismiss)
+        } else {
+            animateDismiss(true)
+        }
+        
+        self.isDismissed = true
     }
     
     func show(animated: Bool = true) {
@@ -73,6 +89,8 @@ class ConnectionView: UIView {
         UIView.animate(withDuration: 0.3 * durationFactor, animations: {
             self.setTransform(to: CGAffineTransform.identity)
         })
+        
+        self.isDismissed = false
     }
     
     func setTransform(to transform: CGAffineTransform) {
@@ -89,14 +107,19 @@ class ConnectionView: UIView {
         
         self.translatesAutoresizingMaskIntoConstraints = false
         
+        // TEMPORARY:
+        self.learnMoreButton.isHidden = true
+        /////////
+        
         //setConstraints()
-        dismiss(animated: false)
+        dismiss(animated: false, connected: false)
     }
     
     func setConstraints() {
         let views: [String: Any] = ["textLabel": self.textLabel, "learnMoreButton": self.learnMoreButton, "cancelImage": self.cancelImage, "background": self.backgroundView, "cancelButton": self.cancelButton]
         
-        let horizontalTextLabelConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[textLabel]-16-[learnMoreButton]", metrics: nil, views: views)
+        //let horizontalTextLabelConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[textLabel]-16-[learnMoreButton]", metrics: nil, views: views)
+        let centerHorizontalLabelConstraint = NSLayoutConstraint(item: self.textLabel, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1.0, constant: 0)
         let verticalTextLabelConstraint = NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[textLabel]-0-|", metrics: nil, views: views)
         
         let cancelImageWidthConstraint = NSLayoutConstraint(item: self.cancelImage, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1.0, constant: 18)
@@ -115,7 +138,7 @@ class ConnectionView: UIView {
         let backgroundViewVerticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[background]-0-|", metrics: nil, views: views)
         
         
-        self.addConstraints(horizontalTextLabelConstraints)
+        self.addConstraint(centerHorizontalLabelConstraint)
         self.addConstraints(verticalTextLabelConstraint)
         
         self.addConstraints([cancelImageWidthConstraint, cancelImageHeightConstraint, cancelImageCenterVerticalConstraint])

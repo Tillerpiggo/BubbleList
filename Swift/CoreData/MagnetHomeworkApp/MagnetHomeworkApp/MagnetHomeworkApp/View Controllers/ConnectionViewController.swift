@@ -8,23 +8,42 @@
 
 import UIKit
 
-class ConnectionViewController: UIViewController {
+class ConnectionViewController: UIViewController, DataCarrier, ConnectionViewDelegate {
     
-    var isConnectionViewHidden: Bool = true
+    var cloudController: CloudController!
+    var coreDataController: CoreDataController!
     
     @IBOutlet weak var connectionView: ConnectionView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         configureConnectionView()
+        connectionView.delegate = self
     }
     
-    func hideConnectionView() {
-        // make the connection view go down and hide
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        setup()
+//
+        if cloudController.isConnectionViewDismissed {
+            connectionView.transform = CGAffineTransform(translationX: 0, y: 36)
+        } else {
+            connectionView.transform = CGAffineTransform.identity
+        }
+        
+        connectionView.isDismissed = cloudController.isConnectionViewDismissed
+        print()
     }
     
-    func showConnectionView() {
-        // make the connection view pop up and become visible
+    func hideConnectionView(animated: Bool, connected: Bool) {
+        connectionView.dismiss(animated: animated, connected: connected)
+        cloudController.isConnectionViewDismissed = false
+    }
+    
+    func showConnectionView(animated: Bool) {
+        connectionView.show(animated: animated)
+        cloudController.isConnectionViewDismissed = false
     }
     
     func configureConnectionView() {
@@ -35,33 +54,19 @@ class ConnectionViewController: UIViewController {
         connectionView.setConstraints()
         
         view.addConstraints(connectionView.constraints)
-        
+    }
+}
 
-//
-//        let horizontalTextLabelConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[textLabel]-16-[learnMoreButton]", metrics: nil, views: views)
-//        let verticalTextLabelConstraint = NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[textLabel]-0-|", metrics: nil, views: views)
-//
-//        let cancelButtonWidthConstraint = NSLayoutConstraint(item: connectionView.cancelButton, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1.0, constant: 18)
-//        let cancelButtonHeightConstraint = NSLayoutConstraint(item: connectionView.cancelButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1.0, constant: 18)
-//        let cancelButtonCenterVerticalConstraint = NSLayoutConstraint(item: connectionView.cancelButton, attribute: .centerY, relatedBy: .equal, toItem: connectionView, attribute: .centerY, multiplier: 1.0, constant: 0)
-//        let cancelButtonHorizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:[cancelButton]-16-|", metrics: nil, views: views)
-//
-//        let horizontalLearnMoreButtonConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:[learnMoreButton]-16-[cancelButton]", metrics: nil, views: views)
-//        let verticalLearnMoreButtonConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[learnMoreButton]-0-|", metrics: nil, views: views)
-//
-//
-//        connectionView.addConstraints(horizontalTextLabelConstraints)
-//        connectionView.addConstraints(verticalTextLabelConstraint)
-//
-//        connectionView.addConstraints([cancelButtonWidthConstraint, cancelButtonHeightConstraint, cancelButtonCenterVerticalConstraint])
-//        connectionView.addConstraints(cancelButtonHorizontalConstraints)
-//
-//        connectionView.addConstraints(horizontalLearnMoreButtonConstraints)
-//        connectionView.addConstraints(verticalLearnMoreButtonConstraints)
-        
-        
-        
-        // TODO: Set delegates?
+extension ConnectionViewController {
+    func didConnect(animated: Bool) {
+        hideConnectionView(animated: animated, connected: true) // is connected because this is a call directly from a change in connection, not user input
     }
     
+    func didDisconnect(animated: Bool) {
+        showConnectionView(animated: animated)
+    }
+    
+    func dismissed() {
+        cloudController.isConnectionViewDismissed = true
+    }
 }
