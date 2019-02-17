@@ -28,7 +28,7 @@ class ConnectionView: UIView {
     @IBOutlet weak var backgroundView: UIView!
     @IBOutlet weak var cancelButton: UIButton!
     
-    var isDismissed: Bool = false
+    //var isDismissed: Bool = false
     var delegate: ConnectionViewDelegate?
     
     override func awakeFromNib() {
@@ -52,11 +52,11 @@ class ConnectionView: UIView {
     }
     
     @IBAction func dismissed(_ sender: Any) { // "X" button was pressed and the connection view should be dismissed
-        dismiss(connected: false)
+        dismiss(completion: nil)
         delegate?.dismissed()
     }
     
-    func dismiss(animated: Bool = true, connected: Bool) {
+    func dismiss(animated: Bool = true, completion: ((Bool) -> Void)?) {
         // do any necessary visual changes to dismiss the view
         
         let durationFactor: TimeInterval = animated ? 1 : 0
@@ -66,31 +66,37 @@ class ConnectionView: UIView {
         let animateDismiss: (Bool) -> Void = { (bool) in
             UIView.animate(withDuration: 0.3 * durationFactor, delay: 0.4 * durationFactor, animations: {
                 self.setTransform(to: transform)
-            })
+            }, completion: completion)
         }
         
-        // Crossfade text from "You're offline" to say "Connected!"
-        if connected {
-            UIView.transition(with: textLabel, duration: 0.2 * durationFactor, options: [.transitionCrossDissolve], animations: {
-                self.textLabel.text = "Connected!"
-            }, completion: animateDismiss)
-        } else {
-            animateDismiss(true)
-        }
+        animateDismiss(true)
         
-        self.isDismissed = true
+        //self.isDismissed = true
     }
     
-    func show(animated: Bool = true) {
-        self.textLabel.text = "You're offline."
+    func show(animated: Bool = true, completion: ((Bool) -> Void)?) {
+        //self.textLabel.text = "You're offline."
         
         let durationFactor: TimeInterval = animated ? 1 : 0
         
         UIView.animate(withDuration: 0.3 * durationFactor, animations: {
             self.setTransform(to: CGAffineTransform.identity)
-        })
+        }, completion: completion)}
+    
+    func setConnected(animated: Bool = true, completion: ((Bool) -> Void)?) {
+        let durationFactor: TimeInterval = animated ? 1 : 0
         
-        self.isDismissed = false
+        UIView.transition(with: textLabel, duration: 0.2 * durationFactor, options: [.transitionCrossDissolve], animations: {
+            self.textLabel.text = "Connected!"
+        }, completion: completion)
+    }
+    
+    func setOffline(animated: Bool = true, completion: ((Bool) -> Void)?) {
+        let durationFactor: TimeInterval = animated ? 1 : 0
+        
+        UIView.transition(with: textLabel, duration: 0.2 * durationFactor, options: [.transitionCrossDissolve], animations: {
+            self.textLabel.text = "You're offline."
+        }, completion: completion)
     }
     
     func setTransform(to transform: CGAffineTransform) {
@@ -112,7 +118,7 @@ class ConnectionView: UIView {
         /////////
         
         //setConstraints()
-        dismiss(animated: false, connected: false)
+        dismiss(animated: false, completion: nil)
     }
     
     func setConstraints() {
@@ -131,7 +137,7 @@ class ConnectionView: UIView {
         let verticalLearnMoreButtonConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[learnMoreButton]-0-|", metrics: nil, views: views)
         
         let cancelButtonVerticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "|-0-[cancelButton]-0-|", metrics: nil, views: views)
-        let cancelButtonWidthConstraint = NSLayoutConstraint(item: self.cancelButton, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1.0, constant: 18)
+        //let cancelButtonWidthConstraint = NSLayoutConstraint(item: self.cancelButton, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1.0, constant: 18)
         let cancelButtonCenterHorizontalConstraint = NSLayoutConstraint(item: self.cancelButton, attribute: .centerX, relatedBy: .equal, toItem: self.cancelImage, attribute: .centerX, multiplier: 1.0, constant: 0)
         
         let backgroundViewHorizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[background]-0-|", metrics: nil, views: views)
@@ -151,7 +157,8 @@ class ConnectionView: UIView {
         self.addConstraints(backgroundViewVerticalConstraints)
         
         //self.addConstraints(cancelButtonVerticalConstraints)
-        self.addConstraints([cancelButtonWidthConstraint, cancelButtonCenterHorizontalConstraint])
+        self.addConstraints([cancelImageWidthConstraint])
+        self.addConstraints(cancelButtonVerticalConstraints)
     }
     
     func commonInit() {

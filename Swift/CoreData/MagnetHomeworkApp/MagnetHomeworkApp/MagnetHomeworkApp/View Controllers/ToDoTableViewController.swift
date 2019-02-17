@@ -108,7 +108,6 @@ class ToDoTableViewController: AddObjectViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tableView.reloadData()
-        setup() // Connect the CloudController to didConnect() and didDisconnect() updates
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

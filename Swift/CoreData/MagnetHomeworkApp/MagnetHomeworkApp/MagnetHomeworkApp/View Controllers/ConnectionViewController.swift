@@ -25,25 +25,6 @@ class ConnectionViewController: UIViewController, DataCarrier, ConnectionViewDel
         super.viewWillAppear(animated)
         
         setup()
-//
-        if cloudController.isConnectionViewDismissed {
-            connectionView.transform = CGAffineTransform(translationX: 0, y: 36)
-        } else {
-            connectionView.transform = CGAffineTransform.identity
-        }
-        
-        connectionView.isDismissed = cloudController.isConnectionViewDismissed
-        print()
-    }
-    
-    func hideConnectionView(animated: Bool, connected: Bool) {
-        connectionView.dismiss(animated: animated, connected: connected)
-        cloudController.isConnectionViewDismissed = false
-    }
-    
-    func showConnectionView(animated: Bool) {
-        connectionView.show(animated: animated)
-        cloudController.isConnectionViewDismissed = false
     }
     
     func configureConnectionView() {
@@ -58,12 +39,59 @@ class ConnectionViewController: UIViewController, DataCarrier, ConnectionViewDel
 }
 
 extension ConnectionViewController {
-    func didConnect(animated: Bool) {
-        hideConnectionView(animated: animated, connected: true) // is connected because this is a call directly from a change in connection, not user input
+    // If it is triggered by a change in connection, it should ALWAYS be displayed
+    // If it is triggered by the loading of a view, it should be checked
+    
+    func didConnect(connectionDidChange: Bool = true) {
+        // is connected because this is a call directly from a change in connection, not user input
+        
+        if connectionDidChange {
+            if cloudController.isConnectionViewDismissed == true {
+                cloudController.isConnectionViewDismissed = false
+                connectionView.setConnected(animated: false, completion: nil)
+                connectionView.show(animated: connectionDidChange, completion: { (bool) in
+                    self.connectionView.dismiss(completion: nil)
+                    self.cloudController.isConnectionViewDismissed = true
+                })
+            } else { // If it is not dismissed and already shown
+                connectionView.setConnected(animated: connectionDidChange, completion: { (bool) in
+                    self.connectionView.dismiss(animated: connectionDidChange, completion: nil)
+                })
+            }
+        } else {
+            if cloudController.isConnectionViewDismissed == true {
+                // If the connection didn't change and it's dismissed, DON'T show it (to preserve consistency between views)
+                
+                connectionView.setConnected(animated: false, completion: nil)
+                cloudController.isConnectionViewDismissed = false
+            } else {
+                connectionView.setConnected(animated: connectionDidChange, completion: { (bool) in
+                    self.connectionView.dismiss(animated: connectionDidChange, completion: nil)
+                })
+            }
+        }
     }
     
-    func didDisconnect(animated: Bool) {
-        showConnectionView(animated: animated)
+    func didDisconnect(connectionDidChange: Bool = true) {
+        if connectionDidChange {
+            cloudController.isConnectionViewDismissed = false
+            
+            if cloudController.isConnectionViewDismissed == true {
+                connectionView.setOffline(animated: false, completion: nil)
+            } else {
+                connectionView.setOffline(animated: connectionDidChange, completion: nil)
+                connectionView.show(animated: connectionDidChange, completion: nil)
+            }
+        } else {
+            connectionView.setOffline(animated: connectionDidChange, completion: nil)
+            
+            // If it's dismissed, don't show it; if it's not dismissed, show it
+            if cloudController.isConnectionViewDismissed == true {
+                connectionView.dismiss(animated: connectionDidChange, completion: nil)
+            } else {
+                connectionView.show(animated: connectionDidChange, completion: nil)
+            }
+        }
     }
     
     func dismissed() {

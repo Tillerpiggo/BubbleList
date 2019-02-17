@@ -52,6 +52,7 @@
 		23CD10BD2181A0660034FFA7 /* Class+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CD10B92181A0660034FFA7 /* Class+CoreDataClass.swift */; };
 		23CD10C52181A11F0034FFA7 /* Class+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CD10C42181A11F0034FFA7 /* Class+CoreDataProperties.swift */; };
 		23CE667F219BCC0000B34042 /* ToDoTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CE667E219BCC0000B34042 /* ToDoTableViewController.swift */; };
+		23ED7C08221895B60020DCA4 /* DataCarrier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23ED7C07221895B60020DCA4 /* DataCarrier.swift */; };
 		23F4C9D52191EA1300D00D05 /* UIView+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F4C9D42191EA1300D00D05 /* UIView+Helpers.swift */; };
 		23F4C9DA2192704400D00D05 /* UIColor+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F4C9D92192704400D00D05 /* UIColor+Helpers.swift */; };
 		23F4C9E0219283EA00D00D05 /* CAGradientLayer+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F4C9DF219283EA00D00D05 /* CAGradientLayer+Helpers.swift */; };
@@ -108,6 +109,7 @@
 		23CD10B92181A0660034FFA7 /* Class+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Class+CoreDataClass.swift"; sourceTree = "<group>"; };
 		23CD10C42181A11F0034FFA7 /* Class+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Class+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		23CE667E219BCC0000B34042 /* ToDoTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoTableViewController.swift; sourceTree = "<group>"; };
+		23ED7C07221895B60020DCA4 /* DataCarrier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataCarrier.swift; sourceTree = "<group>"; };
 		23F4C9D42191EA1300D00D05 /* UIView+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Helpers.swift"; sourceTree = "<group>"; };
 		23F4C9D92192704400D00D05 /* UIColor+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Helpers.swift"; sourceTree = "<group>"; };
 		23F4C9DF219283EA00D00D05 /* CAGradientLayer+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CAGradientLayer+Helpers.swift"; sourceTree = "<group>"; };
@@ -136,6 +138,7 @@
 				23CD10B221814FA10034FFA7 /* Core Data */,
 				23CD10AB218041120034FFA7 /* iCloud */,
 				23484C5C21822CEE007C5CCF /* RecordType.swift */,
+				23ED7C07221895B60020DCA4 /* DataCarrier.swift */,
 			);
 			path = "Back-End";
 			sourceTree = "<group>";
@@ -516,6 +519,7 @@
 				238D15BD2208D8D000178183 /* ConnectionViewController.swift in Sources */,
 				23F4C9DA2192704400D00D05 /* UIColor+Helpers.swift in Sources */,
 				23CE667F219BCC0000B34042 /* ToDoTableViewController.swift in Sources */,
+				23ED7C08221895B60020DCA4 /* DataCarrier.swift in Sources */,
 				235E0B86219550D9005D3B9C /* ScheduleTableViewController.swift in Sources */,
 				23484C5B21822CA6007C5CCF /* Assignment+CoreDataProperties.swift in Sources */,
 				23484C5D21822CEE007C5CCF /* RecordType.swift in Sources */,

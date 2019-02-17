@@ -14,23 +14,6 @@ import Reachability
 protocol NotificationDelegate {
     func fetchChanges(completion: @escaping (Bool) -> Void)
 }
- 
-protocol DataCarrier: ConnectionDelegate {
-    var cloudController: CloudController! { get set }
-    var coreDataController: CoreDataController! { get set }
-}
-
-extension DataCarrier {
-    func setup() {
-        self.cloudController.delegate = self
-        
-        if cloudController.reachability.connection == .none {
-            didDisconnect(animated: false)
-        } else {
-            didConnect(animated: false)
-        }
-    }
-}
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
