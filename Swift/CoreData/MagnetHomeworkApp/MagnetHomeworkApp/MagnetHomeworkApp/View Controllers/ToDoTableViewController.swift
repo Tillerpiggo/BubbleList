@@ -312,12 +312,14 @@ extension ToDoTableViewController: UITableViewDelegate, UITableViewDataSource {
                 //                })
             }
             
+            let databaseType: DatabaseType = deletedAssignment.owningClass!.isUserCreated ? .private : .shared
+            
             // Delete from core data
             self.coreDataController.delete(deletedAssignment)
             self.coreDataController.save()
             
             // Delete from cloud
-            self.cloudController.delete([deletedAssignment], inDatabase: .private) {
+            self.cloudController.delete([deletedAssignment], inDatabase: databaseType) {
                 print("Deleted Class!")
             }
         })
@@ -424,9 +426,9 @@ extension ToDoTableViewController: AssignmentTableViewCellDelegate {
             if toDo.isCompleted {
                 assignment.dueDateSectionNumber = 5
                 assignment.dueDateSection = "Completed"
-            } else {
-                assignment.updateDueDateSection()
             }
+            
+            assignment.updateDueDateSection()
             
             cloudController.save([toDo], inDatabase: .private, recordChanged: { (updatedRecord) in
                 assignment.toDo?.update(withRecord: updatedRecord)

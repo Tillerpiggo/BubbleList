@@ -670,7 +670,7 @@ class CloudController {
     }
     
     init() {
-        if subscribedToChanges { // If there is no "!" before "subscribedToChanges", then I'm testing because I changed the subscriptions
+        if !subscribedToChanges { // If there is no "!" before "subscribedToChanges", then I'm testing because I changed the subscriptions
             removeAllSubscriptions()
             print("Subscribing to changes...")
             // TODO: Group these together to use less subscription saving opersations

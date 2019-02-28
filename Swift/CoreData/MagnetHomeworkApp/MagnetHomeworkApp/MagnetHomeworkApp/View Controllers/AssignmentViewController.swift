@@ -46,7 +46,7 @@ class AssignmentViewController: ToDoTableViewController {
     
     
     override func predicate() -> NSPredicate {
-        return NSPredicate(format: "owningClass == %@ && isCompleted == false", self.`class`)
+        return NSPredicate(format: "owningClass == %@", self.`class`) // old: "owningClass == %@ && isCompleted == false" ( I removed the last thing )
     }
     
     override func cacheName() -> String {
@@ -562,12 +562,7 @@ extension AssignmentViewController {
             toDo.completionDate = NSDate()
             toDo.ckRecord["isCompleted"] = toDo.isCompleted as CKRecordValue?
             
-            if toDo.isCompleted {
-                assignment.dueDateSectionNumber = 5
-                assignment.dueDateSection = "Completed"
-            } else {
-                assignment.updateDueDateSection()
-            }
+            assignment.updateDueDateSection()
             
             cloudController.save([toDo], inDatabase: .private, recordChanged: { (updatedRecord) in
                 assignment.toDo?.update(withRecord: updatedRecord)
