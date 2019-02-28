@@ -15,12 +15,9 @@ protocol ClassTableViewControllerDelegate {
     var `class`: Class! { get set }
 }
 
-class ClassTableViewController: UITableViewController, DataCarrier {
+class ClassTableViewController: AddObjectViewController {
     
     // MARK: - Properties
-    
-    var cloudController: CloudController!
-    var coreDataController: CoreDataController!
     
     var delegate: ClassTableViewControllerDelegate?
     var expandedIndexPaths = [IndexPath]()
@@ -56,11 +53,14 @@ class ClassTableViewController: UITableViewController, DataCarrier {
     @IBOutlet weak var addClassTextField: UITextField!
     @IBOutlet weak var addClassText: UILabel!
     
+    @IBOutlet weak var tableView: UITableView!
+    
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
         updateWithCloud()
+        self.addObjectView.textLabel.text = "Add Class"
         registerAsNotificationDelegate()
         
         let rowHeight: CGFloat = 60
@@ -77,7 +77,8 @@ class ClassTableViewController: UITableViewController, DataCarrier {
         //tableView.contentInsetAdjustmentBehavior = .automatic
         
         navigationController?.configureNavigationBar()
-        configureAddClassView(duration: 0.0)
+        
+        tableView.reloadData() // TODO: Remove for optimization?
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -88,6 +89,14 @@ class ClassTableViewController: UITableViewController, DataCarrier {
     override func viewWillDisappear(_ animated: Bool) {
         //navigationController?.setNavigationBarHidden(false, animated: animated)
         super.viewWillDisappear(animated)
+    }
+    
+    // Create a Class object when the AddClassView attempts to add an object
+    
+    override func saveObject(text: String) {
+        // Create new class
+        let newClass = Class(withName: text, managedContext: coreDataController.managedContext, zoneID: cloudController.zoneID)
+        addedClass(newClass)
     }
     
     // MARK: - Navigation
@@ -338,11 +347,11 @@ extension ClassTableViewController {
 
 // MARK: - TableView Data Source / Delegate
 
-extension ClassTableViewController {
+extension ClassTableViewController: UITableViewDelegate, UITableViewDataSource {
     
     // MARK: - Data Source
     
-    override func numberOfSections(in tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         guard let sections = fetchedResultsController.sections else {
             return 0
         }
@@ -350,7 +359,7 @@ extension ClassTableViewController {
         return sections.count
     }
     
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let sectionInfo = fetchedResultsController.sections?[section] else {
             return 0
         }
@@ -358,13 +367,13 @@ extension ClassTableViewController {
         return sectionInfo.numberOfObjects
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ClassCell", for: indexPath) as! ClassTableViewCell
         
         return cell
     }
     
-    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         guard let cell = cell as? ClassTableViewCell else { return }
         
         // Get model object
@@ -380,7 +389,7 @@ extension ClassTableViewController {
         cell.delegate = self
     }
     
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete, fetchedResultsController.fetchedObjects?.count ?? 0 > 0 {
             let deletedClass = fetchedResultsController.object(at: indexPath)
             
@@ -433,7 +442,7 @@ extension ClassTableViewController {
     
     // MARK: - Delegate
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }
@@ -514,101 +523,6 @@ extension ClassTableViewController: AddClassTableViewControllerDelegate {
 
 // MARK: - Add Class View
 
-extension ClassTableViewController: UITextFieldDelegate, UITextDragDelegate {
-    @IBAction func addClassButtonPressed(_ sender: Any) {
-        addClassButton.isHidden = true
-        UIView.animate(withDuration: 0.1, animations: {
-            //self.addClassView.backgroundColor = .backgroundColor
-            self.addClassText.textColor = .backgroundColor
-        })
-        
-        addClassText.isHidden = true
-        addClassTextField.isHidden = false
-        
-        addClassTextField.becomeFirstResponder()
-        addDoneButton()
-    }
-    
-    @IBAction func addClassButtonPressedDown(_ sender: Any) {
-        UIView.animate(withDuration: 0.1, animations: {
-            //self.addClassView.backgroundColor = UIColor.backgroundColor
-            self.addClassText.textColor = .backgroundColor
-        })
-    }
-    
-    @IBAction func addClassButtonDraggedOutside(_ sender: Any) {
-        UIView.animate(withDuration: 0.1, animations: {
-            //self.addClassView.backgroundColor = UIColor.backgroundColor
-            self.addClassText.textColor = .backgroundColor
-        })
-    }
-    
-    @IBAction func addClassButtonTouchCanceled(_ sender: Any) {
-        configureAddClassView(duration: 0.1)
-    }
-    
-    @IBAction func addClassButtonDraggedInside(_ sender: Any) {
-        UIView.animate(withDuration: 0.1, animations: {
-            //self.addClassView.backgroundColor = UIColor.backgroundColor
-            self.addClassText.textColor = .backgroundColor
-        })
-    }
-    
-    @IBAction func addClassButtonDragExited(_ sender: Any) {
-        configureAddClassView(duration: 0.1)
-    }
-    
-    func configureAddClassView(duration: TimeInterval) {
-        //addClassView.layer.cornerRadius = 15
-        //addClassView.addDropShadow(color: .black, opacity: 0.1, radius: 3)
-        addClassTextField.text = ""
-        addClassText.textColor = .white
-        
-        self.addClassTextField.isHidden = true
-        self.addClassText.isHidden = false
-        
-        UIView.animate(withDuration: duration, animations: {
-            //self.addClassView.backgroundColor = .primaryColor
-            self.navigationItem.rightBarButtonItem = nil
-        }, completion: { (bool) in
-            self.addClassButton.isHidden = false
-        })
-    }
-    
-    func addDoneButton() {
-        self.navigationItem.setRightBarButton(UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(ClassTableViewController.donePressed(sender:))), animated: true)
-    }
-    
-    @objc func donePressed(sender: UIBarButtonItem) {
-        addClassTextField.resignFirstResponder()
-    }
-    
-    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        if let name = addClassTextField.text, name != "" {
-            saveClass(withName: name)
-        }
-        
-        configureAddClassView(duration: 0.2)
-        
-        return true
-    }
-    
-//    func textDraggableView(_ textDraggableView: UIView & UITextDraggable, dragSessionDidEnd session: UIDragSession, with operation: UIDropOperation) {
-//        addClassTextField.resignFirstResponder()
-//    }
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        addClassTextField.resignFirstResponder()
-        return true
-    }
-    
-    private func saveClass(withName name: String) {
-        // Create new assignment
-        let newClass = Class(withName: name, managedContext: coreDataController.managedContext, zoneID: cloudController.zoneID)
-        addedClass(newClass)
-    }
-}
-
 extension ClassTableViewController: ClassTableViewCellDelegate {
     func expandedClass(_ class: Class) {
         if let indexPath = fetchedResultsController.indexPath(forObject: `class`) {
@@ -630,12 +544,3 @@ extension ClassTableViewController: ClassTableViewCellDelegate {
     }
 }
 
-extension ClassTableViewController {
-    func didConnect(connectionDidChange: Bool) {
-        // TODO: Change to connectionViewController, make it pop up and down
-    }
-    
-    func didDisconnect(connectionDidChange: Bool) {
-        // TODO: Change
-    }
-}

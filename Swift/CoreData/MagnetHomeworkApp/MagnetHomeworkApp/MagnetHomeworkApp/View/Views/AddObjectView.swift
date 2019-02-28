@@ -122,7 +122,7 @@ class AddObjectView: UIView {
         UIView.animate(withDuration: duration, delay: 0.0, options: .curveEaseInOut, animations: {
             self.view.backgroundColor = .white
             self.transform = selectedTransform
-            self.view.addDropShadow(color: .black, opacity: 0.5, radius: 200)
+            //self.view.addDropShadow(color: .black, opacity: 0.5, radius: 200)
         })
         
         delegate?.viewSetToSelected()

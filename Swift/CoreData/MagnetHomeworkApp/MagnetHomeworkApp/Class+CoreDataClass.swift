@@ -57,7 +57,7 @@ public class Class: NSManagedObject, CloudUploadable {
             let sectionName = mostImportantAssignment.dueDateSection
             let assignmentsInSection = completedAssignments?.filter { $0.dueDateSection == sectionName }
             
-            print("Assignments In Section: \(assignmentsInSection?.map({ $0.text }))\nClass Name: \(self.name)\n")
+            //print("Assignments In Section: \(assignmentsInSection?.map({ $0.text }))\nClass Name: \(self.name)\n")
             return assignmentsInSection?.sorted(by: compareBlock)
         } else {
             return nil

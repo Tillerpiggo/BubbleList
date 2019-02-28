@@ -32,14 +32,16 @@ class ToDoTableViewController: AddObjectViewController {
     
     var assignmentDoneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(ToDoTableViewController.donePressed(sender:)))
     
-    var sortDescriptors: [NSSortDescriptor] = {
-        let sortBySectionNumber = NSSortDescriptor(key: #keyPath(Assignment.dueDateSectionNumber), ascending: true)
+    var sortDescriptors: [NSSortDescriptor] {
+        let sortByClassName = NSSortDescriptor(key: #keyPath(Assignment.owningClass.name), ascending: true)
         let sortByDueDate = NSSortDescriptor(key: #keyPath(Assignment.dueDate), ascending: true)
         let sortByCreationDate = NSSortDescriptor(key: #keyPath(Assignment.creationDate), ascending: true)
         let sortByCompletionDate = NSSortDescriptor(key: #keyPath(Assignment.toDo.completionDate), ascending: false)
         
-        return [sortBySectionNumber, sortByCompletionDate, sortByDueDate, sortByCreationDate]
-    }()
+        return [sortByClassName, sortByCompletionDate, sortByDueDate, sortByCreationDate]
+    }
+    
+    var sectionNameKeyPath: String { return #keyPath(Assignment.owningClass.name) }
     
     lazy var fetchedResultsController: NSFetchedResultsController<Assignment> = {
         let fetchRequest: NSFetchRequest<Assignment> = Assignment.fetchRequest()
@@ -52,7 +54,7 @@ class ToDoTableViewController: AddObjectViewController {
         let fetchedResultsController = NSFetchedResultsController (
             fetchRequest: fetchRequest,
             managedObjectContext: coreDataController.managedContext,
-            sectionNameKeyPath: #keyPath(Assignment.dueDateSection),
+            sectionNameKeyPath: sectionNameKeyPath,
             cacheName: cacheName()
         )
         
@@ -225,6 +227,8 @@ extension ToDoTableViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         //return nil
         
+        // TODO: Simplify the implementation of this in AssignmentViewController by calling super - the only difference is the "headerVi3w.titleLabel.textColor =" line
+        
         let title = titleForHeader(inSection: section)
         
         let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: "AssignmentHeaderFooterView") as! AssignmentHeaderFooterView
@@ -233,7 +237,7 @@ extension ToDoTableViewController: UITableViewDelegate, UITableViewDataSource {
         
         headerView.titleLabel.text = title
         //headerView.backgroundColorView.backgroundColor = UIColor.color(fromSection: title)
-        headerView.titleLabel.textColor = UIColor.color(fromSection: title)
+        headerView.titleLabel.textColor = .unscheduledColor
         //headerView.translatesAutoresizingMaskIntoConstraints = false
         
         if title.contains("Completed") && isCompletedHidden {
@@ -377,7 +381,7 @@ extension ToDoTableViewController: NSFetchedResultsControllerDelegate {
         case .delete:
             for (index, hiddenSection) in hiddenSections.enumerated() where hiddenSection >= sectionIndex {
                 hiddenSections[index] -= 1
-                print("HiddenSections: \(hiddenSections)")
+                //print("HiddenSections: \(hiddenSections)")
                 if let section = tableView.headerView(forSection: hiddenSection) as? AssignmentHeaderFooterView {
                     section.section? -= 1
                 }
@@ -386,7 +390,7 @@ extension ToDoTableViewController: NSFetchedResultsControllerDelegate {
         case .insert:
             for (index, hiddenSection) in hiddenSections.enumerated() where hiddenSection >= sectionIndex {
                 hiddenSections[index] += 1
-                print("HiddenSections: \(hiddenSections)")
+                //print("HiddenSections: \(hiddenSections)")
                 if let section = tableView.headerView(forSection: hiddenSection) as? AssignmentHeaderFooterView {
                     section.section? += 1
                 }
@@ -467,12 +471,12 @@ extension ToDoTableViewController: AssignmentHeaderFooterCellDelegate {
     func showHideButtonPressed(isExpanded: Bool, forSection section: Int) {
         if !isExpanded && !hiddenSections.contains(section) {
             hiddenSections.append(section)
-            print("HiddenSections: \(hiddenSections)")
+            //print("HiddenSections: \(hiddenSections)")
         } else if !isExpanded && hiddenSections.contains(section) {
             // Do nothing
         } else {
             hiddenSections.removeAll(where: { $0 == section })
-            print("HiddenSections: \(hiddenSections)")
+            //print("HiddenSections: \(hiddenSections)")
         }
         
         if self.tableView(tableView, titleForHeaderInSection: section)?.contains("Completed") ?? false {
@@ -485,7 +489,7 @@ extension ToDoTableViewController: AssignmentHeaderFooterCellDelegate {
 }
 
 extension ToDoTableViewController: ScheduleTableViewControllerDelegate {
-    func reloadAssignment(withDueDate dueDate: Date?, _ assignment: Assignment) {
+    @objc func reloadAssignment(withDueDate dueDate: Date?, _ assignment: Assignment) {
         if let indexPath = fetchedResultsController.indexPath(forObject: assignment) {
             tableView.reloadRows(at: [indexPath], with: .automatic)
         }

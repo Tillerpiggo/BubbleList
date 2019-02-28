@@ -29,6 +29,17 @@ class AssignmentViewController: ToDoTableViewController {
     
     var delegate: AssignmentTableViewControllerDelegate?
     
+    override var sectionNameKeyPath: String { return #keyPath(Assignment.dueDateSection) }
+    
+    override var sortDescriptors: [NSSortDescriptor] {
+        let sortBySectionNumber = NSSortDescriptor(key: #keyPath(Assignment.dueDateSectionNumber), ascending: true)
+        let sortByDueDate = NSSortDescriptor(key: #keyPath(Assignment.dueDate), ascending: true)
+        let sortByCreationDate = NSSortDescriptor(key: #keyPath(Assignment.creationDate), ascending: true)
+        let sortByCompletionDate = NSSortDescriptor(key: #keyPath(Assignment.toDo.completionDate), ascending: false)
+        
+        return [sortBySectionNumber, sortByCompletionDate, sortByDueDate, sortByCreationDate]
+    }
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .default
     }
@@ -84,15 +95,7 @@ class AssignmentViewController: ToDoTableViewController {
         super.viewWillAppear(animated)
         
         //tableView.reloadData()
-        print("HiddenSections: \(hiddenSections)")
-    }
-    
-    override func addDoneButton() {
-        self.navigationItem.setRightBarButtonItems([doneButton], animated: true)
-    }
-    
-    override func removeDoneButton() {
-        self.navigationItem.setRightBarButton(nil, animated: true)
+        //print("HiddenSections: \(hiddenSections)")
     }
     
     override func saveObject(text: String) {
@@ -102,6 +105,18 @@ class AssignmentViewController: ToDoTableViewController {
         addedAssignment(newAssignment)
         
         //updateHeaderView()
+    }
+    
+    // Adds and removes the done button when the add object button does stuff
+    
+    override func removeDoneButton() {
+        self.navigationItem.setRightBarButtonItems([self.navigationItem.rightBarButtonItems!.last!], animated: true)
+    }
+    
+    override func addDoneButton() {
+        let newBarButtonItems: [UIBarButtonItem]? = [doneButton, self.navigationItem.rightBarButtonItem!]
+        
+        self.navigationItem.setRightBarButtonItems(newBarButtonItems, animated: true)
     }
 
     // MARK: - Navigation
@@ -129,7 +144,7 @@ class AssignmentViewController: ToDoTableViewController {
 
 //// MARK: - Table View Data Source / Delegate
 //
-//extension AssignmentViewController: UITableViewDataSource, UITableViewDelegate {
+extension AssignmentViewController {
 //
 //    // MARK: - Data Source
 //
@@ -205,36 +220,35 @@ class AssignmentViewController: ToDoTableViewController {
 //        } else {
 //            return 44
 //        }
-//    }
-//
-//    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//        //return nil
-//
-//        let title = titleForHeader(inSection: section)
-//
-//        let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: "AssignmentHeaderFooterView") as! AssignmentHeaderFooterView
-//        headerView.delegate = self
-//        headerView.section = section
-//
-//        headerView.titleLabel.text = title
-//        //headerView.backgroundColorView.backgroundColor = UIColor.color(fromSection: title)
-//        headerView.titleLabel.textColor = UIColor.color(fromSection: title)
-//        //headerView.translatesAutoresizingMaskIntoConstraints = false
-//
-//        if title.contains("Completed") && isCompletedHidden {
-//            headerView.isExpanded = false
-//            headerView.updateShowHideButton()
-//            isCompletedHidden = true
-//            if !hiddenSections.contains(section) { hiddenSections.append(section) }
-//            print("HiddenSections: \(hiddenSections)")
-//
-//
-//            //tableView.beginUpdates()
-//            //tableView.endUpdates()
-//        }
-//
-//        return headerView
-//    }
+
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        //return nil
+
+        let title = titleForHeader(inSection: section)
+
+        let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: "AssignmentHeaderFooterView") as! AssignmentHeaderFooterView
+        headerView.delegate = self
+        headerView.section = section
+
+        headerView.titleLabel.text = title
+        //headerView.backgroundColorView.backgroundColor = UIColor.color(fromSection: title)
+        headerView.titleLabel.textColor = UIColor.color(fromSection: title)
+        //headerView.translatesAutoresizingMaskIntoConstraints = false
+
+        if title.contains("Completed") && isCompletedHidden {
+            headerView.isExpanded = false
+            headerView.updateShowHideButton()
+            isCompletedHidden = true
+            if !hiddenSections.contains(section) { hiddenSections.append(section) }
+            //print("HiddenSections: \(hiddenSections)")
+
+
+            //tableView.beginUpdates()
+            //tableView.endUpdates()
+        }
+
+        return headerView
+    }
 //
 //    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
 //        return 34
@@ -316,7 +330,7 @@ class AssignmentViewController: ToDoTableViewController {
 //        tableView.deselectRow(at: indexPath, animated: true)
 //        tableView.endUpdates()
 //    }
-//}
+}
 
 // MARK: - Add Assignment Delegate
 
@@ -539,94 +553,21 @@ extension AssignmentViewController: ClassTableViewControllerDelegate {
 
 // MARK: - AssignmentTableViewCellDelegate
 
-//extension AssignmentViewController: AssignmentTableViewCellDelegate {
-//    @objc func buttonPressed(assignment: Assignment) -> Bool {
-//        if let assignment = fetchedResultsController.fetchedObjects?.first(where: { $0 == assignment }), let toDo = assignment.toDo {
-//            toDo.isCompleted = !toDo.isCompleted
-//            assignment.isCompleted = toDo.isCompleted
-//
-//            toDo.completionDate = NSDate()
-//            toDo.ckRecord["isCompleted"] = toDo.isCompleted as CKRecordValue?
-//
-//            if toDo.isCompleted {
-//                assignment.dueDateSectionNumber = 5
-//                assignment.dueDateSection = "Completed"
-//            } else {
-//                assignment.updateDueDateSection()
-//            }
-//
-//
-//
-//            //tableView.beginUpdates()
-//
-////            var indexPath: IndexPath
-////            if let fetchedIndexPath = fetchedResultsController.indexPath(forObject: assignment) {
-////                indexPath = fetchedIndexPath
-////            } else if var index = fetchedResultsController.fetchedObjects?.firstIndex(where: { $0.ckRecord.recordID == assignment.ckRecord.recordID }) {
-////                print("WTF")
-////
-////                var row: Int = 0
-////                var indexSection: Int = 0
-////                for section in 0..<tableView.numberOfSections {
-////                    let numberOfRows = tableView.numberOfRows(inSection: section)
-////
-////                    if index - numberOfRows > 0 {
-////                        index -= numberOfRows
-////                    } else {
-////                        indexSection = section
-////                        break
-////                    }
-////                }
-////
-////                row = index
-////
-////                indexPath = IndexPath(row: row, section: indexSection)
-////
-////            } else {
-////                indexPath = IndexPath(row: 0, section: 0)
-////            }
-//            //tableView.reloadRows(at: [indexPath], with: .automatic)
-//            //tableView.endUpdates()
-//
-//            cloudController.save([toDo], inDatabase: .private, recordChanged: { (updatedRecord) in
-//                assignment.toDo?.update(withRecord: updatedRecord)
-//            }) { (error) in
-//                guard let error = error as? CKError else { return }
-//                switch error.code {
-//                case .requestRateLimited, .zoneBusy, .serviceUnavailable:
-//                    break
-//                default:
-//                    print("ERROR: \(error.code)")
-//                    DispatchQueue.main.async {
-//                        //self.alertUserOfFailure()
-//                        self.coreDataController.save()
-//                    }
-//                }
-//            }
-//
-//            coreDataController.save()
-//
-//            delegate?.reloadClass(`class`)
-//
-//            return toDo.isCompleted
-//        } else {
-//            print("Couldn't find associated assignment; look at AssignmentTableViewController: AssignmentTableViewCellDelegate")
-//            return true
-//        }
-//    }
-//
-//    func scheduleButtonPressed(assignment: Assignment) {
-//        selectedAssignment = assignment
-//        performSegue(withIdentifier: "ScheduleTableView", sender: self)
-//    }
-//}
+extension AssignmentViewController {
+    @objc override func buttonPressed(assignment: Assignment) -> Bool {
+        let bool = super.buttonPressed(assignment: assignment)
+        delegate?.reloadClass(`class`)
+        
+        return bool
+    }
+}
 
 //extension AssignmentViewController: AssignmentHeaderFooterCellDelegate {
 //    func showHideButtonPressed(isExpanded: Bool, forSection section: Int) {
 //        if !isExpanded && !hiddenSections.contains(section) {
 //            hiddenSections.append(section)
 //            print("HiddenSections: \(hiddenSections)")
-//        } else if !isExpanded && hiddenSections.contains(section) {
+//        } else if !isExpanded && hiddenSections.contains(section) {have
 //            // Do nothing
 //        } else {
 //            hiddenSections.removeAll(where: { $0 == section })
@@ -641,3 +582,10 @@ extension AssignmentViewController: ClassTableViewControllerDelegate {
 //        tableView.endUpdates()
 //    }
 //}
+
+extension AssignmentViewController {
+    override func reloadAssignment(withDueDate dueDate: Date?, _ assignment: Assignment) {
+        super.reloadAssignment(withDueDate: dueDate, assignment)
+        delegate?.reloadClass(`class`)
+    }
+}

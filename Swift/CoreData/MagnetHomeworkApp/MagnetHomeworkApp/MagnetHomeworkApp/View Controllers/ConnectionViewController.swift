@@ -42,20 +42,20 @@ extension ConnectionViewController {
     // If it is triggered by a change in connection, it should ALWAYS be displayed
     // If it is triggered by the loading of a view, it should be checked
     
-    func didConnect(connectionDidChange: Bool = true) {
+    @objc func didConnect(connectionDidChange: Bool = true) {
         // is connected because this is a call directly from a change in connection, not user input
         
         if connectionDidChange {
             if cloudController.isConnectionViewDismissed == true {
                 cloudController.isConnectionViewDismissed = false
                 connectionView.setConnected(animated: false, completion: nil)
-                connectionView.show(animated: connectionDidChange, completion: { (bool) in
-                    self.connectionView.dismiss(completion: nil)
+                showConnectionView(animated: connectionDidChange, completion: { (bool) in
+                    self.dismissConnectionView(animated: true, completion: nil)
                     self.cloudController.isConnectionViewDismissed = true
                 })
             } else { // If it is not dismissed and already shown
                 connectionView.setConnected(animated: connectionDidChange, completion: { (bool) in
-                    self.connectionView.dismiss(animated: connectionDidChange, completion: nil)
+                    self.dismissConnectionView(animated: connectionDidChange, completion: nil)
                 })
             }
         } else {
@@ -66,13 +66,13 @@ extension ConnectionViewController {
                 cloudController.isConnectionViewDismissed = false
             } else {
                 connectionView.setConnected(animated: connectionDidChange, completion: { (bool) in
-                    self.connectionView.dismiss(animated: connectionDidChange, completion: nil)
+                    self.dismissConnectionView(animated: connectionDidChange, completion: nil)
                 })
             }
         }
     }
     
-    func didDisconnect(connectionDidChange: Bool = true) {
+    @objc func didDisconnect(connectionDidChange: Bool = true) {
         if connectionDidChange {
             cloudController.isConnectionViewDismissed = false
             
@@ -80,21 +80,31 @@ extension ConnectionViewController {
                 connectionView.setOffline(animated: false, completion: nil)
             } else {
                 connectionView.setOffline(animated: connectionDidChange, completion: nil)
-                connectionView.show(animated: connectionDidChange, completion: nil)
+                showConnectionView(animated: connectionDidChange, completion: nil)
             }
         } else {
             connectionView.setOffline(animated: connectionDidChange, completion: nil)
             
             // If it's dismissed, don't show it; if it's not dismissed, show it
             if cloudController.isConnectionViewDismissed == true {
-                connectionView.dismiss(animated: connectionDidChange, completion: nil)
+                dismissConnectionView(animated: connectionDidChange, completion: nil)
             } else {
                 connectionView.show(animated: connectionDidChange, completion: nil)
             }
         }
     }
     
-    func dismissed() {
+    @objc func dismissed() {
         cloudController.isConnectionViewDismissed = true
+    }
+    
+    // To override for the purposes of syncing with AddObjectView
+    
+    @objc func showConnectionView(animated: Bool, completion: ((Bool) -> Void)?) {
+        connectionView.show(animated: animated, completion: completion)
+    }
+    
+    @objc func dismissConnectionView(animated: Bool, completion: ((Bool) -> Void)?) {
+        connectionView.dismiss(animated: animated, completion: completion)
     }
 }

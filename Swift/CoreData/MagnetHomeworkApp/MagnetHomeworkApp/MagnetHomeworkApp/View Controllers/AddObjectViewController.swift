@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Reachability
+import CloudKit
 
 class AddObjectViewController: ConnectionViewController, AddObjectViewDelegate, UITextFieldDelegate, UITextDragDelegate, UIScrollViewDelegate {
     
@@ -23,12 +25,32 @@ class AddObjectViewController: ConnectionViewController, AddObjectViewDelegate, 
         configureAddObjectView()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if cloudController.reachability.connection == .none {
+            addObjectView.layer.zPosition = 1
+            connectionView.layer.zPosition = 2
+        } else {
+            addObjectView.layer.zPosition = 2
+            connectionView.layer.zPosition = 1
+        }
+    }
+    
     
     func configureAddObjectView() {
         //addObjectView.commonInit()
         addObjectView.configure()
         addObjectView.delegate = self
         addObjectView.textLabel.text = "Add Assignment"
+        
+        if cloudController.reachability.connection == .none {
+            addObjectView.layer.zPosition = 1
+            connectionView.layer.zPosition = 2
+        } else {
+            addObjectView.layer.zPosition = 2
+            connectionView.layer.zPosition = 1
+        }
 
         //self.view.addSubview(addObjectView)
 
@@ -77,6 +99,7 @@ class AddObjectViewController: ConnectionViewController, AddObjectViewDelegate, 
     }
     
     func addDoneButton() {
+        
         self.navigationItem.setRightBarButtonItems([doneButton], animated: true) // subclass should implement
     }
     
@@ -103,10 +126,34 @@ class AddObjectViewController: ConnectionViewController, AddObjectViewDelegate, 
         addObjectView.textField.resignFirstResponder()
     }
     
-    
-    
     func saveObject(text: String) {
         // Must be implemented by subclass
+    }
+    
+    // MARK: - ConnectionDelegate
+    
+    override func showConnectionView(animated: Bool, completion: ((Bool) -> Void)?) {
+        super.showConnectionView(animated: animated, completion: completion)
+        
+        // Move connectionView above addObjectView
+        connectionView.layer.zPosition = 2
+        addObjectView.layer.zPosition = 1
+    }
+    
+    override func dismissConnectionView(animated: Bool, completion: ((Bool) -> Void)?) {
+        super.dismissConnectionView(animated: animated, completion: completion)
+        
+        // Move addObjectView above connectionView
+        connectionView.layer.zPosition = 1
+        addObjectView.layer.zPosition = 2
+    }
+    
+    override func dismissed() {
+        super.dismissed()
+        
+        // Move addObjectView above connectionView
+        connectionView.layer.zPosition = 1
+        addObjectView.layer.zPosition = 2
     }
     
     // MARK: - AddObjectViewDelegate

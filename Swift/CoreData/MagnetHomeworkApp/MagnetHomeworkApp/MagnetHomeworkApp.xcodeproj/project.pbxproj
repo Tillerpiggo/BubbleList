@@ -52,6 +52,7 @@
 		23CD10BD2181A0660034FFA7 /* Class+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CD10B92181A0660034FFA7 /* Class+CoreDataClass.swift */; };
 		23CD10C52181A11F0034FFA7 /* Class+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CD10C42181A11F0034FFA7 /* Class+CoreDataProperties.swift */; };
 		23CE667F219BCC0000B34042 /* ToDoTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CE667E219BCC0000B34042 /* ToDoTableViewController.swift */; };
+		23CF36F5221A63F5003D2F43 /* AddClassView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CF36F4221A63F5003D2F43 /* AddClassView.swift */; };
 		23ED7C08221895B60020DCA4 /* DataCarrier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23ED7C07221895B60020DCA4 /* DataCarrier.swift */; };
 		23F4C9D52191EA1300D00D05 /* UIView+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F4C9D42191EA1300D00D05 /* UIView+Helpers.swift */; };
 		23F4C9DA2192704400D00D05 /* UIColor+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F4C9D92192704400D00D05 /* UIColor+Helpers.swift */; };
@@ -109,6 +110,7 @@
 		23CD10B92181A0660034FFA7 /* Class+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Class+CoreDataClass.swift"; sourceTree = "<group>"; };
 		23CD10C42181A11F0034FFA7 /* Class+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Class+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		23CE667E219BCC0000B34042 /* ToDoTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoTableViewController.swift; sourceTree = "<group>"; };
+		23CF36F4221A63F5003D2F43 /* AddClassView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddClassView.swift; sourceTree = "<group>"; };
 		23ED7C07221895B60020DCA4 /* DataCarrier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataCarrier.swift; sourceTree = "<group>"; };
 		23F4C9D42191EA1300D00D05 /* UIView+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Helpers.swift"; sourceTree = "<group>"; };
 		23F4C9D92192704400D00D05 /* UIColor+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Helpers.swift"; sourceTree = "<group>"; };
@@ -150,9 +152,9 @@
 				238D15BC2208D8D000178183 /* ConnectionViewController.swift */,
 				23332B0221AB1DD600111882 /* AddObjectViewController.swift */,
 				23484C5E21854A1E007C5CCF /* ClassTableViewController.swift */,
+				23CE667E219BCC0000B34042 /* ToDoTableViewController.swift */,
 				23484C63218963E0007C5CCF /* AssignmentViewController.swift */,
 				235E0B85219550D9005D3B9C /* ScheduleTableViewController.swift */,
-				23CE667E219BCC0000B34042 /* ToDoTableViewController.swift */,
 				23F4C9D821926CCC00D00D05 /* UIExtension */,
 				235E0B8721955626005D3B9C /* OtherExtensions */,
 			);
@@ -182,6 +184,7 @@
 			isa = PBXGroup;
 			children = (
 				2324191321AF843B0014916F /* AddObjectView.swift */,
+				23CF36F4221A63F5003D2F43 /* AddClassView.swift */,
 				2310CF4221A8877E00A995FB /* AssignmentHeaderFooterView.swift */,
 				238D15BA2208D78600178183 /* ConnectionView.swift */,
 			);
@@ -501,6 +504,7 @@
 				23484C6121866927007C5CCF /* AddClassTableViewController.swift in Sources */,
 				235E0B8921955647005D3B9C /* Date+Helpers.swift in Sources */,
 				23484C64218963E0007C5CCF /* AssignmentViewController.swift in Sources */,
+				23CF36F5221A63F5003D2F43 /* AddClassView.swift in Sources */,
 				2324191421AF843B0014916F /* AddObjectView.swift in Sources */,
 				234B7E6021C77B5F008D195F /* UIImage+Helpers.swift in Sources */,
 				23CD10C52181A11F0034FFA7 /* Class+CoreDataProperties.swift in Sources */,

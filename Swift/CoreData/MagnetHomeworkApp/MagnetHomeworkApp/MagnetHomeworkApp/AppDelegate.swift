@@ -34,7 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         //UIApplication.shared.statusBarView?.backgroundColor = .primaryColor
         
-        application.applicationIconBadgeNumber = 0
+        //application.applicationIconBadgeNumber = 0
         
         if let tabBarController = window?.rootViewController as? UITabBarController,
             let navigationController = tabBarController.viewControllers?.first as? UINavigationController,
@@ -68,6 +68,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping(UIBackgroundFetchResult) -> Void) {
+        
+        print("RECIEVED NOTIFICATION!")
 
         let notification = CKNotification(fromRemoteNotificationDictionary: userInfo)
         

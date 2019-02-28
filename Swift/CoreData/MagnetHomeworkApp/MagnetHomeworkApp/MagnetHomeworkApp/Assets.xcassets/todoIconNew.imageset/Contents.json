@@ -2,7 +2,7 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "toDoListIcon.png",
+      "filename" : "todoIconNew.png",
       "scale" : "1x"
     },
     {
@@ -12,7 +12,7 @@
     },
     {
       "idiom" : "universal",
-      "filename" : "toDoListIcon3x.png",
+      "filename" : "todoIconNew-1.png",
       "scale" : "3x"
     }
   ],

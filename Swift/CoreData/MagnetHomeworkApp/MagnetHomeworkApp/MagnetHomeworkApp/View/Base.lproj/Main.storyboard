@@ -14,46 +14,34 @@
             <objects>
                 <tableViewController id="god-KQ-5OP" customClass="ClassTableViewController" customModule="MagnetHomeworkApp" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="WSX-AY-E0T">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="separatorColor" white="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <view key="tableFooterView" contentMode="scaleToFill" misplaced="YES" id="PAD-1e-kcD">
+                        <view key="tableFooterView" contentMode="scaleToFill" id="PAD-1e-kcD">
                             <rect key="frame" x="0.0" y="108" width="375" height="72"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Class Name..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Bn5-DG-LpY">
-                                    <rect key="frame" x="60" y="-6.5" width="109" height="21"/>
+                                    <rect key="frame" x="60" y="25.5" width="109" height="21"/>
                                     <nil key="textColor"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <textInputTraits key="textInputTraits" autocapitalizationType="words" returnKeyType="done"/>
-                                    <connections>
-                                        <outlet property="delegate" destination="god-KQ-5OP" id="xew-rr-w2h"/>
-                                        <outlet property="textDragDelegate" destination="god-KQ-5OP" id="Pmo-Dz-zGZ"/>
-                                    </connections>
                                 </textField>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add Class" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rrg-zn-XCS">
-                                    <rect key="frame" x="60" y="-6.5" width="79" height="21"/>
+                                    <rect key="frame" x="60" y="25.5" width="79" height="21"/>
                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="skinniestPlus" translatesAutoresizingMaskIntoConstraints="NO" id="Wzz-MQ-GPo">
-                                    <rect key="frame" x="16" y="-10" width="28" height="28"/>
+                                    <rect key="frame" x="16" y="22" width="28" height="28"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="28" id="5OX-se-YKN"/>
                                         <constraint firstAttribute="width" constant="28" id="pnL-rT-BgG"/>
                                     </constraints>
                                 </imageView>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g7K-8X-h0Z">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="8"/>
-                                    <connections>
-                                        <action selector="addClassButtonDragExited:" destination="god-KQ-5OP" eventType="touchDragExit" id="bc3-GI-s02"/>
-                                        <action selector="addClassButtonDraggedInside:" destination="god-KQ-5OP" eventType="touchDragInside" id="ar0-fk-c52"/>
-                                        <action selector="addClassButtonDraggedOutside:" destination="god-KQ-5OP" eventType="touchUpInside" id="Grl-3u-BLo"/>
-                                        <action selector="addClassButtonPressed:" destination="god-KQ-5OP" eventType="touchUpInside" id="9sU-Wy-SUI"/>
-                                        <action selector="addClassButtonPressedDown:" destination="god-KQ-5OP" eventType="touchDown" id="FXx-6D-jmL"/>
-                                        <action selector="addClassButtonTouchCanceled:" destination="god-KQ-5OP" eventType="touchCancel" id="yU3-zJ-7wO"/>
-                                    </connections>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="72"/>
                                 </button>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -132,33 +120,116 @@
                                         </mask>
                                     </variation>
                                 </tableViewCellContentView>
-                                <connections>
-                                    <outlet property="completedImageView" destination="lRV-qE-uLP" id="oYy-lu-5by"/>
-                                    <outlet property="duePreview" destination="Xu3-Wm-yjt" id="vdR-ME-VJG"/>
-                                    <outlet property="nameLabel" destination="FOe-Jv-Kjs" id="9G8-GO-K5O"/>
-                                    <outlet property="numberOfAssignmentsLabel" destination="MNv-4X-6fD" id="zQl-J4-Vc8"/>
-                                    <segue destination="eNZ-y8-W4L" kind="show" identifier="AssignmentTableView" id="kpB-dh-Vhh"/>
-                                </connections>
                             </tableViewCell>
                         </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="god-KQ-5OP" id="VcF-AQ-ZGb"/>
-                            <outlet property="delegate" destination="god-KQ-5OP" id="PY1-1H-LXP"/>
-                        </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Classes" largeTitleDisplayMode="always" id="fi2-aA-qJj">
                         <barButtonItem key="backBarButtonItem" title=" " id="Itn-rS-guP"/>
                     </navigationItem>
-                    <connections>
-                        <outlet property="addClassButton" destination="g7K-8X-h0Z" id="47j-WQ-bII"/>
-                        <outlet property="addClassContainerView" destination="PAD-1e-kcD" id="G9d-KC-Iap"/>
-                        <outlet property="addClassText" destination="Rrg-zn-XCS" id="QSc-7C-Lu3"/>
-                        <outlet property="addClassTextField" destination="Bn5-DG-LpY" id="CxU-V9-Mc3"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9o5-fd-QoW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1244" y="50.824587706146929"/>
+            <point key="canvasLocation" x="1842" y="887"/>
+        </scene>
+        <!--Classes-->
+        <scene sceneID="d4q-Gl-yeX">
+            <objects>
+                <viewController id="fRC-ib-pBS" customClass="ClassTableViewController" customModule="MagnetHomeworkApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="wKS-m2-tvF">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="vn7-jo-mTy">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <view key="tableFooterView" contentMode="scaleToFill" id="KY1-Lh-j4P">
+                                    <rect key="frame" x="0.0" y="108" width="375" height="44"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </view>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ClassCell" rowHeight="80" id="Dzs-yI-Vhh" customClass="ClassTableViewCell" customModule="MagnetHomeworkApp" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="80"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Dzs-yI-Vhh" id="oxo-OE-byU">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="79.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QGR-0b-oHF">
+                                                    <rect key="frame" x="15" y="29.5" width="43.5" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ocV-9T-tlS">
+                                                    <rect key="frame" x="351" y="31.5" width="9" height="17"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="14"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="QGR-0b-oHF" firstAttribute="centerY" secondItem="oxo-OE-byU" secondAttribute="centerY" id="K2n-pH-ycg"/>
+                                                <constraint firstItem="ocV-9T-tlS" firstAttribute="trailing" secondItem="oxo-OE-byU" secondAttribute="trailingMargin" id="QhU-hp-IyL"/>
+                                                <constraint firstItem="ocV-9T-tlS" firstAttribute="centerY" secondItem="oxo-OE-byU" secondAttribute="centerY" id="aHp-oF-hmU"/>
+                                                <constraint firstItem="QGR-0b-oHF" firstAttribute="leading" secondItem="oxo-OE-byU" secondAttribute="leadingMargin" id="yUN-ce-pe7"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="duePreview" destination="ocV-9T-tlS" id="XAg-rs-pxI"/>
+                                            <outlet property="nameLabel" destination="QGR-0b-oHF" id="Gpg-kv-tgY"/>
+                                            <outlet property="numberOfAssignmentsLabel" destination="ocV-9T-tlS" id="h4T-Th-lI9"/>
+                                            <segue destination="eNZ-y8-W4L" kind="show" identifier="AssignmentTableView" id="cqI-O8-Tx7"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="fRC-ib-pBS" id="g46-3a-lOh"/>
+                                    <outlet property="delegate" destination="fRC-ib-pBS" id="Xqb-Ao-gat"/>
+                                </connections>
+                            </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4uR-8B-mP9" customClass="ConnectionView" customModule="MagnetHomeworkApp" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="518" width="375" height="36"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="36" id="K88-CQ-138"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UA5-xz-RxA" customClass="AddClassView" customModule="MagnetHomeworkApp" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="482" width="375" height="72"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="72" id="H70-sx-MTv"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="Gdy-Av-wTt" firstAttribute="bottom" secondItem="4uR-8B-mP9" secondAttribute="bottom" id="5Na-io-xTa"/>
+                            <constraint firstItem="Gdy-Av-wTt" firstAttribute="trailing" secondItem="vn7-jo-mTy" secondAttribute="trailing" id="CYG-xY-WjW"/>
+                            <constraint firstItem="vn7-jo-mTy" firstAttribute="leading" secondItem="Gdy-Av-wTt" secondAttribute="leading" id="MYd-Zv-Hrm"/>
+                            <constraint firstItem="4uR-8B-mP9" firstAttribute="trailing" secondItem="Gdy-Av-wTt" secondAttribute="trailing" id="O3U-Z3-ZI5"/>
+                            <constraint firstItem="Gdy-Av-wTt" firstAttribute="bottom" secondItem="vn7-jo-mTy" secondAttribute="bottom" id="Qij-ah-Rco"/>
+                            <constraint firstItem="vn7-jo-mTy" firstAttribute="top" secondItem="Gdy-Av-wTt" secondAttribute="top" id="ToG-Sk-CQx"/>
+                            <constraint firstItem="4uR-8B-mP9" firstAttribute="leading" secondItem="Gdy-Av-wTt" secondAttribute="leading" id="WUp-t3-fou"/>
+                            <constraint firstItem="UA5-xz-RxA" firstAttribute="leading" secondItem="Gdy-Av-wTt" secondAttribute="leading" id="Y5E-bd-L4F"/>
+                            <constraint firstItem="UA5-xz-RxA" firstAttribute="trailing" secondItem="Gdy-Av-wTt" secondAttribute="trailing" id="rB9-HV-qJw"/>
+                            <constraint firstItem="UA5-xz-RxA" firstAttribute="bottom" secondItem="Gdy-Av-wTt" secondAttribute="bottom" id="ubm-Qw-Lif"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="Gdy-Av-wTt"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Classes" id="SVE-dA-3G6">
+                        <barButtonItem key="backBarButtonItem" title=" " id="dOE-mv-Lvp"/>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="addObjectView" destination="UA5-xz-RxA" id="28S-K7-2Gi"/>
+                        <outlet property="connectionView" destination="4uR-8B-mP9" id="cBr-Jo-d9J"/>
+                        <outlet property="tableView" destination="vn7-jo-mTy" id="4X2-F0-9ue"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="nut-cT-nkf" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1346" y="134"/>
         </scene>
         <!--Title-->
         <scene sceneID="bRv-ZY-JhI">
@@ -202,18 +273,18 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cIf-v4-PxE" customClass="AddObjectView" customModule="MagnetHomeworkApp" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="482" width="375" height="72"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="72" id="tmz-wm-6d8"/>
-                                </constraints>
-                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wyZ-Lt-Krq" customClass="ConnectionView" customModule="MagnetHomeworkApp" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="518" width="375" height="36"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="36" id="tOT-XI-FP1"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cIf-v4-PxE" customClass="AddObjectView" customModule="MagnetHomeworkApp" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="482" width="375" height="72"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="72" id="tmz-wm-6d8"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -243,14 +314,14 @@
                         <outlet property="addObjectView" destination="cIf-v4-PxE" id="vo5-dA-VWq"/>
                         <outlet property="connectionView" destination="wyZ-Lt-Krq" id="lTs-oh-zlG"/>
                         <outlet property="tableView" destination="ZOf-MY-E1F" id="zqb-qo-NZQ"/>
-                        <segue destination="JL5-cX-GN7" kind="presentation" identifier="ScheduleTableView" id="xbD-7V-9Dd"/>
+                        <segue destination="JL5-cX-GN7" kind="presentation" identifier="ScheduleTableView" id="e4H-hN-SAN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Ge-E2-fTm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1244" y="833.43328335832086"/>
+            <point key="canvasLocation" x="2332" y="134"/>
         </scene>
-        <!--To-Do-->
+        <!--To-Do Today-->
         <scene sceneID="toD-FZ-Kq4">
             <objects>
                 <viewController id="U7N-qf-mNN" customClass="ToDoTableViewController" customModule="MagnetHomeworkApp" customModuleProvider="target" sceneMemberID="viewController">
@@ -261,8 +332,8 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="qRB-fC-I2c">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <view key="tableFooterView" contentMode="scaleToFill" id="3XV-dQ-ypv">
-                                    <rect key="frame" x="0.0" y="92" width="375" height="0.0"/>
+                                <view key="tableFooterView" contentMode="scaleToFill" id="KVT-mz-zL3">
+                                    <rect key="frame" x="0.0" y="92" width="375" height="72"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </view>
@@ -307,7 +378,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="BOY-em-jh3"/>
                     </view>
-                    <navigationItem key="navigationItem" title="To-Do" id="ubA-V3-1zO"/>
+                    <navigationItem key="navigationItem" title="To-Do Today" id="ubA-V3-1zO"/>
                     <connections>
                         <outlet property="addObjectView" destination="0ZV-43-SaM" id="Ojg-vX-V4k"/>
                         <outlet property="connectionView" destination="9Cd-QC-O6n" id="M4t-Ow-IBa"/>
@@ -317,13 +388,13 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IhS-6L-D8F" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="637.60000000000002" y="-898.2008995502249"/>
+            <point key="canvasLocation" x="1190" y="-1177"/>
         </scene>
         <!--To-Do-->
         <scene sceneID="AgL-BQ-ZSh">
             <objects>
                 <navigationController id="ssY-bV-61x" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="To-Do" image="toDoListIcon4" id="nDx-Tr-9dV"/>
+                    <tabBarItem key="tabBarItem" title="To-Do" image="todoIconNew" id="nDx-Tr-9dV"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" translucent="NO" id="1hp-3b-owS">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -334,7 +405,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SdW-W5-S22" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-250" y="-963"/>
+            <point key="canvasLocation" x="305" y="-1177"/>
         </scene>
         <!--Title-->
         <scene sceneID="qY5-sK-XMH">
@@ -366,35 +437,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xoR-KF-JTK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="197.59999999999999" y="834.33283358320841"/>
-        </scene>
-        <!--Table View Controller-->
-        <scene sceneID="mVn-JR-Eoi">
-            <objects>
-                <tableViewController id="vCI-cy-tvD" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="Pn0-xv-yv9">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="2CK-Ds-r2V">
-                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="2CK-Ds-r2V" id="LZo-SX-HpG">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="vCI-cy-tvD" id="5Wb-YZ-eSV"/>
-                            <outlet property="delegate" destination="vCI-cy-tvD" id="GwC-9c-yQw"/>
-                        </connections>
-                    </tableView>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="5v0-HY-WBe" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="255" y="1529"/>
+            <point key="canvasLocation" x="-2020" y="-451"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="WJr-o5-umd">
@@ -426,7 +469,7 @@
         <scene sceneID="gb6-s9-3Rm">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Eu3-jo-ihJ" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Classes" image="classIcon4" id="D65-ej-chX"/>
+                    <tabBarItem key="tabBarItem" title="Classes" image="classroomIconNew" id="D65-ej-chX"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" translucent="NO" id="ag7-5e-Zwd">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
@@ -437,12 +480,12 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="god-KQ-5OP" kind="relationship" relationship="rootViewController" id="kmJ-td-Avr"/>
+                        <segue destination="fRC-ib-pBS" kind="relationship" relationship="rootViewController" id="7Vi-gh-r0p"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4S4-7T-9ES" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="304.80000000000001" y="50.824587706146929"/>
+            <point key="canvasLocation" x="305" y="134"/>
         </scene>
         <!--Schedule-->
         <scene sceneID="mB8-NJ-xtE">
@@ -597,7 +640,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LQ9-gb-Uff" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3068" y="835.23238380809596"/>
+            <point key="canvasLocation" x="4468" y="-605"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="wSf-R7-69f">
@@ -614,7 +657,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Med-Mp-uUn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2176.8000000000002" y="835.23238380809596"/>
+            <point key="canvasLocation" x="3513" y="-605"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="JaO-jr-fqp">
@@ -632,16 +675,16 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="O70-Ud-wL5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-935" y="841"/>
+            <point key="canvasLocation" x="-3145" y="-451"/>
         </scene>
     </scenes>
     <resources>
-        <image name="classIcon4" width="70" height="70"/>
+        <image name="classroomIconNew" width="67" height="70"/>
         <image name="greenCheckmark" width="173" height="173"/>
         <image name="skinniestPlus" width="710" height="711"/>
-        <image name="toDoListIcon4" width="52" height="52"/>
+        <image name="todoIconNew" width="53" height="53"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="xbD-7V-9Dd"/>
+        <segue reference="kGv-ar-Mfg"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -62,10 +62,10 @@ public class Assignment: NSManagedObject, CloudUploadable {
     func calculateDueDateSectionNumber() -> Int {
         switch dueDateSection {
         case "Late": return 0
-        case "Unscheduled": return 1
-        case "Due Tomorrow": return 2
-        case "Due This Week": return 3
-        case "Due This Monday": return 3 
+        case "Unscheduled": return 3
+        case "Due Tomorrow": return 1
+        case "Due This Week": return 2
+        case "Due This Monday": return 3
         case "Due Later": return 4
         case "Completed": return 5
         default:

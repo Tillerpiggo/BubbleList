@@ -184,9 +184,11 @@ class Theme {
     }
     
     static var red: Theme {
-        let theme = Theme(primaryColor: UIColor(red: 242/255, green: 92/255, blue: 92/255, alpha: 1))
+        var primaryColor: UIColor = UIColor(red: 242/255, green: 98/255, blue: 92/255, alpha: 1) // old color
+        
+        let theme = Theme(primaryColor: primaryColor)
         theme.textColor = .black
-        theme.highlightColor = theme.primaryColor.withAlphaComponent(0.1)
+        theme.highlightColor = UIColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1)
         theme.separatorColor = UIColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1)
         theme.titleColor = .white
         theme.navigationBarTintColor = theme.primaryColor
