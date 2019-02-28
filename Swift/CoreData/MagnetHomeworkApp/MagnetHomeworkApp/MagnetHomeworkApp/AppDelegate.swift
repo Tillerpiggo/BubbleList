@@ -75,7 +75,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         var didReceiveData: Bool = false
         
-        if notification.subscriptionID == "cloudkit-privateClass-changes" || notification.subscriptionID == "cloudkit-privateAssignment-changes" || notification.subscriptionID == "cloudkit-sharedDatabase-changes" || notification.subscriptionID == "cloudkit-privateToDo-changes" {
+        if notification.subscriptionID == "cloudkit-privateClass-changes2" || notification.subscriptionID == "cloudkit-privateAssignment-changes2" || notification.subscriptionID == "cloudkit-sharedDatabase-changes2" || notification.subscriptionID == "cloudkit-privateToDo-changes2" {
             notificationDelegate?.fetchChanges() { (didFetchRecords) in
                 if !didReceiveData {
                     completionHandler(.noData)

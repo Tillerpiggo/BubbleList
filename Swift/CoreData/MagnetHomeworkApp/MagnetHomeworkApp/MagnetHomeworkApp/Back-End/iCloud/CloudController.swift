@@ -246,7 +246,7 @@ class CloudController {
     
     func saveSubscription(for recordType: String, inDatabase databaseType: DatabaseType, completion: @escaping () -> Void) {
         // Create and save a silent push subscription in order to be updated:
-        let subscriptionID = "cloudkit-\(databaseType.rawValue)\(recordType)-changes"
+        let subscriptionID = "cloudkit-\(databaseType.rawValue)\(recordType)-changes2"
         print("Subscription ID: \(subscriptionID)")
         
         // Notify for all chnages
@@ -670,7 +670,7 @@ class CloudController {
     }
     
     init() {
-        if !subscribedToChanges { // If there is no "!" before "subscribedToChanges", then I'm testing because I changed the subscriptions
+        if subscribedToChanges { // If there is no "!" before "subscribedToChanges", then I'm testing because I changed the subscriptions
             removeAllSubscriptions()
             print("Subscribing to changes...")
             // TODO: Group these together to use less subscription saving opersations
