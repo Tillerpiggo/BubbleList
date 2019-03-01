@@ -25,6 +25,7 @@ class AddObjectView: UIView {
     var delegate: AddObjectViewDelegate?
     
     let selectionDuration: TimeInterval = 0.25
+    var keyboardHeight: CGFloat = 186 // To be set by AddObjectViewProgrammatically
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -75,7 +76,6 @@ class AddObjectView: UIView {
     
     func configure() {
         view.layer.cornerRadius = 5
-        //view.addDropShadow(color: .black, opacity: 0.15, radius: 2)
         view.layoutSubviews()
         view.isHidden = false
         textField.isHidden = true
@@ -113,16 +113,16 @@ class AddObjectView: UIView {
         textField.isHidden = false
         textField.becomeFirstResponder()
         
-        let moveUpTransform = CGAffineTransform(translationX: 0, y: -186)
-        
+        let moveUpTransform = CGAffineTransform(translationX: 0, y: (200) * -1)
+
         let scaleFactor = self.frame.width / self.view.frame.width // makes it fill from side to side
         let scaleTransform = CGAffineTransform(scaleX: 1, y: 1)
         let selectedTransform = moveUpTransform.concatenating(scaleTransform)
-        
+
         UIView.animate(withDuration: duration, delay: 0.0, options: .curveEaseInOut, animations: {
             self.view.backgroundColor = .white
             self.transform = selectedTransform
-            //self.view.addDropShadow(color: .black, opacity: 0.5, radius: 200)
+            //self.addDropShadow(color: .black, opacity: 0.15, radius: 3)
         })
         
         delegate?.viewSetToSelected()

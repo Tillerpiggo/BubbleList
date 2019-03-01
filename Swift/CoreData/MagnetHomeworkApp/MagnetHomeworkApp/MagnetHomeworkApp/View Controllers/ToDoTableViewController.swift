@@ -18,6 +18,7 @@ class ToDoTableViewController: AddObjectViewController {
     
     var showsCompleted: Bool = false
     var isCompletedHidden: Bool = true
+    var hasAddObjectView: Bool = false
     
     var hiddenSections: [Int] = []
     
@@ -100,6 +101,10 @@ class ToDoTableViewController: AddObjectViewController {
         tableView.backgroundColor = .backgroundColor
         
         self.navigationController?.configureNavigationBar()
+        
+        if !hasAddObjectView {
+            
+        }
         
         tableView.register(UINib(nibName: "AssignmentHeaderFooterView", bundle: nil), forHeaderFooterViewReuseIdentifier: "AssignmentHeaderFooterView")
         
@@ -363,18 +368,24 @@ extension ToDoTableViewController: NSFetchedResultsControllerDelegate {
             print("New Section has \(tableView.numberOfRows(inSection: newIndexPath!.section)) rows")
             
             tableView.moveRow(at: indexPath!, to: newIndexPath!)
+            
+            let cell = tableView.cellForRow(at: indexPath!) as! AssignmentTableViewCell
+            cell.configure(withAssignment: cell.assignment!)
+            
+            
+            //tableView.reloadRows(at: [newIndexPath!], with: .none)
             break
             
-            if tableView.numberOfSections == 1 && tableView.numberOfRows(inSection: 0) == 1 && self.tableView(tableView, titleForHeaderInSection: indexPath!.section) != "Completed" {
-                break
-            }
-            
-            if tableView.numberOfRows(inSection: indexPath!.section) <= 1 || tableView.numberOfRows(inSection: newIndexPath!.section) <= 1 {
-                tableView.reloadRows(at: [indexPath!], with: .automatic)
-            } else {
-                //tableView.reloadRows(at: [indexPath!], with: .automatic)
-                tableView.moveRow(at: indexPath!, to: newIndexPath!)
-            }
+//            if tableView.numberOfSections == 1 && tableView.numberOfRows(inSection: 0) == 1 && self.tableView(tableView, titleForHeaderInSection: indexPath!.section) != "Completed" {
+//                break
+//            }
+//
+//            if tableView.numberOfRows(inSection: indexPath!.section) <= 1 || tableView.numberOfRows(inSection: newIndexPath!.section) <= 1 {
+//                tableView.reloadRows(at: [indexPath!], with: .automatic)
+//            } else {
+//                tableView.moveRow(at: indexPath!, to: newIndexPath!)
+//                tableView.reloadRows(at: [newIndexPath!], with: .automatic)
+//            }
         }
     }
     
@@ -388,7 +399,7 @@ extension ToDoTableViewController: NSFetchedResultsControllerDelegate {
                     section.section? -= 1
                 }
             }
-            tableView.deleteSections([sectionIndex], with: .fade)
+            tableView.deleteSections([sectionIndex], with: .automatic)
         case .insert:
             for (index, hiddenSection) in hiddenSections.enumerated() where hiddenSection >= sectionIndex {
                 hiddenSections[index] += 1
@@ -398,7 +409,7 @@ extension ToDoTableViewController: NSFetchedResultsControllerDelegate {
                 }
             }
             
-            self.tableView.insertSections([sectionIndex], with: .fade)
+            self.tableView.insertSections([sectionIndex], with: .automatic)
             
             
         default:

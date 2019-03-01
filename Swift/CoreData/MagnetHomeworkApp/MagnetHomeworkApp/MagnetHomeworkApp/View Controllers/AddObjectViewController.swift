@@ -23,6 +23,7 @@ class AddObjectViewController: ConnectionViewController, AddObjectViewDelegate, 
     override func viewDidLoad() {
         super.viewDidLoad()
         configureAddObjectView()
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -35,6 +36,10 @@ class AddObjectViewController: ConnectionViewController, AddObjectViewDelegate, 
             addObjectView.layer.zPosition = 2
             connectionView.layer.zPosition = 1
         }
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)),
+                                               name: UIResponder.keyboardDidShowNotification, object: nil)
+        
     }
     
     
@@ -83,7 +88,7 @@ class AddObjectViewController: ConnectionViewController, AddObjectViewDelegate, 
 
         addObjectView.addConstraints(horizontalViewConstraints)
         addObjectView.addConstraints(verticalViewConstraints)
-        
+    
         // Text Field
 
         addObjectView.textField.delegate = self
@@ -120,6 +125,16 @@ class AddObjectViewController: ConnectionViewController, AddObjectViewDelegate, 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+    
+    @objc func keyboardWillShow(_ notification: Notification) {
+        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+            let keyboardRectangle = keyboardFrame.cgRectValue
+            let keyboardHeight = keyboardRectangle.height
+            self.addObjectView.keyboardHeight = keyboardHeight
+            
+            //addObjectView.frame.origin.y -= keyboardHeight
+        }
     }
     
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
