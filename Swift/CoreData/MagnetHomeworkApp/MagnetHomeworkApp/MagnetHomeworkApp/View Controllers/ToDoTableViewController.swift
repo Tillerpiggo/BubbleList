@@ -399,7 +399,7 @@ extension ToDoTableViewController: NSFetchedResultsControllerDelegate {
                     section.section? -= 1
                 }
             }
-            tableView.deleteSections([sectionIndex], with: .automatic)
+            tableView.deleteSections([sectionIndex], with: .fade)
         case .insert:
             for (index, hiddenSection) in hiddenSections.enumerated() where hiddenSection >= sectionIndex {
                 hiddenSections[index] += 1
@@ -409,7 +409,7 @@ extension ToDoTableViewController: NSFetchedResultsControllerDelegate {
                 }
             }
             
-            self.tableView.insertSections([sectionIndex], with: .automatic)
+            self.tableView.insertSections([sectionIndex], with: .fade)
             
             
         default:
