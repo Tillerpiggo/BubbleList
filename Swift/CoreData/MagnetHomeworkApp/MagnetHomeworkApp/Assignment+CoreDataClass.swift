@@ -12,7 +12,6 @@ import CoreData
 import CloudKit
 import UIKit
 
-
 public class Assignment: NSManagedObject, CloudUploadable {
     var ckRecord: CKRecord = CKRecord(recordType: "Assignment")
     
@@ -42,7 +41,7 @@ public class Assignment: NSManagedObject, CloudUploadable {
             return "Unscheduled"
         } else if daysBetween == 1 {
             return "Due Tomorrow"
-        } else if Date().weekday >= 1 && Date().weekday < 6 {
+        } else if Date().weekday >= .dueSunday && Date().weekday < .dueThursday {
             if daysBetween > 0 && daysBetween < 7 - Date().weekday { // Due Friday or earlier {
                 return "Due This Week"
             } else {

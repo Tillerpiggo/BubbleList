@@ -555,40 +555,9 @@ extension AssignmentViewController: ClassTableViewControllerDelegate {
 
 extension AssignmentViewController {
     @objc override func buttonPressed(assignment: Assignment) -> Bool {
-        if let assignment = fetchedResultsController.fetchedObjects?.first(where: { $0 == assignment }), let toDo = assignment.toDo {
-            toDo.isCompleted = !toDo.isCompleted
-            assignment.isCompleted = toDo.isCompleted
-            
-            toDo.completionDate = NSDate()
-            toDo.ckRecord["isCompleted"] = toDo.isCompleted as CKRecordValue?
-            
-            assignment.updateDueDateSection()
-            
-            cloudController.save([toDo], inDatabase: .private, recordChanged: { (updatedRecord) in
-                assignment.toDo?.update(withRecord: updatedRecord)
-            }) { (error) in
-                guard let error = error as? CKError else { return }
-                switch error.code {
-                case .requestRateLimited, .zoneBusy, .serviceUnavailable:
-                    break
-                default:
-                    print("ERROR: \(error.code)")
-                    DispatchQueue.main.async {
-                        //self.alertUserOfFailure()
-                        self.coreDataController.save()
-                    }
-                }
-            }
-            
-            coreDataController.save()
-            
-            delegate?.reloadClass(`class`)
-            
-            return toDo.isCompleted
-        } else {
-            print("Couldn't find associated assignment; look at AssignmentTableViewController: AssignmentTableViewCellDelegate")
-            return true
-        }
+        let bool = buttonPressed(assignment: assignment)
+        delegate.reloadClass(`class`)
+        return bool
     }
 }
 

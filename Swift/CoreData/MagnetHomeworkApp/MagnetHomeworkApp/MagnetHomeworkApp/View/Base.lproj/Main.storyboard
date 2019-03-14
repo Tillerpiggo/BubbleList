@@ -304,7 +304,7 @@
                         <viewLayoutGuide key="safeArea" id="Vrg-og-GeK"/>
                     </view>
                     <navigationItem key="navigationItem" title="Title" largeTitleDisplayMode="never" id="L2B-Yb-UH7">
-                        <barButtonItem key="rightBarButtonItem" systemItem="action" id="or8-bw-4G1">
+                        <barButtonItem key="rightBarButtonItem" title="Item" image="cloudIcon" id="or8-bw-4G1">
                             <connections>
                                 <action selector="shareButtonTapped:" destination="eNZ-y8-W4L" id="4qZ-gj-zAm"/>
                             </connections>
@@ -680,11 +680,12 @@
     </scenes>
     <resources>
         <image name="classroomIconNew" width="67" height="70"/>
+        <image name="cloudIcon" width="235" height="217"/>
         <image name="greenCheckmark" width="173" height="173"/>
         <image name="skinniestPlus" width="710" height="711"/>
         <image name="todoIconNew" width="53" height="53"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="kGv-ar-Mfg"/>
+        <segue reference="e4H-hN-SAN"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -427,19 +427,16 @@ extension ToDoTableViewController: NSFetchedResultsControllerDelegate {
 
 extension ToDoTableViewController: AssignmentTableViewCellDelegate {
     @objc func buttonPressed(assignment: Assignment) -> Bool {
-        if let assignment = fetchedResultsController.fetchedObjects?.first(where: { $0 == assignment }), let toDo = assignment.toDo {
+        if let toDo = assignment.toDo {
             toDo.isCompleted = !toDo.isCompleted
             assignment.isCompleted = toDo.isCompleted
             
             toDo.completionDate = NSDate()
             toDo.ckRecord["isCompleted"] = toDo.isCompleted as CKRecordValue?
             
-            if toDo.isCompleted {
-                assignment.dueDateSectionNumber = 5
-                assignment.dueDateSection = "Completed"
-            }
-            
             assignment.updateDueDateSection()
+            
+            coreDataController.save()
             
             cloudController.save([toDo], inDatabase: .private, recordChanged: { (updatedRecord) in
                 assignment.toDo?.update(withRecord: updatedRecord)
@@ -457,9 +454,7 @@ extension ToDoTableViewController: AssignmentTableViewCellDelegate {
                 }
             }
             
-            coreDataController.save()
-            
-            //delegate?.reloadClass(`class`)
+            //delegate?.reloadClass(`class`) // special to assignment view, which is directly correspondant to a specific class
             
             return toDo.isCompleted
         } else {

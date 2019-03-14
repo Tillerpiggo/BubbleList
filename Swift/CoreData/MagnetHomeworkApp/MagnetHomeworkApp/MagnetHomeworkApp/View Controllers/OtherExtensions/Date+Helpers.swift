@@ -71,7 +71,7 @@ extension Date {
             return "Tomorrow"
         } else if daysBetween < 7 {
             if Date().weekday < date.weekday {
-                return "this \(stringFromWeekday(date.weekday))"
+                return "this \(weekday.string)"
             } else {
                 return "this coming \(stringFromWeekday(date.weekday))"
             }
@@ -97,9 +97,9 @@ extension Date {
         default: return "Someday"
         }
     }
-    var weekday: Int {
-        let weekday = Calendar.current.component(.weekday, from: self)
-        return weekday
+    var weekday: Weekday {
+        let weekdayInt = Calendar.current.component(.weekday, from: self)
+        return Weekday(fromInt: weekdayInt)!
     }
     var dayBefore: Date {
         return Calendar.current.date(byAdding: .day, value: -1, to: firstSecond)!
@@ -118,5 +118,56 @@ extension Date {
     }
     var isLastDayOfMonth: Bool {
         return dayAfter.month != month
+    }
+}
+
+enum Weekday: Comparable {
+    
+    case sunday, monday, tuesday, wednesday, thursday, friday, saturday
+    
+    var int: Int {
+        switch self {
+        case .sunday: return 1
+        case .monday: return 2
+        case .tuesday: return 3
+        case .wednesday: return 4
+        case .thursday: return 5
+        case .friday: return 6
+        case .saturday: return 7
+        }
+    }
+    
+    var string: String {
+        switch self {
+        case .sunday: return "Sunday"
+        case .monday: return "Monday"
+        case .tuesday: return "Tuesday"
+        case .wednesday: return "Wednesday"
+        case .thursday: return "Thursday"
+        case .friday: return "Friday"
+        case .saturday: return "Saturday"
+        }
+    }
+    
+    init?(fromInt int: Int) {
+        guard int >= 1 && int <= 7 else { return nil }
+        
+        switch int {
+        case 1: self = .sunday
+        case 2: self = .monday
+        case 3: self = .tuesday
+        case 4: self = .wednesday
+        case 5: self = .thursday
+        case 6: self = .friday
+        case 7: self = .saturday
+        default:
+            print("Something screwed up in enum Weekday { ... }; make sure the guard statement has the correct bounds.")
+            self = .monday
+        }
+    }
+    
+    // Comparable
+    static func < (lhs: Weekday, rhs: Weekday) -> Bool {
+        return lhs.int < rhs.int
     }
 }
