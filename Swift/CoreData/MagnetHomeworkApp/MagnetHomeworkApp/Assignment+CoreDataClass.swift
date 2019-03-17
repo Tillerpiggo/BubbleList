@@ -15,68 +15,72 @@ import UIKit
 public class Assignment: NSManagedObject, CloudUploadable {
     var ckRecord: CKRecord = CKRecord(recordType: "Assignment")
     
-    func calculateDueDateSection() -> String {
-        guard toDo?.isCompleted ?? false == false else {
-            return "Completed"
-        }
-        
-        guard let dueDate = dueDate as Date? else {
-            return "Unscheduled"
-        }
-        
-        let calendar = Calendar(identifier: .gregorian)
-        let components = calendar.dateComponents([.day], from: Date().firstSecond, to: dueDate.firstSecond)
-        
-        guard let daysBetween = components.day else {
-            return "Unscheduled"
-        }
-        
-        guard dueDate.firstSecond > Date().firstSecond else {
-            return "Late"
-        }
-        
-        if daysBetween < 0 {
-            return "Late"
-        } else if daysBetween == 0 {
-            return "Unscheduled"
-        } else if daysBetween == 1 {
-            return "Due Tomorrow"
-        } else if Date().weekday >= .dueSunday && Date().weekday < .dueThursday {
-            if daysBetween > 0 && daysBetween < 7 - Date().weekday { // Due Friday or earlier {
-                return "Due This Week"
-            } else {
-                return "Due Later"
-            }
-        } else if Date().weekday >= 5 {
-            if daysBetween > 0 && daysBetween <= 2 {
-                return "Due This Monday"
-            } else {
-                return "Due Later"
-            }
-        } else {
-            return "Due Later"
-        }
-    }
+//    func calculateDueDateSection() -> String {
+////        guard toDo?.isCompleted ?? false == false else {
+////            return "Completed"
+////        }
+////
+////        guard let dueDate = dueDate as Date? else {
+////            return "Unscheduled"
+////        }
+////
+////        let calendar = Calendar(identifier: .gregorian)
+////        let components = calendar.dateComponents([.day], from: Date().firstSecond, to: dueDate.firstSecond)
+////
+////        guard let daysBetween = components.day else {
+////            return "Unscheduled"
+////        }
+////
+////        guard dueDate.firstSecond > Date().firstSecond else {
+////            return "Late"
+////        }
+////
+////        if daysBetween < 0 {
+////            return "Late"
+////        } else if daysBetween == 0 {
+////            return "Unscheduled"
+////        } else if daysBetween == 1 {
+////            return "Due Tomorrow"
+////        } else if Date().weekday >= .dueSunday && Date().weekday < .dueThursday {
+////            if daysBetween > 0 && daysBetween < 7 - Date().weekday { // Due Friday or earlier {
+////                return "Due This Week"
+////            } else {
+////                return "Due Later"
+////            }
+////        } else if Date().weekday >= 5 {
+////            if daysBetween > 0 && daysBetween <= 2 {
+////                return "Due This Monday"
+////            } else {
+////                return "Due Later"
+////            }
+////        } else {
+////            return "Due Later"
+////        }
+//
+//        return "unimplemented"
+//    }
     
-    func calculateDueDateSectionNumber() -> Int {
-        switch dueDateSection {
-        case "Late": return 0
-        case "Unscheduled": return 3
-        case "Due Tomorrow": return 1
-        case "Due This Week": return 2
-        case "Due This Monday": return 3
-        case "Due Later": return 4
-        case "Completed": return 5
-        default:
-            print("DUE DATE SECTION NUMBER NOT FOUND")
-            return -1
-        }
-    }
+//    func calculateDueDateSectionNumber() -> Int {
+//        switch dueDateSection {
+//        case "Late": return 0
+//        case "Unscheduled": return 3
+//        case "Due Tomorrow": return 1
+//        case "Due This Week": return 2
+//        case "Due This Monday": return 3
+//        case "Due Later": return 4
+//        case "Completed": return 5
+//        default:
+//            print("DUE DATE SECTION NUMBER NOT FOUND")
+//            return -1
+//        }
+//    }
+    
+    
     
     private override init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?) {
         super.init(entity: entity, insertInto: context)
         generateRecord()
-        updateDueDateSection()
+        //updateDueDateSection()
     }
     
     init(withText text: String, managedContext: NSManagedObjectContext, owningClass: Class, zoneID: CKRecordZone.ID, toDoZoneID: CKRecordZone.ID) {
@@ -90,7 +94,7 @@ public class Assignment: NSManagedObject, CloudUploadable {
         self.owningClass = owningClass
         self.dueDate = nil
         self.isCompleted = false
-        updateDueDateSection()
+        //updateDueDateSection()
         
         // Create CKRecord
         let recordName = UUID().uuidString
@@ -121,7 +125,7 @@ public class Assignment: NSManagedObject, CloudUploadable {
         self.dueDate = record["dueDate"] as NSDate?
         self.isCompleted = false
         
-        updateDueDateSection()
+        //updateDueDateSection()
         // Remember to set ToDo while retrieving from the Cloud
         
         // Set CKRecord
@@ -134,7 +138,7 @@ public class Assignment: NSManagedObject, CloudUploadable {
         self.dateLastModified = record.modificationDate! as NSDate
         self.encodedSystemFields = record.encoded()
         self.dueDate = record["dueDate"] as NSDate?
-        updateDueDateSection()
+        //updateDueDateSection()
         // Not the responsibility of the Assignment to find the corresponding to-do if it changes
         
         self.ckRecord = record

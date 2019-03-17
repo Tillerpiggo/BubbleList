@@ -23,8 +23,8 @@ extension Assignment {
     @NSManaged public var text: String?
     @NSManaged public var owningClass: Class?
     @NSManaged public var toDo: ToDo?
-    @NSManaged public var dueDate: NSDate?
     @NSManaged public var dueDateSectionNumber: Int
     @NSManaged public var dueDateSection: String?
     @NSManaged public var isCompleted: Bool
+    @NSManaged public var dueDate: DueDate?
 }

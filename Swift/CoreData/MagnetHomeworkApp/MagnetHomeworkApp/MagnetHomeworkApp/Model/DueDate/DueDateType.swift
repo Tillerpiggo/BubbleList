@@ -12,15 +12,16 @@ import Foundation
 // and handle all of the logic to determine how to refer to a given due date from a given point in time (now)
 // Most of the logic is in the enum - the DueDate object itself is for ease of access and for updating and managing the DueDateType to do any extra required stuff (tbd via development)
 
-class DueDate {
-    var dueDate: Date
-    
-    
-    
-    init(withDueDate dueDate: Date) {
-        self.dueDate = dueDate
-    }
-}
+//class DueDate {
+//    var dueDate: Date
+//    var dueDateType: DueDateType {
+//        return DueDateType(withDueDate: dueDate)
+//    }
+//
+//    init(withDueDate dueDate: Date) {
+//        self.dueDate = dueDate
+//    }
+//}
 
 enum DueDateType: Equatable {
     case completed

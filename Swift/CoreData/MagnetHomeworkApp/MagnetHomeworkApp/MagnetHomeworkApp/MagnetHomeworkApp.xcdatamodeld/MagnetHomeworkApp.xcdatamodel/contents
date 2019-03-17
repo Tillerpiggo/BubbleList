@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14460.32" systemVersion="18B75" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14460.32" systemVersion="18C54" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Assignment" representedClassName=".Assignment" syncable="YES">
         <attribute name="creationDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="dateLastModified" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="dueDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="dueDateSection" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="dueDateSectionNumber" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="encodedSystemFields" optional="YES" attributeType="Transformable" customClassName="." syncable="YES"/>
         <attribute name="isCompleted" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="dueDate" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DueDate" inverseName="owningAssignment" inverseEntity="DueDate" syncable="YES"/>
         <relationship name="owningClass" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Class" inverseName="assignments" inverseEntity="Class" syncable="YES"/>
         <relationship name="toDo" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ToDo" inverseName="assignment" inverseEntity="ToDo" syncable="YES"/>
     </entity>
@@ -20,6 +20,10 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="assignments" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Assignment" inverseName="owningClass" inverseEntity="Assignment" syncable="YES"/>
     </entity>
+    <entity name="DueDate" representedClassName=".DueDate" syncable="YES">
+        <attribute name="dueDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <relationship name="owningAssignment" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Assignment" inverseName="dueDate" inverseEntity="Assignment" syncable="YES"/>
+    </entity>
     <entity name="ToDo" representedClassName=".ToDo" syncable="YES">
         <attribute name="completionDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="encodedSystemFields" optional="YES" attributeType="Transformable" syncable="YES"/>
@@ -30,5 +34,6 @@
         <element name="Assignment" positionX="273.20703125" positionY="-52.4609375" width="128" height="195"/>
         <element name="Class" positionX="-63" positionY="-18" width="128" height="133"/>
         <element name="ToDo" positionX="108" positionY="18" width="128" height="105"/>
+        <element name="DueDate" positionX="108" positionY="27" width="128" height="75"/>
     </elements>
 </model>
