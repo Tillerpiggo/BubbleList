@@ -85,7 +85,12 @@ enum DueDateType: Equatable {
         }
     }
     
-    init(withDueDate dueDate: Date) {
+    init(withDueDate dueDate: Date?) {
+        guard let dueDate = dueDate else {
+            self = .unscheduled
+            return
+        }
+        
         let calendar = Calendar(identifier: .gregorian)
         let components = calendar.dateComponents([.day], from: Date().firstSecond, to: dueDate.firstSecond)
         

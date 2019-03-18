@@ -25,7 +25,7 @@ class ScheduleTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        dueDate = (assignment.dueDate as Date?)
+        dueDate = (assignment.dueDate?.date as Date?)
         
         dueDatePicker.date = dueDate ?? Date.tomorrow
         
@@ -75,8 +75,8 @@ class ScheduleTableViewController: UITableViewController {
     // MARK: - Helper Methods
     
     func save() {
-        assignment.dueDate = dueDate as NSDate?
-        assignment.updateDueDateSection()
+        assignment.dueDate?.date = dueDate as NSDate?
+        //assignment.updateDueDateSection()
         assignment.ckRecord["dueDate"] = dueDate as CKRecordValue?
         coreDataController.save()
         

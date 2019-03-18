@@ -33,7 +33,7 @@ class AssignmentViewController: ToDoTableViewController {
     
     override var sortDescriptors: [NSSortDescriptor] {
         let sortBySectionNumber = NSSortDescriptor(key: #keyPath(Assignment.dueDateSectionNumber), ascending: true)
-        let sortByDueDate = NSSortDescriptor(key: #keyPath(Assignment.dueDate), ascending: true)
+        let sortByDueDate = NSSortDescriptor(key: #keyPath(Assignment.dueDate.date), ascending: true)
         let sortByCreationDate = NSSortDescriptor(key: #keyPath(Assignment.creationDate), ascending: true)
         let sortByCompletionDate = NSSortDescriptor(key: #keyPath(Assignment.toDo.completionDate), ascending: false)
         
@@ -556,7 +556,7 @@ extension AssignmentViewController: ClassTableViewControllerDelegate {
 extension AssignmentViewController {
     @objc override func buttonPressed(assignment: Assignment) -> Bool {
         let bool = buttonPressed(assignment: assignment)
-        delegate.reloadClass(`class`)
+        delegate?.reloadClass(`class`)
         return bool
     }
 }

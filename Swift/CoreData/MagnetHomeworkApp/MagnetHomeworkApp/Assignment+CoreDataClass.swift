@@ -101,7 +101,7 @@ public class Assignment: NSManagedObject, CloudUploadable {
         let recordID = CKRecord.ID(recordName: recordName, zoneID: zoneID)
         let newCKRecord = CKRecord(recordType: "Assignment", recordID: recordID)
         newCKRecord["text"] = text as CKRecordValue
-        newCKRecord["dueDate"] = self.dueDate as CKRecordValue?
+        newCKRecord["dueDate"] = self.dueDate?.date as CKRecordValue?
         let owningClassReference = CKRecord.Reference(record: owningClass.ckRecord, action: .deleteSelf)
         newCKRecord["owningClass"] = owningClassReference as CKRecordValue
         newCKRecord.setParent(owningClass.ckRecord)
@@ -110,6 +110,7 @@ public class Assignment: NSManagedObject, CloudUploadable {
         self.encodedSystemFields = newCKRecord.encoded()
         
         self.toDo = ToDo(isCompleted: false, managedContext: managedContext, assignment: self, zoneID: toDoZoneID)
+        self.dueDate = DueDate(withDate: nil, managedContext: managedContext)
     }
     
     init(fromRecord record: CKRecord, owningClass: Class, managedContext: NSManagedObjectContext) {
@@ -122,7 +123,7 @@ public class Assignment: NSManagedObject, CloudUploadable {
         self.dateLastModified = record.modificationDate! as NSDate
         self.encodedSystemFields = record.encoded()
         self.owningClass = owningClass
-        self.dueDate = record["dueDate"] as NSDate?
+        self.dueDate?.date = record["dueDate"] as NSDate?
         self.isCompleted = false
         
         //updateDueDateSection()
@@ -137,17 +138,17 @@ public class Assignment: NSManagedObject, CloudUploadable {
         self.creationDate = record.creationDate! as NSDate
         self.dateLastModified = record.modificationDate! as NSDate
         self.encodedSystemFields = record.encoded()
-        self.dueDate = record["dueDate"] as NSDate?
+        self.dueDate?.date = record["dueDate"] as NSDate?
         //updateDueDateSection()
         // Not the responsibility of the Assignment to find the corresponding to-do if it changes
         
         self.ckRecord = record
     }
     
-    func updateDueDateSection() {
-        self.dueDateSection = calculateDueDateSection()
-        self.dueDateSectionNumber = calculateDueDateSectionNumber()
-    }
+//    func updateDueDateSection() {
+//        self.dueDateSection = calculateDueDateSection()
+//        self.dueDateSectionNumber = calculateDueDateSectionNumber()
+//    }
     
     func generateRecord() {
         if let encodedSystemFields = self.encodedSystemFields {
@@ -157,7 +158,7 @@ public class Assignment: NSManagedObject, CloudUploadable {
             unarchiver.finishDecoding()
             
             newCKRecord["text"] = text as CKRecordValue?
-            newCKRecord["dueDate"] = dueDate as CKRecordValue?
+            newCKRecord["dueDate"] = dueDate!.date as CKRecordValue?
             // TODO: Figure out how to have owningClass (or ignore)
             
             self.ckRecord = newCKRecord

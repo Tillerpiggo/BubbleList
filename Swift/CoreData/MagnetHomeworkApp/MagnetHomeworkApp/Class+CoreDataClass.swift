@@ -22,8 +22,8 @@ public class Class: NSManagedObject, CloudUploadable {
     
     func previewAssignment() -> Assignment? {
         let compareBlock: (Assignment, Assignment) -> Bool = { (assignment1, assignment2) in
-            guard let dueDate1 = assignment1.dueDate else { return false }
-            guard let dueDate2 = assignment2.dueDate else { return true }
+            guard let dueDate1 = assignment1.dueDate?.date else { return false }
+            guard let dueDate2 = assignment2.dueDate?.date else { return true }
             let comparisonResult = dueDate1.compare(dueDate2 as Date)
 
             return comparisonResult == .orderedDescending

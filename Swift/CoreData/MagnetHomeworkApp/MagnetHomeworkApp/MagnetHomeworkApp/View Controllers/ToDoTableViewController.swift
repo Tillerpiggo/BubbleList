@@ -222,7 +222,7 @@ extension ToDoTableViewController: UITableViewDelegate, UITableViewDataSource {
         let title = self.tableView(tableView, titleForHeaderInSection: indexPath.section)
         let sectionIsCompleted = title?.contains("Completed") ?? false
         
-        if let dueDate = assignment.dueDate as Date?, dueDate != Date.tomorrow, !sectionIsCompleted {
+        if let dueDate = assignment.dueDate?.date as Date?, dueDate != Date.tomorrow, !sectionIsCompleted {
             return 60
         } else {
             return 44
@@ -434,7 +434,7 @@ extension ToDoTableViewController: AssignmentTableViewCellDelegate {
             toDo.completionDate = NSDate()
             toDo.ckRecord["isCompleted"] = toDo.isCompleted as CKRecordValue?
             
-            assignment.updateDueDateSection()
+            //assignment.updateDueDateSection()
             
             coreDataController.save()
             

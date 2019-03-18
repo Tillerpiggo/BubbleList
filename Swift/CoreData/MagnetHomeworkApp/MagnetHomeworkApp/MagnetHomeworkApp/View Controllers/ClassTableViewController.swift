@@ -237,11 +237,11 @@ extension ClassTableViewController {
                             if let toDo = assignment.toDo {
                                 toDo.update(withRecord: record)
                                 assignment.isCompleted = toDo.isCompleted
-                                assignment.updateDueDateSection()
+                                //assignment.updateDueDateSection()
                                 //print("IS COMPLETED: \(toDo.isCompleted)")
                             } else {
                                 assignment.toDo = ToDo(fromRecord: record, managedContext: self.coreDataController.managedContext)
-                                assignment.updateDueDateSection()
+                                //assignment.updateDueDateSection()
                             }
                         } else {
                             // TODO: figure out what to do... maybe delete the todo?

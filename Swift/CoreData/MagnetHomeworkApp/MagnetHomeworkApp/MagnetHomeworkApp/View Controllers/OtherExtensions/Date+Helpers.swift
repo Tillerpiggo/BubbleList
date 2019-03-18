@@ -71,12 +71,12 @@ extension Date {
             return "Tomorrow"
         } else if daysBetween < 7 {
             if Date().weekday < date.weekday {
-                return "this \(weekday.string)"
+                return "this \(date.weekday.string)"
             } else {
-                return "this coming \(stringFromWeekday(date.weekday))"
+                return "this coming \(date.weekday.string)"
             }
         } else if daysBetween >= 7 && daysBetween < 14 {
-            return "Next \(stringFromWeekday(date.weekday)), \(dateString)"
+            return "Next \(date.weekday.string), \(dateString)"
         } else {
             return dateString
         }

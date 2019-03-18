@@ -15,8 +15,25 @@ extension DueDate {
     @nonobjc public class func fetchRequest() -> NSFetchRequest<DueDate> {
         return NSFetchRequest<DueDate>(entityName: "DueDate")
     }
-
-    @NSManaged public var dueDate: NSDate?
+    
+    // Concept obtained from: https://stackoverflow.com/questions/30203562/using-property-observers-on-nsmanaged-vars
+    @objc public var date: NSDate? {
+        set {
+            let key = "date"
+            self.willChangeValue(forKey: key)
+            self.setPrimitiveValue(newValue, forKey: key)
+            self.didChangeValue(forKey: key)
+            
+            // Every time the user changes the date, update the dueDateType
+            updateDueDateType()
+        }
+        get {
+            let key = "date"
+            self.willAccessValue(forKey: key)
+            let date = self.primitiveValue(forKey: key) as? NSDate
+            self.didAccessValue(forKey: key)
+            return date
+        }
+    }
     @NSManaged public var owningAssignment: Assignment?
-
 }
