@@ -29,10 +29,10 @@ class AssignmentViewController: ToDoTableViewController {
     
     var delegate: AssignmentTableViewControllerDelegate?
     
-    override var sectionNameKeyPath: String { return #keyPath(Assignment.dueDateSection) }
+    override var sectionNameKeyPath: String { return #keyPath(Assignment.dueDate.dueDateType.string) }
     
     override var sortDescriptors: [NSSortDescriptor] {
-        let sortBySectionNumber = NSSortDescriptor(key: #keyPath(Assignment.dueDateSectionNumber), ascending: true)
+        let sortBySectionNumber = NSSortDescriptor(key: #keyPath(Assignment.dueDate.dueDateType.section), ascending: true)
         let sortByDueDate = NSSortDescriptor(key: #keyPath(Assignment.dueDate.date), ascending: true)
         let sortByCreationDate = NSSortDescriptor(key: #keyPath(Assignment.creationDate), ascending: true)
         let sortByCompletionDate = NSSortDescriptor(key: #keyPath(Assignment.toDo.completionDate), ascending: false)
