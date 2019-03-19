@@ -23,6 +23,15 @@ public class DueDate: NSManagedObject {
         dueDateType = DueDateType(withDueDate: date)
     }
     
+    @objc var dueDateSection: Int {
+        return 1
+        return dueDateType.section
+    }
+    
+    @objc var dueDateString: String {
+        return dueDateType.string
+    }
+    
     private override init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?) {
         super.init(entity: entity, insertInto: context)
     }

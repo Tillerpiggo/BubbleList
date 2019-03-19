@@ -158,7 +158,7 @@ public class Assignment: NSManagedObject, CloudUploadable {
             unarchiver.finishDecoding()
             
             newCKRecord["text"] = text as CKRecordValue?
-            newCKRecord["dueDate"] = dueDate!.date as CKRecordValue?
+            newCKRecord["dueDate"] = dueDate?.date as CKRecordValue?
             // TODO: Figure out how to have owningClass (or ignore)
             
             self.ckRecord = newCKRecord
