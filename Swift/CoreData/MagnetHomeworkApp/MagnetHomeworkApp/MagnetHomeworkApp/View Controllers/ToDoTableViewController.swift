@@ -27,7 +27,7 @@ class ToDoTableViewController: AddObjectViewController {
         return NSPredicate(format: "dueDate == %@", Date.tomorrow as CVarArg)
     }
     
-    func cacheName() -> String {
+    func cacheName() -> String? {
         return "ToDo"
     }
     

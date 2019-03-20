@@ -36,4 +36,5 @@ extension DueDate {
         }
     }
     @NSManaged public var owningAssignment: Assignment?
+    @NSManaged public var section: Int
 }

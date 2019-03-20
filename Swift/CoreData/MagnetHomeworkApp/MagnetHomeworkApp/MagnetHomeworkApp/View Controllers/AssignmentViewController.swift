@@ -29,10 +29,10 @@ class AssignmentViewController: ToDoTableViewController {
     
     var delegate: AssignmentTableViewControllerDelegate?
     
-    override var sectionNameKeyPath: String { return #keyPath(Assignment.dueDate.dueDateString) }
+    override var sectionNameKeyPath: String { return #keyPath(Assignment.dueDate.string) }
     
     override var sortDescriptors: [NSSortDescriptor] {
-        let sortBySectionNumber = NSSortDescriptor(key: #keyPath(Assignment.dueDate.dueDateString), ascending: true)
+        let sortBySectionNumber = NSSortDescriptor(key: #keyPath(Assignment.dueDate.section), ascending: true)
         let sortByDueDate = NSSortDescriptor(key: #keyPath(Assignment.dueDate.date), ascending: true)
         let sortByCreationDate = NSSortDescriptor(key: #keyPath(Assignment.creationDate), ascending: true)
         let sortByCompletionDate = NSSortDescriptor(key: #keyPath(Assignment.toDo.completionDate), ascending: false)
@@ -49,7 +49,8 @@ class AssignmentViewController: ToDoTableViewController {
         return NSPredicate(format: "owningClass == %@", self.`class`) // old: "owningClass == %@ && isCompleted == false" ( I removed the last thing )
     }
     
-    override func cacheName() -> String {
+    override func cacheName() -> String? {
+        return nil
         return `class`.ckRecord.recordID.recordName
     }
     

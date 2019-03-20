@@ -21,14 +21,10 @@ public class DueDate: NSManagedObject {
     func updateDueDateType() {
         let date = self.date as Date?
         dueDateType = DueDateType(withDueDate: date)
+        section = dueDateType.section
     }
     
-    @objc var dueDateSection: Int {
-        return 1
-        return dueDateType.section
-    }
-    
-    @objc var dueDateString: String {
+    @objc var string: String {
         return dueDateType.string
     }
     
@@ -44,5 +40,6 @@ public class DueDate: NSManagedObject {
         
         let date = self.date as Date?
         self.dueDateType = DueDateType(withDueDate: date)
+        updateDueDateType()
     }
 }
