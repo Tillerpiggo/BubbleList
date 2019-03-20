@@ -15,6 +15,10 @@ import UIKit
 public class Assignment: NSManagedObject, CloudUploadable {
     var ckRecord: CKRecord = CKRecord(recordType: "Assignment")
     
+    @objc var dueDateString: String {
+        return dueDate!.string
+    }
+    
 //    func calculateDueDateSection() -> String {
 ////        guard toDo?.isCompleted ?? false == false else {
 ////            return "Completed"
@@ -111,6 +115,8 @@ public class Assignment: NSManagedObject, CloudUploadable {
         
         self.toDo = ToDo(isCompleted: false, managedContext: managedContext, assignment: self, zoneID: toDoZoneID)
         self.dueDate = DueDate(withDate: nil, managedContext: managedContext)
+        
+        updateDueDateSection()
     }
     
     init(fromRecord record: CKRecord, owningClass: Class, managedContext: NSManagedObjectContext) {
@@ -126,7 +132,7 @@ public class Assignment: NSManagedObject, CloudUploadable {
         self.dueDate?.date = record["dueDate"] as NSDate?
         self.isCompleted = false
         
-        //updateDueDateSection()
+        updateDueDateSection()
         // Remember to set ToDo while retrieving from the Cloud
         
         // Set CKRecord
@@ -139,16 +145,15 @@ public class Assignment: NSManagedObject, CloudUploadable {
         self.dateLastModified = record.modificationDate! as NSDate
         self.encodedSystemFields = record.encoded()
         self.dueDate?.date = record["dueDate"] as NSDate?
-        //updateDueDateSection()
+        updateDueDateSection()
         // Not the responsibility of the Assignment to find the corresponding to-do if it changes
         
         self.ckRecord = record
     }
     
-//    func updateDueDateSection() {
-//        self.dueDateSection = calculateDueDateSection()
-//        self.dueDateSectionNumber = calculateDueDateSectionNumber()
-//    }
+    func updateDueDateSection() {
+        dueDateSection = self.dueDate!.section
+    }
     
     func generateRecord() {
         if let encodedSystemFields = self.encodedSystemFields {
@@ -166,6 +171,7 @@ public class Assignment: NSManagedObject, CloudUploadable {
             print("ERROR: Unable to reconstruct CKRecord from metadata (Assignment); encodedSystemFields not found")
         }
     }
+    
 }
 
 extension Assignment: CoreDataUploadable {

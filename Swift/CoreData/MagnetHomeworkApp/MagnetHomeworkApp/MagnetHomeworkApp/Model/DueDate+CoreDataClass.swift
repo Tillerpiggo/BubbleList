@@ -21,11 +21,17 @@ public class DueDate: NSManagedObject {
     func updateDueDateType() {
         let date = self.date as Date?
         dueDateType = DueDateType(withDueDate: date)
-        section = dueDateType.section
+        owningAssignment?.dueDateSection = section
     }
     
     @objc var string: String {
         return dueDateType.string
+    }
+    
+    @objc var section: Int {
+        let section = dueDateType.section
+        //owningAssignment?.dueDateSection = section
+        return section
     }
     
     private override init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?) {

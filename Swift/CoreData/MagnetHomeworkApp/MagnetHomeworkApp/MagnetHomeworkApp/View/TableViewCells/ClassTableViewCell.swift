@@ -65,11 +65,11 @@ class ClassTableViewCell: UITableViewCell {
     func updateDuePreview() {
         if let previewAssignments = `class`!.previewAssignments() {
             //previewAssignmentLabel.isHidden = false
-            var duePreviewSection = previewAssignments.first?.dueDateSection
+            var duePreviewSection = previewAssignments.first?.dueDateString
             let numberOfAssignments = previewAssignments.count
             
             
-            if previewAssignments.first?.dueDateSection == "Due Later" {
+            if previewAssignments.first?.dueDateString == "Due Later" {
                 duePreviewSection = "Due in a While"
             }
             
@@ -86,7 +86,7 @@ class ClassTableViewCell: UITableViewCell {
             let attributedText = NSMutableAttributedString(string: string)
             //print("AttributedText: \(attributedText.string)")
             var sectionColor: UIColor
-            switch previewAssignments.first?.dueDateSectionNumber {
+            switch previewAssignments.first?.dueDateSection {
             case 0:
                 sectionColor = .lateColor
             case 2:

@@ -48,7 +48,7 @@ public class Class: NSManagedObject, CloudUploadable {
     
     func previewAssignments() -> [Assignment]? {
         let compareBlock: (Assignment, Assignment) -> Bool = {
-            return $0.dueDateSectionNumber > $1.dueDateSectionNumber
+            return $0.dueDateSection > $1.dueDateSection
         }
         
         let completedAssignments = assignmentArray?.filter({ $0.toDo?.isCompleted ?? false != true })
