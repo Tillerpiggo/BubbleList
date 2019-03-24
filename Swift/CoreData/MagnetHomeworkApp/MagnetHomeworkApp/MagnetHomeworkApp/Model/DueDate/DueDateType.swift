@@ -45,9 +45,10 @@ enum DueDateType: Equatable {
     var section: Int {
         switch self {
         case .completed: return 20
-        case .late: return 0
-        case .unscheduled: return 1
-        case .dueTomorrow: return 2
+        case .late: return -1
+        case .dueToday: return 0
+        case .dueTomorrow: return 1
+            case .unscheduled: return 2
         case .dueMonday: return 3
         case .dueTuesday: return 4
         case .dueWednesday: return 5
@@ -57,7 +58,6 @@ enum DueDateType: Equatable {
         case .dueSunday: return 9
         case .dueNextWeek: return 10
         case .dueLater: return 11
-        default: return -1
         }
     }
     
