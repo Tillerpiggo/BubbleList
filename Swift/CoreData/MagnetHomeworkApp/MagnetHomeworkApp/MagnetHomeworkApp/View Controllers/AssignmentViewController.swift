@@ -225,15 +225,17 @@ extension AssignmentViewController {
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         //return nil
 
+        let dueDateType = dueDateTypeForHeader(inSection: section)!
         let title = titleForHeader(inSection: section)
+        //let sectionInfo = fetchedResultsController.sections![section]
 
         let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: "AssignmentHeaderFooterView") as! AssignmentHeaderFooterView
         headerView.delegate = self
         headerView.section = section
-
         headerView.titleLabel.text = title
-        //headerView.backgroundColorView.backgroundColor = UIColor.color(fromSection: title)
-        headerView.titleLabel.textColor = UIColor.color(fromSection: title)
+        print("DueDateType: \(dueDateType)")
+        headerView.configure(withDueDateType: dueDateType)
+        
         //headerView.translatesAutoresizingMaskIntoConstraints = false
 
         if title.contains("Completed") && isCompletedHidden {
@@ -556,7 +558,7 @@ extension AssignmentViewController: ClassTableViewControllerDelegate {
 
 extension AssignmentViewController {
     @objc override func buttonPressed(assignment: Assignment) -> Bool {
-        let bool = buttonPressed(assignment: assignment)
+        let bool = super.buttonPressed(assignment: assignment)
         delegate?.reloadClass(`class`)
         return bool
     }

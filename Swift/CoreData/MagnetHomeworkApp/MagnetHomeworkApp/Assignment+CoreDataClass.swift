@@ -19,6 +19,10 @@ public class Assignment: NSManagedObject, CloudUploadable {
         return dueDate!.string
     }
     
+    var dueDateType: DueDateType {
+        return dueDate!.dueDateType
+    }
+    
 //    func calculateDueDateSection() -> String {
 ////        guard toDo?.isCompleted ?? false == false else {
 ////            return "Completed"
@@ -96,7 +100,7 @@ public class Assignment: NSManagedObject, CloudUploadable {
         self.creationDate = NSDate()
         self.dateLastModified = NSDate()
         self.owningClass = owningClass
-        self.dueDate = nil
+        self.dueDate = DueDate(withDate: nil, managedContext: managedContext)
         self.isCompleted = false
         //updateDueDateSection()
         
@@ -114,7 +118,7 @@ public class Assignment: NSManagedObject, CloudUploadable {
         self.encodedSystemFields = newCKRecord.encoded()
         
         self.toDo = ToDo(isCompleted: false, managedContext: managedContext, assignment: self, zoneID: toDoZoneID)
-        self.dueDate = DueDate(withDate: nil, managedContext: managedContext)
+        //self.dueDate = DueDate(withDate: nil, managedContext: managedContext) *done above*
         
         updateDueDateSection()
     }
@@ -129,7 +133,13 @@ public class Assignment: NSManagedObject, CloudUploadable {
         self.dateLastModified = record.modificationDate! as NSDate
         self.encodedSystemFields = record.encoded()
         self.owningClass = owningClass
-        self.dueDate?.date = record["dueDate"] as NSDate?
+        
+        if let dueDate = dueDate {
+            dueDate.date = record["dueDate"] as NSDate?
+        } else {
+            self.dueDate = DueDate(withDate: record["dueDate"] as NSDate?, managedContext: managedContext)
+        }
+        
         self.isCompleted = false
         
         updateDueDateSection()
@@ -152,7 +162,18 @@ public class Assignment: NSManagedObject, CloudUploadable {
     }
     
     func updateDueDateSection() {
-        dueDateSection = self.dueDate!.section
+        guard let dueDate = dueDate else { return }
+        dueDateSection = dueDate.section
+    }
+    
+    // Returns if the corresponding AssignmentTableViewCell should become larger and accomodate a secondary dueDateLabel to specify the exact date it will be or was due
+    func shouldDisplayDueDate() -> Bool {
+        guard let dueDate = dueDate else { return false }
+        
+        switch dueDate.dueDateType {
+        case .completed, .dueNextWeek, .dueLater, .late: return true
+        default: return false
+        }
     }
     
     func generateRecord() {

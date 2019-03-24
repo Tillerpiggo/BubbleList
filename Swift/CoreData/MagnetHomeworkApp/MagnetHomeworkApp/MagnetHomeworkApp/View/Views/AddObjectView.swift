@@ -30,6 +30,7 @@ class AddObjectView: UIView {
     override func awakeFromNib() {
         super.awakeFromNib()
         
+        view.addDropShadow(color: .black, opacity: 0.22, radius: 2)
         textLabel.textColor = .white
         configure()
         
@@ -39,7 +40,7 @@ class AddObjectView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         commonInit()
-        //configure()
+        configure()
         setToNormal(withDuration: 0)
     }
     
@@ -81,6 +82,7 @@ class AddObjectView: UIView {
         textField.isHidden = true
         view.backgroundColor = .primaryColor
         textLabel.textColor = .white
+        //addButton.addDropShadow(color: .black, opacity: 0.2, radius: 2)
     }
     
     func highlight() {

@@ -23,7 +23,6 @@ class AddObjectViewController: ConnectionViewController, AddObjectViewDelegate, 
     override func viewDidLoad() {
         super.viewDidLoad()
         configureAddObjectView()
-
     }
     
     override func viewWillAppear(_ animated: Bool) {

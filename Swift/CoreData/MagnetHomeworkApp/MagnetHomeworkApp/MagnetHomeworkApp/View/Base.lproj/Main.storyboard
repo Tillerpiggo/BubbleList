@@ -142,10 +142,24 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="vn7-jo-mTy">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <view key="tableFooterView" contentMode="scaleToFill" id="KY1-Lh-j4P">
-                                    <rect key="frame" x="0.0" y="108" width="375" height="44"/>
+                                <view key="tableFooterView" contentMode="scaleToFill" id="td9-56-hv7">
+                                    <rect key="frame" x="0.0" y="108" width="375" height="72"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <subviews>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wV1-c2-ZdM">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="0.5"/>
+                                            <color key="backgroundColor" white="0.89684078469999995" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="0.5" id="mqt-ci-DJk"/>
+                                            </constraints>
+                                        </view>
+                                    </subviews>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="wV1-c2-ZdM" secondAttribute="trailing" id="3qA-RM-4lf"/>
+                                        <constraint firstItem="wV1-c2-ZdM" firstAttribute="leading" secondItem="td9-56-hv7" secondAttribute="leading" id="UiA-Tn-Ua8"/>
+                                        <constraint firstItem="wV1-c2-ZdM" firstAttribute="top" secondItem="td9-56-hv7" secondAttribute="top" id="V5Z-A7-h9m"/>
+                                    </constraints>
                                 </view>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ClassCell" rowHeight="80" id="Dzs-yI-Vhh" customClass="ClassTableViewCell" customModule="MagnetHomeworkApp" customModuleProvider="target">
@@ -332,10 +346,24 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="qRB-fC-I2c">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <view key="tableFooterView" contentMode="scaleToFill" id="KVT-mz-zL3">
+                                <view key="tableFooterView" contentMode="scaleToFill" id="nP8-No-J4w">
                                     <rect key="frame" x="0.0" y="92" width="375" height="72"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <subviews>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EIP-wU-w4V">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="0.5"/>
+                                            <color key="backgroundColor" white="0.89684078469999995" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="0.5" id="0IJ-t5-zc5"/>
+                                            </constraints>
+                                        </view>
+                                    </subviews>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="EIP-wU-w4V" secondAttribute="trailing" id="b6u-Rl-hvn"/>
+                                        <constraint firstItem="EIP-wU-w4V" firstAttribute="leading" secondItem="nP8-No-J4w" secondAttribute="leading" id="j6g-XQ-S5n"/>
+                                        <constraint firstItem="EIP-wU-w4V" firstAttribute="top" secondItem="nP8-No-J4w" secondAttribute="top" id="yhV-vw-ryN"/>
+                                    </constraints>
                                 </view>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="AssignmentCell" rowHeight="64" id="cTy-Is-MEI">
@@ -680,12 +708,12 @@
     </scenes>
     <resources>
         <image name="classroomIconNew" width="67" height="70"/>
-        <image name="cloudIcon" width="235" height="217"/>
+        <image name="cloudIcon" width="99" height="71"/>
         <image name="greenCheckmark" width="173" height="173"/>
         <image name="skinniestPlus" width="710" height="711"/>
         <image name="todoIconNew" width="53" height="53"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="e4H-hN-SAN"/>
+        <segue reference="kGv-ar-Mfg"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -19,12 +19,15 @@ class AssignmentHeaderFooterView: UITableViewHeaderFooterView {
     @IBOutlet weak var showHideLabel: UILabel!
     @IBOutlet weak var backgroundColorView: UIView!
     
-    
-    
-    
     var delegate: AssignmentHeaderFooterCellDelegate?
     var section: Int?
     var isExpanded: Bool = true
+    var dueDateType: DueDateType = .unscheduled {
+        didSet {
+            titleLabel.text = dueDateType.string
+            titleLabel.textColor = dueDateType.color
+        }
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -45,6 +48,10 @@ class AssignmentHeaderFooterView: UITableViewHeaderFooterView {
         blurEffectView.frame = backgroundColorView.bounds
         blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         //backgroundColorView.addSubview(blurEffectView)
+    }
+    
+    func configure(withDueDateType dueDateType: DueDateType) {
+        titleLabel.textColor = dueDateType.color
     }
     
     @IBAction func showHideButtonPressed(_ sender: Any) {

@@ -135,9 +135,8 @@ class AssignmentTableViewCell: UITableViewCell, UITextFieldDelegate, UITextDragD
         assignmentTextField.text = assignment.text
         assignmentTextField.textColor = isCompleted ? .lightGray : .textColor
         dueDateTextLabel.textColor = isCompleted ? UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1.0) : .secondaryTextColor
-        if let dueDate = assignment.dueDate?.date as Date?, dueDate != Date.tomorrow, assignment.dueDateString  != "Completed" {
-            let dueDateString = dueDate.dateString
-            dueDateTextLabel.text = "Due \(dueDateString)"
+        if let date = assignment.dueDate?.date as Date?, assignment.shouldDisplayDueDate() {
+            dueDateTextLabel.text = "Due \(date.dateString)"
             dueDateTextLabel.isHidden = false
         } else {
             dueDateTextLabel.isHidden = true
@@ -145,5 +144,14 @@ class AssignmentTableViewCell: UITableViewCell, UITextFieldDelegate, UITextDragD
         
         self.assignment = assignment
     }
+    
+//    func doesDisplayDueDate() -> Bool {
+//        guard let dueDate = assignment?.dueDate else { return false }
+//
+//        switch dueDate.dueDateType {
+//        case .dueNextWeek, .dueLater, .late, .completed: return true
+//        default: return false
+//        }
+//    }
 
 }

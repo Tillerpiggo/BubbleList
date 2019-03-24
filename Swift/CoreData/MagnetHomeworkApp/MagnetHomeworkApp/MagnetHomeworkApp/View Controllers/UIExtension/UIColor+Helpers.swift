@@ -20,7 +20,7 @@ class Theme {
     var unscheduledColor: UIColor
     var dueTomorrowColor: UIColor
     var dueThisWeekColor: UIColor
-    var dueLaterColor: UIColor
+    var dueNextWeekColor: UIColor
     var textColor: UIColor
     var secondaryTextColor: UIColor
     var navigationBarTintColor: UIColor = .white
@@ -28,6 +28,7 @@ class Theme {
     var titleColor: UIColor = .white
     var sectionColor: UIColor = .white
     var tabBarTintColor: UIColor = .white
+    var dueTodayColor: UIColor
     
     init(primaryColor: UIColor,
          highlightColor: UIColor? = nil,
@@ -40,13 +41,14 @@ class Theme {
          unscheduledColor: UIColor = basic.unscheduledColor,
          dueTomorrowColor: UIColor = basic.dueTomorrowColor,
          dueThisWeekColor: UIColor = basic.dueThisWeekColor,
-         dueLaterColor: UIColor = basic.dueLaterColor,
+         dueNextWeekColor: UIColor = basic.dueNextWeekColor,
          textColor: UIColor = basic.textColor,
          secondaryTextColor: UIColor = basic.secondaryTextColor,
          navigationBarTintColor: UIColor = basic.navigationBarTintColor,
          tintColor: UIColor? = nil,
          titleColor: UIColor = basic.titleColor,
-         sectionColor: UIColor = basic.sectionColor) {
+         sectionColor: UIColor = basic.sectionColor,
+         dueTodayColor: UIColor = UIColor(red: 1.0, green: 0.4, blue: 0.06, alpha: 1)) {
         self.primaryColor = primaryColor
         self.highlightColor = highlightColor ?? primaryColor
         self.contentColor = contentColor
@@ -58,13 +60,14 @@ class Theme {
         self.unscheduledColor = unscheduledColor
         self.dueTomorrowColor = dueTomorrowColor
         self.dueThisWeekColor = dueThisWeekColor
-        self.dueLaterColor = dueLaterColor
+        self.dueNextWeekColor = dueNextWeekColor
         self.textColor = textColor
         self.secondaryTextColor = secondaryTextColor
         self.navigationBarTintColor = navigationBarTintColor
         self.tintColor = tintColor ?? primaryColor
         self.titleColor = titleColor
         self.sectionColor = sectionColor
+        self.dueTodayColor = dueTodayColor
     }
     
     static var _default: Theme {
@@ -96,7 +99,7 @@ class Theme {
                           unscheduledColor: UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1),
                           dueTomorrowColor: UIColor(red: 0.95, green: 0.59, blue: 0.26, alpha: 1),
                           dueThisWeekColor: UIColor(red: 0.42, green: 0.7, blue: 0.91, alpha: 1), // UIColor(red: 0.23, green: 0.63, blue: 0.92, alpha: 1)
-                          dueLaterColor: UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0),
+            dueNextWeekColor: UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0),
                           textColor: UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1),
                           secondaryTextColor: UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.3),
                           navigationBarTintColor: UIColor(red: 0.96, green: 0.96, blue: 0.96, alpha: 0.9),
@@ -144,7 +147,7 @@ class Theme {
                           unscheduledColor: UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 1),
                           dueTomorrowColor: UIColor(red: 0.92, green: 0.72, blue: 0.37, alpha: 1),
                           dueThisWeekColor: UIColor(red: 0.42, green: 0.7, blue: 1, alpha: 1),
-                          dueLaterColor: UIColor(red: 144/255, green: 116/255, blue: 254/255, alpha: 1.0),
+                          dueNextWeekColor: UIColor(red: 144/255, green: 116/255, blue: 254/255, alpha: 1.0),
                           textColor: UIColor(red: 0.15, green: 0.15, blue: 0.15, alpha: 1),
                           secondaryTextColor: UIColor(red: 0.7, green: 0.7, blue: 0.7, alpha: 1))
         
@@ -184,7 +187,7 @@ class Theme {
     }
     
     static var red: Theme {
-        var primaryColor: UIColor = UIColor(red: 242/255, green: 98/255, blue: 92/255, alpha: 1) // old color
+        let primaryColor: UIColor = UIColor(red: 230/255, green: 85/255, blue: 85/255, alpha: 1) // old color
         
         let theme = Theme(primaryColor: primaryColor)
         theme.textColor = .black
@@ -255,7 +258,7 @@ extension UIColor {
     static var unscheduledColor: UIColor { return theme.unscheduledColor }
     static var dueTomorrowColor: UIColor { return theme.dueTomorrowColor }
     static var dueThisWeekColor: UIColor { return theme.dueThisWeekColor }
-    static var dueLaterColor: UIColor { return theme.dueLaterColor }
+    static var dueNextWeekColor: UIColor { return theme.dueNextWeekColor }
     static var textColor: UIColor { return theme.textColor }
     static var secondaryTextColor: UIColor { return theme.secondaryTextColor }
     static var navigationBarTintColor: UIColor { return theme.navigationBarTintColor }
@@ -263,24 +266,25 @@ extension UIColor {
     static var titleColor: UIColor { return theme.titleColor }
     static var sectionColor: UIColor { return theme.sectionColor }
     static var tabBarTintColor: UIColor { return theme.tabBarTintColor }
+    static var dueTodayColor: UIColor { return theme.dueTodayColor }
     
-    static func color(fromSection section: String) -> UIColor {
-        let allCapsSection = section.uppercased()
-        switch allCapsSection {
-        case "LATE":
-            return .lateColor
-        case "UNSCHEDULED":
-            return .unscheduledColor
-        case "DUE TOMORROW":
-            return .dueTomorrowColor
-        case "DUE THIS WEEK":
-            return .dueThisWeekColor
-        case "DUE LATER":
-            return .dueLaterColor
-        case "COMPLETED":
-            return .primaryColor
-        default:
-            return .primaryColor
-        }
-    }
+//    static func color(fromSection section: String) -> UIColor {
+//        let allCapsSection = section.uppercased()
+//        switch allCapsSection {
+//        case "LATE":
+//            return .lateColor
+//        case "UNSCHEDULED":
+//            return .unscheduledColor
+//        case "DUE TOMORROW":
+//            return .dueTomorrowColor
+//        case "DUE THIS WEEK":
+//            return .dueThisWeekColor
+//        case "DUE LATER":
+//            return .dueNextWeekColor
+//        case "COMPLETED":
+//            return .primaryColor
+//        default:
+//            return .primaryColor
+//        }
+//    }
 }

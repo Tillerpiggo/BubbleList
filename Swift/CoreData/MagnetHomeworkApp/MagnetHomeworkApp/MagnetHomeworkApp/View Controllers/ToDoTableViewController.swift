@@ -24,7 +24,7 @@ class ToDoTableViewController: AddObjectViewController {
     
     func predicate() -> NSPredicate {
         //return NSPredicate(value: true)
-        return NSPredicate(format: "dueDate == %@", Date.tomorrow as CVarArg)
+        return NSPredicate(format: "dueDate.date == %@", Date.tomorrow as CVarArg)
     }
     
     func cacheName() -> String? {
@@ -35,7 +35,7 @@ class ToDoTableViewController: AddObjectViewController {
     
     var sortDescriptors: [NSSortDescriptor] {
         let sortByClassName = NSSortDescriptor(key: #keyPath(Assignment.owningClass.name), ascending: true)
-        let sortByDueDate = NSSortDescriptor(key: #keyPath(Assignment.dueDate), ascending: true)
+        let sortByDueDate = NSSortDescriptor(key: #keyPath(Assignment.dueDate.date), ascending: true)
         let sortByCreationDate = NSSortDescriptor(key: #keyPath(Assignment.creationDate), ascending: true)
         let sortByCompletionDate = NSSortDescriptor(key: #keyPath(Assignment.toDo.completionDate), ascending: false)
         
@@ -75,9 +75,9 @@ class ToDoTableViewController: AddObjectViewController {
         
         switch section {
         case "Due Tomorrow":
-            isInSectionPredicate = NSPredicate(format: "dueDate <= %@", Date.tomorrow as CVarArg)
+            isInSectionPredicate = NSPredicate(format: "dueDate.date <= %@", Date.tomorrow as CVarArg)
         case "Due This Week":
-            isInSectionPredicate = NSPredicate(format: "dueDate <= %@", Date.thisFriday as CVarArg)
+            isInSectionPredicate = NSPredicate(format: "dueDate.date <= %@", Date.thisFriday as CVarArg)
         default:
             isInSectionPredicate = NSPredicate(value: true)
         }
@@ -114,7 +114,8 @@ class ToDoTableViewController: AddObjectViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        tableView.reloadData()
+        //tableView.reloadData()
+        print("hello")
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -212,6 +213,17 @@ extension ToDoTableViewController: UITableViewDelegate, UITableViewDataSource {
         return "\(sectionInfo.name)".uppercased()//" (\(numberOfRows))"
     }
     
+    func dueDateTypeForHeader(inSection section: Int) -> DueDateType? {
+        guard let sectionInfo = fetchedResultsController.sections?[section], let firstAssignment = sectionInfo.objects?.first as? Assignment, let dueDateType = firstAssignment.dueDate?.dueDateType else {
+            return nil
+        }
+        
+        print("FirstAssignmentName: \(firstAssignment.text)")
+        print("DueDate: \(firstAssignment.dueDate?.date)")
+        
+        return dueDateType
+    }
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let assignment = fetchedResultsController.object(at: indexPath)
         
@@ -220,9 +232,11 @@ extension ToDoTableViewController: UITableViewDelegate, UITableViewDataSource {
         }
         
         let title = self.tableView(tableView, titleForHeaderInSection: indexPath.section)
-        let sectionIsCompleted = title?.contains("Completed") ?? false
+        //let sectionIsCompleted = title?.contains("Completed") ?? false
         
-        if let dueDate = assignment.dueDate?.date as Date?, dueDate != Date.tomorrow, !sectionIsCompleted {
+        
+        
+        if assignment.shouldDisplayDueDate() {
             return 60
         } else {
             return 44
@@ -369,7 +383,11 @@ extension ToDoTableViewController: NSFetchedResultsControllerDelegate {
             
             tableView.moveRow(at: indexPath!, to: newIndexPath!)
             
-            let cell = tableView.cellForRow(at: indexPath!) as! AssignmentTableViewCell
+            print("INDEXPATH: \(indexPath)")
+            guard let cell = tableView.cellForRow(at: indexPath!) as? AssignmentTableViewCell else {
+                print("Cell in ToDoTableViewController (or AssignmentViewController) not found")
+                return
+            }
             cell.configure(withAssignment: cell.assignment!)
             
             

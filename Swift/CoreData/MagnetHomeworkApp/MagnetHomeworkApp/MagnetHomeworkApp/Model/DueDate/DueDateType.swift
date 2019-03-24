@@ -23,6 +23,8 @@ import Foundation
 //    }
 //}
 
+import UIKit
+
 enum DueDateType: Equatable {
     case completed
     case unscheduled
@@ -72,16 +74,33 @@ enum DueDateType: Equatable {
         }
     }
     
+    var color: UIColor {
+        switch self {
+        case .completed: return .primaryColor
+        case .unscheduled: return .unscheduledColor
+        case .late: return .lateColor
+        case .dueToday: return .dueTodayColor
+        case .dueTomorrow: return .dueTomorrowColor
+        case .dueMonday, .dueTuesday, .dueWednesday, .dueThursday, .dueFriday, .dueSaturday, .dueSunday:
+            return .dueThisWeekColor
+        case .dueNextWeek: return .dueNextWeekColor
+        case .dueLater: return .unscheduledColor
+        }
+    }
+    
     var string: String {
         switch self {
         case .completed: return "Completed"
         case .late: return "Late"
         case .unscheduled: return "Unscheduled"
+        case .dueToday: return "Due Today"
         case .dueTomorrow: return "Due Tomorrow"
         case .dueMonday, .dueTuesday, .dueWednesday, .dueThursday, .dueFriday, .dueSaturday, .dueSunday:
-            guard let weekday = self.weekday else { return "Error occured in DueDateType.string definition"}
+            guard let weekday = self.weekday else { return "Error occured in DueDateType.string definition" }
             return Date().weekday < weekday ? "Due \(weekday.string)" : "Due This Coming \(weekday.string)"
-        default: return "???"
+        case .dueNextWeek: return "Due Next Week"
+        case .dueLater: return "Due Later"
+        //default: return "???"
         }
     }
     
@@ -89,6 +108,10 @@ enum DueDateType: Equatable {
         guard let dueDate = dueDate else {
             self = .unscheduled
             return
+        }
+        
+        if dueDate.firstSecond == Date().firstSecond {
+            self = .dueToday // Note: may be redundant
         }
         
         let calendar = Calendar(identifier: .gregorian)
@@ -101,6 +124,8 @@ enum DueDateType: Equatable {
         
         guard dueDate.firstSecond >= Date().firstSecond else {
             self = .late
+            print("DueDate: \(dueDate)")
+            print("Late!")
             return
         }
         
@@ -108,9 +133,9 @@ enum DueDateType: Equatable {
             self = .dueToday
         } else if daysBetween == 1 {
             self = .dueTomorrow
-        } else if daysBetween > 1 && daysBetween < 8 - Date().weekday.int { // This week, assuming the week starts/ends on Monday
+        } else if daysBetween > 1 && daysBetween < 8 { // This week, assuming the week starts/ends on Monday
             self.init(fromWeekday: dueDate.weekday)
-        } else if daysBetween >= 8 - Date().weekday.int && daysBetween <= 15 - Date().weekday.int {
+        } else if daysBetween >= 8 && daysBetween <= 15 {
             self = .dueNextWeek
         } else {
             self = .dueLater

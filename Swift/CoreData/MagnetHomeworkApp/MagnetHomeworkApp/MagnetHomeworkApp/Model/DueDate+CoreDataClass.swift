@@ -16,11 +16,14 @@ public class DueDate: NSManagedObject {
 //        return DueDateType(withDueDate: date)
 //    }
     
-    var dueDateType: DueDateType = .unscheduled
+    var dueDateType: DueDateType {
+        let date = self.date as Date?
+        let dueDateType = DueDateType(withDueDate: date)
+        //owningAssignment?.dueDateSection = section
+        return dueDateType
+    }
     
     func updateDueDateType() {
-        let date = self.date as Date?
-        dueDateType = DueDateType(withDueDate: date)
         owningAssignment?.dueDateSection = section
     }
     
@@ -44,8 +47,8 @@ public class DueDate: NSManagedObject {
         
         self.date = date
         
-        let date = self.date as Date?
-        self.dueDateType = DueDateType(withDueDate: date)
+//        let date = self.date as Date?
+//        self.dueDateType = DueDateType(withDueDate: date)
         updateDueDateType()
     }
 }

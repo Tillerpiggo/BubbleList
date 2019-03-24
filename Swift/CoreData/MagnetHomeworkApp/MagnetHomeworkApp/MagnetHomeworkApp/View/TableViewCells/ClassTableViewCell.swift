@@ -65,15 +65,10 @@ class ClassTableViewCell: UITableViewCell {
     func updateDuePreview() {
         if let previewAssignments = `class`!.previewAssignments() {
             //previewAssignmentLabel.isHidden = false
-            var duePreviewSection = previewAssignments.first?.dueDateString
+            let duePreviewSection = previewAssignments.first?.dueDateString
             let numberOfAssignments = previewAssignments.count
             
-            
-            if previewAssignments.first?.dueDateString == "Due Later" {
-                duePreviewSection = "Due in a While"
-            }
-            
-            var string: String = "\(numberOfAssignments) \(duePreviewSection ?? "")"
+            let string: String = "\(numberOfAssignments) \(duePreviewSection ?? "")"
             
             let totalAssignments = `class`!.assignmentArray?.filter({ $0.isCompleted == false }).count ?? 0
             numberOfAssignmentsLabel.text = "\(totalAssignments)"
@@ -85,24 +80,23 @@ class ClassTableViewCell: UITableViewCell {
             
             let attributedText = NSMutableAttributedString(string: string)
             //print("AttributedText: \(attributedText.string)")
-            var sectionColor: UIColor
-            switch previewAssignments.first?.dueDateSection {
-            case 0:
-                sectionColor = .lateColor
-            case 2:
-                sectionColor = .dueThisWeekColor
-            case 3, 4:
-                sectionColor = .secondaryTextColor
-            case 1:
-                sectionColor = .dueTomorrowColor
-            default:
-                sectionColor = .nothingDueColor
-            }
+            let sectionColor: UIColor = previewAssignments.first!.dueDate!.dueDateType.color
+//            switch previewAssignments.first?.dueDateSection {
+//            case 0:
+//                sectionColor = .lateColor
+//            case 2:
+//                sectionColor = .dueThisWeekColor
+//            case 3, 4:
+//                sectionColor = .secondaryTextColor
+//            case 1:
+//                sectionColor = .dueTomorrowColor
+//            default:
+//                sectionColor = .nothingDueColor
+//            }
             
             attributedText.addAttribute(.foregroundColor, value: sectionColor, range: NSRange(location: 0, length: attributedText.string.count))
             duePreview.attributedText = attributedText
         } else {
-            
             let attributedText = NSMutableAttributedString(string: "Nothing Due")
             attributedText.addAttribute(.foregroundColor, value: UIColor.nothingDueColor, range: NSRange(location: 0, length: attributedText.string.count))
             
