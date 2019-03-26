@@ -9,6 +9,53 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--Test View Controller-->
+        <scene sceneID="2NE-jG-xfK">
+            <objects>
+                <viewController id="TmK-nx-KKu" customClass="TestViewController" customModule="MagnetHomeworkApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="wZp-WZ-she">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="3WP-ty-F1q">
+                                <rect key="frame" x="15.5" y="276.5" width="344" height="114"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dEB-Sc-UxO">
+                                        <rect key="frame" x="0.0" y="0.0" width="344" height="30"/>
+                                        <state key="normal" title="Make 10 Assignments in private cloud database"/>
+                                        <connections>
+                                            <action selector="test1:" destination="TmK-nx-KKu" eventType="touchUpInside" id="b7b-R9-93n"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Is0-Gj-oNN">
+                                        <rect key="frame" x="0.0" y="42" width="344" height="30"/>
+                                        <state key="normal" title="Retrieve Assignments from private cloud database"/>
+                                        <connections>
+                                            <action selector="test2:" destination="TmK-nx-KKu" eventType="touchUpInside" id="0QF-VF-xiZ"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xsu-Lh-On1">
+                                        <rect key="frame" x="0.0" y="84" width="344" height="30"/>
+                                        <state key="normal" title="Make and retrieve 10 assignments from core data"/>
+                                        <connections>
+                                            <action selector="test3:" destination="TmK-nx-KKu" eventType="touchUpInside" id="YgB-gS-vtT"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="3WP-ty-F1q" firstAttribute="centerX" secondItem="wZp-WZ-she" secondAttribute="centerX" id="JKC-fm-VyQ"/>
+                            <constraint firstItem="3WP-ty-F1q" firstAttribute="centerY" secondItem="wZp-WZ-she" secondAttribute="centerY" id="WAv-RL-ley"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="Kkv-HD-qa4"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="l46-yy-T9x" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="852" y="887"/>
+        </scene>
         <!--Classes-->
         <scene sceneID="xLE-Dt-dyN">
             <objects>

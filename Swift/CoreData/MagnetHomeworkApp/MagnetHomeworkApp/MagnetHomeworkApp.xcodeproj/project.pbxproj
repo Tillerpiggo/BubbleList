@@ -34,6 +34,7 @@
 		235E0B902199491F005D3B9C /* UILabel+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235E0B8F2199491F005D3B9C /* UILabel+Helpers.swift */; };
 		236B761A223DF8E200AC92CC /* DueDate+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236B7618223DF8E100AC92CC /* DueDate+CoreDataProperties.swift */; };
 		236B761B223DF8E200AC92CC /* DueDate+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236B7619223DF8E200AC92CC /* DueDate+CoreDataClass.swift */; };
+		236B76212248632A00AC92CC /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236B76202248632A00AC92CC /* TestViewController.swift */; };
 		23794AB122167A940056582B /* CloudReachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23794AB022167A940056582B /* CloudReachability.swift */; };
 		238D15B92208CB6D00178183 /* ConnectionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 238D15B82208CB6D00178183 /* ConnectionView.xib */; };
 		238D15BB2208D78600178183 /* ConnectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238D15BA2208D78600178183 /* ConnectionView.swift */; };
@@ -92,6 +93,7 @@
 		235E0B8F2199491F005D3B9C /* UILabel+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Helpers.swift"; sourceTree = "<group>"; };
 		236B7618223DF8E100AC92CC /* DueDate+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "DueDate+CoreDataProperties.swift"; path = "/Users/tylerg/Desktop/Coding/Swift/CoreData/MagnetHomeworkApp/MagnetHomeworkApp/MagnetHomeworkApp/Model/DueDate+CoreDataProperties.swift"; sourceTree = "<absolute>"; };
 		236B7619223DF8E200AC92CC /* DueDate+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "DueDate+CoreDataClass.swift"; path = "/Users/tylerg/Desktop/Coding/Swift/CoreData/MagnetHomeworkApp/MagnetHomeworkApp/MagnetHomeworkApp/Model/DueDate+CoreDataClass.swift"; sourceTree = "<absolute>"; };
+		236B76202248632A00AC92CC /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
 		23794AB022167A940056582B /* CloudReachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudReachability.swift; sourceTree = "<group>"; };
 		238D15B82208CB6D00178183 /* ConnectionView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConnectionView.xib; sourceTree = "<group>"; };
 		238D15BA2208D78600178183 /* ConnectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionView.swift; sourceTree = "<group>"; };
@@ -225,6 +227,14 @@
 			path = DueDate;
 			sourceTree = "<group>";
 		};
+		236B761D22485FDA00AC92CC /* Unit Testing */ = {
+			isa = PBXGroup;
+			children = (
+				236B76202248632A00AC92CC /* TestViewController.swift */,
+			);
+			path = "Unit Testing";
+			sourceTree = "<group>";
+		};
 		237AF8CA21EAEA9300A9D462 /* Nibs */ = {
 			isa = PBXGroup;
 			children = (
@@ -273,6 +283,7 @@
 				23CD109021803C530034FFA7 /* AppDelegate.swift */,
 				23AF675321EAEC80003029D2 /* View */,
 				23484C6221866946007C5CCF /* View Controllers */,
+				236B761D22485FDA00AC92CC /* Unit Testing */,
 				23CD10C32181A0AA0034FFA7 /* Model */,
 				23484C5721822945007C5CCF /* Back-End */,
 				23CD109A21803C550034FFA7 /* Assets.xcassets */,
@@ -503,6 +514,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				236B76212248632A00AC92CC /* TestViewController.swift in Sources */,
 				2310CF4921A9F6C400A995FB /* UIApplication+Helpers.swift in Sources */,
 				23484C5F21854A1E007C5CCF /* ClassTableViewController.swift in Sources */,
 				23CD10AD2180413E0034FFA7 /* CloudUploadable.swift in Sources */,

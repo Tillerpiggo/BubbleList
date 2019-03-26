@@ -48,7 +48,7 @@ enum DueDateType: Equatable {
         case .late: return -1
         case .dueToday: return 0
         case .dueTomorrow: return 1
-            case .unscheduled: return 2
+        case .unscheduled: return 2
         case .dueMonday: return 3
         case .dueTuesday: return 4
         case .dueWednesday: return 5
