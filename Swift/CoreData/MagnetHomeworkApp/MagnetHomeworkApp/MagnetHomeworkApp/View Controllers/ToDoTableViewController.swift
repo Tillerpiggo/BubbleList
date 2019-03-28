@@ -218,6 +218,8 @@ extension ToDoTableViewController: UITableViewDelegate, UITableViewDataSource {
             return nil
         }
         
+        //firstAssignment.updateDueDateSection()
+        
         print("FirstAssignmentName: \(firstAssignment.text)")
         print("DueDate: \(firstAssignment.dueDate?.date)")
         
