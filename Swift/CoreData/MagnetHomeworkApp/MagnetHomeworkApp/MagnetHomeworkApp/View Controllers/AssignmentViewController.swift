@@ -50,7 +50,6 @@ class AssignmentViewController: ToDoTableViewController {
     }
     
     override func cacheName() -> String? {
-        return nil
         return `class`.ckRecord.recordID.recordName
     }
     

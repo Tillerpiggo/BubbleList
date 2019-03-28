@@ -18,9 +18,15 @@ public class DueDate: NSManagedObject {
     
     var dueDateType: DueDateType {
         let date = self.date as Date?
-        let dueDateType = DueDateType(withDueDate: date)
-        //owningAssignment?.dueDateSection = section
-        return dueDateType
+        let newDueDateType = DueDateType(withDueDate: date)
+        //owningAssignment?.dueDateSection = newDueDateType.section
+        //owningAssignment?.updateDueDateSection()
+        //let newSection = DueDateType.section(forDueDateType: newDueDateType)
+        //owningAssignment?.dueDateSection = newSection
+        
+        print("OwningAssignment: \(owningAssignment?.dueDateSection)")
+        print("Hello")
+        return newDueDateType
     }
     
     func updateDueDateType() {

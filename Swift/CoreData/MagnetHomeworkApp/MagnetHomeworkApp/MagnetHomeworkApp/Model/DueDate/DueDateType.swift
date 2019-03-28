@@ -43,7 +43,11 @@ enum DueDateType: Equatable {
     
     
     var section: Int {
-        switch self {
+        return DueDateType.section(forDueDateType: self)
+    }
+    
+    static func section(forDueDateType dueDateType: DueDateType) -> Int {
+        switch dueDateType {
         case .completed: return 20
         case .late: return -1
         case .dueToday: return 0
@@ -89,18 +93,22 @@ enum DueDateType: Equatable {
     }
     
     var string: String {
-        switch self {
+        return DueDateType.string(forDueDateType: self)
+    }
+    
+    static func string(forDueDateType dueDateType: DueDateType) -> String {
+        switch dueDateType {
         case .completed: return "Completed"
         case .late: return "Late"
         case .unscheduled: return "Unscheduled"
         case .dueToday: return "Due Today"
         case .dueTomorrow: return "Due Tomorrow"
         case .dueMonday, .dueTuesday, .dueWednesday, .dueThursday, .dueFriday, .dueSaturday, .dueSunday:
-            guard let weekday = self.weekday else { return "Error occured in DueDateType.string definition" }
+            guard let weekday = dueDateType.weekday else { return "Error occured in DueDateType.string definition" }
             return Date().weekday < weekday ? "Due \(weekday.string)" : "Due This Coming \(weekday.string)"
         case .dueNextWeek: return "Due Next Week"
         case .dueLater: return "Due Later"
-        //default: return "???"
+            //default: return "???"
         }
     }
     

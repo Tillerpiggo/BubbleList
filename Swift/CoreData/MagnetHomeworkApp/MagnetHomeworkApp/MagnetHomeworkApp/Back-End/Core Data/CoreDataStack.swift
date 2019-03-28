@@ -9,10 +9,10 @@
 import Foundation
 import CoreData
 
-class CoreDataStack {
+open class CoreDataStack {
     
     // MARK: - Properties
-    private let modelName: String
+    public let modelName: String
     
     // MARK: - Initializer
     init(modelName: String) {
@@ -21,7 +21,7 @@ class CoreDataStack {
     
     
     // MARK: - Stack
-    private lazy var storeContainer: NSPersistentContainer = {
+    public lazy var storeContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: self.modelName)
         
         container.loadPersistentStores { (storeDescription, error) in

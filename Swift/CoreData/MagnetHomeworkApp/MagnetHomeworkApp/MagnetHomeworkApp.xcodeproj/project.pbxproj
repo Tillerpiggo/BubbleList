@@ -34,7 +34,8 @@
 		235E0B902199491F005D3B9C /* UILabel+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235E0B8F2199491F005D3B9C /* UILabel+Helpers.swift */; };
 		236B761A223DF8E200AC92CC /* DueDate+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236B7618223DF8E100AC92CC /* DueDate+CoreDataProperties.swift */; };
 		236B761B223DF8E200AC92CC /* DueDate+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236B7619223DF8E200AC92CC /* DueDate+CoreDataClass.swift */; };
-		236B76212248632A00AC92CC /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236B76202248632A00AC92CC /* TestViewController.swift */; };
+		236B762B2249C5E100AC92CC /* MagnetHomeworkAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236B762A2249C5E100AC92CC /* MagnetHomeworkAppTests.swift */; };
+		236B76332249C69E00AC92CC /* TestCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236B76322249C69E00AC92CC /* TestCoreDataStack.swift */; };
 		23794AB122167A940056582B /* CloudReachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23794AB022167A940056582B /* CloudReachability.swift */; };
 		238D15B92208CB6D00178183 /* ConnectionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 238D15B82208CB6D00178183 /* ConnectionView.xib */; };
 		238D15BB2208D78600178183 /* ConnectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238D15BA2208D78600178183 /* ConnectionView.swift */; };
@@ -65,6 +66,16 @@
 		2CB8A5F8F4BF603894EBD072 /* Pods_MagnetHomeworkApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47631C1B3FB7247D82D75AD8 /* Pods_MagnetHomeworkApp.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		236B762D2249C5E100AC92CC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 23CD108521803C530034FFA7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 23CD108C21803C530034FFA7;
+			remoteInfo = MagnetHomeworkApp;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		2310CF4221A8877E00A995FB /* AssignmentHeaderFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentHeaderFooterView.swift; sourceTree = "<group>"; };
 		2310CF4621A920AE00A995FB /* AssignmentHeaderFooterView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AssignmentHeaderFooterView.xib; sourceTree = "<group>"; };
@@ -93,7 +104,10 @@
 		235E0B8F2199491F005D3B9C /* UILabel+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Helpers.swift"; sourceTree = "<group>"; };
 		236B7618223DF8E100AC92CC /* DueDate+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "DueDate+CoreDataProperties.swift"; path = "/Users/tylerg/Desktop/Coding/Swift/CoreData/MagnetHomeworkApp/MagnetHomeworkApp/MagnetHomeworkApp/Model/DueDate+CoreDataProperties.swift"; sourceTree = "<absolute>"; };
 		236B7619223DF8E200AC92CC /* DueDate+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "DueDate+CoreDataClass.swift"; path = "/Users/tylerg/Desktop/Coding/Swift/CoreData/MagnetHomeworkApp/MagnetHomeworkApp/MagnetHomeworkApp/Model/DueDate+CoreDataClass.swift"; sourceTree = "<absolute>"; };
-		236B76202248632A00AC92CC /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
+		236B76282249C5E100AC92CC /* MagnetHomeworkAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MagnetHomeworkAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		236B762A2249C5E100AC92CC /* MagnetHomeworkAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagnetHomeworkAppTests.swift; sourceTree = "<group>"; };
+		236B762C2249C5E100AC92CC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		236B76322249C69E00AC92CC /* TestCoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestCoreDataStack.swift; sourceTree = "<group>"; };
 		23794AB022167A940056582B /* CloudReachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudReachability.swift; sourceTree = "<group>"; };
 		238D15B82208CB6D00178183 /* ConnectionView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConnectionView.xib; sourceTree = "<group>"; };
 		238D15BA2208D78600178183 /* ConnectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionView.swift; sourceTree = "<group>"; };
@@ -130,6 +144,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		236B76252249C5E100AC92CC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		23CD108A21803C530034FFA7 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -227,12 +248,14 @@
 			path = DueDate;
 			sourceTree = "<group>";
 		};
-		236B761D22485FDA00AC92CC /* Unit Testing */ = {
+		236B76292249C5E100AC92CC /* MagnetHomeworkAppTests */ = {
 			isa = PBXGroup;
 			children = (
-				236B76202248632A00AC92CC /* TestViewController.swift */,
+				236B762A2249C5E100AC92CC /* MagnetHomeworkAppTests.swift */,
+				236B76322249C69E00AC92CC /* TestCoreDataStack.swift */,
+				236B762C2249C5E100AC92CC /* Info.plist */,
 			);
-			path = "Unit Testing";
+			path = MagnetHomeworkAppTests;
 			sourceTree = "<group>";
 		};
 		237AF8CA21EAEA9300A9D462 /* Nibs */ = {
@@ -262,6 +285,7 @@
 			isa = PBXGroup;
 			children = (
 				23CD108F21803C530034FFA7 /* MagnetHomeworkApp */,
+				236B76292249C5E100AC92CC /* MagnetHomeworkAppTests */,
 				23CD108E21803C530034FFA7 /* Products */,
 				23CD10A621803D010034FFA7 /* Frameworks */,
 				43C8295611337C2752EEDF8E /* Pods */,
@@ -272,6 +296,7 @@
 			isa = PBXGroup;
 			children = (
 				23CD108D21803C530034FFA7 /* MagnetHomeworkApp.app */,
+				236B76282249C5E100AC92CC /* MagnetHomeworkAppTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -283,7 +308,6 @@
 				23CD109021803C530034FFA7 /* AppDelegate.swift */,
 				23AF675321EAEC80003029D2 /* View */,
 				23484C6221866946007C5CCF /* View Controllers */,
-				236B761D22485FDA00AC92CC /* Unit Testing */,
 				23CD10C32181A0AA0034FFA7 /* Model */,
 				23484C5721822945007C5CCF /* Back-End */,
 				23CD109A21803C550034FFA7 /* Assets.xcassets */,
@@ -383,6 +407,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		236B76272249C5E100AC92CC /* MagnetHomeworkAppTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 236B762F2249C5E100AC92CC /* Build configuration list for PBXNativeTarget "MagnetHomeworkAppTests" */;
+			buildPhases = (
+				236B76242249C5E100AC92CC /* Sources */,
+				236B76252249C5E100AC92CC /* Frameworks */,
+				236B76262249C5E100AC92CC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				236B762E2249C5E100AC92CC /* PBXTargetDependency */,
+			);
+			name = MagnetHomeworkAppTests;
+			productName = MagnetHomeworkAppTests;
+			productReference = 236B76282249C5E100AC92CC /* MagnetHomeworkAppTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		23CD108C21803C530034FFA7 /* MagnetHomeworkApp */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 23CD10A221803C550034FFA7 /* Build configuration list for PBXNativeTarget "MagnetHomeworkApp" */;
@@ -408,10 +450,14 @@
 		23CD108521803C530034FFA7 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1000;
+				LastSwiftUpdateCheck = 1010;
 				LastUpgradeCheck = 1000;
 				ORGANIZATIONNAME = Beaglepig;
 				TargetAttributes = {
+					236B76272249C5E100AC92CC = {
+						CreatedOnToolsVersion = 10.1;
+						TestTargetID = 23CD108C21803C530034FFA7;
+					};
 					23CD108C21803C530034FFA7 = {
 						CreatedOnToolsVersion = 10.0;
 						SystemCapabilities = {
@@ -439,11 +485,19 @@
 			projectRoot = "";
 			targets = (
 				23CD108C21803C530034FFA7 /* MagnetHomeworkApp */,
+				236B76272249C5E100AC92CC /* MagnetHomeworkAppTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		236B76262249C5E100AC92CC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		23CD108B21803C530034FFA7 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -510,11 +564,19 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		236B76242249C5E100AC92CC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				236B762B2249C5E100AC92CC /* MagnetHomeworkAppTests.swift in Sources */,
+				236B76332249C69E00AC92CC /* TestCoreDataStack.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		23CD108921803C530034FFA7 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				236B76212248632A00AC92CC /* TestViewController.swift in Sources */,
 				2310CF4921A9F6C400A995FB /* UIApplication+Helpers.swift in Sources */,
 				23484C5F21854A1E007C5CCF /* ClassTableViewController.swift in Sources */,
 				23CD10AD2180413E0034FFA7 /* CloudUploadable.swift in Sources */,
@@ -566,6 +628,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		236B762E2249C5E100AC92CC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 23CD108C21803C530034FFA7 /* MagnetHomeworkApp */;
+			targetProxy = 236B762D2249C5E100AC92CC /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		23CD109421803C530034FFA7 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
@@ -586,6 +656,48 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		236B76302249C5E100AC92CC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = UBS5J9L934;
+				INFOPLIST_FILE = MagnetHomeworkAppTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.beaglepig.MagnetHomeworkAppTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MagnetHomeworkApp.app/MagnetHomeworkApp";
+			};
+			name = Debug;
+		};
+		236B76312249C5E100AC92CC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = UBS5J9L934;
+				INFOPLIST_FILE = MagnetHomeworkAppTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.beaglepig.MagnetHomeworkAppTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MagnetHomeworkApp.app/MagnetHomeworkApp";
+			};
+			name = Release;
+		};
 		23CD10A021803C550034FFA7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -747,6 +859,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		236B762F2249C5E100AC92CC /* Build configuration list for PBXNativeTarget "MagnetHomeworkAppTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				236B76302249C5E100AC92CC /* Debug */,
+				236B76312249C5E100AC92CC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		23CD108821803C530034FFA7 /* Build configuration list for PBXProject "MagnetHomeworkApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

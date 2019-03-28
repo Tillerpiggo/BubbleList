@@ -168,6 +168,8 @@ public class Assignment: NSManagedObject, CloudUploadable {
     
     // Returns if the corresponding AssignmentTableViewCell should become larger and accomodate a secondary dueDateLabel to specify the exact date it will be or was due
     func shouldDisplayDueDate() -> Bool {
+        print("ShouldDisplayDueDate")
+        
         guard let dueDate = dueDate else { return false }
         
         switch dueDate.dueDateType {
