@@ -16,11 +16,13 @@ public class Assignment: NSManagedObject, CloudUploadable {
     var ckRecord: CKRecord = CKRecord(recordType: "Assignment")
     
     @objc var dueDateString: String {
-        return dueDate!.string
+        guard let dueDate = dueDate else { return "Unscheduled" }
+        return dueDate.string
     }
     
     var dueDateType: DueDateType {
-        return dueDate!.dueDateType
+        guard let dueDate = dueDate else { return .unscheduled }
+        return dueDate.dueDateType
     }
     
 //    func calculateDueDateSection() -> String {

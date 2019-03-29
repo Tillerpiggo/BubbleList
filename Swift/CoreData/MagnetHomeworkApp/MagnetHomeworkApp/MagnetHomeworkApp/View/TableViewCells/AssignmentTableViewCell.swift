@@ -108,13 +108,18 @@ class AssignmentTableViewCell: UITableViewCell, UITextFieldDelegate, UITextDragD
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         
-        if !textNotEmpty(textField.text ?? "") {
-            textField.text = originalText
-        } else {
-            assignment?.text = textField.text
-        }
+        guard let assignment = assignment else { return true }
         
-        delegate?.textChanged(assignment: assignment!)
+        assignment.text = textField.text
+        assignment.ckRecord["text"] = assignment.text
+        
+//        if !textNotEmpty(textField.text ?? "") {
+//            textField.text = originalText
+//        } else {
+//            assignment?.text = textField.text
+//        }
+        
+        delegate?.textChanged(assignment: assignment)
         return true
     }
     

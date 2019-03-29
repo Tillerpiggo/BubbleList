@@ -103,7 +103,7 @@ class ToDoTableViewController: AddObjectViewController {
         self.navigationController?.configureNavigationBar()
         
         if !hasAddObjectView {
-            
+            //addObjectView.isHidden = true
         }
         
         tableView.register(UINib(nibName: "AssignmentHeaderFooterView", bundle: nil), forHeaderFooterViewReuseIdentifier: "AssignmentHeaderFooterView")
@@ -489,7 +489,22 @@ extension ToDoTableViewController: AssignmentTableViewCellDelegate {
     }
     
     func textChanged(assignment: Assignment) {
-        coreDataController.save()
+        DispatchQueue.main.async { self.coreDataController.save() }
+        
+        let databaseType: DatabaseType = assignment.owningClass?.isUserCreated ?? true ? .private: .shared
+        cloudController.save([assignment], inDatabase: databaseType, recordChanged: { (updatedRecord) in
+            assignment.update(withRecord: updatedRecord)
+        }) { (error) in
+            guard let error = error as? CKError else { return }
+            switch error.code {
+            case .requestRateLimited, .zoneBusy, .serviceUnavailable:
+                break
+            default:
+                DispatchQueue.main.async {
+                    self.coreDataController.save()
+                }
+            }
+        }
     }
 }
 
