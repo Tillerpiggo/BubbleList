@@ -148,8 +148,6 @@ class ToDoTableViewController: AddObjectViewController {
         navigationController?.navigationBar.titleTextAttributes = textAttributes
     }
     
-    
-
 }
 
 extension ToDoTableViewController: UITableViewDelegate, UITableViewDataSource {

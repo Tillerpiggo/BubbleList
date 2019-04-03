@@ -12,7 +12,7 @@ import CoreData
 
 class TestCoreDataStack: CoreDataStack {
     convenience init() {
-        self.init(modelName: "MagnetHomeworkAppTest")
+        self.init(modelName: "MagnetHomeworkApp")
     }
     
     override init(modelName: String) {

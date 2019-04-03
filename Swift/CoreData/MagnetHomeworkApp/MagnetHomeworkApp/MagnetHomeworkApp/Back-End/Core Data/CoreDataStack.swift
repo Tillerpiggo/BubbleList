@@ -15,7 +15,7 @@ open class CoreDataStack {
     public let modelName: String
     
     // MARK: - Initializer
-    init(modelName: String) {
+    public init(modelName: String) {
         self.modelName = modelName
     }
     
@@ -33,7 +33,8 @@ open class CoreDataStack {
         return container
     }()
     
-    lazy var managedContext: NSManagedObjectContext = {
+    public lazy var managedContext: NSManagedObjectContext = {
+        print("ManagedContext: \(self.storeContainer.viewContext)")
         return self.storeContainer.viewContext
     }()
     

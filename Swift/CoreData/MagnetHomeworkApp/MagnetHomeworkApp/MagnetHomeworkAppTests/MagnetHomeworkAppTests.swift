@@ -7,27 +7,56 @@
 //
 
 import XCTest
+@testable import MagnetHomeworkApp
+import CoreData
+import CloudKit
 
 class MagnetHomeworkAppTests: XCTestCase {
+    
+    // MARK: Properties
+    var testClass: Class!
+    var coreDataStack: CoreDataStack!
+    var cloudController: CloudController!
+    
+    let testZoneID = CKRecordZone.ID(zoneName: "TestZone", ownerName: "OwnerName")
 
     override func setUp() {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        super.setUp()
+        
+        coreDataStack = TestCoreDataStack()
+        testClass = Class(context: coreDataStack.managedContext)
     }
 
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        super.tearDown()
+        
+        testClass = nil
+        coreDataStack = nil
     }
 
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    func testAddClass() {
+        let newClass = Class(withName: "Test", assignments: [], managedContext: coreDataStack.managedContext, zoneID: testZoneID)
+        
+        XCTAssertNotNil(newClass, "New class should not be nil")
+        XCTAssertTrue(newClass.name == "Test")
     }
-
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
+    
+    func testAddAssignment() {
+        let newClass = Class(withName: "Test", assignments: [], managedContext: coreDataStack.managedContext, zoneID: testZoneID)
+        let newAssignment = Assignment(withText: "Test", managedContext: coreDataStack.managedContext, owningClass: newClass, zoneID: testZoneID, toDoZoneID: testZoneID)
+        newClass.addToAssignments(newAssignment)
+        
+        XCTAssertNotNil(newAssignment, "New assignment should not be nil")
+        XCTAssertTrue(newAssignment.text == "Test")
+        XCTAssertNotNil(newAssignment.toDo)
+        XCTAssertTrue(newAssignment.toDo?.isCompleted == false)
+        
+        XCTAssertNotNil(newAssignment.owningClass)
+        //XCTAssertNotNil(newAssignment.owningClass?.previewAssignment())
+        XCTAssertNotNil(newAssignment.owningClass?.previewAssignments())
+        XCTAssertTrue(newAssignment.owningClass?.previewAssignments()?.first?.text == "Test")
+        XCTAssertNotNil(newAssignment.owningClass?.name == "Test")
     }
 
 }
+

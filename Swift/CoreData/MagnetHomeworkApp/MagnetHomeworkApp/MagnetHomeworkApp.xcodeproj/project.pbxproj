@@ -58,6 +58,7 @@
 		23CD10C52181A11F0034FFA7 /* Class+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CD10C42181A11F0034FFA7 /* Class+CoreDataProperties.swift */; };
 		23CE667F219BCC0000B34042 /* ToDoTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CE667E219BCC0000B34042 /* ToDoTableViewController.swift */; };
 		23CF36F5221A63F5003D2F43 /* AddClassView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CF36F4221A63F5003D2F43 /* AddClassView.swift */; };
+		23E98C192254372E00534880 /* TestClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E98C182254372E00534880 /* TestClass.swift */; };
 		23ED7C08221895B60020DCA4 /* DataCarrier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23ED7C07221895B60020DCA4 /* DataCarrier.swift */; };
 		23F4C9D52191EA1300D00D05 /* UIView+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F4C9D42191EA1300D00D05 /* UIView+Helpers.swift */; };
 		23F4C9DA2192704400D00D05 /* UIColor+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F4C9D92192704400D00D05 /* UIColor+Helpers.swift */; };
@@ -133,6 +134,7 @@
 		23CD10C42181A11F0034FFA7 /* Class+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Class+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		23CE667E219BCC0000B34042 /* ToDoTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoTableViewController.swift; sourceTree = "<group>"; };
 		23CF36F4221A63F5003D2F43 /* AddClassView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddClassView.swift; sourceTree = "<group>"; };
+		23E98C182254372E00534880 /* TestClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestClass.swift; sourceTree = "<group>"; };
 		23ED7C07221895B60020DCA4 /* DataCarrier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataCarrier.swift; sourceTree = "<group>"; };
 		23F4C9D42191EA1300D00D05 /* UIView+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Helpers.swift"; sourceTree = "<group>"; };
 		23F4C9D92192704400D00D05 /* UIColor+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Helpers.swift"; sourceTree = "<group>"; };
@@ -253,6 +255,7 @@
 			children = (
 				236B762A2249C5E100AC92CC /* MagnetHomeworkAppTests.swift */,
 				236B76322249C69E00AC92CC /* TestCoreDataStack.swift */,
+				23E98C182254372E00534880 /* TestClass.swift */,
 				236B762C2249C5E100AC92CC /* Info.plist */,
 			);
 			path = MagnetHomeworkAppTests;
@@ -569,6 +572,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				236B762B2249C5E100AC92CC /* MagnetHomeworkAppTests.swift in Sources */,
+				23E98C192254372E00534880 /* TestClass.swift in Sources */,
 				236B76332249C69E00AC92CC /* TestCoreDataStack.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

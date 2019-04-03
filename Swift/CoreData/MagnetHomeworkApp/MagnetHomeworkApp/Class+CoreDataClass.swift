@@ -21,29 +21,31 @@ public class Class: NSManagedObject, CloudUploadable {
     // MARK: - Computed Properties
     
     func previewAssignment() -> Assignment? {
-        let compareBlock: (Assignment, Assignment) -> Bool = { (assignment1, assignment2) in
-            guard let dueDate1 = assignment1.dueDate?.date else { return false }
-            guard let dueDate2 = assignment2.dueDate?.date else { return true }
-            let comparisonResult = dueDate1.compare(dueDate2 as Date)
-
-            return comparisonResult == .orderedDescending
-        }
+//        let compareBlock: (Assignment, Assignment) -> Bool = { (assignment1, assignment2) in
+//            guard let dueDate1 = assignment1.dueDate?.date else { return false }
+//            guard let dueDate2 = assignment2.dueDate?.date else { return true }
+//            let comparisonResult = dueDate1.compare(dueDate2 as Date)
+//
+//            return comparisonResult == .orderedDescending
+//        }
+//
+//        let completedAssignments = assignmentArray?.filter({ $0.toDo?.isCompleted ?? false == true })
+//
+//        if let filteredAssignmentArray = completedAssignments?.filter({ $0.dueDate != nil }), filteredAssignmentArray.count > 0 {
+//            if let previewAssignment = filteredAssignmentArray.max(by: compareBlock) {
+//                return previewAssignment
+//            } else {
+//                return nil
+//            }
+//        } else {
+//            if let previewAssignment = completedAssignments?.max(by: compareBlock) {
+//                return previewAssignment
+//            } else {
+//                return nil
+//            }
+//        }
         
-        let completedAssignments = assignmentArray?.filter({ $0.toDo?.isCompleted ?? false == true })
-        
-        if let filteredAssignmentArray = completedAssignments?.filter({ $0.dueDate != nil }), filteredAssignmentArray.count > 0 {
-            if let previewAssignment = filteredAssignmentArray.max(by: compareBlock) {
-                return previewAssignment
-            } else {
-                return nil
-            }
-        } else {
-            if let previewAssignment = completedAssignments?.max(by: compareBlock) {
-                return previewAssignment
-            } else {
-                return nil
-            }
-        }
+        return previewAssignments()?.first
     }
     
     func previewAssignments() -> [Assignment]? {
@@ -74,7 +76,7 @@ public class Class: NSManagedObject, CloudUploadable {
     
     // MARK: - Initializers
     
-    private override init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?) {
+    override init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?) {
         super.init(entity: entity, insertInto: context)
         generateRecord()
     }
