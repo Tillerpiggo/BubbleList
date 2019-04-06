@@ -104,6 +104,7 @@ public class Assignment: NSManagedObject, CloudUploadable {
         self.owningClass = owningClass
         self.dueDate = DueDate(withDate: nil, managedContext: managedContext)
         self.isCompleted = false
+        self.isSynced = false
         //updateDueDateSection()
         
         // Create CKRecord
@@ -131,10 +132,11 @@ public class Assignment: NSManagedObject, CloudUploadable {
         
         // Set properties
         self.text = record["text"] as? String
-        self.creationDate = record.creationDate! as NSDate
-        self.dateLastModified = record.modificationDate! as NSDate
+        self.creationDate = record.creationDate as NSDate? // These shouldn't be nil (because the record should have been saved in the cloud already) but I'm making it not crash for unit testing purposes
+        self.dateLastModified = record.modificationDate as NSDate?
         self.encodedSystemFields = record.encoded()
         self.owningClass = owningClass
+        self.isSynced = false
         
         if let dueDate = dueDate {
             dueDate.date = record["dueDate"] as NSDate?

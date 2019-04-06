@@ -143,6 +143,8 @@ class CloudController {
             operation.database = sharedDatabase
         }
         
+        // Set all cloudUploadables isSynced to false
+        
         // Map classes to records
         let recordsToSave = cloudUploadables.map() { $0.ckRecord }
         operation.recordsToSave = recordsToSave

@@ -11,5 +11,6 @@ import CloudKit
 
 protocol CloudUploadable {
     var ckRecord: CKRecord { get set }
+    var isSynced: Bool { get set }
     func update(withRecord record: CKRecord)
 }

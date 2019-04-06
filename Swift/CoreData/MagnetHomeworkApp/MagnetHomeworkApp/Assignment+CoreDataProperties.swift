@@ -28,4 +28,5 @@ extension Assignment {
     @NSManaged public var dueDateSection: Int
     @NSManaged public var isCompleted: Bool
     @NSManaged public var dueDate: DueDate?
+    @NSManaged public var isSynced: Bool
 }

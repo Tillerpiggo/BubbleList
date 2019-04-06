@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreData
+import CloudKit
 
 
 public class DueDate: NSManagedObject {
@@ -29,8 +30,17 @@ public class DueDate: NSManagedObject {
         return newDueDateType
     }
     
+    func dueDateChanged() {
+        updateDueDateType()
+        updateCKRecordDueDate()
+    }
+    
     func updateDueDateType() {
         owningAssignment?.dueDateSection = section
+    }
+    
+    func updateCKRecordDueDate() {
+        owningAssignment?.ckRecord["dueDate"] = date as CKRecordValue?
     }
     
     @objc var string: String {

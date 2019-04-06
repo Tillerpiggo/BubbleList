@@ -25,7 +25,7 @@ extension DueDate {
             self.didChangeValue(forKey: key)
             
             // Every time the user changes the date, update the dueDateType
-            updateDueDateType()
+            dueDateChanged()
         }
         get {
             let key = "date"

@@ -57,6 +57,46 @@ class MagnetHomeworkAppTests: XCTestCase {
         XCTAssertTrue(newAssignment.owningClass?.previewAssignments()?.first?.text == "Test")
         XCTAssertNotNil(newAssignment.owningClass?.name == "Test")
     }
+    
+    func testGetAssignmentFromCloud() {
+        let owningClass = Class(withName: "TestClass", assignments: [], managedContext: coreDataStack.managedContext, zoneID: testZoneID)
+        
+        let record = CKRecord(recordType: "Assignment")
+        record["text"] = "Test"
+        record["dueDate"] = Date(timeIntervalSince1970: 0)
+        
+        XCTAssertNil(record.creationDate)
+        XCTAssertNil(record.modificationDate)
+        
+        //let creationDate = record.creationDate?
+        //let modificationDate = record.modificationDate?
+
+        let assignment = Assignment(fromRecord: record, owningClass: owningClass, managedContext: coreDataStack.managedContext)
+        
+        XCTAssertTrue(assignment.text == "Test")
+        XCTAssertTrue(assignment.dueDate?.date as Date? == Date(timeIntervalSince1970: 0))
+        //XCTAssertTrue(assignment.creationDate as Date? == creationDate)
+        //XCTAssertTrue(assignment.dateLastModified as Date? == modificationDate)
+        XCTAssertTrue(assignment.encodedSystemFields == record.encoded())
+        XCTAssertTrue(assignment.owningClass == owningClass)
+        XCTAssertFalse(assignment.isSynced)
+        XCTAssertFalse(assignment.isCompleted)
+    }
+    
+    func testAssignmentCKRecord() {
+        let owningClass = Class(withName: "TestClass", assignments: [], managedContext: coreDataStack.managedContext, zoneID: testZoneID)
+        
+        let assignment = Assignment(withText: "Test", managedContext: coreDataStack.managedContext, owningClass: owningClass, zoneID: testZoneID, toDoZoneID: testZoneID)
+        let date = Date()
+        assignment.dueDate?.date = date as NSDate?
+        
+        XCTAssertNotNil(assignment.encodedSystemFields)
+        
+        let record = assignment.ckRecord
+        XCTAssertTrue(record["text"] == "Test")
+        XCTAssertTrue(record["dueDate"] == date)
+        XCTAssertTrue(record.encoded() == assignment.encodedSystemFields)
+    }
 
 }
 
