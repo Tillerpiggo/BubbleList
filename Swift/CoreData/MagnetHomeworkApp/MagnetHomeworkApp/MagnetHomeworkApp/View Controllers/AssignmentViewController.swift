@@ -73,14 +73,14 @@ class AssignmentViewController: ToDoTableViewController {
     
     @IBAction func shareButtonTapped(_ sender: UIBarButtonItem) {
         // Create a share for the class
-        let classShare = CKShare(rootRecord: `class`.ckRecord)
+        let classShare = CloudShare(rootRecord: `class`.ckRecord)
         
         classShare[CKShare.SystemFieldKey.title] = "Share the class: \(`class`.name as CKRecordValue? ?? "[Untitled]" as CKRecordValue)"
         classShare[CKShare.SystemFieldKey.shareType] = "Class" as CKRecordValue?
         
         // Create a UIShareController to give the user a UI for sharing
         let sharingController = UICloudSharingController(preparationHandler: { (controller, handler: @escaping (CKShare?, CKContainer?, Error?) -> Void) in
-            self.cloudController.save([self.`class`.ckRecord, classShare], inDatabase: .private, recordChanged: { (record) in }) { (error) in
+            self.cloudController.save([self.`class`, classShare], inDatabase: .private, recordChanged: { (record) in }) { (error) in
                 handler(classShare, CKContainer.default(), error)
             }
         })

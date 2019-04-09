@@ -17,6 +17,7 @@ public class Class: NSManagedObject, CloudUploadable {
     // MARK: - Properties
     
     var ckRecord: CKRecord = CKRecord(recordType: "Class")
+    var isSynced: Bool = false
     
     // MARK: - Computed Properties
     

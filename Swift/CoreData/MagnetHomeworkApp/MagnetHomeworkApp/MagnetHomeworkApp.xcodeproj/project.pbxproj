@@ -64,6 +64,7 @@
 		23F4C9DA2192704400D00D05 /* UIColor+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F4C9D92192704400D00D05 /* UIColor+Helpers.swift */; };
 		23F4C9E0219283EA00D00D05 /* CAGradientLayer+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F4C9DF219283EA00D00D05 /* CAGradientLayer+Helpers.swift */; };
 		23F4C9E2219284A000D00D05 /* UINavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F4C9E1219284A000D00D05 /* UINavigationBar.swift */; };
+		23FED481225C50B70021A5AE /* CloudShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23FED480225C50B70021A5AE /* CloudShare.swift */; };
 		2CB8A5F8F4BF603894EBD072 /* Pods_MagnetHomeworkApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47631C1B3FB7247D82D75AD8 /* Pods_MagnetHomeworkApp.framework */; };
 /* End PBXBuildFile section */
 
@@ -140,6 +141,7 @@
 		23F4C9D92192704400D00D05 /* UIColor+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Helpers.swift"; sourceTree = "<group>"; };
 		23F4C9DF219283EA00D00D05 /* CAGradientLayer+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CAGradientLayer+Helpers.swift"; sourceTree = "<group>"; };
 		23F4C9E1219284A000D00D05 /* UINavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationBar.swift; sourceTree = "<group>"; };
+		23FED480225C50B70021A5AE /* CloudShare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudShare.swift; sourceTree = "<group>"; };
 		47631C1B3FB7247D82D75AD8 /* Pods_MagnetHomeworkApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MagnetHomeworkApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6F8C0E46BE62C846CCD8A97 /* Pods-MagnetHomeworkApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MagnetHomeworkApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-MagnetHomeworkApp/Pods-MagnetHomeworkApp.release.xcconfig"; sourceTree = "<group>"; };
 		FB5CFD4B1D8C85CD5DDC2DEE /* Pods-MagnetHomeworkApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MagnetHomeworkApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MagnetHomeworkApp/Pods-MagnetHomeworkApp.debug.xcconfig"; sourceTree = "<group>"; };
@@ -375,6 +377,7 @@
 			isa = PBXGroup;
 			children = (
 				23484C552182250E007C5CCF /* CKRecord+Helpers.swift */,
+				23FED480225C50B70021A5AE /* CloudShare.swift */,
 				23CD10C12181A0800034FFA7 /* Class */,
 				23CD10C22181A0950034FFA7 /* Assignment */,
 				23580D4D218E164D00434DD9 /* ToDo */,
@@ -581,6 +584,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				23FED481225C50B70021A5AE /* CloudShare.swift in Sources */,
 				2310CF4921A9F6C400A995FB /* UIApplication+Helpers.swift in Sources */,
 				23484C5F21854A1E007C5CCF /* ClassTableViewController.swift in Sources */,
 				23CD10AD2180413E0034FFA7 /* CloudUploadable.swift in Sources */,

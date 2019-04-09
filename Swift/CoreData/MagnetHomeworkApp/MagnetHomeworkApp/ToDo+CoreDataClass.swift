@@ -14,6 +14,7 @@ import CloudKit
 
 public class ToDo: NSManagedObject, CloudUploadable {
     var ckRecord: CKRecord = CKRecord(recordType: "ToDo")
+    var isSynced: Bool = false
     
     private override init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?) {
         super.init(entity: entity, insertInto: context)
