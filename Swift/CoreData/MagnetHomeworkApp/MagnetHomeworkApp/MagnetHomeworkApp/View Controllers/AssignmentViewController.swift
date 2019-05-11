@@ -96,6 +96,13 @@ class AssignmentViewController: ToDoTableViewController {
         
         //tableView.reloadData()
         //print("HiddenSections: \(hiddenSections)")
+        
+        // Update all of the assignment dates in the list. This is highly inefficient but it means that the assignments will be consistentlly updated
+        // TODO: Instead of doing the below, just update due dates when they are directly changed or at midnight. If the app is closed at midnight, keep track of the last time joined, and if it was after a midnight, then update all of the due dates.
+        
+        for assignment in `class`.assignments?.array as? [Assignment] ?? [] {
+            assignment.updateDueDateSection()
+        }
     }
     
     override func saveObject(text: String) {

@@ -163,6 +163,7 @@ public class Assignment: NSManagedObject, CloudUploadable {
         // Not the responsibility of the Assignment to find the corresponding to-do if it changes
         
         self.ckRecord = record
+        self.isSynced = true // Received from Cloud, so it is synced
     }
     
     func updateDueDateSection() {

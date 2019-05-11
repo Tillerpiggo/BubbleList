@@ -203,6 +203,8 @@ extension ClassTableViewController {
                         newClass.isUserCreated = false
                     }
                     
+                    newClass.isSynced = true // Received from Cloud, so it is synced
+                    
                     DispatchQueue.main.sync { self.coreDataController.save() }
                 } else if record.recordType == "Assignment" {
                     didFetchRecords = true
@@ -215,6 +217,7 @@ extension ClassTableViewController {
                             assignment.update(withRecord: record)
                         } else {
                             let assignment = Assignment(fromRecord: record, owningClass: `class`, managedContext: self.coreDataController.managedContext)
+                            assignment.isSynced = true // Received from Cloud, so it is synced
                             `class`.addToAssignments(assignment)
                         }
                         
@@ -241,6 +244,7 @@ extension ClassTableViewController {
                                 //print("IS COMPLETED: \(toDo.isCompleted)")
                             } else {
                                 assignment.toDo = ToDo(fromRecord: record, managedContext: self.coreDataController.managedContext)
+                                assignment.toDo?.isSynced = true // Received from Cloud, so it is synced
                                 //assignment.updateDueDateSection()
                             }
                         } else {

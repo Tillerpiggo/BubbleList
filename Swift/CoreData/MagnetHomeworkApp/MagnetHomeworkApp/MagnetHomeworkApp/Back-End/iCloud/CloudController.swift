@@ -130,7 +130,7 @@ class CloudController {
     }
     
     // Saves the given cloud up
-    func save(_ cloudUploadables: [CloudUploadable], inDatabase databaseType: DatabaseType, recordChanged: @escaping (CKRecord) -> Void, willRetry: Bool = true, completion: @escaping (Error?) -> Void = { (error) in }) {
+    func save(_ cloudUploadables: inout [CloudUploadable], inDatabase databaseType: DatabaseType, recordChanged: @escaping (CKRecord) -> Void, willRetry: Bool = true, completion: @escaping (Error?) -> Void = { (error) in }) {
         // Create and configure operation
         let operation = CKModifyRecordsOperation()
         operation.savePolicy = .ifServerRecordUnchanged
@@ -154,6 +154,8 @@ class CloudController {
             print("RecordToSave: \(record["name"] as String?)")
             print("AssignmentName?: \(record["text"] as String?)")
         }
+        
+        var cloudUploadables = cloudUploadables // So inout works properly (by making a copy of the inout parameter)
         
         operation.modifyRecordsCompletionBlock = { (records, recordIDs, error) in
             
@@ -198,8 +200,9 @@ class CloudController {
                     if let retryAfterValue = ckError.userInfo[CKErrorRetryAfterKey] as? Double {
                         print("Handling error by retrying...")
                         let delayTime = DispatchTime.now() + retryAfterValue
+                        
                         DispatchQueue.main.asyncAfter(deadline: delayTime) {
-                            self.save(cloudUploadables, inDatabase: databaseType, recordChanged: recordChanged)
+                            self.save(&cloudUploadables, inDatabase: databaseType, recordChanged: recordChanged)
                             print("HANDLED ERROR BY RETRYING REQUEST")
                         }
                     }
@@ -210,6 +213,11 @@ class CloudController {
                 return
             } else {
                 print("Modified records error-free")
+                // Set all uploaded items to be synced
+                for (index, _) in cloudUploadables.enumerated() {
+                    cloudUploadables[index].isSynced = true
+                }
+                
                 completion(nil)
             }
         }
@@ -259,7 +267,7 @@ class CloudController {
             recordType: recordType,
             predicate: predicate,
             subscriptionID: subscriptionID,
-            options: [.firesOnRecordUpdate, .firesOnRecordCreation, .firesOnRecordDeletion])
+            options: [CKQuerySubscription.Options.firesOnRecordUpdate, CKQuerySubscription.Options.firesOnRecordCreation, CKQuerySubscription.Options.firesOnRecordDeletion])
         
         
         // Configure silent push notifications

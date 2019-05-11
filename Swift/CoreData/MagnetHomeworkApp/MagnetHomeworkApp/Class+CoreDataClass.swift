@@ -131,6 +131,7 @@ public class Class: NSManagedObject, CloudUploadable {
         self.encodedSystemFields = record.encoded()
         
         self.ckRecord = record
+        self.isSynced = true
     }
     
     func generateRecord() {

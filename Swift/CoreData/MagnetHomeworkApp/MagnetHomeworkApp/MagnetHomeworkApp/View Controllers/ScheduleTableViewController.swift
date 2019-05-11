@@ -11,7 +11,7 @@ import CloudKit
 import CoreData
 
 protocol ScheduleTableViewControllerDelegate {
-    func reloadAssignment(withDueDate dueDate: Date?, _ assignment: Assignment)
+    func reloadAssignment(withDueDate dueDate: Date?, _ assignment: inout Assignment)
 }
 
 class ScheduleTableViewController: UITableViewController {

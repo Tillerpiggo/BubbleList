@@ -110,6 +110,8 @@ class ToDoTableViewController: AddObjectViewController {
         
         let assignmentCellNib = UINib(nibName: "AssignmentCell", bundle: nil)
         tableView.register(assignmentCellNib, forCellReuseIdentifier: "AssignmentCell")
+        
+        // Update Due Dates of all Assignments in tableView
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -456,7 +458,7 @@ extension ToDoTableViewController: AssignmentTableViewCellDelegate {
             
             coreDataController.save()
             
-            cloudController.save([toDo], inDatabase: .private, recordChanged: { (updatedRecord) in
+            cloudController.save([toDo] as [CloudUploadable], inDatabase: .private, recordChanged: { (updatedRecord) in
                 assignment.toDo?.update(withRecord: updatedRecord)
             }) { (error) in
                 guard let error = error as? CKError else { return }
@@ -490,7 +492,7 @@ extension ToDoTableViewController: AssignmentTableViewCellDelegate {
         DispatchQueue.main.async { self.coreDataController.save() }
         
         let databaseType: DatabaseType = assignment.owningClass?.isUserCreated ?? true ? .private: .shared
-        cloudController.save([assignment], inDatabase: databaseType, recordChanged: { (updatedRecord) in
+        cloudController.save([assignment] as [CloudUploadable], inDatabase: databaseType, recordChanged: { (updatedRecord) in
             assignment.update(withRecord: updatedRecord)
         }) { (error) in
             guard let error = error as? CKError else { return }
@@ -538,7 +540,7 @@ extension ToDoTableViewController: ScheduleTableViewControllerDelegate {
         DispatchQueue.main.async { self.coreDataController.save() }
         
         let databaseType: DatabaseType = assignment.owningClass?.isUserCreated ?? true ? .private : .shared
-        cloudController.save([assignment], inDatabase: databaseType, recordChanged: { (updatedRecord) in
+        cloudController.save([assignment] as [CloudUploadable], inDatabase: databaseType, recordChanged: { (updatedRecord) in
             assignment.update(withRecord: updatedRecord)
         }) { (error) in
             guard let error = error as? CKError else { return }

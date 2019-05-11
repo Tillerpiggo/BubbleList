@@ -14,7 +14,7 @@ import CloudKit
 
 public class ToDo: NSManagedObject, CloudUploadable {
     var ckRecord: CKRecord = CKRecord(recordType: "ToDo")
-    var isSynced: Bool = false
+    //var isSynced: Bool = false // Declared in CoreData instead
     
     private override init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?) {
         super.init(entity: entity, insertInto: context)
@@ -40,6 +40,7 @@ public class ToDo: NSManagedObject, CloudUploadable {
         
         self.ckRecord = newCKRecord
         self.encodedSystemFields = newCKRecord.encoded()
+        self.isSynced = false
     }
     
     init(fromRecord record: CKRecord, managedContext: NSManagedObjectContext) {
@@ -51,6 +52,7 @@ public class ToDo: NSManagedObject, CloudUploadable {
         self.encodedSystemFields = record.encoded()
         
         self.ckRecord = record
+        self.isSynced = false // Received from Cloud, so it is synced
     }
     
     func update(withRecord record: CKRecord) {
@@ -58,6 +60,7 @@ public class ToDo: NSManagedObject, CloudUploadable {
         self.encodedSystemFields = record.encoded()
         
         self.ckRecord = record
+        self.isSynced = true // Received from Cloud, so it is synced
     }
     
     func generateRecord() {

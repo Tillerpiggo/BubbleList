@@ -2,12 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:/Users/tylerg/Desktop/Coding/Swift/CoreData/MagnetHomeworkApp/MagnetHomeworkApp/MagnetHomeworkApp/Model/DueDate+CoreDataClass.swift">
-   </FileRef>
-   <FileRef
-      location = "group:/Users/tylerg/Desktop/Coding/Swift/CoreData/MagnetHomeworkApp/MagnetHomeworkApp/MagnetHomeworkApp/Model/DueDate+CoreDataProperties.swift">
-   </FileRef>
-   <FileRef
       location = "group:MagnetHomeworkApp.xcodeproj">
    </FileRef>
    <FileRef

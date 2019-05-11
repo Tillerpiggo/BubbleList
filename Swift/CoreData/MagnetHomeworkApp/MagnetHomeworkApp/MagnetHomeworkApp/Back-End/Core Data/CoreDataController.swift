@@ -41,19 +41,29 @@ class CoreDataController {
         }
     }
     
-    func fetchMessages(completion: @escaping ([Assignment]) -> Void) {
-//        let fetchRequest: NSFetchRequest<Assignment> = Assignment.fetchRequest() as! NSFetchRequest<Assignment>
-//
-//        let asyncFetchRequest = NSAsynchronousFetchRequest<Assignment>(fetchRequest: fetchRequest) { (result) in
-//            guard let messages = result.finalResult else { return }
-//            completion(messages)
-//        }
-//
-//        do {
-//            try coreDataStack.managedContext.execute(asyncFetchRequest)
-//        } catch let error as NSError {
-//            print("Could not fetch: \(error), \(error.userInfo)")
-//        }
+    func fetchAssignments(completion: @escaping ([Assignment]) -> Void) {
+        let fetchRequest: NSFetchRequest<Assignment> = Assignment.fetchRequest()
+
+        let asyncFetchRequest = NSAsynchronousFetchRequest<Assignment>(fetchRequest: fetchRequest) { (result) in
+            guard let assignments = result.finalResult else { return }
+            completion(assignments)
+        }
+
+        do {
+            try coreDataStack.managedContext.execute(asyncFetchRequest)
+        } catch let error as NSError {
+            print("Could not fetch: \(error), \(error.userInfo)")
+        }
+    }
+    
+    func execute<T>(_ fetchRequest: NSFetchRequest<T>) -> [Any]? {
+        do {
+            let fetchedObjects = try coreDataStack.managedContext.fetch(fetchRequest)
+            return fetchedObjects
+        } catch let error as NSError {
+            print("Could not fetch: \(error), \(error.userInfo)")
+            return nil
+        }
     }
     
     func delete(_ coreDataUploadable: CoreDataUploadable) {
