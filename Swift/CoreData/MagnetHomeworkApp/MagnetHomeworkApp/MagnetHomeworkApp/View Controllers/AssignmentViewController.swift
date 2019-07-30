@@ -61,6 +61,11 @@ class AssignmentViewController: ToDoTableViewController {
         }
     }
     
+    override func reloadAssignment(withDueDate dueDate: Date?, _ assignment: inout Assignment) {
+        super.reloadAssignment(withDueDate: dueDate, &assignment)
+        delegate?.reloadClass(`class`)
+    }
+    
 //    // MARK: - IBOutlets
 //
 //    @IBOutlet weak var addAssignmentView: UIView!
@@ -80,7 +85,11 @@ class AssignmentViewController: ToDoTableViewController {
         
         // Create a UIShareController to give the user a UI for sharing
         let sharingController = UICloudSharingController(preparationHandler: { (controller, handler: @escaping (CKShare?, CKContainer?, Error?) -> Void) in
-            self.cloudController.save([self.`class`, classShare], inDatabase: .private, recordChanged: { (record) in }) { (error) in
+            
+            // Create mutable array of CloudUploadables (isSynced is modified by the save function)
+            var cloudUploadables: [CloudUploadable ] = [self.`class`, classShare]
+            
+            self.cloudController.save(&cloudUploadables, inDatabase: .private, recordChanged: { (record) in }) { (error) in
                 handler(classShare, CKContainer.default(), error)
             }
         })
@@ -363,8 +372,12 @@ extension AssignmentViewController: AddAssignmentTableViewControllerDelegate {
         print("ClassNameToSave: \(self.`class`.ckRecord["name"] as String?)")
         
         if databaseType == .private {
+            
+            // Create mutable array of CloudUploadables (isSynced is modified by the save function)
+            var cloudUploadables: [CloudUploadable] = [assignment, assignment.toDo!, self.`class`]
+            
             // Save to the Cloud
-            cloudController.save([assignment, assignment.toDo!, self.`class`], inDatabase: databaseType, recordChanged: { (updatedRecord) in
+            cloudController.save(&cloudUploadables, inDatabase: databaseType, recordChanged: { (updatedRecord) in
                 if updatedRecord.recordType == "Assignment" {
                     assignment.update(withRecord: updatedRecord)
                 } else if updatedRecord.recordType == "ToDo" {
@@ -385,8 +398,13 @@ extension AssignmentViewController: AddAssignmentTableViewControllerDelegate {
                 }
             }
         } else {
+            // Must split saving of toDo and assignment/class into private and shared databases, respectivally.
+            
+            // Create mutable array of CloudUploadables (isSynced is modified by the save function)
+            var privateCloudUploadables: [CloudUploadable] = [assignment.toDo!]
+            
             // Save to the Cloud
-            cloudController.save([assignment.toDo!], inDatabase: .private, recordChanged: { (updatedRecord) in
+            cloudController.save(&privateCloudUploadables, inDatabase: .private, recordChanged: { (updatedRecord) in
                 assignment.toDo?.update(withRecord: updatedRecord)
             }) { (error) in
                 guard let error = error as? CKError else { return }
@@ -401,8 +419,11 @@ extension AssignmentViewController: AddAssignmentTableViewControllerDelegate {
                 }
             }
             
+            // Create mutable array of CloudUploadables (isSynced is modified by the save function)
+            var sharedCloudUploadables: [CloudUploadable] = [assignment, self.`class`]
+            
             // Save to the Cloud
-            cloudController.save([assignment, self.`class`], inDatabase: databaseType, recordChanged: { (updatedRecord) in
+            cloudController.save(&sharedCloudUploadables, inDatabase: databaseType, recordChanged: { (updatedRecord) in
                 if updatedRecord.recordType == "Assignment" {
                     assignment.update(withRecord: updatedRecord)
                 } else if updatedRecord.recordType == "ToDo" {
@@ -591,9 +612,3 @@ extension AssignmentViewController {
 //    }
 //}
 
-extension AssignmentViewController {
-    override func reloadAssignment(withDueDate dueDate: Date?, _ assignment: Assignment) {
-        super.reloadAssignment(withDueDate: dueDate, assignment)
-        delegate?.reloadClass(`class`)
-    }
-}

@@ -13,6 +13,7 @@ import CloudKit
 import UIKit
 
 public class Assignment: NSManagedObject, CloudUploadable {
+
     var ckRecord: CKRecord = CKRecord(recordType: "Assignment")
     
     @objc var dueDateString: String {
@@ -104,7 +105,7 @@ public class Assignment: NSManagedObject, CloudUploadable {
         self.owningClass = owningClass
         self.dueDate = DueDate(withDate: nil, managedContext: managedContext)
         self.isCompleted = false
-        self.isSynced = false
+        self.setIsSynced(to: false)
         //updateDueDateSection()
         
         // Create CKRecord
@@ -136,7 +137,7 @@ public class Assignment: NSManagedObject, CloudUploadable {
         self.dateLastModified = record.modificationDate as NSDate?
         self.encodedSystemFields = record.encoded()
         self.owningClass = owningClass
-        self.isSynced = false
+        self.setIsSynced(to: false)
         
         if let dueDate = dueDate {
             dueDate.date = record["dueDate"] as NSDate?
@@ -197,6 +198,14 @@ public class Assignment: NSManagedObject, CloudUploadable {
             self.ckRecord = newCKRecord
         } else {
             print("ERROR: Unable to reconstruct CKRecord from metadata (Assignment); encodedSystemFields not found")
+        }
+    }
+    
+    func setIsSynced(to bool: Bool) {
+        isSynced = bool
+        
+        if isSynced == false {
+            owningClass?.isSynced = false
         }
     }
     

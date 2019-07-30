@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 import CloudKit
 
-class ToDoTableViewController: AddObjectViewController {
+class ToDoTableViewController: AddObjectViewController, ScheduleTableViewControllerDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -148,6 +148,37 @@ class ToDoTableViewController: AddObjectViewController {
         // TITLE COLOR
         let textAttributes: [NSAttributedString.Key: UIColor]  = [NSAttributedString.Key.foregroundColor: .textColor]
         navigationController?.navigationBar.titleTextAttributes = textAttributes
+    }
+    
+    // MARK: - ScheduleTableViewControllerDelegate
+    func reloadAssignment(withDueDate dueDate: Date?, _ assignment: inout Assignment) {
+        if let indexPath = fetchedResultsController.indexPath(forObject: assignment) {
+            tableView.reloadRows(at: [indexPath], with: .automatic)
+        }
+        
+        DispatchQueue.main.async { self.coreDataController.save() }
+        
+        // Figure out which database to save to - if you own it, save to private; if you don't - save to shared
+        let databaseType: DatabaseType = assignment.owningClass?.isUserCreated ?? true ? .private : .shared
+        
+        var cloudUploadables: [CloudUploadable] = [assignment]
+        
+        cloudController.save(&cloudUploadables, inDatabase: databaseType, recordChanged: { (updatedRecord) in
+            //assignment.update(withRecord: updatedRecord) // Note to self: I don't think recordChanged is even ever being called...
+        }) { (error) in
+            guard let error = error as? CKError else { return }
+            switch error.code {
+            case .requestRateLimited, .zoneBusy, .serviceUnavailable:
+                break
+            default:
+                DispatchQueue.main.async {
+                    //self.alertUserOfFailure()
+                    self.coreDataController.save()
+                }
+            }
+        }
+        
+        //delegate?.reloadClass(`class`)
     }
     
 }
@@ -450,6 +481,7 @@ extension ToDoTableViewController: AssignmentTableViewCellDelegate {
         if let toDo = assignment.toDo {
             toDo.isCompleted = !toDo.isCompleted
             assignment.isCompleted = toDo.isCompleted
+            assignment.setIsSynced(to: false)
             
             toDo.completionDate = NSDate()
             toDo.ckRecord["isCompleted"] = toDo.isCompleted as CKRecordValue?
@@ -458,8 +490,12 @@ extension ToDoTableViewController: AssignmentTableViewCellDelegate {
             
             coreDataController.save()
             
-            cloudController.save([toDo] as [CloudUploadable], inDatabase: .private, recordChanged: { (updatedRecord) in
+            // Create mutable array of CloudUploadables (isSynced is modified by the save function)
+            var cloudUploadables: [CloudUploadable] = [toDo]
+            
+            cloudController.save(&cloudUploadables, inDatabase: .private, recordChanged: { (updatedRecord) in
                 assignment.toDo?.update(withRecord: updatedRecord)
+                assignment.setIsSynced(to: true)
             }) { (error) in
                 guard let error = error as? CKError else { return }
                 switch error.code {
@@ -492,7 +528,11 @@ extension ToDoTableViewController: AssignmentTableViewCellDelegate {
         DispatchQueue.main.async { self.coreDataController.save() }
         
         let databaseType: DatabaseType = assignment.owningClass?.isUserCreated ?? true ? .private: .shared
-        cloudController.save([assignment] as [CloudUploadable], inDatabase: databaseType, recordChanged: { (updatedRecord) in
+        
+        // Create mutable array of CloudUploadables (isSynced is modified by the save function)
+        var cloudUploadables: [CloudUploadable] = [assignment]
+        
+        cloudController.save(&cloudUploadables, inDatabase: databaseType, recordChanged: { (updatedRecord) in
             assignment.update(withRecord: updatedRecord)
         }) { (error) in
             guard let error = error as? CKError else { return }
@@ -531,31 +571,4 @@ extension ToDoTableViewController: AssignmentHeaderFooterCellDelegate {
     }
 }
 
-extension ToDoTableViewController: ScheduleTableViewControllerDelegate {
-    @objc func reloadAssignment(withDueDate dueDate: Date?, _ assignment: Assignment) {
-        if let indexPath = fetchedResultsController.indexPath(forObject: assignment) {
-            tableView.reloadRows(at: [indexPath], with: .automatic)
-        }
-        
-        DispatchQueue.main.async { self.coreDataController.save() }
-        
-        let databaseType: DatabaseType = assignment.owningClass?.isUserCreated ?? true ? .private : .shared
-        cloudController.save([assignment] as [CloudUploadable], inDatabase: databaseType, recordChanged: { (updatedRecord) in
-            assignment.update(withRecord: updatedRecord)
-        }) { (error) in
-            guard let error = error as? CKError else { return }
-            switch error.code {
-            case .requestRateLimited, .zoneBusy, .serviceUnavailable:
-                break
-            default:
-                DispatchQueue.main.async {
-                    //self.alertUserOfFailure()
-                    self.coreDataController.save()
-                }
-            }
-        }
-        
-        //delegate?.reloadClass(`class`)
-    }
-}
 

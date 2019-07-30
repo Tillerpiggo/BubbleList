@@ -130,7 +130,16 @@ class CloudController {
     }
     
     // Saves the given cloud up
-    func save(_ cloudUploadables: inout [CloudUploadable], inDatabase databaseType: DatabaseType, recordChanged: @escaping (CKRecord) -> Void, willRetry: Bool = true, completion: @escaping (Error?) -> Void = { (error) in }) {
+    func save(_ cloudUploadables: inout [CloudUploadable], inDatabase databaseType: DatabaseType, recordChanged: @escaping (CKRecord) -> Void, retryNumber: Int = 0, completion: @escaping (Error?) -> Void = { (error) in }) {
+        
+        guard reachability.connection != .none else {
+            for (index, _) in cloudUploadables.enumerated() {
+                cloudUploadables[index].isSynced = false
+            }
+            
+            return
+        }
+        
         // Create and configure operation
         let operation = CKModifyRecordsOperation()
         operation.savePolicy = .ifServerRecordUnchanged
@@ -198,11 +207,16 @@ class CloudController {
                     }
                 case .requestRateLimited, .zoneBusy, .serviceUnavailable:
                     if let retryAfterValue = ckError.userInfo[CKErrorRetryAfterKey] as? Double {
+                        guard retryNumber < 3 else {
+                            print("Reached maximum number of retries. Will no longer attempt to connect.")
+                            return
+                        }
+                        
                         print("Handling error by retrying...")
-                        let delayTime = DispatchTime.now() + retryAfterValue
+                        let delayTime = (DispatchTime.now() + retryAfterValue * (Double(retryNumber + 1))) // First time this happens, retryNumber will just be 0 so it will do the recommended time.
                         
                         DispatchQueue.main.asyncAfter(deadline: delayTime) {
-                            self.save(&cloudUploadables, inDatabase: databaseType, recordChanged: recordChanged)
+                            self.save(&cloudUploadables, inDatabase: databaseType, recordChanged: recordChanged, retryNumber: retryNumber + 1)
                             print("HANDLED ERROR BY RETRYING REQUEST")
                         }
                     }

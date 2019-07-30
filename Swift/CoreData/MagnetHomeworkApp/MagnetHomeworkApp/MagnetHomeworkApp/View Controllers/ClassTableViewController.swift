@@ -217,7 +217,7 @@ extension ClassTableViewController {
                             assignment.update(withRecord: record)
                         } else {
                             let assignment = Assignment(fromRecord: record, owningClass: `class`, managedContext: self.coreDataController.managedContext)
-                            assignment.isSynced = true // Received from Cloud, so it is synced
+                            assignment.setIsSynced(to: true) // Received from Cloud, so it is synced
                             `class`.addToAssignments(assignment)
                         }
                         
@@ -509,8 +509,11 @@ extension ClassTableViewController: AddClassTableViewControllerDelegate {
         // Save change to Core Data
         coreDataController.save()
         
+        var cloudUploadables: [CloudUploadable] = [`class`]
+        `class`.isSynced = false
+        
         // Save change to the Cloud
-        cloudController.save([`class`], inDatabase: .private, recordChanged: { (updatedRecord) in
+        cloudController.save(&cloudUploadables, inDatabase: .private, recordChanged: { (updatedRecord) in
             `class`.update(withRecord: updatedRecord)
         }) { (error) in
             guard let error = error as? CKError else { return }

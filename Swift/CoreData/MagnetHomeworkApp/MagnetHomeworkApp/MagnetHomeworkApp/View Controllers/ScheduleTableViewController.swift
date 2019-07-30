@@ -78,9 +78,10 @@ class ScheduleTableViewController: UITableViewController {
         assignment.dueDate?.date = dueDate as NSDate?
         //assignment.updateDueDateSection()
         assignment.ckRecord["dueDate"] = dueDate as CKRecordValue?
+        assignment.setIsSynced(to: false)
         coreDataController.save()
         
-        delegate?.reloadAssignment(withDueDate: dueDate, assignment)
+        delegate?.reloadAssignment(withDueDate: dueDate, &assignment)
         
         self.dismiss(animated: true)
     }

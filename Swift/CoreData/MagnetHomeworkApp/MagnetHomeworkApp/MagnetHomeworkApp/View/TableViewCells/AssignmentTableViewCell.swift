@@ -112,6 +112,7 @@ class AssignmentTableViewCell: UITableViewCell, UITextFieldDelegate, UITextDragD
         
         assignment.text = textField.text
         assignment.ckRecord["text"] = assignment.text
+        assignment.setIsSynced(to: false)
         
 //        if !textNotEmpty(textField.text ?? "") {
 //            textField.text = originalText
